@@ -84,7 +84,10 @@ class VisitanteController extends Controller
         $visitante = $this->visitantes->obtenerVisitante($id);
         [$eps, $arl] = $this->obtenerModelos();  
         $datoIndividual = array($this->eps->obtenerEpsIndividual($visitante->id_eps), $this->arl->obtenerArlIndividual($visitante->id_arl));
-        return view('pages.visitantes.editar', compact('visitante', 'eps', 'arl', 'datoIndividual'));
+        // return view('pages.visitantes.editar', compact('visitante', 'eps', 'arl', 'datoIndividual'));
+        // dd(compact('visitante', 'eps', 'arl', 'datoIndividual'));
+        $dato = ['data' => $eps];
+        return response()->json($dato);  
     }
 
     /**

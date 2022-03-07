@@ -37,13 +37,13 @@
 
     <script>
         $(function() {
-
             $('#tabla_visitantes').DataTable({
                 "destroy": true,
                 "processing": true,
-                // "serverSide": false,
+                // "serverSide": true,
                 "responsive": true,
                 "autoWidth": false,
+                // "scrollY": '300px',
                 "ajax": "{{ route('mostrar') }}",
                 "columns": [
                     {
@@ -85,7 +85,7 @@
                         "defaultContent": '<td>' +
                             '<div class="action-buttons text-center">' +
                             '<a href="#" class="btn btn-primary btn-icon btn-sm">' +
-                            '<i class="fa fa-pencil">fhg</i>' +
+                            '<i class="nav-icon far fa-check-circle"></i>' +
                             '</a>' +
                             '</div>' +
                             '</td>',
@@ -94,9 +94,43 @@
                 "lengthMenu": [
                     [5, 10, 25, 50, 75, 100, -1],
                     [5, 10, 25, 50, 75, 100, 'ALL']
-                ],
+                ],        
+            });
 
-                
+            $('#tabla_visitantes tbody').on('click', 'td.editar_visitante', function () {
+                $("#formulario").css("display", "block");
+                var tr = $(this).closest('tr');
+                var row = $('#tabla_visitantes').DataTable().row(tr);
+                var data = row.data();
+                // console.log(data);
+                $('#form_editar').attr('action','http://app-seguridad.test/visitantes/editar/' + data.id_personas);    
+                $('#inputNombre').val(data.nombre);
+                $('#inputApellido').val(data.apellido);
+                $('#inputIdentificacion').val(data.identificacion);
+                $('#inputTelefono').val(data.tel_contacto);
+                $('#inputEps').val(data.eps);
+                $('#inputArl').val(data.arl);
+
+                listasDesplegables(data.id_personas);
+   
+    
+            });
+
+            function listasDesplegables (id) {
+                $.ajax({
+                    url: "visitantes/editar/" + id,
+                    type: "GET",
+                    dataType: "json",
+                    succes: function (response) {
+                        $each(response.data , function (key, value) {
+                            $('#inputEps').append("<option value='" + value.id_eps + "'>" + value.eps + "</option>")
+                        });
+                    }
+                });
+            }
+
+            $('#botonCerrar').click(function(){
+                $("#formulario").css("display", "none");
             });
 
         });
@@ -107,6 +141,10 @@
     <div class="content mb-n2">
         @include('pages.visitantes.header')
     </div>
+
+    <section id="formulario" class="content-header" style="display: none">
+        @include('pages.visitantes.formularioEditar')
+    </section>
 
     <section class="content-header">
         <div class="row">
