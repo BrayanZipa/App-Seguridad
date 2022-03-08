@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Arl;
 use App\Models\Eps;
-use App\Models\Visitante;
+use App\Models\Persona;
 use Illuminate\Http\Request;
 
 use function GuzzleHttp\Promise\all;
@@ -15,7 +15,7 @@ class VisitanteController extends Controller
     protected $eps;
     protected $arl;
 
-    public function __construct(Visitante $visitantes, Eps $eps, Arl $arl)
+    public function __construct(Persona $visitantes, Eps $eps, Arl $arl)
     {
         $this->visitantes = $visitantes;
         $this->eps = $eps;
@@ -30,7 +30,6 @@ class VisitanteController extends Controller
     {
         // $visitantes = $this->visitantes->obtenerVisitantes();
         [$eps, $arl] = $this->obtenerModelos();
-
         return view('pages.visitantes.mostrar', compact('eps', 'arl'));
     }
 
@@ -55,7 +54,7 @@ class VisitanteController extends Controller
         $nuevoVisitante['id_tipo_persona'] = 1;
         $nuevoVisitante['id_usuario'] = auth()->user()->id_usuarios;
         // $nuevoVisitante['foto'] = '';
-        Visitante::create($nuevoVisitante)->save();
+        Persona::create($nuevoVisitante)->save();
         return redirect()->action([VisitanteController::class, 'index']);
     }
 
@@ -88,7 +87,7 @@ class VisitanteController extends Controller
     public function update(Request $request, $id)
     {
         // $visitante = Visitante::find($id)->fill($request->all())->save();
-        Visitante::findOrFail($id)->update($request->all());
+        Persona::findOrFail($id)->update($request->all());
         return redirect()->action([VisitanteController::class, 'index']);
     }
 
@@ -116,16 +115,10 @@ class VisitanteController extends Controller
     }
 
     /**
-     * Función que permite retornar en un fotmato JSON los datos de visitantes, ARL y ESP donde tenga un id en común.
+     * Función que permite retornar en un fotmato JSON los datos de los visitantes, ARL y ESP donde tenga un id en común.
      */
     public function informacionVisitantes()
     {
-        try {
-            $visitantes = Visitante::leftjoin('se_eps AS eps', 'se_personas.id_eps', '=', 'eps.id_eps')->leftjoin('se_arl AS arl', 'se_personas.id_arl', '=', 'arl.id_arl')->leftjoin('se_usuarios AS usuarios', 'se_personas.id_usuario', '=', 'usuarios.id_usuarios')->orderBy('id_personas')->get();
-            $response = ['data' => $visitantes->all()];
-        } catch (\Throwable $e) {
-            return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
-        }
-        return response()->json($response);           
+        return response()->json( $this->visitantes->informacionPersonas(1));      
     } 
 }
