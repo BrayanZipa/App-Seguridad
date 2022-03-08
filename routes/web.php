@@ -33,13 +33,9 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/visitantes', [VisitanteController::class, 'index'])->name('mostrarVisitantes');
 Route::get('/visitantes/crear', [VisitanteController::class, 'create'])->name('formCrearVisitante');
 Route::post('/visitantes/crear', [VisitanteController::class, 'store'])->name('crearVisitante');
-// Route::get('/visitantes/ver/{id}', [VisitanteController::class, 'show'])->name('mostrarVisitante');
-Route::get('/visitantes/editar/{id}', [VisitanteController::class, 'edit'])->name('formEditarVisitante');
+Route::get('/visitantes/informacion', [VisitanteController::class, 'informacionVisitantes'])->name('mostrarInformacion');
 Route::put('/visitantes/editar/{id}', [VisitanteController::class, 'update'])->name('editarVisitante');
 
-
-
-Route::get('/visitante', [VisitanteController::class, 'visitantes'])->name('mostrar');
 
 
 

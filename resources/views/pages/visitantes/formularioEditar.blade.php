@@ -55,19 +55,20 @@
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label>Actualizar EPS</label>
-                                <select class="form-control select2" id="inputEps" style="width: 100%;" name="id_eps" >
- 
-                                </select>
+                                <select class="form-control select2" style="width: 100%;" id="inputEps" name="id_eps" required>
+                                        @foreach ($eps as $ep)
+                                            <option value="{{ $ep->id_eps }}">{{ $ep->eps }}</option>
+                                        @endforeach
+                                    </select>
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label>Actualizar ARL</label>
-                                <select class="form-control select2" id="inputArl" style="width: 100%;" name="id_arl" required>
-                                    <option selected="selected" value="" disabled>Seleccione ARL</option>
-                                            @foreach ($arl as $ar)
-                                                <option value="{{ $ar->id_arl }}">{{ $ar->arl }}</option>
-                                            @endforeach
+                                <select class="form-control select2" style="width: 100%;" id="inputArl" name="id_arl" required>
+                                    @foreach ($arl as $ar)
+                                        <option value="{{ $ar->id_arl }}">{{ $ar->arl }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>

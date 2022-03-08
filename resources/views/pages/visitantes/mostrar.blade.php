@@ -10,8 +10,6 @@
     <link rel="stylesheet"
         href="{{ asset('assets/lte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/lte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
-
-    {{-- <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css"> --}}
 @endsection
 
 @section('scripts')
@@ -28,13 +26,8 @@
     <script src="{{ asset('assets/lte/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('assets/lte/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
     <script src="{{ asset('assets/lte/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
-
-    {{-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-
-    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script> --}}
-
-
+    
+    <!-- JavaScript propio-->
     <script>
         $(function() {
             $('#tabla_visitantes').DataTable({
@@ -44,11 +37,11 @@
                 "responsive": true,
                 "autoWidth": false,
                 // "scrollY": '300px',
-                "ajax": "{{ route('mostrar') }}",
+                "ajax": "{{ route('mostrarInformacion') }}",
                 "columns": [
                     {
                         "data": 'id_personas',
-                        "name": 'id_persona'
+                        "name": 'id_personas'
                     },
                     {
                         "data": 'nombre',
@@ -102,37 +95,18 @@
                 var tr = $(this).closest('tr');
                 var row = $('#tabla_visitantes').DataTable().row(tr);
                 var data = row.data();
-                // console.log(data);
                 $('#form_editar').attr('action','http://app-seguridad.test/visitantes/editar/' + data.id_personas);    
                 $('#inputNombre').val(data.nombre);
                 $('#inputApellido').val(data.apellido);
                 $('#inputIdentificacion').val(data.identificacion);
                 $('#inputTelefono').val(data.tel_contacto);
-                $('#inputEps').val(data.eps);
-                $('#inputArl').val(data.arl);
-
-                listasDesplegables(data.id_personas);
-   
-    
+                $('#inputEps').val(data.id_eps);
+                $('#inputArl').val(data.id_arl);
             });
-
-            function listasDesplegables (id) {
-                $.ajax({
-                    url: "visitantes/editar/" + id,
-                    type: "GET",
-                    dataType: "json",
-                    succes: function (response) {
-                        $each(response.data , function (key, value) {
-                            $('#inputEps').append("<option value='" + value.id_eps + "'>" + value.eps + "</option>")
-                        });
-                    }
-                });
-            }
 
             $('#botonCerrar').click(function(){
                 $("#formulario").css("display", "none");
             });
-
         });
     </script>
 @endsection

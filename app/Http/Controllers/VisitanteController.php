@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Arl;
-use App\Models\Empresa;
 use App\Models\Eps;
 use App\Models\Visitante;
 use Illuminate\Http\Request;
@@ -25,18 +24,18 @@ class VisitanteController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
         // $visitantes = $this->visitantes->obtenerVisitantes();
-        return view('pages.visitantes.mostrar');
+        [$eps, $arl] = $this->obtenerModelos();
+
+        return view('pages.visitantes.mostrar', compact('eps', 'arl'));
     }
 
     /**
      * Show the form for creating a new resource.
-     *
      * @return \Illuminate\Http\Response
      */
     public function create()
@@ -47,7 +46,6 @@ class VisitanteController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -61,38 +59,28 @@ class VisitanteController extends Controller
         return redirect()->action([VisitanteController::class, 'index']);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+   /*  public function show($id)
     {
-        /* $visitante = $this->visitantes->obtenerVisitante($id);
-        return view('pages.visitantes.ver', ['visitante' => $visitante]); */
-    }
+        $visitante = $this->visitantes->obtenerVisitante($id);
+        return view('pages.visitantes.ver', ['visitante' => $visitante]);
+    } */
 
     /**
      * Show the form for editing the specified resource.
-     *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    /* public function edit($id)
     {
         $visitante = $this->visitantes->obtenerVisitante($id);
         [$eps, $arl] = $this->obtenerModelos();  
         $datoIndividual = array($this->eps->obtenerEpsIndividual($visitante->id_eps), $this->arl->obtenerArlIndividual($visitante->id_arl));
-        // return view('pages.visitantes.editar', compact('visitante', 'eps', 'arl', 'datoIndividual'));
         // dd(compact('visitante', 'eps', 'arl', 'datoIndividual'));
-        $dato = ['data' => $eps];
-        return response()->json($dato);  
-    }
+        return view('pages.visitantes.editar', compact('visitante', 'eps', 'arl', 'datoIndividual')); 
+    } */
 
     /**
      * Update the specified resource in storage.
-     *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -106,17 +94,16 @@ class VisitanteController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    /* public function destroy($id)
     {
-       /*  $visitante = Visitante::find($id);
+        $visitante = Visitante::find($id);
         // $visitante = $this->visitantes->obtenerVisitante($id);
         $visitante->delete();
-        return redirect()->action([VisitanteController::class, 'index']); */
-    }
+        return redirect()->action([VisitanteController::class, 'index']);
+    } */
 
     /**
      * Función que permite traer la información de los modelos de la Eps y Arl
@@ -128,15 +115,17 @@ class VisitanteController extends Controller
         return [$eps, $arl];
     }
 
-    public function visitantes()
+    /**
+     * Función que permite retornar en un fotmato JSON los datos de visitantes, ARL y ESP donde tenga un id en común.
+     */
+    public function informacionVisitantes()
     {
         try {
             $visitantes = Visitante::leftjoin('se_eps AS eps', 'se_personas.id_eps', '=', 'eps.id_eps')->leftjoin('se_arl AS arl', 'se_personas.id_arl', '=', 'arl.id_arl')->leftjoin('se_usuarios AS usuarios', 'se_personas.id_usuario', '=', 'usuarios.id_usuarios')->orderBy('id_personas')->get();
             $response = ['data' => $visitantes->all()];
-        } catch (\Throwable $th) {
-            return response()->json(['message' => 'Error al traer la información de la base de datos'],500);
+        } catch (\Throwable $e) {
+            return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
         }
-        // dd(response()->json($response));
         return response()->json($response);           
     } 
 }
