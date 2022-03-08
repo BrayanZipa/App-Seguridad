@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ColaboradorController;
+use App\Http\Controllers\ConductorController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\VisitanteController;
 use Illuminate\Support\Facades\Auth;
@@ -36,6 +38,17 @@ Route::post('/visitantes/crear', [VisitanteController::class, 'store'])->name('c
 Route::get('/visitantes/informacion', [VisitanteController::class, 'informacionVisitantes'])->name('mostrarInformacion');
 Route::put('/visitantes/editar/{id}', [VisitanteController::class, 'update'])->name('editarVisitante');
 
+/**
+ * Rutas del modulo de colaboradores
+ */
+Route::get('/colaboradores', [ColaboradorController::class, 'index'])->name('mostrarColaboradores');
+Route::get('/colaboradores/crear', [ColaboradorController::class, 'create'])->name('formCrearColaborador');
+Route::post('/colaboradores/crear', [ColaboradorController::class, 'store'])->name('crearColaborador');
 
-
+ /**
+ * Rutas del modulo de conductores
+ */
+Route::get('/conductores', [ConductorController::class, 'index'])->name('mostrarConductores');
+Route::get('/conductores/crear', [ConductorController::class, 'create'])->name('formCrearConductor');
+Route::post('/conductores/crear', [ConductorController::class, 'store'])->name('crearConductor');
 

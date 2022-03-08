@@ -14,7 +14,15 @@ class Empresa extends Model
 
     protected $primaryKey = 'id_empresas';
 
+    /**
+     * Función que permite retornar el nombre de las empresas que conforman la organización.
+     */
     public function obtenerEmpresas(){
-        return Empresa::all();
+        try {
+            $empresas =  Empresa::all();
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
+        }
+        return $empresas;
     }
 }

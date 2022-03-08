@@ -78,7 +78,7 @@
                         "defaultContent": '<td>' +
                             '<div class="action-buttons text-center">' +
                             '<a href="#" class="btn btn-primary btn-icon btn-sm">' +
-                            '<i class="nav-icon far fa-check-circle"></i>' +
+                            '<i class="fas fa-edit"></i>' +
                             '</a>' +
                             '</div>' +
                             '</td>',
@@ -107,6 +107,7 @@
             $('#botonCerrar').click(function(){
                 $("#formulario").css("display", "none");
             });
+
         });
     </script>
 @endsection
@@ -141,7 +142,7 @@
                                     <th>ARL</th>
                                     <th>Teléfono de emergencia</th>
                                     <th>Ingresado por</th>
-                                    <th>Acción</th>
+                                    <th>Editar</th>
                                 </tr>
                             </thead>
                         </table>

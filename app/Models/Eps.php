@@ -15,10 +15,20 @@ class Eps extends Model
     protected $primaryKey = 'id_eps';
 
     public function obtenerEps(){
-        return Eps::all();
+        try {
+            $eps = Eps::all();
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
+        }
+        return $eps;
     }
 
     public function obtenerEpsIndividual($id){
-        return Eps::find($id);
+        try {
+            $eps = Eps::find($id);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
+        }
+        return $eps;
     }
 }

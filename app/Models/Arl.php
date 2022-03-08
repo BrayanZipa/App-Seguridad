@@ -15,10 +15,20 @@ class Arl extends Model
     protected $primaryKey = 'id_arl';
 
     public function obtenerArl(){
-        return Arl::all();
+        try {
+            $arl = Arl::all();
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
+        }
+        return $arl;
     }
 
     public function obtenerArlIndividual($id){
-        return Arl::find($id);
+        try {
+            $arl = Arl::find($id);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
+        }
+        return $arl;
     }
 }

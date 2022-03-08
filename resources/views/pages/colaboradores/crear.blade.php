@@ -1,30 +1,31 @@
 @extends('themes.lte.layout')
 
 @section('titulo')
-    Visitantes
+    Colaboradores
 @endsection
 
 @section('css')
 @endsection
 
 @section('scripts')
+<script href="{{ asset('plugins/bootstrap-switch/js/bootstrap-switch.min.js') }}></script>
 @endsection
 
 @section('contenido')
     <div class="content mb-n2">
-        @include('pages.visitantes.header')
+        @include('pages.colaboradores.header')
     </div>
     
     <section class="content-header">
         <div class="row">
             <div class="col-md-12">
 
-                <form action="{{ route('crearVisitante') }}" method="POST">
+                <form action="{{ route('crearColaborador') }}" method="POST">
                     @csrf
 
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">Crear nuevo visitante</h3>
+                            <h3 class="card-title">Crear nuevo colaborador</h3>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
                                         class="fas fa-minus"></i>
@@ -62,7 +63,7 @@
                             <div class="row">
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label for="inputTelefono">Ingrese un teléfono en caso de emergencia</label>
+                                        <label for="inputTelefono">Ingrese el teléfono</label>
                                         <input type="tel" class="form-control" id="inputTelefono" name="tel_contacto"
                                             placeholder="Teléfono" required>
                                     </div>
@@ -90,11 +91,26 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label>Ingrese la empresa de vinculación</label>
+                                        <select class="form-control select2" style="width: 100%;" name="id_empresa" required>
+                                            <option selected="selected" value="" disabled>Seleccione la empresa</option>
+                                            @foreach ($empresas as $empresa)
+                                                <option value="{{ $empresa->id_empresas }}">{{ $empresa->nombre }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">
-                            <button type='submit' class="btn btn-primary">Crear visitante</button>
+                            <button type='submit' class="btn btn-primary">Crear colaborador</button>
                             <button type='reset' class="btn btn-secondary">Limpiar</button>
+                            <input type="checkbox" name="my-checkbox" checked data-bootstrap-switch>
+                    <input type="checkbox" name="my-checkbox" checked data-bootstrap-switch data-off-color="danger" data-on-color="success">
                         </div>
                         <!-- /.card-footer-->
                     </div>

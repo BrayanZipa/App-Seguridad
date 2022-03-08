@@ -77,7 +77,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('mostrarColaboradores')}}" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             Colaboradores 
@@ -87,7 +87,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('mostrarConductores')}}" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             Conductores

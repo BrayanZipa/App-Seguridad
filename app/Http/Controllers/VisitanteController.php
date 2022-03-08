@@ -7,8 +7,6 @@ use App\Models\Eps;
 use App\Models\Persona;
 use Illuminate\Http\Request;
 
-use function GuzzleHttp\Promise\all;
-
 class VisitanteController extends Controller
 {
     protected $visitantes;
@@ -115,7 +113,7 @@ class VisitanteController extends Controller
     }
 
     /**
-     * Función que permite retornar en un fotmato JSON los datos de los visitantes, ARL y ESP donde tenga un id en común.
+     * Función que permite retornar en un formato JSON los datos de los visitantes, arl y eps donde tengan un id en común.
      */
     public function informacionVisitantes()
     {
