@@ -52,3 +52,4 @@ Route::get('/conductores', [ConductorController::class, 'index'])->name('mostrar
 Route::get('/conductores/crear', [ConductorController::class, 'create'])->name('formCrearConductor');
 Route::post('/conductores/crear', [ConductorController::class, 'store'])->name('crearConductor');
 
+

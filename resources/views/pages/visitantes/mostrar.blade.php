@@ -91,10 +91,11 @@
             });
 
             $('#tabla_visitantes tbody').on('click', 'td.editar_visitante', function () {
-                $("#formulario").css("display", "block");
+                $("#formularioEditar").css("display", "block");
                 var tr = $(this).closest('tr');
                 var row = $('#tabla_visitantes').DataTable().row(tr);
                 var data = row.data();
+                // console.log(data);
                 $('#form_editar').attr('action','http://app-seguridad.test/visitantes/editar/' + data.id_personas);    
                 $('#inputNombre').val(data.nombre);
                 $('#inputApellido').val(data.apellido);
@@ -107,8 +108,16 @@
             $('#botonCerrar').click(function(){
                 $("#formulario").css("display", "none");
             });
+        });        
+    </script>
 
-        });
+    <script>
+         $(function() {
+            $('#modal-editar').modal("show");
+            setTimeout(function(){
+                $('#modal-editar').modal('hide');
+            }, 3000);
+         });      
     </script>
 @endsection
 
@@ -117,7 +126,7 @@
         @include('pages.visitantes.header')
     </div>
 
-    <section id="formulario" class="content-header" style="display: none">
+    <section id="formularioEditar" class="content-header" style="display: none">
         @include('pages.visitantes.formularioEditar')
     </section>
 
@@ -152,5 +161,8 @@
                 <!-- /.card -->
             </div>
         </div>
+
+          @include('pages.visitantes.modales')
+
     </section>
 @endsection

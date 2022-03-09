@@ -53,7 +53,7 @@ class VisitanteController extends Controller
         $nuevoVisitante['id_usuario'] = auth()->user()->id_usuarios;
         // $nuevoVisitante['foto'] = '';
         Persona::create($nuevoVisitante)->save();
-        return redirect()->action([VisitanteController::class, 'index']);
+        return redirect()->action([VisitanteController::class, 'create'])->with('crear_visitante', $nuevoVisitante['nombre']." ".$nuevoVisitante['apellido']);
     }
 
    /*  public function show($id)
@@ -86,7 +86,7 @@ class VisitanteController extends Controller
     {
         // $visitante = Visitante::find($id)->fill($request->all())->save();
         Persona::findOrFail($id)->update($request->all());
-        return redirect()->action([VisitanteController::class, 'index']);
+        return redirect()->action([VisitanteController::class, 'index'])->with('editar_visitante', $request->all()['nombre']." ".$request->all()['apellido']);
     }
 
     /**

@@ -14,6 +14,9 @@ class Arl extends Model
 
     protected $primaryKey = 'id_arl';
 
+    /**
+     * Función que permite obtener todas las arl creadas de la tabla se_arl.
+     */
     public function obtenerArl(){
         try {
             $arl = Arl::all();
@@ -23,6 +26,9 @@ class Arl extends Model
         return $arl;
     }
 
+    /**
+     * Función que permite obtener un arl en específico creada en la tabla se_arl.
+     */
     public function obtenerArlIndividual($id){
         try {
             $arl = Arl::find($id);

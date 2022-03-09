@@ -14,6 +14,9 @@ class Eps extends Model
 
     protected $primaryKey = 'id_eps';
 
+    /**
+     * Función que permite obtener todas las eps creadas de la tabla se_eps.
+     */
     public function obtenerEps(){
         try {
             $eps = Eps::all();
@@ -23,6 +26,9 @@ class Eps extends Model
         return $eps;
     }
 
+    /**
+     * Función que permite obtener una eps en específico creada en la tabla se_eps.
+     */
     public function obtenerEpsIndividual($id){
         try {
             $eps = Eps::find($id);

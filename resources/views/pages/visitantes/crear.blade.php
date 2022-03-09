@@ -8,6 +8,14 @@
 @endsection
 
 @section('scripts')
+    <script>
+        $(function() {
+            $('#modal-crear').modal("show");
+            $('#botonContinuar').click(function(){
+                $(location).attr('href','http://app-seguridad.test/visitantes');
+            });
+        }); 
+    </script>
 @endsection
 
 @section('contenido')
@@ -104,6 +112,9 @@
 
             </div>
         </div>
+
+        @include('pages.visitantes.modales')
+
     </section>
 @endsection
 

@@ -15,7 +15,7 @@ class Empresa extends Model
     protected $primaryKey = 'id_empresas';
 
     /**
-     * Función que permite retornar el nombre de las empresas que conforman la organización.
+     * Función que permite obtener todas las empresas creadas en la tabla se_empresas.
      */
     public function obtenerEmpresas(){
         try {
