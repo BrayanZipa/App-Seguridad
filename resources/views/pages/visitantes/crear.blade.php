@@ -109,9 +109,10 @@
                     <!-- /.card -->
 
                 </form> 
-
+                @include('pages.formCrearVehiculo')
             </div>
-        </div>
+            
+        </div>     
 
         @include('pages.visitantes.modales')
 
