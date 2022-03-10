@@ -91,7 +91,7 @@
             });
 
             $('#tabla_visitantes tbody').on('click', 'td.editar_visitante', function () {
-                $("#formularioEditar").css("display", "block");
+                $('#formularioEditar').css("display", "block");
                 var tr = $(this).closest('tr');
                 var row = $('#tabla_visitantes').DataTable().row(tr);
                 var data = row.data();

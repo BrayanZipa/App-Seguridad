@@ -1,5 +1,5 @@
-<div class="row">
-    <div class="col-md-12">
+{{-- <div class="row">
+    <div class="col-md-12"> --}}
 
         <form action="{{ route('crearVisitante') }}" method="POST">
             @csrf
@@ -8,8 +8,11 @@
                 <div class="card-header">
                     <h3 class="card-title">Crear nuevo vehículo</h3>
                     <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
+                        <button id="botonComprimirVehiculo" type="button" class="btn btn-tool" data-card-widget="collapse"><i
                                 class="fas fa-minus"></i>
+                        </button>
+                        <button id="botonCerrar2" type="button" class="btn btn-tool">
+                            <i class="fas fa-times"></i>
                         </button>
                     </div>
                     <!-- /.card-tools -->
@@ -61,27 +64,18 @@
                                 </select>
                             </div>
                         </div>
-
-
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label>Ingrese imagen</label>
-                             <input type="image" width="200px">   	
-
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
-                    <button type='submit' class="btn btn-primary">Crear visitante</button>
-                    <button type='reset' class="btn btn-secondary">Limpiar</button>
+                    <button type='submit' class="btn" style="background-color: rgb(255, 115, 0)">Crear vehículo</button>
+                    <button id="botonLimpiar2" type='reset' class="btn btn-secondary">Limpiar</button>
                 </div>
                 <!-- /.card-footer-->
             </div>
             <!-- /.card -->
 
         </form>
-
-    </div>
-</div>
+            
+    {{-- </div>
+</div> --}}

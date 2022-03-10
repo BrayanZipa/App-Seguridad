@@ -10,11 +10,56 @@
 @section('scripts')
     <script>
         $(function() {
+
+            // Muestra el modal y redirecciona en caso de que oprima el botón.
             $('#modal-crear').modal("show");
-            $('#botonContinuar').click(function(){
-                $(location).attr('href','http://app-seguridad.test/visitantes');
+            $('#botonContinuar').click(function() {
+                $(location).attr('href', 'http://app-seguridad.test/visitantes');
             });
-        }); 
+
+            //Manejo de los checkbox y control de la vista de formularios   
+            $('input[type=checkbox]').on('change', function() {
+                if ($('#checkVehiculo').is(":checked") && ($('#checkActivo').prop("checked") == false)) {
+                    $('#crearVehiculo').css("display", "block");
+                    $('#crearActivo').css("display", "none");
+
+                } else if ($('#checkActivo').is(":checked") && ($('#checkVehiculo').prop("checked") ==
+                        false)) {
+                    $('#crearActivo').css("display", "block");
+                    $('#crearVehiculo').css("display", "none");
+
+                } else if ($('#checkVehiculo').is(":checked") && $('#checkActivo').is(":checked")) {
+                    $('#botonComprimirVisitante').trigger("click");
+                    $('#crearVehiculo').css("display", "block");
+                    $('#crearActivo').css("display", "block");
+
+                } else {
+                    $('#crearVehiculo').css("display", "none");
+                    $('#crearActivo').css("display", "none");
+                    $('#botonComprimirVisitante').trigger("click");
+                }
+            });        
+
+            //Manejo de los botones de eliminar de los formularios
+            $('#botonCerrar2').click(function() {
+                if($('#crearActivo').is(":visible")){
+                    $('#botonComprimirVisitante').trigger("click");
+                }
+                $('#crearVehiculo').css("display", "none");
+                $('#botonLimpiar2').trigger("click");
+                $('#checkVehiculo').prop("checked", false);
+            });
+
+            $('#botonCerrar3').click(function() {              
+                if($('#crearVehiculo').is(":visible")){
+                    $('#botonComprimirVisitante').trigger("click");
+                }
+                $('#crearActivo').css("display", "none");
+                $('#botonLimpiar3').trigger("click");
+                $('#checkActivo').prop("checked", false);
+            });
+
+        });
     </script>
 @endsection
 
@@ -22,7 +67,7 @@
     <div class="content mb-n2">
         @include('pages.visitantes.header')
     </div>
-    
+
     <section class="content-header">
         <div class="row">
             <div class="col-md-12">
@@ -34,8 +79,8 @@
                         <div class="card-header">
                             <h3 class="card-title">Crear nuevo visitante</h3>
                             <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
-                                        class="fas fa-minus"></i>
+                                <button id="botonComprimirVisitante" type="button" class="btn btn-tool"
+                                    data-card-widget="collapse"><i class="fas fa-minus"></i>
                                 </button>
                             </div>
                             <!-- /.card-tools -->
@@ -98,6 +143,26 @@
                                     </div>
                                 </div>
                             </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <!-- checkbox -->
+                                    <div class="form-group clearfix">
+                                        <div class="icheck-primary d-inline">
+                                            <label for="checkVehiculo">
+                                                ¿El visitante ingresa vehículo?
+                                            </label>
+                                            <input type="checkbox" id="checkVehiculo">
+                                        </div><br>
+                                        <div class="icheck-primary d-inline">
+                                            <label for="checkActivo">
+                                                ¿El visitante ingresa portátil?
+                                            </label>
+                                            <input type="checkbox" id="checkActivo">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">
@@ -108,14 +173,20 @@
                     </div>
                     <!-- /.card -->
 
-                </form> 
-                @include('pages.formCrearVehiculo')
+                </form>
+
+                <div id="crearVehiculo" style="display: none">
+                    @include('pages.formCrearVehiculo')
+                </div>
+
+                <div id="crearActivo" style="display: none">
+                    @include('pages.formCrearActivo')
+                </div>
+
             </div>
-            
-        </div>     
+        </div>
 
         @include('pages.visitantes.modales')
 
     </section>
 @endsection
-

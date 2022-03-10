@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="{{ asset('assets/lte/plugins/fontawesome-free/css/all.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('assets/lte/dist/css/adminlte.min.css') }}">
+
     @yield('css')
 </head>
 
@@ -50,6 +51,7 @@
     <script src="{{ asset('assets/lte/dist/js/adminlte.min.js') }}"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('assets/lte/dist/js/demo.js') }}"></script>
+    
     @yield('scripts')
 </body>
 
