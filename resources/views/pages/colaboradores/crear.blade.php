@@ -8,14 +8,13 @@
 @endsection
 
 @section('scripts')
-<script href="{{ asset('plugins/bootstrap-switch/js/bootstrap-switch.min.js') }}></script>
 @endsection
 
 @section('contenido')
     <div class="content mb-n2">
         @include('pages.colaboradores.header')
     </div>
-    
+
     <section class="content-header">
         <div class="row">
             <div class="col-md-12">
@@ -36,7 +35,6 @@
                         <!-- /.card-header -->
 
                         <div class="card-body">
-
                             <div class="row">
                                 <div class="col-sm-4">
                                     <div class="form-group">
@@ -95,10 +93,12 @@
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label>Ingrese la empresa de vinculación</label>
-                                        <select class="form-control select2" style="width: 100%;" name="id_empresa" required>
+                                        <select class="form-control select2" style="width: 100%;" name="id_empresa"
+                                            required>
                                             <option selected="selected" value="" disabled>Seleccione la empresa</option>
                                             @foreach ($empresas as $empresa)
-                                                <option value="{{ $empresa->id_empresas }}">{{ $empresa->nombre }}</option>
+                                                <option value="{{ $empresa->id_empresas }}">{{ $empresa->nombre }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -109,17 +109,14 @@
                         <div class="card-footer">
                             <button type='submit' class="btn btn-primary">Crear colaborador</button>
                             <button type='reset' class="btn btn-secondary">Limpiar</button>
-                            <input type="checkbox" name="my-checkbox" checked data-bootstrap-switch>
-                    <input type="checkbox" name="my-checkbox" checked data-bootstrap-switch data-off-color="danger" data-on-color="success">
                         </div>
                         <!-- /.card-footer-->
                     </div>
                     <!-- /.card -->
 
-                </form> 
+                </form>
 
             </div>
         </div>
     </section>
 @endsection
-

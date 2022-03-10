@@ -40,7 +40,7 @@
                             <div class="form-group">
                                 <label>Ingrese la marca del vehículo</label>
                                 <select class="form-control select2" style="width: 100%;" name="id_arl" required>
-                                    <option selected="selected" value="" disabled>Seleccione la marca</option>
+                                    <option selected="selected" value=""  disabled>Seleccione la marca</option>
                                     @foreach ($arl as $ar)
                                         <option value="{{ $ar->id_arl }}">{{ $ar->arl }}</option>
                                     @endforeach
@@ -52,12 +52,22 @@
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label>Ingrese al propietario del vehículo</label>
-                                <select class="form-control select2" style="width: 100%;" name="id_eps" required disabled>
+                                <select class="form-control select2" style="width: 100%;" name="id_eps" required
+                                    disabled>                                             
                                     <option selected="selected" value="" disabled>Seleccione al propietario</option>
                                     @foreach ($eps as $ep)
                                         <option value="{{ $ep->id_eps }}">{{ $ep->eps }}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                        </div>
+
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Ingrese imagen</label>
+                             <input type="image" width="200px">   	
+
                             </div>
                         </div>
                     </div>

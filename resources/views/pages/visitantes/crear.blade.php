@@ -49,7 +49,7 @@
                                     <div class="form-group">
                                         <label for="inputNombre">Ingrese el nombre</label>
                                         <input type="text" class="form-control" id="inputNombre" name="nombre"
-                                            placeholder="Nombre" required>
+                                            placeholder="Nombre" autofocus required>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
