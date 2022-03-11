@@ -67,6 +67,14 @@ class VisitanteController extends Controller
         return redirect()->action([VisitanteController::class, 'create'])->with('crear_visitante', $nuevoVisitante['nombre']." ".$nuevoVisitante['apellido']);
     }
 
+    public function store2(Request $request)
+    {
+        echo($request);
+        
+        // $nuevoVisitante = $request->all();
+        // dd($nuevoVisitante);
+    }
+
    /*  public function show($id)
     {
         $visitante = $this->visitantes->obtenerVisitante($id);

@@ -1,5 +1,5 @@
-<form id="formularioVehiculo" action="#" method="POST">
-    @csrf
+{{-- <form id="formularioVehiculo" action="#" method="POST">
+    @csrf --}}
 
     <div class="card card-orange">
         <div class="card-header">
@@ -66,11 +66,11 @@
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
-            <button id="botonCrear2" type='button' class="btn" style="background-color: rgb(255, 115, 0)">Crear todo</button>
+            <button id="botonCrear2" type='submit' class="btn" style="background-color: rgb(255, 115, 0)">Crear todo</button>
             <button id="botonLimpiar2" type='reset' class="btn btn-secondary">Limpiar</button>
         </div>
         <!-- /.card-footer-->
     </div>
     <!-- /.card -->
 
-</form>
+{{-- </form> --}}
