@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Arl;
 use App\Models\Eps;
+use App\Models\MarcaVehiculo;
 use App\Models\Persona;
+use App\Models\TipoVehiculo;
+use App\Models\Vehiculo;
 use Illuminate\Http\Request;
 
 class VisitanteController extends Controller
@@ -12,12 +15,21 @@ class VisitanteController extends Controller
     protected $visitantes;
     protected $eps;
     protected $arl;
+    protected $vehiculos;
+    protected $tipoVehiculos;
+    protected $marcaVehiculos;
 
-    public function __construct(Persona $visitantes, Eps $eps, Arl $arl)
+    /**
+     * Contructor que inicializa todos los modelos
+     */
+    public function __construct(Persona $visitantes, Eps $eps, Arl $arl, Vehiculo $vehiculos, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos)
     {
         $this->visitantes = $visitantes;
         $this->eps = $eps;
         $this->arl = $arl;
+        $this->vehiculos = $vehiculos;
+        $this->tipoVehiculos = $tipoVehiculos;
+        $this->marcaVehiculos = $marcaVehiculos;
     }
 
     /**
@@ -26,9 +38,8 @@ class VisitanteController extends Controller
      */
     public function index()
     {
-        // $visitantes = $this->visitantes->obtenerVisitantes();
-        [$eps, $arl] = $this->obtenerModelos();
-        return view('pages.visitantes.mostrar', compact('eps', 'arl'));
+        [$eps, $arl, $tipoVehiculos, $marcaVehiculos] = $this->obtenerModelos();
+        return view('pages.visitantes.mostrar', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos'));
     }
 
     /**
@@ -37,8 +48,8 @@ class VisitanteController extends Controller
      */
     public function create()
     {
-        [$eps, $arl] = $this->obtenerModelos();
-        return view('pages.visitantes.crear', compact('eps', 'arl'));
+        [$eps, $arl, $tipoVehiculos, $marcaVehiculos] = $this->obtenerModelos();
+        return view('pages.visitantes.crear', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos'));
     }
 
     /**
@@ -109,7 +120,10 @@ class VisitanteController extends Controller
     {
         $eps = $this->eps->obtenerEps();
         $arl = $this->arl->obtenerArl();
-        return [$eps, $arl];
+        $tipoVehiculos = $this->tipoVehiculos->obtenerTipoVehiculos();
+        $marcaVehiculos = $this->marcaVehiculos->obtenerMarcaVehiculos();
+
+        return [$eps, $arl, $tipoVehiculos, $marcaVehiculos];
     }
 
     /**

@@ -30,6 +30,8 @@
     <!-- JavaScript propio-->
     <script>
         $(function() {
+
+            //Uso de DataTables para mostrar la información
             $('#tabla_visitantes').DataTable({
                 "destroy": true,
                 "processing": true,
@@ -90,6 +92,7 @@
                 ],        
             });
 
+            //Se elije una fila de la tabla y se toma la información de la persona para mostrarla en un formulario y permitir actualizarla
             $('#tabla_visitantes tbody').on('click', 'td.editar_visitante', function () {
                 $('#formularioEditar').css("display", "block");
                 var tr = $(this).closest('tr');
@@ -105,13 +108,13 @@
                 $('#inputArl').val(data.id_arl);
             });
 
+            //Boton que permite ocultar el formulario de editar
             $('#botonCerrar').click(function(){
                 $("#formulario").css("display", "none");
             });
         });        
-    </script>
 
-    <script>
+        //Muestra el modal indicado al usuario que la actualización se ha realizado corectamente
          $(function() {
             $('#modal-editar').modal("show");
             setTimeout(function(){

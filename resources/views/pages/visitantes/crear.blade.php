@@ -11,7 +11,7 @@
     <script>
         $(function() {
 
-            // Muestra el modal y redirecciona en caso de que oprima el botón.
+            // Muestra el modal y redirecciona en caso de que se oprima el botón
             $('#modal-crear').modal("show");
             $('#botonContinuar').click(function() {
                 $(location).attr('href', 'http://app-seguridad.test/visitantes');
@@ -41,7 +41,6 @@
                     $('#crearVehiculo').css("display", "none");
                     $('#crearActivo').css("display", "none");
                     $('#botonCrear').css("display", "inline");
-                    // $('#botonComprimirVisitante').trigger("click");
                 }
             });
 
@@ -69,6 +68,15 @@
                 $('#checkActivo').prop("checked", false);
             });
 
+            //Toma la información del formulario del visitante y del vehículo y los envia al backend
+            $('#botonCrear2').click(function(event) {
+                /*Evita que se recargue la página*/
+                event.preventDefault();
+                /* Serializamos en una sola variable ambos formularios*/
+                var allData = $("#formularioVisitante, #formularioVehiculo").serialize();
+                console.log(allData);
+            });
+
         });
     </script>
 @endsection
@@ -82,7 +90,7 @@
         <div class="row">
             <div class="col-md-12">
 
-                <form action="{{ route('crearVisitante') }}" method="POST">
+                <form id="formularioVisitante" action="{{ route('crearVisitante') }}" method="POST">
                     @csrf
 
                     <div class="card card-primary">
