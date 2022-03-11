@@ -22,28 +22,35 @@
                 if ($('#checkVehiculo').is(":checked") && ($('#checkActivo').prop("checked") == false)) {
                     $('#crearVehiculo').css("display", "block");
                     $('#crearActivo').css("display", "none");
+                    $('#botonCrear').css("display", "none");
+                    $('#botonCrear2').css("display", "inline");
 
                 } else if ($('#checkActivo').is(":checked") && ($('#checkVehiculo').prop("checked") ==
                         false)) {
                     $('#crearActivo').css("display", "block");
                     $('#crearVehiculo').css("display", "none");
+                    $('#botonCrear').css("display", "none");
 
                 } else if ($('#checkVehiculo').is(":checked") && $('#checkActivo').is(":checked")) {
                     $('#botonComprimirVisitante').trigger("click");
                     $('#crearVehiculo').css("display", "block");
                     $('#crearActivo').css("display", "block");
+                    $('#botonCrear2').css("display", "none");
 
                 } else {
                     $('#crearVehiculo').css("display", "none");
                     $('#crearActivo').css("display", "none");
-                    $('#botonComprimirVisitante').trigger("click");
+                    $('#botonCrear').css("display", "inline");
+                    // $('#botonComprimirVisitante').trigger("click");
                 }
-            });        
+            });
 
             //Manejo de los botones de eliminar de los formularios
             $('#botonCerrar2').click(function() {
                 if($('#crearActivo').is(":visible")){
-                    $('#botonComprimirVisitante').trigger("click");
+                    $('#botonComprimirVisitante').trigger("click");                                  
+                } else {
+                    $('#botonCrear').css("display", "inline");
                 }
                 $('#crearVehiculo').css("display", "none");
                 $('#botonLimpiar2').trigger("click");
@@ -52,7 +59,10 @@
 
             $('#botonCerrar3').click(function() {              
                 if($('#crearVehiculo').is(":visible")){
-                    $('#botonComprimirVisitante').trigger("click");
+                    $('#botonComprimirVisitante').trigger("click"); 
+                    $('#botonCrear2').css("display", "inline");                 
+                } else {
+                    $('#botonCrear').css("display", "inline");
                 }
                 $('#crearActivo').css("display", "none");
                 $('#botonLimpiar3').trigger("click");
@@ -166,7 +176,7 @@
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">
-                            <button type='submit' class="btn btn-primary">Crear visitante</button>
+                            <button id="botonCrear" type='submit' class="btn btn-primary">Crear visitante</button>
                             <button type='reset' class="btn btn-secondary">Limpiar</button>
                         </div>
                         <!-- /.card-footer-->

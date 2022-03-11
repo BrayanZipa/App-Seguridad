@@ -65,7 +65,7 @@
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
-            <button type='submit' class="btn btn-dark" >Crear activo</button>
+            <button id="botonCrear3" type='submit' class="btn btn-dark" >Crear activo</button>
             <button id="botonLimpiar3" type='reset' class="btn btn-secondary">Limpiar</button>
         </div>
         <!-- /.card-footer-->
