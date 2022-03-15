@@ -119,7 +119,7 @@
             $('#modal-editar').modal("show");
             setTimeout(function(){
                 $('#modal-editar').modal('hide');
-            }, 3000);
+            }, 2000);
          });      
     </script>
 @endsection

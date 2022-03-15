@@ -5,141 +5,134 @@
 @endsection
 
 @section('css')
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
 @endsection
 
 @section('scripts')
     <script>
         $(function() {
 
-            $.ajaxSetup({
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            // $.ajaxSetup({
+            //     headers: {
+            //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            //     }
+            // });
+
+            //Manejo de los checkbox al ser seleccionados y control de la vista de formularios   
+            $('input[type=checkbox]').on('change', function() {
+                if ($('#checkVehiculo').is(":checked") && $('#checkActivo').is(":checked")) {
+                    $('#botonComprimirVisitante').trigger("click");
+                    $('#crearVehiculo').css("display", "block");
+                    $('#crearActivo').css("display", "block");
+                    $('#botonCrear2').css("display", "none");
+                    $('#checkVehiculo').prop('disabled', true);
+                    $('#checkActivo').prop('disabled', true);
+                    requiredTrue('.vehiculo');
+                    requiredTrue('.activo');
+                    console.log('Primera opcion');
+
+                } else if ($('#checkVehiculo').is(":checked") && ($('#checkActivo').prop("checked") == false)) {
+                    $('#crearVehiculo').css("display", "block");
+                    $('#crearActivo').css("display", "none");
+                    $('#botonCrear').css("display", "none");
+                    $('#botonCrear2').css("display", "inline");
+                    $('#checkVehiculo').prop('disabled', true);
+                    requiredTrue('.vehiculo');
+                    console.log('Segunda opcion');
+
+                } else if ($('#checkActivo').is(":checked") && ($('#checkVehiculo').prop("checked") == false)) {
+                    $('#crearActivo').css("display", "block");
+                    $('#crearVehiculo').css("display", "none");
+                    $('#botonCrear').css("display", "none");
+                    $('#checkActivo').prop('disabled', true);
+                    requiredTrue('.activo');
+                    console.log('tercera opcion');
                 }
+
+                            //  else {
+                            //     $('#crearVehiculo').css("display", "none");
+                            //     $('#crearActivo').css("display", "none");
+                            //     $('#botonCrear').css("display", "inline");
+                            //     requiredFalse('.vehiculo');
+                            //     requiredFalse('.activo');
+                            // }
             });
+
+            //Manejo del botón eliminar del formulario de Vehiculo
+            $('#botonCerrar2').click(function() {
+                if ($('#crearActivo').is(":visible")) {
+                    $('#botonComprimirVisitante').trigger("click");
+                } else {
+                    $('#botonCrear').css("display", "inline");
+                }
+                $('#crearVehiculo').css("display", "none");
+                $('#botonLimpiar2').trigger("click");
+                $('#checkVehiculo').prop('disabled', false);
+                $('#checkVehiculo').prop("checked", false);
+                requiredFalse('.vehiculo');
+            });
+
+            //Manejo del botón eliminar del formulario de Activo
+            $('#botonCerrar3').click(function() {
+                if ($('#crearVehiculo').is(":visible")) {
+                    $('#botonComprimirVisitante').trigger("click");
+                    $('#botonCrear2').css("display", "inline");
+                } else {
+                    $('#botonCrear').css("display", "inline");
+                }
+                $('#crearActivo').css("display", "none");
+                $('#botonLimpiar3').trigger("click");
+                $('#checkActivo').prop('disabled', false);
+                $('#checkActivo').prop("checked", false);
+                requiredFalse('.activo');
+            });
+
+            //Botón que limpia la información del formulario de Visitante
+            $('#botonLimpiar').click(function() {
+                $('.visitante').each(function(index) {
+                    $(this).val('');
+                });
+            });
+
+            //Botón que limpia la información del formulario de Vehículo
+            $('#botonLimpiar2').click(function() {
+                $('.vehiculo').each(function(index) {
+                    $(this).val('');
+                });
+            });
+
+            //Botón que limpia la información del formulario de Activo
+            $('#botonLimpiar3').click(function() {
+                $('.activo').each(function(index) {
+                    $(this).val('');
+                });
+            });
+
+            //Al iniciar la página inhabilita la propiedad required de los formularios de Vehiculo y Activo mientras no son seleccionados por el usuario
+            if ($('#crearVehiculo').is(":hidden") && $('#crearActivo').is(":hidden")) {
+                requiredFalse('.vehiculo');
+                requiredFalse('.activo')
+            }
+
+            //Función que permite volver verdadera la propiedad required de los formularios  
+            function requiredTrue(clase) {
+                $(clase).each(function(index) {
+                    $(this).prop("required", true);
+                });
+            }
+
+            //Función que permite volver falsa la propiedad required de los formularios
+            function requiredFalse(clase) {
+                $(clase).each(function(index) {
+                    $(this).prop("required", false);
+                });
+            }
 
             // Muestra el modal y redirecciona en caso de que se oprima el botón
             $('#modal-crear').modal("show");
             $('#botonContinuar').click(function() {
                 $(location).attr('href', 'http://app-seguridad.test/visitantes');
             });
-
-            //Manejo de los checkbox y control de la vista de formularios   
-            $('input[type=checkbox]').on('change', function() {
-                if ($('#checkVehiculo').is(":checked") && ($('#checkActivo').prop("checked") == false)) {
-                    $('#crearVehiculo').css("display", "block");
-                    $('#crearActivo').css("display", "none");
-                    $('#botonCrear').css("display", "none");
-                    $('#botonCrear2').css("display", "inline");
-
-                } else if ($('#checkActivo').is(":checked") && ($('#checkVehiculo').prop("checked") ==
-                        false)) {
-                    $('#crearActivo').css("display", "block");
-                    $('#crearVehiculo').css("display", "none");
-                    $('#botonCrear').css("display", "none");
-
-                } else if ($('#checkVehiculo').is(":checked") && $('#checkActivo').is(":checked")) {
-                    $('#botonComprimirVisitante').trigger("click");
-                    $('#crearVehiculo').css("display", "block");
-                    $('#crearActivo').css("display", "block");
-                    $('#botonCrear2').css("display", "none");
-
-                } else {
-                    $('#crearVehiculo').css("display", "none");
-                    $('#crearActivo').css("display", "none");
-                    $('#botonCrear').css("display", "inline");
-                }
-            });
-
-            //Manejo de los botones de eliminar de los formularios
-            $('#botonCerrar2').click(function() {
-                if($('#crearActivo').is(":visible")){
-                    $('#botonComprimirVisitante').trigger("click");                                  
-                } else {
-                    $('#botonCrear').css("display", "inline");
-                }
-                $('#crearVehiculo').css("display", "none");
-                $('#botonLimpiar2').trigger("click");
-                $('#checkVehiculo').prop("checked", false);
-            });
-
-            $('#botonCerrar3').click(function() {              
-                if($('#crearVehiculo').is(":visible")){
-                    $('#botonComprimirVisitante').trigger("click"); 
-                    $('#botonCrear2').css("display", "inline");                 
-                } else {
-                    $('#botonCrear').css("display", "inline");
-                }
-                $('#crearActivo').css("display", "none");
-                $('#botonLimpiar3').trigger("click");
-                $('#checkActivo').prop("checked", false);
-            });
-
-
-
-            //Toma la información del formulario del visitante y del vehículo y los envia al backend
-            // $('#botonCrear2').click(function() {
-            //     var formObject = {};
-            //     var formArray = $("#formularioVisitante").serializeArray();
-            //     $.each(formArray,function(i,item){
-            //         formObject[item.name] = item.value;
-            //     });
-            //     var allData = JSON.stringify(formObject);
-
-            //     $.ajax({       
-            //         url:   "{{ route('crearVisitanteVehiculo') }}",
-            //         data: formObject,         
-            //         type:  'post',
-            //         success:  function (response) { 
-            //             //    alert("Funciona");
-            //         },
-            //         error:function(x,xs,xt){
-            //             // window.open(JSON.stringify(x));
-            //             alert('error: ' + JSON.stringify(x) +"\n error string: "+ xs + "\n error throwed: " + xt);
-            //         }
-            //     });
-            // });
-
-            $('#botonCrear2').click(function() {
-                /*Evita que se recargue la página*/
-                // event.preventDefault();
-                /* Serializamos en una sola variable ambos formularios*/
-                // var formObject = {};
-                // var formArray = $("#formularioVisitante").serializeArray();
-                // $.each(formArray,function(i,item){
-                //     formObject[item.name] = item.value;
-                // });
-
-                // var allData = $('#formularioVisitante').serializeArray();
-                // var allData = JSON.stringify(formObject);
-                //serializeArray
-                // console.log(formObject);
-                // console.log(allData);
-                //#formularioVehiculo"
-                // $.ajaxSetup({
-                //     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
-                // });
-
-
-            //     $.ajax({       
-            //         url:   "{{ route('crearVisitanteVehiculo') }}",
-            //         data: {'name':"luis"},
-            //             // '_token': '{{ csrf_token() }}',
-                        
-            //         type:  'post',
-            //         // dataType: 'json',
-            //         // beforeSend: function () {
-            //         //         // $("#resultado").html("Procesando, espere por favor...");
-            //         // },
-            //         success:  function (response) { //una vez que el archivo recibe el request lo procesa y lo devuelve
-            //             //    alert("Funciona");
-            //         },
-            //         error:function(x,xs,xt){
-            //             // window.open(JSON.stringify(x));
-            //             alert('error: ' + JSON.stringify(x) +"\n error string: "+ xs + "\n error throwed: " + xt);
-            //         }
-            //     });
-            // });
-
 
         });
     </script>

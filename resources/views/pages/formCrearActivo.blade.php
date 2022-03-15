@@ -1,5 +1,5 @@
-<form action="{{ route('crearVisitante') }}" method="POST">
-    @csrf
+{{-- <form action="{{ route('crearVisitante') }}" method="POST">
+    @csrf --}}
 
     <div class="card card-dark">
         <div class="card-header">
@@ -20,27 +20,21 @@
             <div class="row">
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label for="inputNombre">Ingrese el número identificador del vehículo</label>
-                        <input type="text" class="form-control" id="inputNombre" name="nombre"
-                            placeholder="Nombre" required>
+                        <label for="inputActivo">Ingrese el tipo de activo</label>
+                        <input type="text" class="activo form-control" id="inputActivo" name="activo" value="Computador" required>
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label>Ingrese el tipo de vehículo</label>
-                        <select class="form-control select2" style="width: 100%;" name="id_eps" required>
-                            <option selected="selected" value="" disabled>Seleccione el tipo</option>
-                            @foreach ($eps as $ep)
-                                <option value="{{ $ep->id_eps }}">{{ $ep->eps }}</option>
-                            @endforeach
-                        </select>
+                        <label for="inputCodigo">Ingrese el código único del activo</label>
+                        <input type="text" class="activo form-control" id="inputCodigo" name="codigo" required>
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label>Ingrese la marca del vehículo</label>
-                        <select class="form-control select2" style="width: 100%;" name="id_arl" required>
-                            <option selected="selected" value=""  disabled>Seleccione la marca</option>
+                        <label>Ingrese al propietario del activo</label>
+                        <select class="activo form-control select2" style="width: 100%;" name="id_persona" required>
+                            <option selected="selected" value=""  disabled>Seleccione al propietario</option>
                             @foreach ($arl as $ar)
                                 <option value="{{ $ar->id_arl }}">{{ $ar->arl }}</option>
                             @endforeach
@@ -52,7 +46,7 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label>Ingrese al propietario del vehículo</label>
-                        <select class="form-control select2" style="width: 100%;" name="id_eps" required
+                        <select class="activo form-control select2" style="width: 100%;" name="id_eps" required
                             disabled>                                             
                             <option selected="selected" value="" disabled>Seleccione al propietario</option>
                             @foreach ($eps as $ep)
@@ -66,7 +60,7 @@
         <!-- /.card-body -->
         <div class="card-footer">
             <button id="botonCrear3" type='submit' class="btn btn-dark" >Crear todo</button>
-            <button id="botonLimpiar3" type='reset' class="btn btn-secondary">Limpiar</button>
+            <button id="botonLimpiar3" type='button' class="btn btn-secondary">Limpiar</button>
         </div>
         <!-- /.card-footer-->
     </div>

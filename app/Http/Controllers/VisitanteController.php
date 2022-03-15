@@ -60,6 +60,7 @@ class VisitanteController extends Controller
     public function store(Request $request)
     {
         $nuevoVisitante = $request->all();
+        dd($nuevoVisitante);
         $nuevoVisitante['id_tipo_persona'] = 1;
         $nuevoVisitante['id_usuario'] = auth()->user()->id_usuarios;
         // $nuevoVisitante['foto'] = '';

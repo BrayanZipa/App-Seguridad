@@ -21,14 +21,14 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="inputNombre">Ingrese el número identificador del vehículo</label>
-                        <input type="text" class="form-control" id="inputNumeroIdentificador" name="identificador" placeholder="Número indetificador"
+                        <input type="text" class="vehiculo form-control" id="inputNumeroIdentificador" name="identificador" placeholder="Número indetificador"
                             required>
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label>Ingrese el tipo de vehículo</label>
-                        <select class="form-control select2" style="width: 100%;" name="id_tipo_vehiculo" required>
+                        <select class="vehiculo form-control select2" style="width: 100%;" name="id_tipo_vehiculo" required>
                             <option selected="selected" value="" disabled>Seleccione el tipo</option>
                             @foreach ($tipoVehiculos as $tipoVehiculo)
                                 <option value="{{ $tipoVehiculo->id_tipo_vehiculos }}">{{ $tipoVehiculo->tipo }}
@@ -40,7 +40,7 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label>Ingrese la marca del vehículo</label>
-                        <select class="form-control select2" style="width: 100%;" name="id_marca_vehiculo" required>
+                        <select class="vehiculo form-control select2" style="width: 100%;" name="id_marca_vehiculo" required>
                             <option selected="selected" value="" disabled>Seleccione la marca</option>
                             @foreach ($marcaVehiculos as $marcaVehiculo)
                                 <option value="{{ $marcaVehiculo->id_marca_vehiculos }}">{{ $marcaVehiculo->marca }}
@@ -67,7 +67,7 @@
         <!-- /.card-body -->
         <div class="card-footer">
             <button id="botonCrear2" type='submit' class="btn" style="background-color: rgb(255, 115, 0)">Crear todo</button>
-            <button id="botonLimpiar2" type='reset' class="btn btn-secondary">Limpiar</button>
+            <button id="botonLimpiar2" type='button' class="btn btn-secondary">Limpiar</button>
         </div>
         <!-- /.card-footer-->
     </div>
