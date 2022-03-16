@@ -25,28 +25,28 @@
                     $('#crearVehiculo').css("display", "block");
                     $('#crearActivo').css("display", "block");
                     $('#botonCrear2').css("display", "none");
-                    $('#checkVehiculo').prop('disabled', true);
-                    $('#checkActivo').prop('disabled', true);
+                    $('#checkVehiculo').prop("disabled", true);
+                    $('#checkActivo').prop("disabled", true);
+                    $('#casoIngreso').val("casoVehiculoActivo");
                     requiredTrue('.vehiculo');
-                    requiredTrue('.activo');
-                    console.log('Primera opcion');
+                    requiredTrue('.activo');             
 
                 } else if ($('#checkVehiculo').is(":checked") && ($('#checkActivo').prop("checked") == false)) {
                     $('#crearVehiculo').css("display", "block");
-                    $('#crearActivo').css("display", "none");
+                    // $('#crearActivo').css("display", "none");
                     $('#botonCrear').css("display", "none");
                     $('#botonCrear2').css("display", "inline");
-                    $('#checkVehiculo').prop('disabled', true);
-                    requiredTrue('.vehiculo');
-                    console.log('Segunda opcion');
+                    $('#checkVehiculo').prop("disabled", true);
+                    $('#casoIngreso').val("casoVehiculo");
+                    requiredTrue(".vehiculo");
 
                 } else if ($('#checkActivo').is(":checked") && ($('#checkVehiculo').prop("checked") == false)) {
                     $('#crearActivo').css("display", "block");
-                    $('#crearVehiculo').css("display", "none");
+                    // $('#crearVehiculo').css("display", "none");
                     $('#botonCrear').css("display", "none");
-                    $('#checkActivo').prop('disabled', true);
+                    $('#checkActivo').prop("disabled", true);
+                    $('#casoIngreso').val("casoActivo");
                     requiredTrue('.activo');
-                    console.log('tercera opcion');
                 }
 
                             //  else {
@@ -62,13 +62,15 @@
             $('#botonCerrar2').click(function() {
                 if ($('#crearActivo').is(":visible")) {
                     $('#botonComprimirVisitante').trigger("click");
+                    $('#casoIngreso').val("casoActivo");
                 } else {
                     $('#botonCrear').css("display", "inline");
+                    $('#casoIngreso').val("");
                 }
                 $('#crearVehiculo').css("display", "none");
                 $('#botonLimpiar2').trigger("click");
                 $('#checkVehiculo').prop('disabled', false);
-                $('#checkVehiculo').prop("checked", false);
+                $('#checkVehiculo').prop("checked", false);               
                 requiredFalse('.vehiculo');
             });
 
@@ -77,8 +79,10 @@
                 if ($('#crearVehiculo').is(":visible")) {
                     $('#botonComprimirVisitante').trigger("click");
                     $('#botonCrear2').css("display", "inline");
+                    $('#casoIngreso').val("casoVehiculo");
                 } else {
                     $('#botonCrear').css("display", "inline");
+                    $('#casoIngreso').val("");
                 }
                 $('#crearActivo').css("display", "none");
                 $('#botonLimpiar3').trigger("click");
@@ -128,11 +132,21 @@
                 });
             }
 
-            // Muestra el modal y redirecciona en caso de que se oprima el botón
-            $('#modal-crear').modal("show");
-            $('#botonContinuar').click(function() {
+            // Muestra los modales dependiendo de los formularios que se hayan ingresado y redirecciona en caso de que se oprima el botón continuar
+            $('#modal-crear-visitante').modal("show");
+            $('#modal-crear-visitanteVehiculo').modal("show");
+            $('#modal-crear-visitanteActivo').modal("show");
+            $('#modal-crear-visitanteVehiculoActivo').modal("show");
+            
+            $('.botonContinuar').click(function() {
                 $(location).attr('href', 'http://app-seguridad.test/visitantes');
             });
+
+            // $('.botonSi').click(function() {
+            //     $(location).attr('href', 'http://app-seguridad.test/visitantes/crear');
+            // });
+
+   
 
         });
     </script>

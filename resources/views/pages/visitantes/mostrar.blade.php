@@ -110,7 +110,7 @@
 
             //Boton que permite ocultar el formulario de editar
             $('#botonCerrar').click(function(){
-                $("#formulario").css("display", "none");
+                $("#formularioEditar").css("display", "none");
             });
         });        
 

@@ -30,31 +30,17 @@
                         <input type="text" class="activo form-control" id="inputCodigo" name="codigo" required>
                     </div>
                 </div>
-                <div class="col-sm-4">
+                {{-- <div class="col-sm-4" style="display:none">
                     <div class="form-group">
                         <label>Ingrese al propietario del activo</label>
-                        <select class="activo form-control select2" style="width: 100%;" name="id_persona" required>
+                        <select class="activo form-control select2" style="width: 100%;" name="id_persona" disabled required>
                             <option selected="selected" value=""  disabled>Seleccione al propietario</option>
-                            @foreach ($arl as $ar)
-                                <option value="{{ $ar->id_arl }}">{{ $ar->arl }}</option>
+                            @foreach ($personas as $persona)
+                                <option value="{{ $persona->id_personas }}">{{ $persona->nombre }} {{ $persona->apellido }}</option>
                             @endforeach
                         </select>
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label>Ingrese al propietario del vehículo</label>
-                        <select class="activo form-control select2" style="width: 100%;" name="id_eps" required
-                            disabled>                                             
-                            <option selected="selected" value="" disabled>Seleccione al propietario</option>
-                            @foreach ($eps as $ep)
-                                <option value="{{ $ep->id_eps }}">{{ $ep->eps }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
+                </div> --}}
             </div>
         </div>
         <!-- /.card-body -->

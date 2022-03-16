@@ -50,19 +50,22 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            {{-- <div class="row" style="display:none">
                 <div class="col-sm-4">
                     <div class="form-group">
+                        <div class="form-group">
+                        <input class="form-control select2" type="search">
+                        </div>
                         <label>Ingrese al propietario del vehículo</label>
-                        <select class="form-control select2" style="width: 100%;" name="id_usuario" required disabled>
+                        <select class="form-control select2" style="width: 100%;" name="id_persona" disabled required >
                             <option selected="selected" value="" disabled>Seleccione al propietario</option>
-                            @foreach ($eps as $ep)
-                                <option value="{{ $ep->id_eps }}">{{ $ep->eps }}</option>
+                            @foreach ($personas as $persona)
+                                <option value="{{ $persona->id_personas }}">{{ $persona->nombre }} {{ $persona->apellido }}</option>
                             @endforeach
                         </select>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
         <!-- /.card-body -->
         <div class="card-footer">

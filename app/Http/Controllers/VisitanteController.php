@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Activo;
 use App\Models\Arl;
 use App\Models\Eps;
 use App\Models\MarcaVehiculo;
 use App\Models\Persona;
+use App\Models\PersonaVehiculo;
 use App\Models\TipoVehiculo;
 use App\Models\Vehiculo;
 use Illuminate\Http\Request;
@@ -15,19 +17,17 @@ class VisitanteController extends Controller
     protected $visitantes;
     protected $eps;
     protected $arl;
-    protected $vehiculos;
     protected $tipoVehiculos;
     protected $marcaVehiculos;
 
     /**
      * Contructor que inicializa todos los modelos
      */
-    public function __construct(Persona $visitantes, Eps $eps, Arl $arl, Vehiculo $vehiculos, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos)
+    public function __construct(Persona $visitantes, Eps $eps, Arl $arl, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos)
     {
         $this->visitantes = $visitantes;
         $this->eps = $eps;
         $this->arl = $arl;
-        $this->vehiculos = $vehiculos;
         $this->tipoVehiculos = $tipoVehiculos;
         $this->marcaVehiculos = $marcaVehiculos;
     }
@@ -48,6 +48,7 @@ class VisitanteController extends Controller
      */
     public function create()
     {
+        // $personas = $this->visitantes->obtenerPersonas(2); , 'personas'
         [$eps, $arl, $tipoVehiculos, $marcaVehiculos] = $this->obtenerModelos();
         return view('pages.visitantes.crear', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos'));
     }
@@ -60,20 +61,78 @@ class VisitanteController extends Controller
     public function store(Request $request)
     {
         $nuevoVisitante = $request->all();
-        dd($nuevoVisitante);
         $nuevoVisitante['id_tipo_persona'] = 1;
         $nuevoVisitante['id_usuario'] = auth()->user()->id_usuarios;
         // $nuevoVisitante['foto'] = '';
-        Persona::create($nuevoVisitante)->save();
-        return redirect()->action([VisitanteController::class, 'create'])->with('crear_visitante', $nuevoVisitante['nombre']." ".$nuevoVisitante['apellido']);
+    //    dd($nuevoVisitante);
+
+        //Crear registro de nuevo visitante dato a dato con la información del request
+        $visitante = Persona::create([
+            'id_usuario' => $nuevoVisitante['id_usuario'],
+            'id_tipo_persona' => $nuevoVisitante['id_tipo_persona'],
+            'nombre' => $nuevoVisitante['nombre'],
+            'apellido' => $nuevoVisitante['apellido'],
+            'identificacion' => $nuevoVisitante['identificacion'],
+            'id_eps' => $nuevoVisitante['id_eps'],
+            'id_arl' => $nuevoVisitante['id_arl'],
+            'tel_contacto' => $nuevoVisitante['tel_contacto'],
+        ]);
+        $visitante->save();
+
+        if($nuevoVisitante['casoIngreso'] == 'casoVehiculo'){
+            $mensajeVehiculo = $this->store2($nuevoVisitante, $visitante->id_personas);
+            $modal = [$visitante->nombre.' '.$visitante->apellido, $mensajeVehiculo];
+            return redirect()->action([VisitanteController::class, 'create'])->with('crear_visitante_vehiculo', $modal);
+
+        } else if($nuevoVisitante['casoIngreso'] == 'casoActivo'){
+            $mensajeActivo = $this->store3($nuevoVisitante, $visitante->id_personas);
+            $modal = [$visitante->nombre.' '.$visitante->apellido, $mensajeActivo];
+            return redirect()->action([VisitanteController::class, 'create'])->with('crear_visitante_activo', $modal);
+            
+        } else if($nuevoVisitante['casoIngreso'] == 'casoVehiculoActivo'){
+            $mensajeVehiculo = $this->store2($nuevoVisitante, $visitante->id_personas);
+            $mensajeActivo = $this->store3($nuevoVisitante, $visitante->id_personas);
+            $modal = [$visitante->nombre.' '.$visitante->apellido, $mensajeActivo, $mensajeVehiculo, $mensajeActivo];
+            return redirect()->action([VisitanteController::class, 'create'])->with('crear_visitante_vehiculoActivo', $modal);
+            
+        } else {
+            return redirect()->action([VisitanteController::class, 'create'])->with('crear_visitante', $visitante->nombre.' '.$visitante->apellido);
+        }   
     }
 
-    public function store2(Request $request)
+    //Función que permite registrar un nuevo vehículo creado desde el modulo de visitantes
+    public function store2($datos, $id_persona)
     {
-        echo($request);
-        
-        // $nuevoVisitante = $request->all();
-        // dd($nuevoVisitante);
+        $vehiculo = Vehiculo::create([
+            'identificador' => $datos['identificador'],
+            'id_tipo_vehiculo' => $datos['id_tipo_vehiculo'],
+            'id_marca_vehiculo' => $datos['id_marca_vehiculo'],
+            //foto
+            'id_usuario' => $datos['id_usuario'],
+        ]);
+        $vehiculo->save();
+
+        PersonaVehiculo::create([
+            'id_vehiculo' => $vehiculo->id_vehiculos,
+            'id_persona' => $id_persona,
+        ])->save();
+
+        return $vehiculo->identificador;
+    }
+
+    //Función que permite registrar un nuevo activo creado desde el modulo de visitantes
+    public function store3($datos, $id_persona)
+    {
+        // dd($datos, $id_persona);
+
+        $activo = Activo::create([
+            'activo' => $datos['activo'],
+            'codigo' => $datos['codigo'],
+            'id_persona' => $id_persona,
+        ]);
+        $activo->save();
+        // dd($activo);
+        return $activo->codigo;
     }
 
    /*  public function show($id)
@@ -123,7 +182,7 @@ class VisitanteController extends Controller
     } */
 
     /**
-     * Función que permite traer la información de los modelos de la Eps y Arl
+     * Función que permite traer la información de los modelos de la Eps, Arl, TipoVehiculo y MarcaVehiculo
      */
     public function obtenerModelos()
     {

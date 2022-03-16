@@ -1,6 +1,8 @@
 <form id="formularioVisitante" action="{{ route('crearVisitante') }}" method="POST">
     @csrf
 
+    <input id="casoIngreso" type="hidden" name="casoIngreso">
+
     <div class="card card-primary">
         <div class="card-header">
             <h3 class="card-title">Crear nuevo visitante</h3>
