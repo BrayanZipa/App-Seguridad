@@ -21,22 +21,22 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="inputNombre">Ingrese el nombre</label>
-                        <input type="text" class="visitante form-control" id="inputNombre" name="nombre"
+                        <input type="text" class="visitante form-control" id="inputNombre" name="nombre" value="{{ old('nombre') }}"
                             placeholder="Nombre" autofocus required>
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="inputApellido">Ingrese el apellido</label>
-                        <input type="text" class="visitante form-control" id="inputApellido" name="apellido"
+                        <input type="text" class="visitante form-control" id="inputApellido" name="apellido" value="{{ old('apellido') }}"
                             placeholder="Apellido" required>
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="inputIdentificacion">Ingrese la identificación</label>
-                        <input type="text" class="visitante form-control" id="inputIdentificacion"
-                            name="identificacion" placeholder="Identificación" required>
+                        <input type="text" class="visitante form-control" id="inputIdentificacion" 
+                            name="identificacion" value="{{ old('identificacion') }}" placeholder="Identificación" required>
                     </div>
                 </div>
             </div>
@@ -44,15 +44,20 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="inputTelefono">Ingrese un teléfono en caso de emergencia</label>
-                        <input type="tel" class="visitante form-control" id="inputTelefono" name="tel_contacto"
+                        <input type="tel" class="visitante form-control" id="inputTelefono" name="tel_contacto" value="{{ old('tel_contacto') }}"
                             placeholder="Teléfono" required>
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label>Ingrese la EPS</label>
-                        <select class="visitante form-control select2" style="width: 100%;" name="id_eps" required>
+                        <select id="prueba" class="visitante form-control select2" style="width: 100%;" name="id_eps" required>
                             <option selected="selected" value="" disabled>Seleccione EPS</option>
+
+                            {{-- @if (count($errors) > 0)
+                                <option selected="selected" value="{{ old('id_eps') }}" disabled></option>
+                            @endif --}}
+
                             @foreach ($eps as $ep)
                                 <option value="{{ $ep->id_eps }}">{{ $ep->eps }}</option>
                             @endforeach

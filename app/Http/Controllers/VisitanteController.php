@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RequestPersona;
 use App\Models\Activo;
 use App\Models\Arl;
 use App\Models\Eps;
@@ -58,9 +59,18 @@ class VisitanteController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RequestPersona $request)
     {
+
         $nuevoVisitante = $request->all();
+        dd($nuevoVisitante);
+        // if($nuevoVisitante['casoIngreso'] == 'casoVehiculo'){
+        //     $this->validarVehiculo($request);
+
+            
+        // }
+
+        
         $nuevoVisitante['id_tipo_persona'] = 1;
         $nuevoVisitante['id_usuario'] = auth()->user()->id_usuarios;
         // $nuevoVisitante['foto'] = '';
@@ -79,6 +89,7 @@ class VisitanteController extends Controller
         ]);
         $visitante->save();
 
+        //Ingreso de datos dependiendo de que formularios fueron ingresados
         if($nuevoVisitante['casoIngreso'] == 'casoVehiculo'){
             $mensajeVehiculo = $this->store2($nuevoVisitante, $visitante->id_personas);
             $modal = [$visitante->nombre.' '.$visitante->apellido, $mensajeVehiculo];
@@ -201,4 +212,8 @@ class VisitanteController extends Controller
     {
         return response()->json( $this->visitantes->informacionPersonas(1));      
     } 
+
+    // public function validarVehiculo(Request $request){
+                
+    // }
 }

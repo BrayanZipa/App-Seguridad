@@ -146,6 +146,12 @@
             //     $(location).attr('href', 'http://app-seguridad.test/visitantes/crear');
             // });
 
+            
+            $('#modal-errores-personas').modal("show");
+
+            $('#error').click(function() {
+               $('#prueba').val({{ old('id_eps') }});
+            });
    
 
         });
@@ -178,6 +184,7 @@
         </div>
 
         @include('pages.visitantes.modales')
+        @include('pages.modalError')
 
     </section>
 @endsection
