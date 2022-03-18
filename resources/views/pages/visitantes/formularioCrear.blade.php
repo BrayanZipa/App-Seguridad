@@ -53,13 +53,9 @@
                         <label>Ingrese la EPS</label>
                         <select id="prueba" class="visitante form-control select2" style="width: 100%;" name="id_eps" required>
                             <option selected="selected" value="" disabled>Seleccione EPS</option>
-
-                            {{-- @if (count($errors) > 0)
-                                <option selected="selected" value="{{ old('id_eps') }}" disabled></option>
-                            @endif --}}
-
+                            
                             @foreach ($eps as $ep)
-                                <option value="{{ $ep->id_eps }}">{{ $ep->eps }}</option>
+                                <option value="{{ $ep->id_eps }}" {{ $ep->id_eps == old('id_eps') ? "selected": "" }}>{{ $ep->eps }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -70,7 +66,7 @@
                         <select class="visitante form-control select2" style="width: 100%;" name="id_arl" required>
                             <option selected="selected" value="" disabled>Seleccione ARL</option>
                             @foreach ($arl as $ar)
-                                <option value="{{ $ar->id_arl }}">{{ $ar->arl }}</option>
+                                <option value="{{ $ar->id_arl }}" {{ $ar->id_arl == old('id_arl') ? "selected": "" }}>{{ $ar->arl }}</option>
                             @endforeach
                         </select>
                     </div>

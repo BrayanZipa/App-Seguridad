@@ -145,13 +145,9 @@
             // $('.botonSi').click(function() {
             //     $(location).attr('href', 'http://app-seguridad.test/visitantes/crear');
             // });
-
-            
+          
+            // Muestra un modal con los diferentes errores cometidos por el usuario a la hora de ingresar un visitante
             $('#modal-errores-personas').modal("show");
-
-            $('#error').click(function() {
-               $('#prueba').val({{ old('id_eps') }});
-            });
    
 
         });
@@ -172,7 +168,7 @@
                     @include('pages.visitantes.formularioCrear')
                 </div>
 
-                <div id="crearVehiculo" style="display: none">
+                <div id="crearVehiculo" style="display:none">
                     @include('pages.formCrearVehiculo')
                 </div>
 

@@ -14,7 +14,7 @@
                     @endforeach
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button id="error" type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
             <!-- /.modal-content -->

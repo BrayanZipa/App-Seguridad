@@ -27,7 +27,7 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="inputCodigo">Ingrese el código único del activo</label>
-                        <input type="text" class="activo form-control" id="inputCodigo" name="codigo" required>
+                        <input type="text" class="activo form-control" id="inputCodigo" name="codigo" value="{{ old('codigo') }}" required>
                     </div>
                 </div>
                 {{-- <div class="col-sm-4" style="display:none">

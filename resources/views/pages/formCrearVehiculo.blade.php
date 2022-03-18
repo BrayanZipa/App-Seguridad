@@ -21,7 +21,7 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="inputNombre">Ingrese el número identificador del vehículo</label>
-                        <input type="text" class="vehiculo form-control" id="inputNumeroIdentificador" name="identificador" placeholder="Número indetificador"
+                        <input type="text" class="vehiculo form-control" id="inputNumeroIdentificador" name="identificador" value="{{ old('identificador') }}" placeholder="Número indetificador"
                             required>
                     </div>
                 </div>
@@ -31,7 +31,7 @@
                         <select class="vehiculo form-control select2" style="width: 100%;" name="id_tipo_vehiculo" required>
                             <option selected="selected" value="" disabled>Seleccione el tipo</option>
                             @foreach ($tipoVehiculos as $tipoVehiculo)
-                                <option value="{{ $tipoVehiculo->id_tipo_vehiculos }}">{{ $tipoVehiculo->tipo }}
+                                <option value="{{ $tipoVehiculo->id_tipo_vehiculos }}" {{ $tipoVehiculo->id_tipo_vehiculos == old('id_tipo_vehiculo') ? "selected": "" }}>{{ $tipoVehiculo->tipo }}
                                 </option>
                             @endforeach
                         </select>
@@ -40,10 +40,10 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label>Ingrese la marca del vehículo</label>
-                        <select class="vehiculo form-control select2" style="width: 100%;" name="id_marca_vehiculo" required>
+                        <select class="form-control select2" style="width: 100%;" name="id_marca_vehiculo">
                             <option selected="selected" value="" disabled>Seleccione la marca</option>
                             @foreach ($marcaVehiculos as $marcaVehiculo)
-                                <option value="{{ $marcaVehiculo->id_marca_vehiculos }}">{{ $marcaVehiculo->marca }}
+                                <option value="{{ $marcaVehiculo->id_marca_vehiculos }}" {{ $marcaVehiculo->id_marca_vehiculos == old('id_marca_vehiculo') ? "selected": "" }}>{{ $marcaVehiculo->marca }}
                                 </option>
                             @endforeach
                         </select>

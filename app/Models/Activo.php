@@ -10,7 +10,7 @@ class Activo extends Model
     use HasFactory;
     protected $table = 'se_activos';
 
-    protected $fillable = ['activo', 'codigo', 'id_persona'];
+    protected $fillable = ['activo', 'codigo', 'id_persona', 'id_usuario'];
 
     protected $primaryKey = 'id_activos';
 
