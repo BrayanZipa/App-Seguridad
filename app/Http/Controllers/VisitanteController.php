@@ -66,22 +66,18 @@ class VisitanteController extends Controller
 
         if($nuevoVisitante['casoIngreso'] == 'casoVehiculo'){
             $this->validarVehiculo($request);
-            dd($request->all());
             
         } else if ($nuevoVisitante['casoIngreso'] == 'casoActivo'){
             $this->validarActivo($request);
 
         } else if ($nuevoVisitante['casoIngreso'] == 'casoVehiculoActivo'){
             $this->validarVehiculo($request);
-            // $this->validarActivo($request);
+            $this->validarActivo($request);
         }
-
-        dd($request->all());
         
         $nuevoVisitante['id_tipo_persona'] = 1;
         $nuevoVisitante['id_usuario'] = auth()->user()->id_usuarios;
         // $nuevoVisitante['foto'] = '';
-    //    dd($nuevoVisitante);
 
         //Crear registro de nuevo visitante dato a dato con la información del request
         $visitante = Persona::create([
@@ -221,6 +217,9 @@ class VisitanteController extends Controller
         return response()->json( $this->visitantes->informacionPersonas(1));      
     }
     
+    /**
+     * Función que permite validar los datos ingresados en el formulario de vehículo.
+     */
     public function validarVehiculo(Request $request){
         $this->validate($request, [
             'identificador' => 'required|string|unique:se_vehiculos,identificador|alpha_dash|max:15|min:6',
@@ -239,10 +238,11 @@ class VisitanteController extends Controller
 
             'id_marca_vehiculo.integer' => 'La marca ded vehículo debe ser de tipo entero',
         ]);
-        
-        dd($request->all());
     }
-
+    
+    /**
+     * Función que permite validar los datos ingresados en el formulario de activo.
+     */
     public function validarActivo(Request $request){
         $this->validate($request, [
             'activo' => 'required|string|alpha|max:20|min:3',
@@ -261,7 +261,5 @@ class VisitanteController extends Controller
             'codigo.max' => 'El código del activo no puede tener más de 5 caracteres',
             'codigo.min' => 'El código del activo no puede tener menos de 4 caracteres',
         ]);
-        
-        dd($request->all());
     }
 }
