@@ -76,6 +76,20 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Actualizar tipo de persona</label>
+                                <select class="form-control" style="width: 100%;" id="inputTipoPersona" name="id_tipo_persona"
+                                    required>
+                                    <option selected="selected" value="" disabled>Seleccione el tipo de persona</option>
+                                    @foreach ($tipoPersonas as $persona)
+                                        <option value="{{ $persona->id_tipo_personas }}">{{ $persona->tipo }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
                 <!-- /.card-body -->

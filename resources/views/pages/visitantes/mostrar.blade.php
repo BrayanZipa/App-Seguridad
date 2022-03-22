@@ -106,6 +106,7 @@
                 $('#inputTelefono').val(data.tel_contacto);
                 $('#inputEps').val(data.id_eps);
                 $('#inputArl').val(data.id_arl);
+                $('#inputTipoPersona').val(data.id_tipo_persona);
             });
 
             //Boton que permite ocultar el formulario de editar
@@ -120,7 +121,11 @@
             setTimeout(function(){
                 $('#modal-editar').modal('hide');
             }, 2000);
-         });      
+         });  
+         
+         // Muestra un modal con los diferentes errores cometidos por el usuario a la hora de actualizar un visitante
+         $('#modal-errores-personas').modal("show");
+
     </script>
 @endsection
 
@@ -166,6 +171,7 @@
         </div>
 
           @include('pages.visitantes.modales')
+          @include('pages.modalError')
 
     </section>
 @endsection

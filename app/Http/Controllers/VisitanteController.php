@@ -10,6 +10,7 @@ use App\Models\Eps;
 use App\Models\MarcaVehiculo;
 use App\Models\Persona;
 use App\Models\PersonaVehiculo;
+use App\Models\TipoPersona;
 use App\Models\TipoVehiculo;
 use App\Models\Vehiculo;
 use Illuminate\Http\Request;
@@ -21,17 +22,19 @@ class VisitanteController extends Controller
     protected $arl;
     protected $tipoVehiculos;
     protected $marcaVehiculos;
+    protected $tipoPersonas;
 
     /**
      * Contructor que inicializa todos los modelos
      */
-    public function __construct(Persona $visitantes, Eps $eps, Arl $arl, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos)
+    public function __construct(Persona $visitantes, Eps $eps, Arl $arl, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, TipoPersona $tipoPersonas)
     {
         $this->visitantes = $visitantes;
         $this->eps = $eps;
         $this->arl = $arl;
         $this->tipoVehiculos = $tipoVehiculos;
         $this->marcaVehiculos = $marcaVehiculos;
+        $this->tipoPersonas = $tipoPersonas;
     }
 
     /**
@@ -40,8 +43,9 @@ class VisitanteController extends Controller
      */
     public function index()
     {
+        $tipoPersonas = $this->tipoPersonas->obtenerTipoPersona();
         [$eps, $arl, $tipoVehiculos, $marcaVehiculos] = $this->obtenerModelos();
-        return view('pages.visitantes.mostrar', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos'));
+        return view('pages.visitantes.mostrar', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos', 'tipoPersonas'));
     }
 
     /**
@@ -74,10 +78,16 @@ class VisitanteController extends Controller
             $this->validarVehiculo($request);
             $this->validarActivo($request);
         }
-        
+
+        $nuevoVisitante['nombre'] = ucwords(mb_strtolower($nuevoVisitante['nombre']));
+        $nuevoVisitante['apellido'] = ucwords(mb_strtolower($nuevoVisitante['apellido']));
+        $nuevoVisitante['identificador'] = strtoupper($nuevoVisitante['identificador']);
+        $nuevoVisitante['activo'] = ucwords(mb_strtolower($nuevoVisitante['activo']));
+        $nuevoVisitante['codigo'] = ucfirst($nuevoVisitante['codigo']);
         $nuevoVisitante['id_tipo_persona'] = 1;
         $nuevoVisitante['id_usuario'] = auth()->user()->id_usuarios;
         // $nuevoVisitante['foto'] = '';
+        // dd($nuevoVisitante);
 
         //Crear registro de nuevo visitante dato a dato con la información del request
         $visitante = Persona::create([
@@ -176,11 +186,14 @@ class VisitanteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(RequestPersona $request, $id)
     {
+        $visitante = $request->all();
+        $visitante['nombre'] = ucwords(mb_strtolower($visitante['nombre']));
+        $visitante['apellido'] = ucwords(mb_strtolower($visitante['apellido']));
         // $visitante = Visitante::find($id)->fill($request->all())->save();
-        Persona::findOrFail($id)->update($request->all());
-        return redirect()->action([VisitanteController::class, 'index'])->with('editar_visitante', $request->all()['nombre']." ".$request->all()['apellido']);
+        Persona::findOrFail($id)->update($visitante);
+        return redirect()->action([VisitanteController::class, 'index'])->with('editar_visitante', $visitante['nombre']." ".$visitante['apellido']);
     }
 
     /**
