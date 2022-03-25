@@ -31,7 +31,7 @@ class RequestPersona extends FormRequest
             'id_tipo_persona' => 'integer',
             'id_eps' => 'required|integer',         
             'id_arl' => 'required|integer',
-            // // 'foto' => 'required',
+            // 'foto' => 'required|string',
             'tel_contacto' => 'required|numeric|unique:se_personas,tel_contacto,'.$this->id.',id_personas|digits_between:7,10',
             'id_empresa' => 'integer|nullable',
         ];
@@ -64,6 +64,9 @@ class RequestPersona extends FormRequest
 
             'id_arl.required' => 'Se requiere que elija una opción en la ARL',
             'id_arl.integer' => 'La ARL debe ser de tipo entero',
+
+            'foto.required' => 'Se requiere que tome una foto de la persona',
+            'foto.string' => 'La información de la foto debe estar en formato de texto',
 
             'tel_contacto.required' => 'Se requiere que ingrese el teléfono',
             'tel_contacto.numeric' => 'El teléfono debe ser un valor númerico',

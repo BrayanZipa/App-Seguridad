@@ -12,7 +12,7 @@
                     <p>¿Desea crear otro?</p>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="botonSi btn btn-default" data-dismiss="modal"
+                    <button type="button" class="btn btn-default" data-dismiss="modal"
                         style="width: 100px">Si</button>
                     <button type="submit" class="botonContinuar btn btn-primary">Continuar</button>
                 </div>
@@ -37,7 +37,7 @@
                     <p>¿Desea crear otro?</p>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="botonSi btn btn-default" data-dismiss="modal"
+                    <button type="button" class="btn btn-default" data-dismiss="modal"
                         style="width: 100px">Si</button>
                     <button type="submit" class="botonContinuar btn btn-primary">Continuar</button>
                 </div>
@@ -62,7 +62,7 @@
                     <p>¿Desea crear otro?</p>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="botonSi btn btn-default" data-dismiss="modal"
+                    <button type="button" class="btn btn-default" data-dismiss="modal"
                         style="width: 100px">Si</button>
                     <button type="submit" class="botonContinuar btn btn-primary">Continuar</button>
                 </div>
@@ -88,7 +88,7 @@
                     <p>¿Desea crear otro?</p>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="botonSi btn btn-default" data-dismiss="modal"
+                    <button type="button" class="btn btn-default" data-dismiss="modal"
                         style="width: 100px">Si</button>
                     <button type="submit" class="botonContinuar btn btn-primary">Continuar</button>
                 </div>

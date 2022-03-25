@@ -29,33 +29,25 @@
                     $('#checkActivo').prop("disabled", true);
                     $('#casoIngreso').val("casoVehiculoActivo");
                     requiredTrue('.vehiculo');
-                    requiredTrue('.activo');             
+                    requiredTrue('.activo');
 
-                } else if ($('#checkVehiculo').is(":checked") && ($('#checkActivo').prop("checked") == false)) {
+                } else if ($('#checkVehiculo').is(":checked") && ($('#checkActivo').prop("checked") ==
+                        false)) {
                     $('#crearVehiculo').css("display", "block");
-                    // $('#crearActivo').css("display", "none");
                     $('#botonCrear').css("display", "none");
                     $('#botonCrear2').css("display", "inline");
                     $('#checkVehiculo').prop("disabled", true);
                     $('#casoIngreso').val("casoVehiculo");
                     requiredTrue(".vehiculo");
 
-                } else if ($('#checkActivo').is(":checked") && ($('#checkVehiculo').prop("checked") == false)) {
+                } else if ($('#checkActivo').is(":checked") && ($('#checkVehiculo').prop("checked") ==
+                        false)) {
                     $('#crearActivo').css("display", "block");
-                    // $('#crearVehiculo').css("display", "none");
                     $('#botonCrear').css("display", "none");
                     $('#checkActivo').prop("disabled", true);
                     $('#casoIngreso').val("casoActivo");
                     requiredTrue('.activo');
                 }
-
-                            //  else {
-                            //     $('#crearVehiculo').css("display", "none");
-                            //     $('#crearActivo').css("display", "none");
-                            //     $('#botonCrear').css("display", "inline");
-                            //     requiredFalse('.vehiculo');
-                            //     requiredFalse('.activo');
-                            // }
             });
 
             //Manejo del botón eliminar del formulario de Vehiculo
@@ -70,7 +62,7 @@
                 $('#crearVehiculo').css("display", "none");
                 $('#botonLimpiar2').trigger("click");
                 $('#checkVehiculo').prop('disabled', false);
-                $('#checkVehiculo').prop("checked", false);               
+                $('#checkVehiculo').prop("checked", false);
                 requiredFalse('.vehiculo');
             });
 
@@ -137,19 +129,74 @@
             $('#modal-crear-visitanteVehiculo').modal("show");
             $('#modal-crear-visitanteActivo').modal("show");
             $('#modal-crear-visitanteVehiculoActivo').modal("show");
-            
+
             $('.botonContinuar').click(function() {
                 $(location).attr('href', 'http://app-seguridad.test/visitantes');
             });
 
-            // $('.botonSi').click(function() {
-            //     $(location).attr('href', 'http://app-seguridad.test/visitantes/crear');
-            // });
-          
             // Muestra un modal con los diferentes errores cometidos por el usuario a la hora de ingresar un visitante
             $('#modal-errores-personas').modal("show");
-   
 
+            //Botón que da acceso a la cámara web del computador donde este abierta la aplicación
+            $('#botonActivar').click(function() {
+                document.getElementById('inputFoto').setAttribute('value', '');  
+
+                const video = document.getElementById("video"),
+                    canvas = document.getElementById("canvas");
+
+                if (!tieneSoporteUserMedia()) {
+                    alert("Lo siento. Tu navegador no soporta esta característica");
+                    return;
+                }
+
+                const constraints = {
+                    audio: false,
+                    video: true
+                };
+
+                navigator.mediaDevices.getUserMedia(constraints)
+                    .then((stream) => {
+                        video.srcObject = stream;
+                        video.play();
+                    })
+                    .catch((err) => console.log(err))                   
+            });
+
+            //Botón que captura una fotografía con la cámara web computador donde este abierta la aplicación
+            $('#botonCapturar').click(function() {
+                video.pause();
+                var contexto = canvas.getContext("2d");
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                contexto.drawImage(video, 0, 0, canvas.width, canvas.height); 
+
+                var foto = canvas.toDataURL();
+                document.getElementById('inputFoto').setAttribute('value', foto);  
+            });
+
+            // Función que permite saber si el navegador que se esta utilizando soporta características audio visuales
+            function tieneSoporteUserMedia() {
+                return !!(navigator.getUserMedia || (navigator.mozGetUserMedia || navigator.mediaDevices.getUserMedia) ||
+                navigator.webkitGetUserMedia || navigator.msGetUserMedia)
+            }
+
+            // $('#botonError').click(function() {
+
+            //     var video = document.getElementById("video"),
+            //     inputFoto = document.getElementById('inputFoto').value;
+            //     // document.getElementById('canvas').style.display = 'block';
+            //     // video.setAttribute('src', inputFoto);
+
+            //     var image = new Image();
+            //         image.src = inputFoto;
+            //         document.body.appendChild(image);
+
+
+                
+            // });
+
+            
+            
         });
     </script>
 @endsection

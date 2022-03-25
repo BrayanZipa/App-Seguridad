@@ -20,7 +20,7 @@ class SeVehiculos extends Migration
             $table->foreign('id_tipo_vehiculo')->references('id_tipo_vehiculos')->on('se_tipo_vehiculos');
             $table->unsignedInteger('id_marca_vehiculo')->nullable();  
             $table->foreign('id_marca_vehiculo')->references('id_marca_vehiculos')->on('se_marca_vehiculos');
-            $table->string('foto', 50);
+            $table->string('foto', 100);
             $table->unsignedInteger('id_usuario');  
             $table->foreign('id_usuario')->references('id_usuarios')->on('se_usuarios');
             $table->timestamps();;

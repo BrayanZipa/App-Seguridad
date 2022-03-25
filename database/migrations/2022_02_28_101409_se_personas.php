@@ -26,7 +26,7 @@ class SePersonas extends Migration
             $table->foreign('id_eps')->references('id_eps')->on('se_eps');
             $table->unsignedInteger('id_arl');  
             $table->foreign('id_arl')->references('id_arl')->on('se_arl');
-            $table->string('foto', 50);
+            $table->string('foto', 100);
             $table->string('tel_contacto', 10)->unique();
             $table->unsignedInteger('id_empresa')->nullable();  
             $table->foreign('id_empresa')->references('id_empresas')->on('se_empresas');
