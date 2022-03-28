@@ -10,7 +10,7 @@ class Vehiculo extends Model
     use HasFactory;
     protected $table = 'se_vehiculos';
 
-    protected $fillable = ['identificador', 'id_tipo_vehiculo', 'id_marca_vehiculo', 'foto', 'id_usuario'];
+    protected $fillable = ['identificador', 'id_tipo_vehiculo', 'id_marca_vehiculo', 'foto_vehiculo', 'id_usuario'];
 
     protected $primaryKey = 'id_vehiculos';
 

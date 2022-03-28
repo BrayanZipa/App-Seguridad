@@ -27,7 +27,7 @@
                         <video src="" id="video" class="img-fluid rounded" style="display: none"></video>
                         <canvas id="canvas" class="img-fluid rounded"  style="display: none"></canvas>
 
-                        <div class=" mt-2">
+                        <div class="mt-2">
                             <button id="botonActivar" type="button" class="btn btn-primary btn-sm">Activar</button>
                             <button id="botonCapturar" type="button" class="btn btn-primary btn-sm" style="display: none">Capturar</button>
                         </div>

@@ -139,7 +139,7 @@
             // Muestra un modal con los diferentes errores cometidos por el usuario a la hora de ingresar un visitante
             $('#modal-errores-personas').modal("show");
 
-            //Botón que da acceso a la cámara web del computador donde este abierta la aplicación
+            //Botón que da acceso a la cámara web del computador donde este abierta la aplicación desde el formulario crear visitante
             $('#botonActivar').click(function() {
                 document.getElementById('canvas').style.display = 'none';
                 document.getElementById('inputFoto').setAttribute('value', '');
@@ -170,8 +170,46 @@
                     .catch((err) => console.log(err))            
             });
 
-            //Botón que captura una fotografía con la cámara web computador donde este abierta la aplicación
+            //Botón que da acceso a la cámara web del computador donde este abierta la aplicación desde el formulario crear vehículo
+            $('#botonActivar2').click(function() {
+                document.getElementById('canvas2').style.display = 'none';
+                document.getElementById('inputFotoVehiculo').setAttribute('value', '');
+                const video = document.getElementById("video2");
+
+                if (!tieneSoporteUserMedia()) {
+                    alert("Lo siento. Tu navegador no soporta esta característica");
+                    return;
+                }
+
+                const constraints = {
+                    audio: false,
+                    video: true
+                };
+
+                navigator.mediaDevices.getUserMedia(constraints)
+                    .then((stream) => {                       
+                        video.style.display = 'block';
+                        video.style.borderStyle = "solid";
+                        video.style.borderWidth = "1px";
+                        video.style.borderColor = "#fd7e14";
+
+                        video.srcObject = stream;
+                        video.play(); 
+
+                        document.getElementById('botonCapturar2').style.display = 'inline';                      
+                    })
+                    .catch((err) => console.log(err))            
+            });
+
+            // Función que permite saber si el navegador que se esta utilizando soporta características audio visuales
+            function tieneSoporteUserMedia() {
+                return !!(navigator.getUserMedia || (navigator.mozGetUserMedia || navigator.mediaDevices.getUserMedia) ||
+                navigator.webkitGetUserMedia || navigator.msGetUserMedia)
+            }
+
+            //Botón que captura una fotografía desde el formulario de crear visitante con la cámara web del computador donde este abierta la aplicación
             $('#botonCapturar').click(function() {
+                var video = document.getElementById("video");
                 video.pause();
                 var canvas = document.getElementById("canvas");
                 var contexto = canvas.getContext("2d");
@@ -183,11 +221,19 @@
                 document.getElementById('inputFoto').setAttribute('value', foto);  
             });
 
-            // Función que permite saber si el navegador que se esta utilizando soporta características audio visuales
-            function tieneSoporteUserMedia() {
-                return !!(navigator.getUserMedia || (navigator.mozGetUserMedia || navigator.mediaDevices.getUserMedia) ||
-                navigator.webkitGetUserMedia || navigator.msGetUserMedia)
-            }
+            //Botón que captura una fotografía desde el formulario de crear vehículo con la cámara web del computador donde este abierta la aplicación
+            $('#botonCapturar2').click(function() {
+                var video = document.getElementById("video2");
+                video2.pause();
+                var canvas = document.getElementById("canvas2");
+                var contexto = canvas2.getContext("2d");
+                canvas.width = video2.videoWidth;
+                canvas.height = video2.videoHeight;
+                contexto.drawImage(video, 0, 0, canvas.width, canvas.height); 
+
+                var foto = canvas.toDataURL();
+                document.getElementById('inputFotoVehiculo').setAttribute('value', foto);  
+            });
 
             // Botón que devuelve la fotografía tomanda con anterioridad por el usuario en caso de que se cometa un error en el ingreso de datos
             $('.botonError').click(function() {
