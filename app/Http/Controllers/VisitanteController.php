@@ -88,14 +88,14 @@ class VisitanteController extends Controller
         $nuevoVisitante['id_tipo_persona'] = 1;
         $nuevoVisitante['id_usuario'] = auth()->user()->id_usuarios;
 
-        // $img = $request->foto;
-        // $img = str_replace('data:image/png;base64,', '', $img);
-        // $img = str_replace(' ', '+', $img);
-        // $foto = base64_decode($img);
-        // $filename = 'visitantes/'. $nuevoVisitante['identificacion']. '_'. date('Y-m-d'). '.png';
-        // $ruta = storage_path() . '\app\public/' .  $filename;
-        // Image::make($foto)->resize(400,400)->save($ruta);
-        // $url = Storage::url($filename);
+        $img = $request->foto;
+        $img = str_replace('data:image/png;base64,', '', $img);
+        $img = str_replace(' ', '+', $img);
+        $foto = base64_decode($img);
+        $filename = 'visitantes/'. $nuevoVisitante['identificacion']. '_'. date('Y-m-d'). '.png';
+        $ruta = storage_path() . '\app\public/' .  $filename;
+        Image::make($foto)->resize(600, 500)->save($ruta);
+        $url = Storage::url($filename);
 
         //Crear registro de nuevo visitante dato a dato con la información del request
         $visitante = Persona::create([
@@ -106,7 +106,7 @@ class VisitanteController extends Controller
             'identificacion' => $nuevoVisitante['identificacion'],
             'id_eps' => $nuevoVisitante['id_eps'],
             'id_arl' => $nuevoVisitante['id_arl'],
-            // 'foto' => $url,
+            'foto' => $url,
             'tel_contacto' => $nuevoVisitante['tel_contacto'],
         ]);
         $visitante->save();

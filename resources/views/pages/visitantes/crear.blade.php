@@ -131,7 +131,9 @@
             $('#modal-crear-visitanteVehiculoActivo').modal("show");
 
             $('.botonContinuar').click(function() {
-                $(location).attr('href', 'http://app-seguridad.test/visitantes');
+                //http://app-seguridad.test/visitantes
+                //http://127.0.0.1:8000/visitantes
+                $(location).attr('href', "{{ route('mostrarVisitantes') }}");
             });
 
             // Muestra un modal con los diferentes errores cometidos por el usuario a la hora de ingresar un visitante
@@ -139,10 +141,9 @@
 
             //Botón que da acceso a la cámara web del computador donde este abierta la aplicación
             $('#botonActivar').click(function() {
-                document.getElementById('inputFoto').setAttribute('value', '');  
-
-                const video = document.getElementById("video"),
-                    canvas = document.getElementById("canvas");
+                document.getElementById('canvas').style.display = 'none';
+                document.getElementById('inputFoto').setAttribute('value', '');
+                const video = document.getElementById("video");
 
                 if (!tieneSoporteUserMedia()) {
                     alert("Lo siento. Tu navegador no soporta esta característica");
@@ -155,16 +156,24 @@
                 };
 
                 navigator.mediaDevices.getUserMedia(constraints)
-                    .then((stream) => {
+                    .then((stream) => {                       
+                        video.style.display = 'block';
+                        video.style.borderStyle = "solid";
+                        video.style.borderWidth = "1px";
+                        video.style.borderColor = "#007bff";
+
                         video.srcObject = stream;
-                        video.play();
+                        video.play(); 
+
+                        document.getElementById('botonCapturar').style.display = 'inline';                      
                     })
-                    .catch((err) => console.log(err))                   
+                    .catch((err) => console.log(err))            
             });
 
             //Botón que captura una fotografía con la cámara web computador donde este abierta la aplicación
             $('#botonCapturar').click(function() {
                 video.pause();
+                var canvas = document.getElementById("canvas");
                 var contexto = canvas.getContext("2d");
                 canvas.width = video.videoWidth;
                 canvas.height = video.videoHeight;
@@ -180,23 +189,25 @@
                 navigator.webkitGetUserMedia || navigator.msGetUserMedia)
             }
 
-            // $('#botonError').click(function() {
+            // Botón que devuelve la fotografía tomanda con anterioridad por el usuario en caso de que se cometa un error en el ingreso de datos
+            $('.botonError').click(function() {
+                var inputFoto = document.getElementById('inputFoto').value;
+                var video = document.getElementById("video");
+                var canvas = document.getElementById("canvas");
+                var contexto = canvas.getContext("2d");
 
-            //     var video = document.getElementById("video"),
-            //     inputFoto = document.getElementById('inputFoto').value;
-            //     // document.getElementById('canvas').style.display = 'block';
-            //     // video.setAttribute('src', inputFoto);
+                canvas.setAttribute("width", "640");
+                canvas.setAttribute("height", "480");
 
-            //     var image = new Image();
-            //         image.src = inputFoto;
-            //         document.body.appendChild(image);
+                var imagen = new Image();
+                imagen.src = inputFoto;
 
+                imagen.onload=function() {
+                    document.getElementById('canvas').style.display = 'block';
+                    contexto.drawImage(imagen, 0, 0, imagen.width, imagen.height);
+                }
+            });
 
-                
-            // });
-
-            
-            
         });
     </script>
 @endsection

@@ -20,19 +20,16 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="inputFoto">Fotografía</label>
-
-                        {{-- <input type="file" class="visitante" id="inputFoto" name="foto" value="{{ old('foto') }}"
-                            accept="image/*" style="display: none" > --}}
-
+                
                         <input type="text" class="visitante" id="inputFoto" name="foto" value="{{ old('foto') }}"
                             style="display: none">
 
-                        <video src="" id="video" class="img-fluid rounded" style="border: 1px solid #007bff"></video>
-                        <canvas id="canvas" style="display: none"></canvas>
+                        <video src="" id="video" class="img-fluid rounded" style="display: none"></video>
+                        <canvas id="canvas" class="img-fluid rounded"  style="display: none"></canvas>
 
                         <div class=" mt-2">
                             <button id="botonActivar" type="button" class="btn btn-primary btn-sm">Activar</button>
-                            <button id="botonCapturar" type="button" class="btn btn-primary btn-sm">Capturar</button>
+                            <button id="botonCapturar" type="button" class="btn btn-primary btn-sm" style="display: none">Capturar</button>
                         </div>
                     </div>
                 </div>

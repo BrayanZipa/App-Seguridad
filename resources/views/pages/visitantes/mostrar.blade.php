@@ -99,7 +99,10 @@
                 var row = $('#tabla_visitantes').DataTable().row(tr);
                 var data = row.data();
                 // console.log(data);
-                $('#form_editar').attr('action','http://127.0.0.1:8000/visitantes/editar/' + data.id_personas);    
+                //http://app-seguridad.test/visitantes/editar/   
+                $('#form_editar').attr('action','http://127.0.0.1:8000/visitantes/editar/' + data.id_personas); 
+                $('#inputFoto').val(data.foto); 
+                $('#fotoVisitante').attr("src", data.foto);  
                 $('#inputNombre').val(data.nombre);
                 $('#inputApellido').val(data.apellido);
                 $('#inputIdentificacion').val(data.identificacion);

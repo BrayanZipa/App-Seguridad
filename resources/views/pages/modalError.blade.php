@@ -4,7 +4,7 @@
             <div class="modal-content">
                 <div class="modal-header bg-danger">
                     <h4 class="modal-title">Error al ingresar los datos</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="botonError close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -14,7 +14,7 @@
                     @endforeach
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button id="botonError" type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                    <button id="botonError" type="button" class="botonError btn btn-danger" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
             <!-- /.modal-content -->

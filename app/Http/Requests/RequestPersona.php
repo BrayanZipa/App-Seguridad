@@ -31,7 +31,7 @@ class RequestPersona extends FormRequest
             'id_tipo_persona' => 'integer',
             'id_eps' => 'required|integer',         
             'id_arl' => 'required|integer',
-            // 'foto' => 'required|string',
+            'foto' => 'required|string',
             'tel_contacto' => 'required|numeric|unique:se_personas,tel_contacto,'.$this->id.',id_personas|digits_between:7,10',
             'id_empresa' => 'integer|nullable',
         ];
