@@ -7,9 +7,10 @@
 @section('css')
     <!-- DataTables -->
     <link rel="stylesheet" href="{{ asset('assets/lte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-    <link rel="stylesheet"
-        href="{{ asset('assets/lte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/lte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/lte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/lte/plugins/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/lte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
 @endsection
 
 @section('scripts')
@@ -26,9 +27,11 @@
     <script src="{{ asset('assets/lte/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('assets/lte/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
     <script src="{{ asset('assets/lte/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+    <script src="{{ asset('assets/lte/plugins/select2/js/select2.full.min.js') }}"></script>
     
     <!-- JavaScript propio-->
     <script>
+
         $(function() {
 
             //Uso de DataTables para mostrar la información
@@ -93,8 +96,8 @@
             });
 
             //Se elije una fila de la tabla y se toma la información de la persona para mostrarla en un formulario y permitir actualizarla
-            $('#tabla_visitantes tbody').on('click', 'td.editar_visitante', function () {
-                $('#formularioEditar').css("display", "block");
+            $('#tabla_visitantes tbody').on('click', 'td.editar_visitante', function () {      
+                $('#formularioEditar').css("display", "block");  
                 var tr = $(this).closest('tr');
                 var row = $('#tabla_visitantes').DataTable().row(tr);
                 var data = row.data();
@@ -110,25 +113,47 @@
                 $('#inputEps').val(data.id_eps);
                 $('#inputArl').val(data.id_arl);
                 $('#inputTipoPersona').val(data.id_tipo_persona);
+                activarSelect2();
+            });
+
+            //Permite que a los select de selección de EPS Y ARL del formulario de actualizar visitante se les asigne una barra de búsqueda haciendolos más dinámicos
+            function activarSelect2() {
+                $('.select2bs4').select2({
+                    theme: 'bootstrap4'
+                });
+            }
+
+            //Boton que permite restablecer los select de EPS Y ARL en el formulario de actualizar visitante en caso de que se de click al botón limpiar
+            $('#botonReset').click(function(){
+                $('#inputEps').val([]);
+                $('#inputArl').val([]);
+
+                $("#inputEps").select2({
+                    theme: 'bootstrap4',
+                    placeholder: 'Seleccione EPS',
+                });
+                
+                $("#inputArl").select2({
+                    theme: 'bootstrap4',
+                    placeholder: "Seleccione ARL",
+                });
             });
 
             //Boton que permite ocultar el formulario de editar
             $('#botonCerrar').click(function(){
                 $("#formularioEditar").css("display", "none");
             });
-        });        
 
-        //Muestra el modal indicado al usuario que la actualización se ha realizado corectamente
-         $(function() {
+            //Muestra el modal indicado al usuario que la actualización se ha realizado corectamente
             $('#modal-editar').modal("show");
             setTimeout(function(){
                 $('#modal-editar').modal('hide');
             }, 2000);
-         });  
-         
-         // Muestra un modal con los diferentes errores cometidos por el usuario a la hora de actualizar un visitante
-         $('#modal-errores-personas').modal("show");
 
+            // Muestra un modal con los diferentes errores cometidos por el usuario a la hora de actualizar un visitante
+            $('#modal-errores-personas').modal("show");
+
+        });        
     </script>
 @endsection
 

@@ -22,7 +22,7 @@
                     <div class="form-group">
                         <label for="inputFotoVehiculo">Fotografía</label>
                 
-                        <input type="text" class="vehiculo" id="inputFotoVehiculo" name="foto_vehiculo" value="{{ old('foto_vehiculo') }}"
+                        <input type="text" id="inputFotoVehiculo" name="foto_vehiculo" value="{{ old('foto_vehiculo') }}"
                             style="display: none">
 
                         <video src="" id="video2" class="img-fluid rounded" style="display: none"></video>
@@ -30,7 +30,7 @@
 
                         <div class="mt-2">
                             <button id="botonActivar2" type="button" class="btn btn-sm" style="background-color: rgb(255, 115, 0)">Activar</button>                      
-                            <button id="botonCapturar2" type="button" class="btn btn-sm" style="display: none; background-color: rgb(255, 115, 0)">Capturar</button>
+                            <button id="botonCapturar2" type="button" class="btn btn-sm" style="display: none">Capturar</button>
                         </div>
                     </div>
                 </div>
@@ -46,8 +46,8 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Ingrese el tipo de vehículo</label>
-                                <select class="vehiculo form-control select2" style="width: 100%;" name="id_tipo_vehiculo" required>
-                                    <option selected="selected" value="" disabled>Seleccione el tipo</option>
+                                <select id="selectTipoVehiculo" class="vehiculo form-control select2bs4" style="width: 100%;" name="id_tipo_vehiculo" required>
+                                    <option selected="selected" value="" disabled></option>
                                     @foreach ($tipoVehiculos as $tipoVehiculo)
                                         <option value="{{ $tipoVehiculo->id_tipo_vehiculos }}" {{ $tipoVehiculo->id_tipo_vehiculos == old('id_tipo_vehiculo') ? "selected": "" }}>{{ $tipoVehiculo->tipo }}
                                         </option>
@@ -60,8 +60,8 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Ingrese la marca del vehículo</label>
-                                <select class="form-control select2" style="width: 100%;" name="id_marca_vehiculo">
-                                    <option selected="selected" value="" disabled>Seleccione la marca</option>
+                                <select id="selectMarcaVehiculo" class="form-control select2bs4" style="width: 100%;" name="id_marca_vehiculo">
+                                    <option selected="selected" value="" disabled></option>
                                     @foreach ($marcaVehiculos as $marcaVehiculo)
                                         <option value="{{ $marcaVehiculo->id_marca_vehiculos }}" {{ $marcaVehiculo->id_marca_vehiculos == old('id_marca_vehiculo') ? "selected": "" }}>{{ $marcaVehiculo->marca }}
                                         </option>

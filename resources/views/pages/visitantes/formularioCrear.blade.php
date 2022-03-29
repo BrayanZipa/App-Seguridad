@@ -71,9 +71,9 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Ingrese la EPS</label>
-                                <select id="prueba" class="visitante form-control select2" style="width: 100%;"
+                                <select id="selectEps" class="visitante form-control select2bs4" style="width: 100%;"
                                     name="id_eps" required>
-                                    <option selected="selected" value="" disabled>Seleccione EPS</option>
+                                    <option selected="selected" value="" disabled></option>
 
                                     @foreach ($eps as $ep)
                                         <option value="{{ $ep->id_eps }}"
@@ -86,9 +86,9 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Ingrese el ARL</label>
-                                <select class="visitante form-control select2" style="width: 100%;" name="id_arl"
+                                <select id="selectArl" class="visitante form-control select2bs4" style="width: 100%;" name="id_arl"
                                     required>
-                                    <option selected="selected" value="" disabled>Seleccione ARL</option>
+                                    <option selected="selected" value="" disabled></option>
                                     @foreach ($arl as $ar)
                                         <option value="{{ $ar->id_arl }}"
                                             {{ $ar->id_arl == old('id_arl') ? 'selected' : '' }}>{{ $ar->arl }}

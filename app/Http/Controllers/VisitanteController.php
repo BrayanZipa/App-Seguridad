@@ -13,6 +13,7 @@ use App\Models\TipoPersona;
 use App\Models\TipoVehiculo;
 use App\Models\Vehiculo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
@@ -44,6 +45,7 @@ class VisitanteController extends Controller
      */
     public function index()
     {
+        $exitCode = Artisan::call('cache:clear');
         $tipoPersonas = $this->tipoPersonas->obtenerTipoPersona();
         [$eps, $arl, $tipoVehiculos, $marcaVehiculos] = $this->obtenerModelos();
         return view('pages.visitantes.mostrar', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos', 'tipoPersonas'));
@@ -55,6 +57,7 @@ class VisitanteController extends Controller
      */
     public function create()
     {
+        $exitCode = Artisan::call('cache:clear');
         // $personas = $this->visitantes->obtenerPersonas(2); , 'personas'
         [$eps, $arl, $tipoVehiculos, $marcaVehiculos] = $this->obtenerModelos();
         return view('pages.visitantes.crear', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos'));
@@ -136,11 +139,21 @@ class VisitanteController extends Controller
     //Función que permite registrar un nuevo vehículo creado desde el modulo de visitantes
     public function store2($datos, $id_persona)
     {
+        
+        $img = $datos['foto_vehiculo'];
+        $img = str_replace('data:image/png;base64,', '', $img);
+        $img = str_replace(' ', '+', $img);
+        $foto = base64_decode($img);
+        $filename = 'vehiculos/'. $id_persona. '_'. $datos['identificador']. '_'.date('Y-m-d'). '.png';
+        $ruta = storage_path() . '\app\public/' .  $filename;
+        Image::make($foto)->resize(600, 500)->save($ruta);
+        $url = Storage::url($filename);
+
         $vehiculo = Vehiculo::create([
             'identificador' => $datos['identificador'],
             'id_tipo_vehiculo' => $datos['id_tipo_vehiculo'],
             'id_marca_vehiculo' => $datos['id_marca_vehiculo'],
-            //foto
+            'foto_vehiculo' => $url,
             'id_usuario' => $datos['id_usuario'],
         ]);
         $vehiculo->save();
@@ -246,7 +259,8 @@ class VisitanteController extends Controller
         $this->validate($request, [
             'identificador' => 'required|string|unique:se_vehiculos,identificador|alpha_dash|max:15|min:6',
             'id_tipo_vehiculo' => 'required|integer',   
-            'id_marca_vehiculo' => 'integer|nullable',  
+            'id_marca_vehiculo' => 'integer|nullable',
+            'foto_vehiculo'  => 'required|string',
         ],[
             'identificador.required' => 'Se requiere que ingrese el identificador del vehículo',
             'identificador.string' => 'El identificador debe ser de tipo texto',
@@ -259,6 +273,9 @@ class VisitanteController extends Controller
             'id_tipo_vehiculo.integer' => 'El tipo de vehículo debe ser de tipo entero',
 
             'id_marca_vehiculo.integer' => 'La marca ded vehículo debe ser de tipo entero',
+
+            'foto_vehiculo.required' => 'Se requiere que tome una foto del vehículo',
+            'foto_vehiculo.string' => 'La información de la foto del vehículo debe estar en formato de texto',
         ]);
     }
     
