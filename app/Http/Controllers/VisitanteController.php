@@ -139,7 +139,6 @@ class VisitanteController extends Controller
     //Función que permite registrar un nuevo vehículo creado desde el modulo de visitantes
     public function store2($datos, $id_persona)
     {
-        
         $img = $datos['foto_vehiculo'];
         $img = str_replace('data:image/png;base64,', '', $img);
         $img = str_replace(' ', '+', $img);
@@ -169,8 +168,6 @@ class VisitanteController extends Controller
     //Función que permite registrar un nuevo activo creado desde el modulo de visitantes
     public function store3($datos, $id_persona)
     {
-        // dd($datos, $id_persona);
-
         $activo = Activo::create([
             'activo' => $datos['activo'],
             'codigo' => $datos['codigo'],
@@ -178,7 +175,6 @@ class VisitanteController extends Controller
             'id_persona' => $id_persona,
         ]);
         $activo->save();
-        // dd($activo);
         return $activo->codigo;
     }
 
@@ -251,7 +247,7 @@ class VisitanteController extends Controller
     {
         return response()->json( $this->visitantes->informacionPersonas(1));      
     }
-    
+
     /**
      * Función que permite validar los datos ingresados en el formulario de vehículo.
      */

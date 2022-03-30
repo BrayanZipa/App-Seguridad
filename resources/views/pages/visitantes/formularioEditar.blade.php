@@ -108,7 +108,6 @@
                 <!-- /.card-body -->
                 <div class="card-footer">
                     <button type='submit' class="btn btn-primary">Actualizar</button>
-                    <button id="botonReset" type='reset' class="btn btn-secondary">Limpiar</button>
                 </div>
                 <!-- /.card-footer-->
             </div>

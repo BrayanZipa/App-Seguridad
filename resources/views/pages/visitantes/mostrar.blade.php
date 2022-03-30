@@ -123,22 +123,6 @@
                 });
             }
 
-            //Boton que permite restablecer los select de EPS Y ARL en el formulario de actualizar visitante en caso de que se de click al botón limpiar
-            $('#botonReset').click(function(){
-                $('#inputEps').val([]);
-                $('#inputArl').val([]);
-
-                $("#inputEps").select2({
-                    theme: 'bootstrap4',
-                    placeholder: 'Seleccione EPS',
-                });
-                
-                $("#inputArl").select2({
-                    theme: 'bootstrap4',
-                    placeholder: "Seleccione ARL",
-                });
-            });
-
             //Boton que permite ocultar el formulario de editar
             $('#botonCerrar').click(function(){
                 $("#formularioEditar").css("display", "none");
