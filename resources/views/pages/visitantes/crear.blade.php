@@ -26,11 +26,19 @@
             function activarSelect2Visitante() {
                 $('#selectEps').select2({
                 theme: 'bootstrap4',
-                placeholder: 'Seleccione EPS'
+                placeholder: 'Seleccione EPS',
+                language: {
+                    noResults: function() {
+                    return "No hay resultado";        
+                    }}
                 });
                 $('#selectArl').select2({
                     theme: 'bootstrap4',
-                    placeholder: 'Seleccione ARL'
+                    placeholder: 'Seleccione ARL',
+                    language: {
+                    noResults: function() {
+                    return "No hay resultado";        
+                    }}
                 });            
             }    
             
@@ -163,21 +171,6 @@
                 });
             }
 
-            // Muestra los modales dependiendo de los formularios que se hayan ingresado y redirecciona en caso de que se oprima el botón continuar
-            $('#modal-crear-visitante').modal("show");
-            $('#modal-crear-visitanteVehiculo').modal("show");
-            $('#modal-crear-visitanteActivo').modal("show");
-            $('#modal-crear-visitanteVehiculoActivo').modal("show");
-
-            $('.botonContinuar').click(function() {
-                //http://app-seguridad.test/visitantes
-                //http://127.0.0.1:8000/visitantes
-                $(location).attr('href', "{{ route('mostrarVisitantes') }}");
-            });
-
-            // Muestra un modal con los diferentes errores cometidos por el usuario a la hora de ingresar un visitante
-            $('#modal-errores-personas').modal("show");
-
             //Botón que da acceso a la cámara web del computador donde este abierta la aplicación desde el formulario crear visitante
             $('#botonActivar').click(function() {
                 document.getElementById('canvas').style.display = 'none';
@@ -305,6 +298,21 @@
                 }
             });
 
+            // Muestra los modales dependiendo de los formularios que se hayan ingresado y redirecciona en caso de que se oprima el botón continuar
+            $('#modal-crear-visitante').modal("show");
+            $('#modal-crear-visitanteVehiculo').modal("show");
+            $('#modal-crear-visitanteActivo').modal("show");
+            $('#modal-crear-visitanteVehiculoActivo').modal("show");
+
+            $('.botonContinuar').click(function() {
+                //http://app-seguridad.test/visitantes
+                //http://127.0.0.1:8000/visitantes
+                $(location).attr('href', "{{ route('mostrarVisitantes') }}");
+            });
+
+            // Muestra un modal con los diferentes errores cometidos por el usuario a la hora de ingresar un visitante
+            $('#modal-errores-personas').modal("show");
+
         });
     </script>
 @endsection
@@ -317,20 +325,20 @@
     <section class="content-header">
         <div class="row">
             <div class="col-md-12">
-                {{-- <form id="formularioVisitante" action="{{ route('crearVisitante') }}" method="POST">
-                    @csrf --}}
-                <div>
-                    @include('pages.visitantes.formularioCrear')
-                </div>
+                <form id="formularioVisitante" action="{{ route('crearVisitante') }}" method="POST">
+                    @csrf
+                    <div>
+                        @include('pages.visitantes.formularioCrear')
+                    </div>
 
-                <div id="crearVehiculo" style="display:none">
-                    @include('pages.formCrearVehiculo')
-                </div>
+                    <div id="crearVehiculo" style="display:none">
+                        @include('pages.formCrearVehiculo')
+                    </div>
 
-                <div id="crearActivo" style="display: none">
-                    @include('pages.formCrearActivo')
-                </div>
-                {{-- </form> --}}
+                    <div id="crearActivo" style="display: none">
+                        @include('pages.formCrearActivo')
+                    </div>
+                </form>
             </div>
         </div>
 

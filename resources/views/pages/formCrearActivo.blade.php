@@ -1,6 +1,3 @@
-{{-- <form action="{{ route('crearVisitante') }}" method="POST">
-    @csrf --}}
-
     <div class="card card-dark">
         <div class="card-header">
             <h3 class="card-title">Crear nuevo activo</h3>
@@ -21,13 +18,15 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="inputActivo">Ingrese el tipo de activo</label>
-                        <input type="text" class="activo form-control" id="inputActivo" name="activo" value="Computador" required>
+                        <input type="text" class="activo form-control" id="inputActivo" name="activo" value="Computador"
+                            required>
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="inputCodigo">Ingrese el código único del activo</label>
-                        <input type="text" class="activo form-control" id="inputCodigo" name="codigo" value="{{ old('codigo') }}" required>
+                        <input type="text" class="activo form-control" id="inputCodigo" name="codigo"
+                            value="{{ old('codigo') }}" required>
                     </div>
                 </div>
                 {{-- <div class="col-sm-4" style="display:none">
@@ -45,11 +44,9 @@
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
-            <button id="botonCrear3" type='submit' class="btn btn-dark" >Crear todo</button>
+            <button id="botonCrear3" type='submit' class="btn btn-dark">Crear todo</button>
             <button id="botonLimpiar3" type='button' class="btn btn-secondary">Limpiar</button>
         </div>
         <!-- /.card-footer-->
     </div>
     <!-- /.card -->
-
-</form>

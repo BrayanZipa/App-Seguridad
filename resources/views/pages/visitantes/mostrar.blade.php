@@ -119,7 +119,11 @@
             //Permite que a los select de selección de EPS Y ARL del formulario de actualizar visitante se les asigne una barra de búsqueda haciendolos más dinámicos
             function activarSelect2() {
                 $('.select2bs4').select2({
-                    theme: 'bootstrap4'
+                    theme: 'bootstrap4',
+                    language: {
+                    noResults: function() {
+                    return "No hay resultado";        
+                    }}
                 });
             }
 
