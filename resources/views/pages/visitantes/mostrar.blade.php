@@ -34,7 +34,7 @@
 
         $(function() {
 
-            //Uso de DataTables para mostrar la información
+            //Uso de DataTables para mostrar la información de todos los visitantes creados
             $('#tabla_visitantes').DataTable({
                 "destroy": true,
                 "processing": true,

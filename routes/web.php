@@ -45,11 +45,13 @@ Route::get('/colaboradores', [ColaboradorController::class, 'index'])->name('mos
 Route::get('/colaboradores/crear', [ColaboradorController::class, 'create'])->name('formCrearColaborador');
 Route::post('/colaboradores/crear', [ColaboradorController::class, 'store'])->name('crearColaborador');
 
- /**
+/**
  * Rutas del modulo de conductores
  */
 Route::get('/conductores', [ConductorController::class, 'index'])->name('mostrarConductores');
 Route::get('/conductores/crear', [ConductorController::class, 'create'])->name('formCrearConductor');
 Route::post('/conductores/crear', [ConductorController::class, 'store'])->name('crearConductor');
+Route::get('/conductores/informacion', [ConductorController::class, 'informacionConductores'])->name('mostrarInfoConductores');
+Route::put('/conductores/editar/{id}', [ConductorController::class, 'update'])->name('editarConductor');
 
 

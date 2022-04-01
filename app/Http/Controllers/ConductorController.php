@@ -44,8 +44,7 @@ class ConductorController extends Controller
         $exitCode = Artisan::call('cache:clear');
         $tipoPersonas = $this->tipoPersonas->obtenerTipoPersona();
         [$eps, $arl, $tipoVehiculos, $marcaVehiculos] = $this->obtenerModelos();
-        [$eps, $arl] = $this->obtenerModelos();
-        return view('pages.conductores.mostrar', compact('eps', 'arl'));
+        return view('pages.conductores.mostrar', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos', 'tipoPersonas'));
     }
 
     /**
@@ -68,7 +67,6 @@ class ConductorController extends Controller
      */
     public function store(RequestConductor $request)
     {
-        // dd($request->all());
         $nuevoConductor = $request->all();
         $nuevoConductor['nombre'] = ucwords(mb_strtolower($nuevoConductor['nombre']));
         $nuevoConductor['apellido'] = ucwords(mb_strtolower($nuevoConductor['apellido']));
@@ -147,7 +145,12 @@ class ConductorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $conductor = $request->all();
+        $conductor['nombre'] = ucwords(mb_strtolower($conductor['nombre']));
+        $conductor['apellido'] = ucwords(mb_strtolower($conductor['apellido']));
+        // $visitante = Visitante::find($id)->fill($request->all())->save();
+        Persona::findOrFail($id)->update($conductor);
+        return redirect()->action([ConductorController::class, 'index'])->with('editar_conductor', $conductor['nombre']." ".$conductor['apellido']);
     }
 
     /**
@@ -166,7 +169,7 @@ class ConductorController extends Controller
     /**
      * Función que permite retornar en un fotmato JSON los datos de los conductores, arl y eps donde tengan un id en común.
      */
-    public function informacionVisitantes()
+    public function informacionConductores()
     {
         return response()->json( $this->conductores ->informacionPersonas(3));      
     } 
