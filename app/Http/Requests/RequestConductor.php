@@ -33,6 +33,11 @@ class RequestConductor extends FormRequest
             'foto' => 'required|string',
             'tel_contacto' => 'required|numeric|unique:se_personas,tel_contacto,'.$this->id.',id_personas|digits_between:7,10',
             'id_empresa' => 'integer|nullable',
+
+            'identificador' => 'required|string|unique:se_vehiculos,identificador|alpha_num|max:15|min:6',
+            'id_tipo_vehiculo' => 'required|integer',   
+            'id_marca_vehiculo' => 'integer|nullable',
+            'foto_vehiculo'  => 'required|string',
         ];
     }
 
@@ -73,6 +78,22 @@ class RequestConductor extends FormRequest
             'tel_contacto.digits_between' => 'El teléfono debe tener 7 o 10 caracteres',
 
             'id_empresa.integer' => 'La Empresa debe ser de tipo entero',
+
+
+            'identificador.required' => 'Se requiere que ingrese el identificador del vehículo',
+            'identificador.string' => 'El identificador debe ser de tipo texto',
+            'identificador.unique' => 'No puede haber dos vehículos con el mismo número identificador',
+            'identificador.alpha_num' => 'El identificador del vehículo solo debe contener valores alfanuméricos',
+            'identificador.max' => 'El identificador del vehículo no puede tener más de 15 caracteres',
+            'identificador.min' => 'El identificador del vehículo no puede tener menos de 6 caracteres',
+
+            'id_tipo_vehiculo.required' => 'Se requiere que elija una opción en el tipo de vehículo',
+            'id_tipo_vehiculo.integer' => 'El tipo de vehículo debe ser de tipo entero',
+
+            'id_marca_vehiculo.integer' => 'La marca ded vehículo debe ser de tipo entero',
+
+            'foto_vehiculo.required' => 'Se requiere que tome una foto del vehículo',
+            'foto_vehiculo.string' => 'La información de la foto del vehículo debe estar en formato de texto',
         ];
     }
 }

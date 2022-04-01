@@ -33,14 +33,14 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="inputNombre">Actualizar nombre</label>
-                                        <input type="text" class="form-control" id="inputNombre" name="nombre" value=""
+                                        <input type="text" class="form-control" id="inputNombre" name="nombre" value="" autocomplete="off"
                                             placeholder="Nombre" required>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="inputApellido">Actualizar apellido</label>
-                                        <input type="text" class="form-control" id="inputApellido" name="apellido" value=""
+                                        <input type="text" class="form-control" id="inputApellido" name="apellido" value="" autocomplete="off"
                                             placeholder="Apellido" required>
                                     </div>
                                 </div>
@@ -49,14 +49,14 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="inputIdentificacion">Actualizar identificación</label>
-                                        <input type="text" class="form-control" id="inputIdentificacion" name="identificacion"
+                                        <input type="text" class="form-control" id="inputIdentificacion" name="identificacion" autocomplete="off"
                                             value="" placeholder="Identificación" required>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="inputTelefono">Actualizar teléfono de emergencia</label>
-                                        <input type="tel" class="form-control" id="inputTelefono" name="tel_contacto" value=""
+                                        <input type="tel" class="form-control" id="inputTelefono" name="tel_contacto" value="" autocomplete="off"
                                             placeholder="Teléfono" required>
                                     </div>
                                 </div>

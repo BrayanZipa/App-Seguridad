@@ -18,40 +18,44 @@
             //Permite que a los select de selección de EPS y ARL se les asigne una barra de búsqueda haciendolos más dinámicos
             function activarSelect2Conductor() {
                 $('#selectEps').select2({
-                theme: 'bootstrap4',
-                placeholder: 'Seleccione EPS',
-                language: {
-                    noResults: function() {
-                    return "No hay resultado";        
-                    }}
+                    theme: 'bootstrap4',
+                    placeholder: 'Seleccione EPS',
+                    language: {
+                        noResults: function() {
+                            return "No hay resultado";
+                        }
+                    }
                 });
                 $('#selectArl').select2({
                     theme: 'bootstrap4',
                     placeholder: 'Seleccione ARL',
                     language: {
-                    noResults: function() {
-                    return "No hay resultado";        
-                    }}
-                });            
+                        noResults: function() {
+                            return "No hay resultado";
+                        }
+                    }
+                });
             }
-            
+
             //Permite que a los select de selección Tipo de vehículo y Marca de vehículo se les asigne una barra de búsqueda haciendolos más dinámicos            
             function activarSelect2Vehiculo() {
                 $('#selectTipoVehiculo').select2({
                     theme: 'bootstrap4',
                     placeholder: 'Seleccione el tipo',
                     language: {
-                    noResults: function() {
-                    return "No hay resultado";        
-                    }}
+                        noResults: function() {
+                            return "No hay resultado";
+                        }
+                    }
                 });
                 $('#selectMarcaVehiculo').select2({
                     theme: 'bootstrap4',
                     placeholder: 'Seleccione la marca',
                     language: {
-                    noResults: function() {
-                    return "No hay resultado";        
-                    }}
+                        noResults: function() {
+                            return "No hay resultado";
+                        }
+                    }
                 });
             }
 
@@ -60,11 +64,16 @@
 
             //Botón que limpia la información del formulario de Conductor
             $('#botonLimpiar').click(function() {
+                document.getElementById('inputFotoVehiculo').setAttribute('value', '');
+                $('#video2').css("display", "none");
+                $('#canvas2').css("display", "none");
+                $('#botonCapturar2').css("display", "none");
                 $('#botonActivar').trigger("click");
                 $('.conductor').each(function(index) {
                     $(this).val('');
                 });
                 activarSelect2Conductor();
+                activarSelect2Vehiculo();
             });
 
             //Botón que da acceso a la cámara web del computador donde este abierta la aplicación desde el formulario crear conductor
@@ -84,24 +93,57 @@
                 };
 
                 navigator.mediaDevices.getUserMedia(constraints)
-                    .then((stream) => {                       
+                    .then((stream) => {
                         video.style.display = 'block';
                         video.style.borderStyle = "solid";
                         video.style.borderWidth = "1px";
                         video.style.borderColor = "#007bff";
 
                         video.srcObject = stream;
+                        video.play();
+
+                        document.getElementById('botonCapturar').style.display = 'inline';
+                    })
+                    .catch((err) => console.log(err))
+            });
+
+            //Botón que da acceso a la cámara web del computador donde este abierta la aplicación desde el formulario ingresar vehículo
+            $('#botonActivar2').click(function() {
+                document.getElementById('canvas2').style.display = 'none';
+                document.getElementById('inputFotoVehiculo').setAttribute('value', '');
+                const video = document.getElementById("video2");
+
+                if (!tieneSoporteUserMedia()) {
+                    alert("Lo siento. Tu navegador no soporta esta característica");
+                    return;
+                }
+
+                const constraints = {
+                    audio: false,
+                    video: true
+                };
+
+                navigator.mediaDevices.getUserMedia(constraints)
+                    .then((stream) => {                       
+                        video.style.display = 'block';
+                        video.style.borderStyle = "solid";
+                        video.style.borderWidth = "1px";
+                        video.style.borderColor = "#fd7e14";
+
+                        video.srcObject = stream;
                         video.play(); 
 
-                        document.getElementById('botonCapturar').style.display = 'inline';                      
+                        document.getElementById('botonCapturar2').style.backgroundColor = 'rgb(255, 115, 0)'; 
+                        document.getElementById('botonCapturar2').style.display = 'inline';                      
                     })
                     .catch((err) => console.log(err))            
             });
 
             // Función que permite saber si el navegador que se esta utilizando soporta características audio visuales
             function tieneSoporteUserMedia() {
-                return !!(navigator.getUserMedia || (navigator.mozGetUserMedia || navigator.mediaDevices.getUserMedia) ||
-                navigator.webkitGetUserMedia || navigator.msGetUserMedia)
+                return !!(navigator.getUserMedia || (navigator.mozGetUserMedia || navigator.mediaDevices
+                        .getUserMedia) ||
+                    navigator.webkitGetUserMedia || navigator.msGetUserMedia)
             }
 
             //Botón que captura una fotografía desde el formulario de crear visitante con la cámara web del computador donde este abierta la aplicación
@@ -112,20 +154,96 @@
                 var contexto = canvas.getContext("2d");
                 canvas.width = video.videoWidth;
                 canvas.height = video.videoHeight;
-                contexto.drawImage(video, 0, 0, canvas.width, canvas.height); 
+                contexto.drawImage(video, 0, 0, canvas.width, canvas.height);
 
                 var foto = canvas.toDataURL();
-                document.getElementById('inputFoto').setAttribute('value', foto);  
+                document.getElementById('inputFoto').setAttribute('value', foto);
             });
+
+            //Botón que captura una fotografía desde el formulario de crear vehículo con la cámara web del computador donde este abierta la aplicación
+            $('#botonCapturar2').click(function() {
+                var video2 = document.getElementById("video2");
+                video2.pause();
+                var canvas2 = document.getElementById("canvas2");
+                var contexto2 = canvas2.getContext("2d");
+                canvas2.width = video2.videoWidth;
+                canvas2.height = video2.videoHeight;
+                contexto2.drawImage(video2, 0, 0, canvas2.width, canvas2.height); 
+
+                var foto = canvas2.toDataURL();
+                document.getElementById('inputFotoVehiculo').setAttribute('value', foto);  
+            });
+
+            // Botón que devuelve la fotografía tomanda con anterioridad por el usuario en caso de que se cometa un error en el ingreso de datos
+            $('.botonError').click(function() {
+                var inputFoto = document.getElementById('inputFoto').value;
+                var inputFotoVehiculo = document.getElementById('inputFotoVehiculo').value;
+
+                var video = document.getElementById("video");
+                var canvas = document.getElementById("canvas");
+                var contexto = canvas.getContext("2d");               
+                var video2 = document.getElementById("video2");
+                var canvas2 = document.getElementById("canvas2");
+                var contexto2 = canvas2.getContext("2d");
+
+                canvas.setAttribute("width", "640");
+                canvas.setAttribute("height", "480");
+                canvas2.setAttribute("width", "640");
+                canvas2.setAttribute("height", "480");
+
+                var imagen = new Image();
+                var imagen2 = new Image();
+                imagen.src = inputFoto;
+                imagen2.src = inputFotoVehiculo;
+
+                imagen.onload=function() {
+                    document.getElementById('canvas').style.display = 'block';
+                    document.getElementById('canvas2').style.display = 'block';
+                    contexto.drawImage(imagen, 0, 0, imagen.width, imagen.height);
+                    contexto2.drawImage(imagen2, 0, 0, imagen2.width, imagen2.height);
+                }
+
+                selectMarcaVehiculo();
+            });
+
+            //Función que se activa cuando el usuario selecciona alguna opción del select de marca de vehículo
+            $('#selectTipoVehiculo').change(function() {
+                selectMarcaVehiculo();
+            });
+
+            // Función que permite que al momento que el usuario seleccione Bicicleta en el formulario de ingreso de vehículo se desabilite el select de marca de vehículo
+            function selectMarcaVehiculo() {
+                var tipo = $('#selectTipoVehiculo option:selected').text();
+                var tipoVehiculo = tipo.replace(/\s+/g, '');
+
+                if( tipoVehiculo == "Bicicleta"){
+                    $('#selectMarcaVehiculo').val('');
+                    $('#selectMarcaVehiculo').prop('disabled', true);
+                    $('#selectMarcaVehiculo').select2({
+                        theme: 'bootstrap4',
+                        placeholder: 'Seleccione la marca',
+                        language: {
+                            noResults: function() {
+                                return "No hay resultado";
+                            }
+                        }
+                    });        
+                } else {
+                    $('#selectMarcaVehiculo').prop('disabled', false);
+                } 
+            }
+
+            // Muestra el modal de creación de conductor exitoso y redirecciona en caso de que se oprima el botón continuar
+            $('#modal-crear-conductor').modal("show");
 
             $('.botonContinuar').click(function() {
                 //http://127.0.0.1:8000/conductores
                 $(location).attr('href', "{{ route('mostrarConductores') }}");
             });
 
-            // Muestra un modal con los diferentes errores cometidos por el usuario a la hora de ingresar un visitante
+            // Muestra un modal con los diferentes errores cometidos por el usuario a la hora de ingresar un conductor
             $('#modal-errores-personas').modal("show");
-            
+
         });
     </script>
 @endsection
@@ -134,106 +252,36 @@
     <div class="content mb-n2">
         @include('pages.conductores.header')
     </div>
-    
+
     <section class="content-header">
         <div class="row">
             <div class="col-md-12">
 
                 {{-- <form id="formularioConductor" action="{{ route('crearConductor') }}" method="POST"> --}}
-                <form action="{{ route('crearConductor') }}" method="POST">           
+                <form action="{{ route('crearConductor') }}" method="POST">
                     @csrf
 
-                    <div>
-                        @include('pages.conductores.formularioCrear')
+                    <div class="card">
+                        <div>
+                            @include('pages.conductores.formularioCrear')
+                        </div>
+
+                        <div class="mt-n2">
+                            @include('pages.conductores.formCrearVehiculo')
+                        </div>
+
+                        <div class="mx-auto mb-3">
+                            <button id="botonCrear" type='submit' class="btn btn-dark">Crear conductor</button>
+                            <button id="botonLimpiar" type='button' class="btn btn-secondary" style="width: 120px">Limpiar</button>
+                        </div>
                     </div>
-                    
 
-                    {{-- <div class="card card-primary">
-                        <div class="card-header">
-                            <h3 class="card-title">Crear nuevo conductor</h3>
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
-                                        class="fas fa-minus"></i>
-                                </button>
-                            </div>
-                            <!-- /.card-tools -->
-                        </div>
-                        <!-- /.card-header -->
-
-                        <div class="card-body">
-
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label for="inputNombre">Ingrese el nombre</label>
-                                        <input type="text" class="form-control" id="inputNombre" name="nombre"
-                                            placeholder="Nombre" required>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label for="inputApellido">Ingrese el apellido</label>
-                                        <input type="text" class="form-control" id="inputApellido" name="apellido"
-                                            placeholder="Apellido" required>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label for="inputIdentificacion">Ingrese la identificación</label>
-                                        <input type="text" class="form-control" id="inputIdentificacion"
-                                            name="identificacion" placeholder="Identificación" required>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label for="inputTelefono">Ingrese el teléfono</label>
-                                        <input type="tel" class="form-control" id="inputTelefono" name="tel_contacto"
-                                            placeholder="Teléfono" required>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label>Ingrese la EPS</label>
-                                        <select class="form-control select2" style="width: 100%;" name="id_eps" required>
-                                            <option selected="selected" value="" disabled>Seleccione EPS</option>
-                                            @foreach ($eps as $ep)
-                                                <option value="{{ $ep->id_eps }}">{{ $ep->eps }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label>Ingrese el ARL</label>
-                                        <select class="form-control select2" style="width: 100%;" name="id_arl" required>
-                                            <option selected="selected" value="" disabled>Seleccione ARL</option>
-                                            @foreach ($arl as $ar)
-                                                <option value="{{ $ar->id_arl }}">{{ $ar->arl }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                        </div>
-                        <!-- /.card-body -->
-                        <div class="card-footer">
-                            <button type='submit' class="btn btn-primary">Crear conductor</button>
-                            <button type='reset' class="btn btn-secondary">Limpiar</button>
-                        </div>
-                        <!-- /.card-footer-->
-                    </div> --}}
-                    <!-- /.card -->
-
-                </form> 
+                </form>
             </div>
         </div>
 
-        {{-- @include('pages.conductores.modales') --}}
+        @include('pages.conductores.modales')
         @include('pages.modalError')
 
     </section>
 @endsection
-

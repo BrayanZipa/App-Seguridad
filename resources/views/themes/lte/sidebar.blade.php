@@ -17,14 +17,14 @@
                 <a href="#" class="d-block text-wrap">{{auth()->user()->name}}</a>
             </div>
         </div>
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">      
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
                 <button type="submit" class="btn btn-block btn-info">
-                    <div class="ace-icon fa fa-power-off"></div>
-                    Logout
+                    <i class="nav-icon fa fa-power-off"></i>
+                    Logout                 
                 </button>
-            </form>
+            </form>     
         </div>
         <!-- SidebarSearch Form -->
         {{-- <div class="form-inline">

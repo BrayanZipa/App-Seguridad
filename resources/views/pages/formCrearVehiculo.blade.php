@@ -39,7 +39,7 @@
                             <div class="form-group">
                                 <label for="inputNombre">Ingrese el número identificador del vehículo</label>
                                 <input type="text" class="vehiculo form-control" id="inputNumeroIdentificador"
-                                    name="identificador" value="{{ old('identificador') }}"
+                                    name="identificador" value="{{ old('identificador') }}" autocomplete="off"
                                     placeholder="Número indetificador" required>
                             </div>
                         </div>

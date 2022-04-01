@@ -134,8 +134,9 @@
 
             //Botón que limpia la información del formulario de Vehículo
             $('#botonLimpiar2').click(function() {
-                $('#inputFotoVehiculo').val('');
+                document.getElementById('inputFotoVehiculo').setAttribute('value', '');
                 $('#video2').css("display", "none");
+                $('#canvas2').css("display", "none");
                 $('#botonCapturar2').css("display", "none");
                 $('.vehiculo').each(function(index) {
                     $(this).val('');
@@ -196,7 +197,6 @@
 
                         video.srcObject = stream;
                         video.play(); 
-
                         document.getElementById('botonCapturar').style.display = 'inline';                      
                     })
                     .catch((err) => console.log(err))            
@@ -256,16 +256,16 @@
 
             //Botón que captura una fotografía desde el formulario de crear vehículo con la cámara web del computador donde este abierta la aplicación
             $('#botonCapturar2').click(function() {
-                var video = document.getElementById("video2");
+                var video2 = document.getElementById("video2");
                 video2.pause();
-                var canvas = document.getElementById("canvas2");
-                var contexto = canvas2.getContext("2d");
+                var canvas2 = document.getElementById("canvas2");
+                var contexto2 = canvas2.getContext("2d");
                 canvas2.width = video2.videoWidth;
                 canvas2.height = video2.videoHeight;
-                contexto.drawImage(video, 0, 0, canvas2.width, canvas2.height); 
+                contexto2.drawImage(video2, 0, 0, canvas2.width, canvas2.height); 
 
                 var foto = canvas2.toDataURL();
-                document.getElementById('inputFotoVehiculo').setAttribute('value', foto);  
+                document.getElementById('inputFotoVehiculo').setAttribute('value', foto); 
             });
 
             // Botón que devuelve la fotografía tomanda con anterioridad por el usuario en caso de que se cometa un error en el ingreso de datos
@@ -296,7 +296,36 @@
                     contexto.drawImage(imagen, 0, 0, imagen.width, imagen.height);
                     contexto2.drawImage(imagen2, 0, 0, imagen2.width, imagen2.height);
                 }
+
+                selectMarcaVehiculo();
             });
+
+            //Función que se activa cuando el usuario selecciona alguna opción del select de marca de vehículo
+            $('#selectTipoVehiculo').change(function() {
+                selectMarcaVehiculo();
+            });
+
+            // Función que permite que al momento que el usuario seleccione Bicicleta en el formulario de ingreso de vehículo se desabilite el select de marca de vehículo
+            function selectMarcaVehiculo() {
+                var tipo = $('#selectTipoVehiculo option:selected').text();
+                var tipoVehiculo = tipo.replace(/\s+/g, '');
+
+                if( tipoVehiculo == "Bicicleta"){
+                    $('#selectMarcaVehiculo').val('');
+                    $('#selectMarcaVehiculo').prop('disabled', true);
+                    $('#selectMarcaVehiculo').select2({
+                        theme: 'bootstrap4',
+                        placeholder: 'Seleccione la marca',
+                        language: {
+                            noResults: function() {
+                                return "No hay resultado";
+                            }
+                        }
+                    });        
+                } else {
+                    $('#selectMarcaVehiculo').prop('disabled', false);
+                } 
+            }
 
             // Muestra los modales dependiendo de los formularios que se hayan ingresado y redirecciona en caso de que se oprima el botón continuar
             $('#modal-crear-visitante').modal("show");

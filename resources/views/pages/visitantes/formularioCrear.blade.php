@@ -18,7 +18,7 @@
                     <div class="form-group">
                         <label for="inputFoto">Fotografía</label>
 
-                        <input type="text" class="visitante" id="inputFoto" name="foto" value="{{ old('foto') }}"
+                        <input type="text" id="inputFoto" name="foto" value="{{ old('foto') }}"
                             style="display: none">
 
                         <video src="" id="video" class="img-fluid rounded" style="display: none"></video>
@@ -37,14 +37,14 @@
                             <div class="form-group">
                                 <label for="inputNombre">Ingrese el nombre</label>
                                 <input type="text" class="visitante form-control" id="inputNombre" name="nombre"
-                                    value="{{ old('nombre') }}" placeholder="Nombre" autofocus required>
+                                    value="{{ old('nombre') }}" autocomplete="off" placeholder="Nombre" autofocus required>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="inputApellido">Ingrese el apellido</label>
                                 <input type="text" class="visitante form-control" id="inputApellido" name="apellido"
-                                    value="{{ old('apellido') }}" placeholder="Apellido" required>
+                                    value="{{ old('apellido') }}" autocomplete="off" placeholder="Apellido" required>
                             </div>
                         </div>
                     </div>
@@ -53,7 +53,7 @@
                             <div class="form-group">
                                 <label for="inputIdentificacion">Ingrese la identificación</label>
                                 <input type="text" class="visitante form-control" id="inputIdentificacion"
-                                    name="identificacion" value="{{ old('identificacion') }}"
+                                    name="identificacion" value="{{ old('identificacion') }}" autocomplete="off"
                                     placeholder="Identificación" required>
                             </div>
                         </div>
@@ -61,7 +61,7 @@
                             <div class="form-group">
                                 <label for="inputTelefono">Ingrese un teléfono en caso de emergencia</label>
                                 <input type="tel" class="visitante form-control" id="inputTelefono" name="tel_contacto"
-                                    value="{{ old('tel_contacto') }}" placeholder="Teléfono" required>
+                                    value="{{ old('tel_contacto') }}" autocomplete="off" placeholder="Teléfono" required>
                             </div>
                         </div>
                     </div>

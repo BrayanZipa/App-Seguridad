@@ -7,8 +7,10 @@ use App\Models\Arl;
 use App\Models\Eps;
 use App\Models\MarcaVehiculo;
 use App\Models\Persona;
+use App\Models\PersonaVehiculo;
 use App\Models\TipoPersona;
 use App\Models\TipoVehiculo;
+use App\Models\Vehiculo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
@@ -70,7 +72,7 @@ class ConductorController extends Controller
         $nuevoConductor = $request->all();
         $nuevoConductor['nombre'] = ucwords(mb_strtolower($nuevoConductor['nombre']));
         $nuevoConductor['apellido'] = ucwords(mb_strtolower($nuevoConductor['apellido']));
-        // $nuevoConductor['identificador'] = strtoupper($nuevoConductor['identificador']);
+        $nuevoConductor['identificador'] = strtoupper($nuevoConductor['identificador']);
 
         $nuevoConductor['id_tipo_persona'] = 3;
         $nuevoConductor['id_usuario'] = auth()->user()->id_usuarios;
@@ -96,30 +98,44 @@ class ConductorController extends Controller
             'tel_contacto' => $nuevoConductor['tel_contacto'],
         ]);
         $conductor->save();
+    
+        $mensajeVehiculo = $this->store2($nuevoConductor, $conductor->id_personas);
+        $modal = [$conductor->nombre.' '.$conductor->apellido, $mensajeVehiculo];
         
-        return redirect()->action([ConductorController::class, 'create']);
+        return redirect()->action([ConductorController::class, 'create'])->with('crear_conductor', $modal);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    //Función que permite registrar un nuevo vehículo creado desde el modulo de conductores
+    public function store2($datos, $id_persona)
     {
-        //
-    }
+        $img = $datos['foto_vehiculo'];
+        $img = str_replace('data:image/png;base64,', '', $img);
+        $img = str_replace(' ', '+', $img);
+        $foto = base64_decode($img);
+        $filename = 'vehiculos/'. $id_persona. '_'. $datos['identificador']. '_'.date('Y-m-d'). '.png';
+        $ruta = storage_path() . '\app\public/' .  $filename;
+        Image::make($foto)->resize(600, 500)->save($ruta);
+        $url = Storage::url($filename);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        if(!isset($datos['id_marca_vehiculo'])){ //saber si existe
+            $datos['id_marca_vehiculo'] = null;
+        }
+
+        $vehiculo = Vehiculo::create([
+            'identificador' => $datos['identificador'],
+            'id_tipo_vehiculo' => $datos['id_tipo_vehiculo'],
+            'id_marca_vehiculo' => $datos['id_marca_vehiculo'],
+            'foto_vehiculo' => $url,
+            'id_usuario' => $datos['id_usuario'],
+        ]);
+        $vehiculo->save();
+
+        PersonaVehiculo::create([
+            'id_vehiculo' => $vehiculo->id_vehiculos,
+            'id_persona' => $id_persona,
+        ])->save();
+
+        return $vehiculo->identificador;
     }
 
     /**
