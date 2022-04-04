@@ -23,7 +23,7 @@
     </div>
 
 @elseif (session('editar_conductor'))
-    <div class="modal fade" id="modal-editar">
+    <div class="modal fade" id="modal-editar-conductor">
         <div class="modal-dialog ">
             <div class="modal-content">
                 <div class="modal-header bg-primary">

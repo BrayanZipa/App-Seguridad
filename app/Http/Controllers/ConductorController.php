@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RequestConductor;
+use App\Http\Requests\RequestPersona;
 use App\Models\Arl;
 use App\Models\Eps;
 use App\Models\MarcaVehiculo;
@@ -143,7 +144,7 @@ class ConductorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(RequestPersona $request, $id)
     {
         $conductor = $request->all();
         $conductor['nombre'] = ucwords(mb_strtolower($conductor['nombre']));

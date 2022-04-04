@@ -46,11 +46,19 @@
             function activarSelect2Vehiculo() {
                 $('#selectTipoVehiculo').select2({
                     theme: 'bootstrap4',
-                    placeholder: 'Seleccione el tipo'
+                    placeholder: 'Seleccione el tipo',
+                    language: {
+                    noResults: function() {
+                    return "No hay resultado";        
+                    }}
                 });
                 $('#selectMarcaVehiculo').select2({
                     theme: 'bootstrap4',
-                    placeholder: 'Seleccione la marca'
+                    placeholder: 'Seleccione la marca',
+                    language: {
+                    noResults: function() {
+                    return "No hay resultado";        
+                    }}
                 });
             }
 

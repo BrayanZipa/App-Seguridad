@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-12">
-        <form id="formEditarConductor" action="" method="POST">
+        <form id="form_EditarConductor" action="" method="POST">
             @csrf
             @method('PUT')
             <div class="card card-primary">
@@ -23,8 +23,10 @@
                     <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">
+                                <input type="text" id="inputId" name="id_personas" value="{{ old('id_personas') }}" style="display: none">
+
                                 <label for="inputFoto">Fotografía</label>
-                                <input type="text" id="inputFoto" name="foto" value="" style="display: none">
+                                <input type="text" id="inputFoto" name="foto" value="{{ old('foto') }}" style="display: none">
                                 <img id="fotoConductor" class="img-fluid rounded" style="border: 1px solid #007bff" src="" alt="Foto conductor">
                             </div>
                         </div>
@@ -33,14 +35,14 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="inputNombre">Actualizar nombre</label>
-                                        <input type="text" class="form-control" id="inputNombre" name="nombre" value="" autocomplete="off"
+                                        <input type="text" class="form-control" id="inputNombre" name="nombre" value="{{ old('nombre') }}" autocomplete="off"
                                             placeholder="Nombre" required>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="inputApellido">Actualizar apellido</label>
-                                        <input type="text" class="form-control" id="inputApellido" name="apellido" value="" autocomplete="off"
+                                        <input type="text" class="form-control" id="inputApellido" name="apellido" value="{{ old('apellido') }}" autocomplete="off"
                                             placeholder="Apellido" required>
                                     </div>
                                 </div>
@@ -50,13 +52,13 @@
                                     <div class="form-group">
                                         <label for="inputIdentificacion">Actualizar identificación</label>
                                         <input type="text" class="form-control" id="inputIdentificacion" name="identificacion" autocomplete="off"
-                                            value="" placeholder="Identificación" required>
+                                        value="{{ old('identificacion') }}" placeholder="Identificación" required>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="inputTelefono">Actualizar teléfono de emergencia</label>
-                                        <input type="tel" class="form-control" id="inputTelefono" name="tel_contacto" value="" autocomplete="off"
+                                        <input type="tel" class="form-control" id="inputTelefono" name="tel_contacto" value="{{ old('tel_contacto') }}" autocomplete="off"
                                             placeholder="Teléfono" required>
                                     </div>
                                 </div>
@@ -69,7 +71,9 @@
                                             required>
                                             <option selected="selected" value="" disabled></option>
                                             @foreach ($eps as $ep)
-                                                <option value="{{ $ep->id_eps }}">{{ $ep->eps }}</option>
+                                                <option value="{{ $ep->id_eps }}"
+                                                    {{ $ep->id_eps == old('id_eps') ? 'selected' : '' }}>{{ $ep->eps }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -81,7 +85,9 @@
                                             required>
                                             <option selected="selected" value="" disabled></option>
                                             @foreach ($arl as $ar)
-                                                <option value="{{ $ar->id_arl }}">{{ $ar->arl }}</option>
+                                                <option value="{{ $ar->id_arl }}"
+                                                    {{ $ar->id_arl == old('id_arl') ? 'selected' : '' }}>{{ $ar->arl }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -95,7 +101,9 @@
                                             required>
                                             <option selected="selected" value="" disabled>Seleccione el tipo de persona</option>
                                             @foreach ($tipoPersonas as $persona)
-                                                <option value="{{ $persona->id_tipo_personas }}">{{ $persona->tipo }}</option>
+                                                <option value="{{ $persona->id_tipo_personas }}"
+                                                    {{ $persona->id_tipo_personas == old('id_tipo_persona') ? 'selected' : '' }}>{{ $persona->tipo }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>

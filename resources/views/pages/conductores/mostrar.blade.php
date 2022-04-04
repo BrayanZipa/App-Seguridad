@@ -102,8 +102,9 @@
                 var row = $('#tabla_conductores').DataTable().row(tr);
                 var data = row.data();
                 // console.log(data);
-                //http://app-seguridad.test/conductores/editar/   
-                $('#form_editar').attr('action','http://127.0.0.1:8000/conductores/editar/' + data.id_personas); 
+                //http://app-seguridad.test/conductores/editar/  
+                $('#form_EditarConductor').attr('action','http://127.0.0.1:8000/conductores/editar/' + data.id_personas); 
+                $('#inputId').val(data.id_personas); 
                 $('#inputFoto').val(data.foto); 
                 $('#fotoConductor').attr("src", data.foto);  
                 $('#inputNombre').val(data.nombre);
@@ -115,6 +116,48 @@
                 $('#inputTipoPersona').val(data.id_tipo_persona);
                 activarSelect2();
             });
+
+            //Permite que a los select de selección de EPS Y ARL del formulario de actualizar conductor se les asigne una barra de búsqueda haciendolos más dinámicos
+            function activarSelect2() {
+                $('.select2bs4').select2({
+                    theme: 'bootstrap4',
+                    language: {
+                    noResults: function() {
+                    return "No hay resultado";        
+                    }}
+                });
+            }
+
+            // Botón que permite devolver el formulario de actualización con los datos ingresados por el usuario con anterioridad en caso de que se cometa un error y se dispare una validación
+            $('.botonError').click(function() {
+                var id_conductor = $('#inputId').val();
+                var foto = $('#inputFoto').val();
+                $('#formEditarConductor').css("display", "block");
+                $('#form_EditarConductor').attr('action','http://127.0.0.1:8000/conductores/editar/' + id_conductor); 
+                $('#fotoConductor').attr("src", foto); 
+                activarSelect2()           
+            });
+
+            // $('body').click(function() {
+            //     var id_conductor = $('#inputId').val();
+            //     console.log(id_conductor);
+            //     // $('#formEditarConductor').css("display", "block");
+            //     $('#form_EditarConductor').attr('action','http://127.0.0.1:8000/conductores/editar/' + id_conductor); 
+            // });
+
+            //Boton que permite ocultar el formulario de editar conductor
+            $('#botonCerrar').click(function(){
+                $('#formEditarConductor').css("display", "none"); 
+            });
+
+            //Muestra el modal indicado al usuario que la actualización del conductor se ha realizado correctamente
+            $('#modal-editar-conductor').modal("show");
+            setTimeout(function(){
+                $('#modal-editar-conductor').modal('hide');
+            }, 2000);
+
+            // Muestra un modal con los diferentes errores cometidos por el usuario a la hora de actualizar un conductor
+            $('#modal-errores-personas').modal("show");
 
         });
     </script>
@@ -161,5 +204,9 @@
                 <!-- /.card -->
             </div>
         </div>
+
+        @include('pages.conductores.modales')
+        @include('pages.modalError')
+
     </section>
 @endsection

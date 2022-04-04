@@ -132,7 +132,7 @@
                 $("#formularioEditar").css("display", "none");
             });
 
-            //Muestra el modal indicado al usuario que la actualización se ha realizado corectamente
+            //Muestra el modal indicado al usuario que la actualización se ha realizado correctamente
             $('#modal-editar').modal("show");
             setTimeout(function(){
                 $('#modal-editar').modal('hide');
@@ -186,8 +186,8 @@
             </div>
         </div>
 
-          @include('pages.visitantes.modales')
-          @include('pages.modalError')
+        @include('pages.visitantes.modales')
+        @include('pages.modalError')
 
     </section>
 @endsection
