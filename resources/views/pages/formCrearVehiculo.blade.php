@@ -38,15 +38,20 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="inputNombre">Ingrese el número identificador del vehículo</label>
-                                <input type="text" class="vehiculo form-control" id="inputNumeroIdentificador"
+                                <input type="text" class="vehiculo form-control {{ $errors->has('identificador') ? 'is-invalid' : '' }}" id="inputNumeroIdentificador"
                                     name="identificador" value="{{ old('identificador') }}" autocomplete="off"
                                     placeholder="Número indetificador" required>
+                                    @if ($errors->has('identificador')) 
+                                        <div class="invalid-feedback">
+                                            {{ $errors->first('identificador') }}
+                                        </div>          
+                                    @endif  
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Ingrese el tipo de vehículo</label>
-                                <select id="selectTipoVehiculo" class="vehiculo form-control select2bs4"
+                                <select id="selectTipoVehiculo" class="vehiculo  select2bs4 form-control {{ $errors->has('id_tipo_vehiculo') ? 'is-invalid' : '' }}"
                                     style="width: 100%;" name="id_tipo_vehiculo" required>
                                     <option selected="selected" value="" disabled></option>
                                     @foreach ($tipoVehiculos as $tipoVehiculo)
@@ -56,6 +61,11 @@
                                         </option>
                                     @endforeach
                                 </select>
+                                @if ($errors->has('id_tipo_vehiculo')) 
+                                    <div class="invalid-feedback">
+                                        {{ $errors->first('id_tipo_vehiculo') }}
+                                    </div>            
+                                @endif
                             </div>
                         </div>
                     </div>

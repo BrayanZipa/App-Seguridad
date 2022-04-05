@@ -193,7 +193,9 @@
 
                 const constraints = {
                     audio: false,
-                    video: true
+                    video: {
+                        width: 640, height: 600
+                    }
                 };
 
                 navigator.mediaDevices.getUserMedia(constraints)
@@ -214,7 +216,7 @@
             $('#botonActivar2').click(function() {
                 document.getElementById('canvas2').style.display = 'none';
                 document.getElementById('inputFotoVehiculo').setAttribute('value', '');
-                const video = document.getElementById("video2");
+                const video2 = document.getElementById("video2");
 
                 if (!tieneSoporteUserMedia()) {
                     alert("Lo siento. Tu navegador no soporta esta característica");
@@ -223,18 +225,20 @@
 
                 const constraints = {
                     audio: false,
-                    video: true
+                    video: {
+                        width: 640, height: 480
+                    }
                 };
 
                 navigator.mediaDevices.getUserMedia(constraints)
                     .then((stream) => {                       
-                        video.style.display = 'block';
-                        video.style.borderStyle = "solid";
-                        video.style.borderWidth = "1px";
-                        video.style.borderColor = "#fd7e14";
+                        video2.style.display = 'block';
+                        video2.style.borderStyle = "solid";
+                        video2.style.borderWidth = "1px";
+                        video2.style.borderColor = "#fd7e14";
 
-                        video.srcObject = stream;
-                        video.play(); 
+                        video2.srcObject = stream;
+                        video2.play(); 
 
                         document.getElementById('botonCapturar2').style.backgroundColor = 'rgb(255, 115, 0)'; 
                         document.getElementById('botonCapturar2').style.display = 'inline';                      
@@ -289,9 +293,13 @@
                 var contexto2 = canvas2.getContext("2d");
 
                 canvas.setAttribute("width", "640");
-                canvas.setAttribute("height", "480");
+                canvas.setAttribute("height", "600");
                 canvas2.setAttribute("width", "640");
                 canvas2.setAttribute("height", "480");
+
+                canvas.style.borderStyle = "solid";
+                canvas.style.borderWidth = "1px";
+                canvas.style.borderColor = "#007bff";
 
                 var imagen = new Image();
                 var imagen2 = new Image();
@@ -299,9 +307,12 @@
                 imagen2.src = inputFotoVehiculo;
 
                 imagen.onload=function() {
-                    document.getElementById('canvas').style.display = 'block';
-                    document.getElementById('canvas2').style.display = 'block';
+                    document.getElementById('canvas').style.display = 'block';           
                     contexto.drawImage(imagen, 0, 0, imagen.width, imagen.height);
+                }
+
+                imagen2.onload=function() {
+                    document.getElementById('canvas2').style.display = 'block';
                     contexto2.drawImage(imagen2, 0, 0, imagen2.width, imagen2.height);
                 }
 
@@ -362,7 +373,7 @@
     <section class="content-header">
         <div class="row">
             <div class="col-md-12">
-                <form id="formularioVisitante" action="{{ route('crearVisitante') }}" method="POST">
+                <form id="formularioVisitante" class="needs-validation" action="{{ route('crearVisitante') }}" method="POST" novalidate>
                     @csrf
                     <div>
                         @include('pages.visitantes.formularioCrear')
@@ -380,7 +391,7 @@
         </div>
 
         @include('pages.visitantes.modales')
-        @include('pages.modalError')
+        {{-- @include('pages.modalError') --}}
 
     </section>
 @endsection

@@ -54,7 +54,7 @@ class RequestPersona extends FormRequest
             'identificacion.required' => 'Se requiere que ingrese la identificación',
             'identificacion.numeric' => 'La identificación debe ser un valor númerico',
             'identificacion.unique' => 'No puede haber dos personas con el mismo número de identificación',
-            'identificacion.digits_between' => 'La identificación debe estar en un rago de 4 a 15 caracteres',
+            'identificacion.digits_between' => 'La identificación debe estar en un rango de 4 a 15 números',
 
             'id_tipo_persona.integer' => 'El tipo de persona debe ser de tipo entero',
 
@@ -70,7 +70,7 @@ class RequestPersona extends FormRequest
             'tel_contacto.required' => 'Se requiere que ingrese el teléfono',
             'tel_contacto.numeric' => 'El teléfono debe ser un valor númerico',
             'tel_contacto.unique' => 'No puede haber dos personas con el mismo teléfono',
-            'tel_contacto.digits_between' => 'El teléfono debe tener 7 o 10 caracteres',
+            'tel_contacto.digits_between' => 'El teléfono debe tener 7 o 10 números',
 
             'id_empresa.integer' => 'La Empresa debe ser de tipo entero',
         ];

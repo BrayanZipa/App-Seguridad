@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RequestPersona;
 use App\Models\Activo;
 use App\Models\Arl;
+use App\Models\Empresa;
 use App\Models\Eps;
 use App\Models\MarcaVehiculo;
 use App\Models\Persona;
@@ -25,11 +26,12 @@ class VisitanteController extends Controller
     protected $tipoVehiculos;
     protected $marcaVehiculos;
     protected $tipoPersonas;
+    protected $empresas;
 
     /**
      * Contructor que inicializa todos los modelos
      */
-    public function __construct(Persona $visitantes, Eps $eps, Arl $arl, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, TipoPersona $tipoPersonas)
+    public function __construct(Persona $visitantes, Eps $eps, Arl $arl, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, TipoPersona $tipoPersonas, Empresa $empresas)
     {
         $this->visitantes = $visitantes;
         $this->eps = $eps;
@@ -37,6 +39,7 @@ class VisitanteController extends Controller
         $this->tipoVehiculos = $tipoVehiculos;
         $this->marcaVehiculos = $marcaVehiculos;
         $this->tipoPersonas = $tipoPersonas;
+        $this->empresas = $empresas;
     }
 
     /**
@@ -58,9 +61,9 @@ class VisitanteController extends Controller
     public function create()
     {
         $exitCode = Artisan::call('cache:clear');
-        // $personas = $this->visitantes->obtenerPersonas(2); , 'personas'
+        $empresas = $this->empresas->obtenerEmpresas();
         [$eps, $arl, $tipoVehiculos, $marcaVehiculos] = $this->obtenerModelos();
-        return view('pages.visitantes.crear', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos'));
+        return view('pages.visitantes.crear', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos', 'empresas'));
     }
 
     /**
@@ -70,6 +73,7 @@ class VisitanteController extends Controller
      */
     public function store(RequestPersona $request)
     {
+        // return $request->all();
         $nuevoVisitante = $request->all();
 
         if($nuevoVisitante['casoIngreso'] == 'casoVehiculo'){
@@ -262,8 +266,8 @@ class VisitanteController extends Controller
             'id_marca_vehiculo' => 'integer|nullable',
             'foto_vehiculo'  => 'required|string',
         ],[
-            'identificador.required' => 'Se requiere que ingrese el identificador del vehículo',
-            'identificador.string' => 'El identificador debe ser de tipo texto',
+            'identificador.required' => 'Se requiere que ingrese el número identificador del vehículo',
+            'identificador.string' => 'El número identificador debe ser de tipo texto',
             'identificador.unique' => 'No puede haber dos vehículos con el mismo número identificador',
             'identificador.alpha_num' => 'El identificador del vehículo solo debe contener valores alfanuméricos',
             'identificador.max' => 'El identificador del vehículo no puede tener más de 15 caracteres',

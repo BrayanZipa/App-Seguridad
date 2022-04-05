@@ -36,15 +36,25 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="inputNombre">Ingrese el nombre</label>
-                                <input type="text" class="visitante form-control" id="inputNombre" name="nombre"
+                                <input type="text" class="visitante form-control {{ $errors->has('nombre') ? 'is-invalid' : '' }}" id="inputNombre" name="nombre"
                                     value="{{ old('nombre') }}" autocomplete="off" placeholder="Nombre" autofocus required>
+                                    @if ($errors->has('nombre')) 
+                                        <div class="invalid-feedback">
+                                            {{ $errors->first('nombre') }}
+                                        </div>            
+                                    @endif
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="inputApellido">Ingrese el apellido</label>
-                                <input type="text" class="visitante form-control" id="inputApellido" name="apellido"
+                                <input type="text" class="visitante form-control {{ $errors->has('apellido') ? 'is-invalid' : '' }}" id="inputApellido" name="apellido"
                                     value="{{ old('apellido') }}" autocomplete="off" placeholder="Apellido" required>
+                                    @if ($errors->has('apellido')) 
+                                        <div class="invalid-feedback">
+                                            {{ $errors->first('apellido') }}
+                                        </div>            
+                                    @endif
                             </div>
                         </div>
                     </div>
@@ -52,16 +62,26 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="inputIdentificacion">Ingrese la identificación</label>
-                                <input type="text" class="visitante form-control" id="inputIdentificacion"
+                                <input type="text" class="visitante form-control {{ $errors->has('identificacion') ? 'is-invalid' : '' }}" id="inputIdentificacion"
                                     name="identificacion" value="{{ old('identificacion') }}" autocomplete="off"
                                     placeholder="Identificación" required>
+                                    @if ($errors->has('identificacion')) 
+                                        <div class="invalid-feedback">
+                                            {{ $errors->first('identificacion') }}
+                                        </div>          
+                                    @endif     
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="inputTelefono">Ingrese un teléfono en caso de emergencia</label>
-                                <input type="tel" class="visitante form-control" id="inputTelefono" name="tel_contacto"
+                                <input type="tel" class="visitante form-control {{ $errors->has('tel_contacto') ? 'is-invalid' : '' }}" id="inputTelefono" name="tel_contacto"
                                     value="{{ old('tel_contacto') }}" autocomplete="off" placeholder="Teléfono" required>
+                                    @if ($errors->has('tel_contacto')) 
+                                        <div class="invalid-feedback">
+                                            {{ $errors->first('tel_contacto') }}
+                                        </div>          
+                                    @endif  
                             </div>
                         </div>
                     </div>
@@ -69,7 +89,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Ingrese la EPS</label>
-                                <select id="selectEps" class="visitante form-control select2bs4" style="width: 100%;"
+                                <select id="selectEps" class="visitante select2bs4 form-control {{ $errors->has('id_eps') ? 'is-invalid' : '' }}" style="width: 100%;"
                                     name="id_eps" required>
                                     <option selected="selected" value="" disabled></option>
 
@@ -79,12 +99,17 @@
                                         </option>
                                     @endforeach
                                 </select>
+                                @if ($errors->has('id_eps')) 
+                                    <div class="invalid-feedback">
+                                        {{ $errors->first('id_eps') }}
+                                    </div>            
+                                @endif
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Ingrese el ARL</label>
-                                <select id="selectArl" class="visitante form-control select2bs4" style="width: 100%;"
+                                <select id="selectArl" class="visitante select2bs4 form-control {{ $errors->has('id_arl') ? 'is-invalid' : '' }}" style="width: 100%;"
                                     name="id_arl" required>
                                     <option selected="selected" value="" disabled></option>
                                     @foreach ($arl as $ar)
@@ -93,6 +118,52 @@
                                         </option>
                                     @endforeach
                                 </select>
+                                @if ($errors->has('id_arl')) 
+                                    <div class="invalid-feedback">
+                                        {{ $errors->first('id_arl') }}
+                                    </div>            
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="inputEmpresa">Ingrese la empresa que visita</label>
+                                    <select id="inputEmpresa" class="visitante form-control {{ $errors->has('id_empresa') ? 'is-invalid' : '' }}" style="width: 100%;"
+                                    name="id_empresa" required>
+                                    <option selected="selected" value="" disabled>Seleccione la empresa</option>
+                                    @foreach ($empresas as $empresa)
+                                        <option value="{{ $empresa->id_empresas}}"
+                                            {{ $empresa->id_empresas == old('id_empresa') ? 'selected' : '' }}>{{ $empresa->nombre }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @if ($errors->has('id_empresa')) 
+                                    <div class="invalid-feedback">
+                                        {{ $errors->first('id_empresa') }}
+                                    </div>            
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="inputColaborador">Ingrese al colaborador a cargo</label>
+                                <input type="text" class="visitante form-control {{ $errors->has('colaborador') ? ' is-invalid ' : '' }}" id="inputColaborador" name="colaborador"
+                                    value="{{ old('colaborador') }}" autocomplete="off" placeholder="Colaborador" required>
+                                    @if ($errors->has('colaborador')) 
+                                        <div class="invalid-feedback">
+                                            {{ $errors->first('colaborador') }}
+                                        </div>          
+                                    @endif      
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="inputDescripcion">Ingrese una descripción</label>
+                                <textarea class="visitante form-control" name="descripcion" value="{{ old('descripcion') }}" id="inputDescripcion"></textarea>
                             </div>
                         </div>
                     </div>
