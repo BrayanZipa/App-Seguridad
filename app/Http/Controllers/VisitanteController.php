@@ -10,6 +10,7 @@ use App\Models\Eps;
 use App\Models\MarcaVehiculo;
 use App\Models\Persona;
 use App\Models\PersonaVehiculo;
+use App\Models\Registro;
 use App\Models\TipoPersona;
 use App\Models\TipoVehiculo;
 use App\Models\Vehiculo;
@@ -89,6 +90,8 @@ class VisitanteController extends Controller
 
         $nuevoVisitante['nombre'] = ucwords(mb_strtolower($nuevoVisitante['nombre']));
         $nuevoVisitante['apellido'] = ucwords(mb_strtolower($nuevoVisitante['apellido']));
+        $nuevoVisitante['colaborador'] = ucwords(mb_strtolower($nuevoVisitante['colaborador']));
+        $nuevoVisitante['descripcion'] = ucfirst(mb_strtolower($nuevoVisitante['descripcion']));
         $nuevoVisitante['identificador'] = strtoupper($nuevoVisitante['identificador']);
         $nuevoVisitante['activo'] = ucwords(mb_strtolower($nuevoVisitante['activo']));
         $nuevoVisitante['codigo'] = ucfirst($nuevoVisitante['codigo']);
@@ -120,22 +123,26 @@ class VisitanteController extends Controller
 
         //Ingreso de datos dependiendo de que formularios fueron ingresados
         if($nuevoVisitante['casoIngreso'] == 'casoVehiculo'){
-            $mensajeVehiculo = $this->store2($nuevoVisitante, $visitante->id_personas);
+            [$mensajeVehiculo, $id_vehiculo] = $this->store2($nuevoVisitante, $visitante->id_personas);
+            $this->store4($nuevoVisitante, $visitante->id_personas, $id_vehiculo);
             $modal = [$visitante->nombre.' '.$visitante->apellido, $mensajeVehiculo];
             return redirect()->action([VisitanteController::class, 'create'])->with('crear_visitante_vehiculo', $modal);
 
         } else if($nuevoVisitante['casoIngreso'] == 'casoActivo'){
             $mensajeActivo = $this->store3($nuevoVisitante, $visitante->id_personas);
+            $this->store4($nuevoVisitante, $visitante->id_personas, null);
             $modal = [$visitante->nombre.' '.$visitante->apellido, $mensajeActivo];
             return redirect()->action([VisitanteController::class, 'create'])->with('crear_visitante_activo', $modal);
             
         } else if($nuevoVisitante['casoIngreso'] == 'casoVehiculoActivo'){
-            $mensajeVehiculo = $this->store2($nuevoVisitante, $visitante->id_personas);
+            [$mensajeVehiculo, $id_vehiculo] = $this->store2($nuevoVisitante, $visitante->id_personas);
             $mensajeActivo = $this->store3($nuevoVisitante, $visitante->id_personas);
+            $this->store4($nuevoVisitante, $visitante->id_personas, $id_vehiculo);
             $modal = [$visitante->nombre.' '.$visitante->apellido, $mensajeVehiculo, $mensajeActivo];
             return redirect()->action([VisitanteController::class, 'create'])->with('crear_visitante_vehiculoActivo', $modal);
             
         } else {
+            $this->store4($nuevoVisitante, $visitante->id_personas, null);
             return redirect()->action([VisitanteController::class, 'create'])->with('crear_visitante', $visitante->nombre.' '.$visitante->apellido);
         }   
     }
@@ -170,7 +177,7 @@ class VisitanteController extends Controller
             'id_persona' => $id_persona,
         ])->save();
 
-        return $vehiculo->identificador;
+        return [$vehiculo->identificador, $vehiculo->id_vehiculos];
     }
 
     //Función que permite registrar un nuevo activo creado desde el modulo de visitantes
@@ -184,6 +191,57 @@ class VisitanteController extends Controller
         ]);
         $activo->save();
         return $activo->codigo;
+    }
+
+    //Función que permite hacer un registro de la entrada de un visitante al momento que se crea un nuevo visitante en la base de datos
+    public function store4($datos, $id_persona, $id_vehiculo)
+    {
+        if($datos['casoIngreso'] == 'casoVehiculo'){
+            Registro::create([
+                'id_persona' => $id_persona,
+                'ingreso_persona' => date('Y-m-d H:i:s'),
+                'ingreso_vehiculo' => date('Y-m-d H:i:s'),
+                'id_vehiculo' => $id_vehiculo,
+                'descripcion' => $datos['descripcion'],
+                'id_empresa' => $datos['id_empresa'],
+                'colaborador' => $datos['colaborador'],
+                'id_usuario' => $datos['id_usuario'],
+            ])->save(); 
+
+        } else if ($datos['casoIngreso'] == 'casoActivo'){
+            Registro::create([
+                'id_persona' => $id_persona,
+                'ingreso_persona' => date('Y-m-d H:i:s'),
+                'ingreso_activo' => date('Y-m-d H:i:s'),
+                'descripcion' => $datos['descripcion'],
+                'id_empresa' => $datos['id_empresa'],
+                'colaborador' => $datos['colaborador'],
+                'id_usuario' => $datos['id_usuario'],
+            ])->save(); 
+
+        } else if ($datos['casoIngreso'] == 'casoVehiculoActivo'){
+            Registro::create([
+                'id_persona' => $id_persona,
+                'ingreso_persona' => date('Y-m-d H:i:s'),
+                'ingreso_vehiculo' => date('Y-m-d H:i:s'),
+                'id_vehiculo' => $id_vehiculo,
+                'ingreso_activo' => date('Y-m-d H:i:s'),
+                'descripcion' => $datos['descripcion'],
+                'id_empresa' => $datos['id_empresa'],
+                'colaborador' => $datos['colaborador'],
+                'id_usuario' => $datos['id_usuario'],
+                ])->save();  
+
+        } else {
+            Registro::create([
+                'id_persona' => $id_persona,
+                'ingreso_persona' => date('Y-m-d H:i:s'),
+                'descripcion' => $datos['descripcion'],
+                'id_empresa' => $datos['id_empresa'],
+                'colaborador' => $datos['colaborador'],
+                'id_usuario' => $datos['id_usuario'],
+            ])->save(); 
+        }
     }
 
    /*  public function show($id)

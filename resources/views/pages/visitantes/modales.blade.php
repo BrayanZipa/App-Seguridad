@@ -4,7 +4,7 @@
             <div class="modal-content">
                 <div class="modal-header bg-primary">
                     <div class="d-flex justify-content-center">
-                        <h4 class="modal-title">VISITANTE CREADO</h4>
+                        <h4 class="modal-title">REGISTRO CREADO</h4>
                     </div>
                 </div>
                 <div class="modal-body">
@@ -28,7 +28,7 @@
             <div class="modal-content">
                 <div class="modal-header bg-primary">
                     <div class="justify-content-between">
-                        <h4 class="modal-title">VISITANTE CREADO</h4>
+                        <h4 class="modal-title">REGISTRO CREADOO</h4>
                     </div>
                 </div>
                 <div class="modal-body">
@@ -53,12 +53,12 @@
             <div class="modal-content">
                 <div class="modal-header bg-primary">
                     <div class="justify-content-between">
-                        <h4 class="modal-title">VISITANTE CREADO</h4>
+                        <h4 class="modal-title">REGISTRO CREADO</h4>
                     </div>
                 </div>
                 <div class="modal-body">
                     <p>Visitante <b>{{ session('crear_visitante_activo')[0] }}</b> creado exitosamente.</p>
-                    <p>Computador con identificador <b>{{ session('crear_visitante_activo')[1] }}</b> creado exitosamente.</p>
+                    <p>Computador con código <b>{{ session('crear_visitante_activo')[1] }}</b> creado exitosamente.</p>
                     <p>¿Desea crear otro?</p>
                 </div>
                 <div class="modal-footer justify-content-between">
@@ -78,13 +78,13 @@
             <div class="modal-content">
                 <div class="modal-header bg-primary">
                     <div class="justify-content-between">
-                        <h4 class="modal-title">VISITANTE CREADO</h4>
+                        <h4 class="modal-title">REGISTRO CREADO</h4>
                     </div>
                 </div>
                 <div class="modal-body">
                     <p>Visitante <b>{{ session('crear_visitante_vehiculoActivo')[0] }}</b> creado exitosamente.</p>
                     <p>Vehículo con identificador <b>{{ session('crear_visitante_vehiculoActivo')[1] }}</b> creado exitosamente.</p>
-                    <p>Computador con identificador <b>{{ session('crear_visitante_vehiculoActivo')[2] }}</b> creado exitosamente.</p>
+                    <p>Computador con código <b>{{ session('crear_visitante_vehiculoActivo')[2] }}</b> creado exitosamente.</p>
                     <p>¿Desea crear otro?</p>
                 </div>
                 <div class="modal-footer justify-content-between">

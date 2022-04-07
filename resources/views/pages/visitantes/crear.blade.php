@@ -39,7 +39,7 @@
                     noResults: function() {
                     return "No hay resultado";        
                     }}
-                });            
+                }); 
             }    
             
             //Permite que a los select de selección Tipo de vehículo y Marca de vehículo se les asigne una barra de búsqueda haciendolos más dinámicos            
@@ -71,13 +71,13 @@
                     $('#botonComprimirVisitante').trigger("click");
                     $('#crearVehiculo').css("display", "block");
                     $('#crearActivo').css("display", "block");
+                    $('#inputActivo').val("Computador");
                     $('#botonCrear2').css("display", "none");
                     $('#checkVehiculo').prop("disabled", true);
                     $('#checkActivo').prop("disabled", true);
                     $('#casoIngreso').val("casoVehiculoActivo");
                     requiredTrue('.vehiculo');
-                    requiredTrue('.activo');
-                    
+                    requiredTrue('.activo');     
 
                 } else if ($('#checkVehiculo').is(":checked") && ($('#checkActivo').prop("checked") ==
                         false)) {
@@ -91,6 +91,7 @@
                 } else if ($('#checkActivo').is(":checked") && ($('#checkVehiculo').prop("checked") ==
                         false)) {
                     $('#crearActivo').css("display", "block");
+                    $('#inputActivo').val("Computador");
                     $('#botonCrear').css("display", "none");
                     $('#checkActivo').prop("disabled", true);
                     $('#casoIngreso').val("casoActivo");
@@ -182,6 +183,10 @@
 
             //Botón que da acceso a la cámara web del computador donde este abierta la aplicación desde el formulario crear visitante
             $('#botonActivar').click(function() {
+                // var inputFoto = document.getElementById('inputFoto');
+                // if(inputFoto.classList.contains( 'is-invalid' )){
+                //     inputFoto.classList.remove('is-invalid');
+                // }
                 document.getElementById('canvas').style.display = 'none';
                 document.getElementById('inputFoto').setAttribute('value', '');
                 const video = document.getElementById("video");
@@ -319,6 +324,9 @@
                 selectMarcaVehiculo();
             });
 
+            // Muestra un modal con los diferentes errores cometidos por el usuario a la hora de ingresar un visitante
+            $('#modal-errores-personas').modal("show");
+
             //Función que se activa cuando el usuario selecciona alguna opción del select de marca de vehículo
             $('#selectTipoVehiculo').change(function() {
                 selectMarcaVehiculo();
@@ -346,7 +354,7 @@
                 } 
             }
 
-            // Muestra los modales dependiendo de los formularios que se hayan ingresado y redirecciona en caso de que se oprima el botón continuar
+            // Muestra los modales de ingreso correcto dependiendo de cuales se hayan ingresado y redirecciona en caso de que se oprima el botón continuar
             $('#modal-crear-visitante').modal("show");
             $('#modal-crear-visitanteVehiculo').modal("show");
             $('#modal-crear-visitanteActivo').modal("show");
@@ -358,8 +366,67 @@
                 $(location).attr('href', "{{ route('mostrarVisitantes') }}");
             });
 
-            // Muestra un modal con los diferentes errores cometidos por el usuario a la hora de ingresar un visitante
-            $('#modal-errores-personas').modal("show");
+            (function () {
+                'use strict'
+                var form = document.getElementById('formularioVisitante');
+                console.log(form); 
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                                event.preventDefault();
+                                event.stopPropagation();
+
+                            $('.visitante, .vehiculo, .activo').each(function(index) {
+                                if (!this.checkValidity()) {
+                                    $(this).addClass('is-invalid');
+                                }
+                            });
+                    }
+                }, false);
+
+            })()
+
+            //
+            // (function () {
+            //     'use strict'
+
+            //     // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            //     var forms = document.querySelectorAll('.needs-validation');
+                
+            //     // Loop over them and prevent submission
+            //     Array.prototype.slice.call(forms)
+            //         .forEach(function (form) {
+                       
+            //         form.addEventListener('submit', function (event) {
+            //             console.log(form); 
+            //             if (!form.checkValidity()) {
+            //                 event.preventDefault();
+            //                 event.stopPropagation();
+
+            //             $('.visitante, .vehiculo, .activo').each(function(index) {
+            //                 // console.log(this);
+            //                 if (!this.checkValidity()) {
+            //                     $(this).addClass('is-invalid');
+            //                 }
+            //             });
+            //             }
+
+            //         }, false)
+            //         })
+            // })()
+
+            //Si en un input del cualquier formulario del módulo visitantes esta la clase is-invalid al escribir en el mismo input se elimina esta clase 
+            $('input.visitante, textarea.visitante, input.vehiculo, input.activo').keypress(function(event){
+                if($(this).hasClass('is-invalid')){
+                    $(this).removeClass("is-invalid");
+                }     
+            });
+
+           //Si en un select del cualquier formulario del módulo visitantes esta la clase is-invalid al seleccionar algo en el mismo select se elimina esta clase 
+            $( 'select.visitante, select.vehiculo' ).change(function() {
+                if($(this).hasClass('is-invalid')){
+                    $(this).removeClass("is-invalid");
+                };   
+            });   
 
         });
     </script>

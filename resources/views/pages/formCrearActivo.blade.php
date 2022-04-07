@@ -18,15 +18,25 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="inputActivo">Ingrese el tipo de activo</label>
-                        <input type="text" class="activo form-control" id="inputActivo" name="activo" value="Computador"
+                        <input type="text" class="activo form-control {{ $errors->has('activo') ? 'is-invalid' : '' }}" id="inputActivo" name="activo" value=""
                             required>
+                            @if ($errors->has('activo')) 
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('activo') }}
+                                </div>          
+                            @endif 
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="inputCodigo">Ingrese el código único del activo</label>
-                        <input type="text" class="activo form-control" id="inputCodigo" name="codigo"
+                        <input type="text" class="activo form-control {{ $errors->has('codigo') ? 'is-invalid' : '' }}" id="inputCodigo" name="codigo"
                             value="{{ old('codigo') }}" autocomplete="off" required>
+                            @if ($errors->has('codigo')) 
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('codigo') }}
+                                </div>          
+                            @endif 
                     </div>
                 </div>
                 {{-- <div class="col-sm-4" style="display:none">

@@ -32,7 +32,9 @@ class RequestPersona extends FormRequest
             'id_arl' => 'required|integer',
             'foto' => 'required|string',
             'tel_contacto' => 'required|numeric|unique:se_personas,tel_contacto,'.$this->id.',id_personas|digits_between:7,10',
-            'id_empresa' => 'integer|nullable',
+            'id_empresa' => 'required|integer',
+            'colaborador' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:40|min:3',
+            'descripcion' => 'nullable|max:255'
         ];
     }
 
@@ -72,7 +74,16 @@ class RequestPersona extends FormRequest
             'tel_contacto.unique' => 'No puede haber dos personas con el mismo teléfono',
             'tel_contacto.digits_between' => 'El teléfono debe tener 7 o 10 números',
 
+            'id_empresa.required' => 'Se requiere que elija una opción en la empresa',
             'id_empresa.integer' => 'La Empresa debe ser de tipo entero',
+
+            'colaborador.required' => 'Se requiere que ingrese al colaborador a cargo',
+            'colaborador.string' => 'El colaborador debe ser de tipo texto',
+            'colaborador.regex' => 'El colaborador solo debe contener valores alfabéticos',
+            'colaborador.max' => 'El colaborador no puede tener más de 40 caracteres',
+            'colaborador.min' => 'El colaborador no puede tener menos de 3 caracteres',
+
+            'descripcion.max' => 'La descripción solo puede tener un máximo de 255 caracteres',           
         ];
     }
 }

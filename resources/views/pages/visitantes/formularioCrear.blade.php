@@ -18,11 +18,17 @@
                     <div class="form-group">
                         <label for="inputFoto">Fotografía</label>
 
-                        <input type="text" id="inputFoto" name="foto" value="{{ old('foto') }}"
-                            style="display: none">
+                        <input type="text" id="inputFoto" class="{{ $errors->has('foto') ? 'is-invalid' : '' }}" name="foto" value="{{ old('foto') }}"
+                            style="display: none">           
 
                         <video src="" id="video" class="img-fluid rounded" style="display: none"></video>
                         <canvas id="canvas" class="img-fluid rounded" style="display: none"></canvas>
+
+                        @if ($errors->has('foto')) 
+                            <div class="invalid-feedback">
+                                {{ $errors->first('foto') }}
+                            </div>            
+                        @endif
 
                         <div class="mt-2">
                             <button id="botonActivar" type="button" class="btn btn-primary btn-sm">Activar</button>
@@ -88,11 +94,10 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Ingrese la EPS</label>
+                                <label for="selectEps">Ingrese la EPS</label>
                                 <select id="selectEps" class="visitante select2bs4 form-control {{ $errors->has('id_eps') ? 'is-invalid' : '' }}" style="width: 100%;"
                                     name="id_eps" required>
                                     <option selected="selected" value="" disabled></option>
-
                                     @foreach ($eps as $ep)
                                         <option value="{{ $ep->id_eps }}"
                                             {{ $ep->id_eps == old('id_eps') ? 'selected' : '' }}>{{ $ep->eps }}
@@ -108,7 +113,7 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Ingrese el ARL</label>
+                                <label for="selectArl">Ingrese el ARL</label>
                                 <select id="selectArl" class="visitante select2bs4 form-control {{ $errors->has('id_arl') ? 'is-invalid' : '' }}" style="width: 100%;"
                                     name="id_arl" required>
                                     <option selected="selected" value="" disabled></option>
@@ -129,8 +134,8 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="inputEmpresa">Ingrese la empresa que visita</label>
-                                    <select id="inputEmpresa" class="visitante form-control {{ $errors->has('id_empresa') ? 'is-invalid' : '' }}" style="width: 100%;"
+                                <label for="selectEmpresa">Ingrese la empresa que visita</label>
+                                <select id="selectEmpresa" class="visitante form-control {{ $errors->has('id_empresa') ? 'is-invalid' : '' }}" style="width: 100%;"
                                     name="id_empresa" required>
                                     <option selected="selected" value="" disabled>Seleccione la empresa</option>
                                     @foreach ($empresas as $empresa)
@@ -163,7 +168,14 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label for="inputDescripcion">Ingrese una descripción</label>
-                                <textarea class="visitante form-control" name="descripcion" value="{{ old('descripcion') }}" id="inputDescripcion"></textarea>
+                                <textarea class="visitante form-control {{ $errors->has('descripcion') ? ' is-invalid ' : '' }}" name="descripcion" id="inputDescripcion">
+                                    {{ old('descripcion') }}
+                                </textarea>
+                                @if ($errors->has('descripcion')) 
+                                    <div class="invalid-feedback">
+                                        {{ $errors->first('descripcion') }}
+                                    </div>          
+                                @endif 
                             </div>
                         </div>
                     </div>

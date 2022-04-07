@@ -258,7 +258,7 @@
             <div class="col-md-12">
 
                 {{-- <form id="formularioConductor" action="{{ route('crearConductor') }}" method="POST"> --}}
-                <form action="{{ route('crearConductor') }}" method="POST">
+                <form action="{{ route('crearConductor') }}" method="POST" novalidate>
                     @csrf
 
                     <div class="card">
@@ -281,7 +281,7 @@
         </div>
 
         @include('pages.conductores.modales')
-        @include('pages.modalError')
+        {{-- @include('pages.modalError') --}}
 
     </section>
 @endsection
