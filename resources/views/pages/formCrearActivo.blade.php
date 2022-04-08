@@ -18,7 +18,7 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="inputActivo">Ingrese el tipo de activo</label>
-                        <input type="text" class="activo form-control {{ $errors->has('activo') ? 'is-invalid' : '' }}" id="inputActivo" name="activo" value=""
+                        <input type="text" class="activo form-control {{ $errors->has('activo') ? 'is-invalid' : '' }}" id="inputActivo" name="activo" value="{{ old('activo') }}"
                             required>
                             @if ($errors->has('activo')) 
                                 <div class="invalid-feedback">

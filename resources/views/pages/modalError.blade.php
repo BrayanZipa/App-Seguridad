@@ -3,7 +3,7 @@
         <button type="button" id="botonRetorno" class="btn btn-danger">Error</button>
     </div>
 
-@elseif ($errors->has('identificador') || $errors->has('id_tipo_vehiculo') || $errors->has('id_marca_vehiculo'))
+@elseif ($errors->has('identificador') || $errors->has('id_tipo_vehiculo') || $errors->has('id_marca_vehiculo') || $errors->has('foto_vehiculo'))
     <div class="text-center" style="display: none">
         <button type="button" id="botonRetorno2" class="btn btn-danger">Error</button>
     </div>

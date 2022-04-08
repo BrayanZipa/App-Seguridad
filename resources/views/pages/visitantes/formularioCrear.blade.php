@@ -1,4 +1,4 @@
-    <input id="casoIngreso" type="hidden" name="casoIngreso">
+    <input id="casoIngreso" type="hidden" name="casoIngreso" value="{{ old('casoIngreso') }}">
 
     <div class="card card-primary">
         <div class="card-header">

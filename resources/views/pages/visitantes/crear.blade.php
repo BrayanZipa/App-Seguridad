@@ -219,6 +219,10 @@
 
             //Botón que da acceso a la cámara web del computador donde este abierta la aplicación desde el formulario ingresar vehículo
             $('#botonActivar2').click(function() {
+                var inputFotoVehiculo = document.getElementById('inputFotoVehiculo');
+                if(inputFotoVehiculo.classList.contains( 'is-invalid' )){
+                    inputFotoVehiculo.classList.remove('is-invalid');
+                }
                 document.getElementById('canvas2').style.display = 'none';
                 document.getElementById('inputFotoVehiculo').setAttribute('value', '');
                 const video2 = document.getElementById("video2");
@@ -344,9 +348,8 @@
                 };   
             }); 
 
-            // Botón escondido en la interfaz del módulo visitantes que permite mantener la fotografía tomada previamente al visitante en caso de que haya errores al enviar el formulario crear visitante
-            // $('#botonRetorno').click(function(){
-            function retornarFotoVisitante() {
+            // Función que permite mantener la fotografía tomada previamente al visitante en caso de que haya errores al enviar el formulario crear visitante
+            function retornarFotoVisitante () {
                 var inputFoto = document.getElementById('inputFoto').value;
                 var video = document.getElementById("video");
                 var canvas = document.getElementById("canvas");
@@ -363,12 +366,9 @@
                     contexto.drawImage(imagen, 0, 0, imagen.width, imagen.height);
                 }
             }
-            // });
 
-            // Botón escondido en la interfaz del módulo visitantes que permite mantener la fotografía tomada previamente al visitante y al vehículo en caso de que haya errores al enviar el formulario crear visitante y crear vehículo
-            $('#botonRetorno2').click(function(){
-                retornarFotoVisitante();
-
+            //Función que permite mantener la fotografía tomada previamente al vehículo en caso de que haya errores al enviar el formulario crear vehículo
+            function retornarFotoVehiculo () {
                 var inputFotoVehiculo = document.getElementById('inputFotoVehiculo').value;              
                 var video2 = document.getElementById("video2");
                 var canvas2 = document.getElementById("canvas2");
@@ -389,32 +389,54 @@
                     contexto2.drawImage(imagen2, 0, 0, imagen2.width, imagen2.height);
                 }
 
-                // document.getElementById('botonRetorno').click();
                 selectMarcaVehiculo();
                 document.getElementById('checkVehiculo').click();
-                
+            }   
+
+            $('#botonRetorno').click(function () {
+                $('#checkActivo').prop("disabled", true);
+                $('#checkActivo').prop("checked", true);
+                $('#crearActivo').css("display", "block");
+                $('#casoIngreso').val("casoVehiculoActivo");
             });
 
-            $('#botonRetorno3').click(function(){
-                retornarFotoVisitante();
-                document.getElementById('checkActivo').click();
-            });
-
-            //Función anónima que se ejecuta si el botón con id botonRetorno se encuentra creado en la interfaz del usuario
+            //Función anónima que se ejecuta si alguno de los botones mencionados se encuentra creado en la interfaz del usuario
             (function () {
                 if(!!document.getElementById('botonRetorno')){
                     retornarFotoVisitante();
-                    // document.getElementById('botonRetorno').click();
+                    var caso = document.getElementById('casoIngreso').value;
 
+                    if(caso == 'casoVehiculo'){
+                        retornarFotoVehiculo();
+                    } else if (caso == 'casoActivo'){
+                        document.getElementById('checkActivo').click();
+                    } else if (caso == 'casoVehiculoActivo'){
+                        retornarFotoVehiculo();
+                        document.getElementById('botonRetorno').click(); 
+                    }
                 } else if (!!document.getElementById('botonRetorno2')){
-                    document.getElementById('botonRetorno2').click();
-                    
+                    retornarFotoVisitante();
+                    var caso = document.getElementById('casoIngreso').value;
+
+                    if(caso == 'casoVehiculo'){
+                        retornarFotoVehiculo();
+                    } else if(caso == 'casoVehiculoActivo'){
+                        retornarFotoVehiculo();
+                        document.getElementById('checkActivo').click(); 
+                    }                  
                 } else if (!!document.getElementById('botonRetorno3')){
-                    document.getElementById('botonRetorno3').click();      
+                    retornarFotoVisitante();
+                    var caso = document.getElementById('casoIngreso').value;
+
+                    if(caso == 'casoActivo'){
+                        document.getElementById('checkActivo').click(); 
+                    } else if(caso == 'casoVehiculoActivo'){
+                        retornarFotoVehiculo();
+                        document.getElementById('checkActivo').click(); 
+                    }  
                 }
             })();
             
-
             // Muestra los modales de ingreso correcto dependiendo de cuales se hayan ingresado y redirecciona en caso de que se oprima el botón continuar
             $('#modal-crear-visitante').modal("show");
             $('#modal-crear-visitanteVehiculo').modal("show");
@@ -425,9 +447,7 @@
                 //http://app-seguridad.test/visitantes
                 //http://127.0.0.1:8000/visitantes
                 $(location).attr('href', "{{ route('mostrarVisitantes') }}");
-            });
-
-            
+            });          
 
             //
             // (function () {
@@ -456,48 +476,45 @@
             //         }, false)
             //         })
             // })()
+    
+            // // Botón que devuelve la fotografía tomanda con anterioridad por el usuario en caso de que se cometa un error en el ingreso de datos
+            //     $('.botonError').click(function() {
+            //     var inputFoto = document.getElementById('inputFoto').value;
+            //     var inputFotoVehiculo = document.getElementById('inputFotoVehiculo').value;
 
+            //     var video = document.getElementById("video");
+            //     var canvas = document.getElementById("canvas");
+            //     var contexto = canvas.getContext("2d");               
+            //     var video2 = document.getElementById("video2");
+            //     var canvas2 = document.getElementById("canvas2");
+            //     var contexto2 = canvas2.getContext("2d");
 
-            
-            
-            // Botón que devuelve la fotografía tomanda con anterioridad por el usuario en caso de que se cometa un error en el ingreso de datos
-                $('.botonError').click(function() {
-                var inputFoto = document.getElementById('inputFoto').value;
-                var inputFotoVehiculo = document.getElementById('inputFotoVehiculo').value;
+            //     canvas.setAttribute("width", "640");
+            //     canvas.setAttribute("height", "600");
+            //     canvas2.setAttribute("width", "640");
+            //     canvas2.setAttribute("height", "480");
 
-                var video = document.getElementById("video");
-                var canvas = document.getElementById("canvas");
-                var contexto = canvas.getContext("2d");               
-                var video2 = document.getElementById("video2");
-                var canvas2 = document.getElementById("canvas2");
-                var contexto2 = canvas2.getContext("2d");
+            //     canvas.style.borderStyle = "solid";
+            //     canvas.style.borderWidth = "1px";
+            //     canvas.style.borderColor = "#007bff";
 
-                canvas.setAttribute("width", "640");
-                canvas.setAttribute("height", "600");
-                canvas2.setAttribute("width", "640");
-                canvas2.setAttribute("height", "480");
+            //     var imagen = new Image();
+            //     var imagen2 = new Image();
+            //     imagen.src = inputFoto;
+            //     imagen2.src = inputFotoVehiculo;
 
-                canvas.style.borderStyle = "solid";
-                canvas.style.borderWidth = "1px";
-                canvas.style.borderColor = "#007bff";
+            //     imagen.onload=function() {
+            //         document.getElementById('canvas').style.display = 'block';           
+            //         contexto.drawImage(imagen, 0, 0, imagen.width, imagen.height);
+            //     }
 
-                var imagen = new Image();
-                var imagen2 = new Image();
-                imagen.src = inputFoto;
-                imagen2.src = inputFotoVehiculo;
+            //     imagen2.onload=function() {
+            //         document.getElementById('canvas2').style.display = 'block';
+            //         contexto2.drawImage(imagen2, 0, 0, imagen2.width, imagen2.height);
+            //     }
 
-                imagen.onload=function() {
-                    document.getElementById('canvas').style.display = 'block';           
-                    contexto.drawImage(imagen, 0, 0, imagen.width, imagen.height);
-                }
-
-                imagen2.onload=function() {
-                    document.getElementById('canvas2').style.display = 'block';
-                    contexto2.drawImage(imagen2, 0, 0, imagen2.width, imagen2.height);
-                }
-
-                selectMarcaVehiculo();
-            });
+            //     selectMarcaVehiculo();
+            // });
 
             // Muestra un modal con los diferentes errores cometidos por el usuario a la hora de ingresar un visitante
             // $('#modal-errores-personas').modal("show");
