@@ -58,21 +58,16 @@ class RequestPersona extends FormRequest
             'identificacion.unique' => 'No puede haber dos personas con el mismo número de identificación',
             'identificacion.digits_between' => 'La identificación debe estar en un rango de 4 a 15 números',
 
-            'id_tipo_persona.integer' => 'El tipo de persona debe ser de tipo entero',
+            'tel_contacto.required' => 'Se requiere que ingrese el teléfono',
+            'tel_contacto.numeric' => 'El teléfono debe ser un valor númerico',
+            'tel_contacto.unique' => 'No puede haber dos personas con el mismo teléfono',
+            'tel_contacto.digits_between' => 'El teléfono debe tener 7 o 10 números',
 
             'id_eps.required' => 'Se requiere que elija una opción en la EPS',
             'id_eps.integer' => 'La EPS debe ser de tipo entero',
 
             'id_arl.required' => 'Se requiere que elija una opción en la ARL',
             'id_arl.integer' => 'La ARL debe ser de tipo entero',
-
-            'foto.required' => 'Se requiere que tome una foto de la persona',
-            'foto.string' => 'La información de la foto debe estar en formato de texto',
-
-            'tel_contacto.required' => 'Se requiere que ingrese el teléfono',
-            'tel_contacto.numeric' => 'El teléfono debe ser un valor númerico',
-            'tel_contacto.unique' => 'No puede haber dos personas con el mismo teléfono',
-            'tel_contacto.digits_between' => 'El teléfono debe tener 7 o 10 números',
 
             'id_empresa.required' => 'Se requiere que elija una opción en la empresa',
             'id_empresa.integer' => 'La Empresa debe ser de tipo entero',
@@ -83,7 +78,13 @@ class RequestPersona extends FormRequest
             'colaborador.max' => 'El colaborador no puede tener más de 40 caracteres',
             'colaborador.min' => 'El colaborador no puede tener menos de 3 caracteres',
 
-            'descripcion.max' => 'La descripción solo puede tener un máximo de 255 caracteres',           
+            'descripcion.max' => 'La descripción solo puede tener un máximo de 255 caracteres',   
+
+            'foto.required' => 'Se requiere que tome una foto de la persona',
+            'foto.string' => 'La información de la foto debe estar en formato de texto',  
+            
+            
+            'id_tipo_persona.integer' => 'El tipo de persona debe ser de tipo entero',
         ];
     }
 }

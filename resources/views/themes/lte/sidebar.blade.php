@@ -71,7 +71,6 @@
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             Visitantes
-                            <span class="right badge badge-danger">New</span>
                         </p>
                     </a>
                 </li>
@@ -91,6 +90,16 @@
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             Conductores
+                            <span class="badge badge-info right">2</span>
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Registros
                             <span class="badge badge-info right">2</span>
                         </p>
                     </a>

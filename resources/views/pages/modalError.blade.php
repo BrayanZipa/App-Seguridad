@@ -1,4 +1,21 @@
-@if (count($errors) > 0)
+@if ($errors->has('nombre') || $errors->has('apellido') || $errors->has('identificacion') || $errors->has('tel_contacto') || $errors->has('tel_contacto') || $errors->has('id_eps') || $errors->has('id_arl') || $errors->has('id_empresa') || $errors->has('colaborador') || $errors->has('descripcion'))
+    <div class="text-center" style="display: none">
+        <button type="button" id="botonRetorno" class="btn btn-danger">Error</button>
+    </div>
+
+@elseif ($errors->has('identificador') || $errors->has('id_tipo_vehiculo') || $errors->has('id_marca_vehiculo'))
+    <div class="text-center" style="display: none">
+        <button type="button" id="botonRetorno2" class="btn btn-danger">Error</button>
+    </div>
+
+@elseif ($errors->has('activo') || $errors->has('codigo'))
+    <div class="text-center" style="display: none">
+        <button type="button" id="botonRetorno3" class="btn btn-danger">Error</button>
+    </div>
+
+@endif
+
+{{-- @if (count($errors) > 0)
     <div class="modal fade" id="modal-errores-personas">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -22,4 +39,4 @@
         <!-- /.modal-dialog -->
     </div>
     <!-- /.modal -->
-@endif
+@endif --}}

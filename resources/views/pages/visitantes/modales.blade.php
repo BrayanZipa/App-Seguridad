@@ -28,7 +28,7 @@
             <div class="modal-content">
                 <div class="modal-header bg-primary">
                     <div class="justify-content-between">
-                        <h4 class="modal-title">REGISTRO CREADOO</h4>
+                        <h4 class="modal-title">REGISTRO CREADO</h4>
                     </div>
                 </div>
                 <div class="modal-body">

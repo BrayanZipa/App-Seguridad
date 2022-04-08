@@ -183,10 +183,10 @@
 
             //Botón que da acceso a la cámara web del computador donde este abierta la aplicación desde el formulario crear visitante
             $('#botonActivar').click(function() {
-                // var inputFoto = document.getElementById('inputFoto');
-                // if(inputFoto.classList.contains( 'is-invalid' )){
-                //     inputFoto.classList.remove('is-invalid');
-                // }
+                var inputFoto = document.getElementById('inputFoto');
+                if(inputFoto.classList.contains( 'is-invalid' )){
+                    inputFoto.classList.remove('is-invalid');
+                }
                 document.getElementById('canvas').style.display = 'none';
                 document.getElementById('inputFoto').setAttribute('value', '');
                 const video = document.getElementById("video");
@@ -285,8 +285,183 @@
                 document.getElementById('inputFotoVehiculo').setAttribute('value', foto); 
             });
 
+            // Función que permite que al momento que el usuario seleccione Bicicleta en el formulario de ingreso de vehículo se desabilite el select de marca de vehículo
+            function selectMarcaVehiculo() {
+                var tipo = $('#selectTipoVehiculo option:selected').text();
+                var tipoVehiculo = tipo.replace(/\s+/g, '');
+
+                if( tipoVehiculo == "Bicicleta"){
+                    $('#selectMarcaVehiculo').val('');
+                    $('#selectMarcaVehiculo').prop('disabled', true);
+                    $('#selectMarcaVehiculo').select2({
+                        theme: 'bootstrap4',
+                        placeholder: 'Seleccione la marca',
+                        language: {
+                            noResults: function() {
+                                return "No hay resultado";
+                            }
+                        }
+                    });        
+                } else {
+                    $('#selectMarcaVehiculo').prop('disabled', false);
+                } 
+            }
+
+            //Función que se activa cuando el usuario selecciona alguna opción del select de marca de vehículo
+            $('#selectTipoVehiculo').change(function() {
+                selectMarcaVehiculo();
+            });
+
+            // Función anónima que genera mensajes de error cuando el usuario intenta enviar algún formulario del módulo visitantes sin los datos requeridos, es una primera validación del lado del cliente
+            (function () {
+                'use strict'
+                var form = document.getElementById('formularioVisitante');
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+
+                    $('.visitante, .vehiculo, .activo').each(function(index) {
+                        if (!this.checkValidity()) {
+                            $(this).addClass('is-invalid');
+                        }
+                    });
+                    }
+                }, false);
+            })();
+
+            //Si en un input del cualquier formulario del módulo visitantes esta la clase is-invalid al escribir en el mismo input se elimina esta clase 
+            $('input.visitante, textarea.visitante, input.vehiculo, input.activo').keypress(function(event){
+                if($(this).hasClass('is-invalid')){
+                    $(this).removeClass("is-invalid");
+                }     
+            });
+
+           //Si en un select del cualquier formulario del módulo visitantes esta la clase is-invalid al seleccionar algo en el mismo select se elimina esta clase 
+            $( 'select.visitante, select.vehiculo' ).change(function() {
+                if($(this).hasClass('is-invalid')){
+                    $(this).removeClass("is-invalid");
+                };   
+            }); 
+
+            // Botón escondido en la interfaz del módulo visitantes que permite mantener la fotografía tomada previamente al visitante en caso de que haya errores al enviar el formulario crear visitante
+            // $('#botonRetorno').click(function(){
+            function retornarFotoVisitante() {
+                var inputFoto = document.getElementById('inputFoto').value;
+                var video = document.getElementById("video");
+                var canvas = document.getElementById("canvas");
+                var contexto = canvas.getContext("2d");
+
+                canvas.setAttribute("width", "640");
+                canvas.setAttribute("height", "600");
+
+                var imagen = new Image();
+                imagen.src = inputFoto;
+
+                imagen.onload=function() {
+                    document.getElementById('canvas').style.display = 'block';           
+                    contexto.drawImage(imagen, 0, 0, imagen.width, imagen.height);
+                }
+            }
+            // });
+
+            // Botón escondido en la interfaz del módulo visitantes que permite mantener la fotografía tomada previamente al visitante y al vehículo en caso de que haya errores al enviar el formulario crear visitante y crear vehículo
+            $('#botonRetorno2').click(function(){
+                retornarFotoVisitante();
+
+                var inputFotoVehiculo = document.getElementById('inputFotoVehiculo').value;              
+                var video2 = document.getElementById("video2");
+                var canvas2 = document.getElementById("canvas2");
+                var contexto2 = canvas2.getContext("2d");
+
+                canvas2.setAttribute("width", "640");
+                canvas2.setAttribute("height", "480");
+
+                canvas2.style.borderStyle = "solid";
+                canvas2.style.borderWidth = "1px";
+                canvas2.style.borderColor = "#fd7e14";
+
+                var imagen2 = new Image();;
+                imagen2.src = inputFotoVehiculo;
+
+                imagen2.onload=function() {
+                    document.getElementById('canvas2').style.display = 'block';
+                    contexto2.drawImage(imagen2, 0, 0, imagen2.width, imagen2.height);
+                }
+
+                // document.getElementById('botonRetorno').click();
+                selectMarcaVehiculo();
+                document.getElementById('checkVehiculo').click();
+                
+            });
+
+            $('#botonRetorno3').click(function(){
+                retornarFotoVisitante();
+                document.getElementById('checkActivo').click();
+            });
+
+            //Función anónima que se ejecuta si el botón con id botonRetorno se encuentra creado en la interfaz del usuario
+            (function () {
+                if(!!document.getElementById('botonRetorno')){
+                    retornarFotoVisitante();
+                    // document.getElementById('botonRetorno').click();
+
+                } else if (!!document.getElementById('botonRetorno2')){
+                    document.getElementById('botonRetorno2').click();
+                    
+                } else if (!!document.getElementById('botonRetorno3')){
+                    document.getElementById('botonRetorno3').click();      
+                }
+            })();
+            
+
+            // Muestra los modales de ingreso correcto dependiendo de cuales se hayan ingresado y redirecciona en caso de que se oprima el botón continuar
+            $('#modal-crear-visitante').modal("show");
+            $('#modal-crear-visitanteVehiculo').modal("show");
+            $('#modal-crear-visitanteActivo').modal("show");
+            $('#modal-crear-visitanteVehiculoActivo').modal("show");
+
+            $('.botonContinuar').click(function() {
+                //http://app-seguridad.test/visitantes
+                //http://127.0.0.1:8000/visitantes
+                $(location).attr('href', "{{ route('mostrarVisitantes') }}");
+            });
+
+            
+
+            //
+            // (function () {
+            //     'use strict'
+
+            //     // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            //     var forms = document.querySelectorAll('.needs-validation');
+                
+            //     // Loop over them and prevent submission
+            //     Array.prototype.slice.call(forms)
+            //         .forEach(function (form) {
+            //         form.addEventListener('submit', function (event) {
+            //             console.log(form); 
+            //             if (!form.checkValidity()) {
+            //                 event.preventDefault();
+            //                 event.stopPropagation();
+
+            //             $('.visitante, .vehiculo, .activo').each(function(index) {
+            //                 // console.log(this);
+            //                 if (!this.checkValidity()) {
+            //                     $(this).addClass('is-invalid');
+            //                 }
+            //             });
+            //             }
+
+            //         }, false)
+            //         })
+            // })()
+
+
+            
+            
             // Botón que devuelve la fotografía tomanda con anterioridad por el usuario en caso de que se cometa un error en el ingreso de datos
-            $('.botonError').click(function() {
+                $('.botonError').click(function() {
                 var inputFoto = document.getElementById('inputFoto').value;
                 var inputFotoVehiculo = document.getElementById('inputFotoVehiculo').value;
 
@@ -325,108 +500,7 @@
             });
 
             // Muestra un modal con los diferentes errores cometidos por el usuario a la hora de ingresar un visitante
-            $('#modal-errores-personas').modal("show");
-
-            //Función que se activa cuando el usuario selecciona alguna opción del select de marca de vehículo
-            $('#selectTipoVehiculo').change(function() {
-                selectMarcaVehiculo();
-            });
-
-            // Función que permite que al momento que el usuario seleccione Bicicleta en el formulario de ingreso de vehículo se desabilite el select de marca de vehículo
-            function selectMarcaVehiculo() {
-                var tipo = $('#selectTipoVehiculo option:selected').text();
-                var tipoVehiculo = tipo.replace(/\s+/g, '');
-
-                if( tipoVehiculo == "Bicicleta"){
-                    $('#selectMarcaVehiculo').val('');
-                    $('#selectMarcaVehiculo').prop('disabled', true);
-                    $('#selectMarcaVehiculo').select2({
-                        theme: 'bootstrap4',
-                        placeholder: 'Seleccione la marca',
-                        language: {
-                            noResults: function() {
-                                return "No hay resultado";
-                            }
-                        }
-                    });        
-                } else {
-                    $('#selectMarcaVehiculo').prop('disabled', false);
-                } 
-            }
-
-            // Muestra los modales de ingreso correcto dependiendo de cuales se hayan ingresado y redirecciona en caso de que se oprima el botón continuar
-            $('#modal-crear-visitante').modal("show");
-            $('#modal-crear-visitanteVehiculo').modal("show");
-            $('#modal-crear-visitanteActivo').modal("show");
-            $('#modal-crear-visitanteVehiculoActivo').modal("show");
-
-            $('.botonContinuar').click(function() {
-                //http://app-seguridad.test/visitantes
-                //http://127.0.0.1:8000/visitantes
-                $(location).attr('href', "{{ route('mostrarVisitantes') }}");
-            });
-
-            (function () {
-                'use strict'
-                var form = document.getElementById('formularioVisitante');
-                console.log(form); 
-                form.addEventListener('submit', function (event) {
-                    if (!form.checkValidity()) {
-                                event.preventDefault();
-                                event.stopPropagation();
-
-                            $('.visitante, .vehiculo, .activo').each(function(index) {
-                                if (!this.checkValidity()) {
-                                    $(this).addClass('is-invalid');
-                                }
-                            });
-                    }
-                }, false);
-
-            })()
-
-            //
-            // (function () {
-            //     'use strict'
-
-            //     // Fetch all the forms we want to apply custom Bootstrap validation styles to
-            //     var forms = document.querySelectorAll('.needs-validation');
-                
-            //     // Loop over them and prevent submission
-            //     Array.prototype.slice.call(forms)
-            //         .forEach(function (form) {
-                       
-            //         form.addEventListener('submit', function (event) {
-            //             console.log(form); 
-            //             if (!form.checkValidity()) {
-            //                 event.preventDefault();
-            //                 event.stopPropagation();
-
-            //             $('.visitante, .vehiculo, .activo').each(function(index) {
-            //                 // console.log(this);
-            //                 if (!this.checkValidity()) {
-            //                     $(this).addClass('is-invalid');
-            //                 }
-            //             });
-            //             }
-
-            //         }, false)
-            //         })
-            // })()
-
-            //Si en un input del cualquier formulario del módulo visitantes esta la clase is-invalid al escribir en el mismo input se elimina esta clase 
-            $('input.visitante, textarea.visitante, input.vehiculo, input.activo').keypress(function(event){
-                if($(this).hasClass('is-invalid')){
-                    $(this).removeClass("is-invalid");
-                }     
-            });
-
-           //Si en un select del cualquier formulario del módulo visitantes esta la clase is-invalid al seleccionar algo en el mismo select se elimina esta clase 
-            $( 'select.visitante, select.vehiculo' ).change(function() {
-                if($(this).hasClass('is-invalid')){
-                    $(this).removeClass("is-invalid");
-                };   
-            });   
+            // $('#modal-errores-personas').modal("show");
 
         });
     </script>
@@ -458,7 +532,7 @@
         </div>
 
         @include('pages.visitantes.modales')
-        {{-- @include('pages.modalError') --}}
+        @include('pages.modalError')
 
     </section>
 @endsection

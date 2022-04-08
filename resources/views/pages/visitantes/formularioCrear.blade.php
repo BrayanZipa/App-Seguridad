@@ -67,7 +67,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="inputIdentificacion">Ingrese la identificación</label>
+                                <label for="inputIdentificacion">Ingrese número de identificación</label>
                                 <input type="text" class="visitante form-control {{ $errors->has('identificacion') ? 'is-invalid' : '' }}" id="inputIdentificacion"
                                     name="identificacion" value="{{ old('identificacion') }}" autocomplete="off"
                                     placeholder="Identificación" required>
@@ -113,7 +113,7 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="selectArl">Ingrese el ARL</label>
+                                <label for="selectArl">Ingrese la ARL</label>
                                 <select id="selectArl" class="visitante select2bs4 form-control {{ $errors->has('id_arl') ? 'is-invalid' : '' }}" style="width: 100%;"
                                     name="id_arl" required>
                                     <option selected="selected" value="" disabled></option>
