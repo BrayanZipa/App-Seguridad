@@ -7,15 +7,15 @@
 @section('css')
     <!-- DataTables -->
     <link rel="stylesheet" href="{{ asset('assets/lte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-    <link rel="stylesheet"
-        href="{{ asset('assets/lte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/lte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/lte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+    <!-- Select2 -->
     <link rel="stylesheet" href="{{ asset('assets/lte/plugins/select2/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/lte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
 @endsection
 
 @section('scripts')
-    <!-- DataTables  & Plugins -->
+    <!-- DataTables -->
     <script src="{{ asset('assets/lte/plugins/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/lte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('assets/lte/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
@@ -28,6 +28,7 @@
     <script src="{{ asset('assets/lte/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('assets/lte/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
     <script src="{{ asset('assets/lte/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+    <!-- Select2 -->
     <script src="{{ asset('assets/lte/plugins/select2/js/select2.full.min.js') }}"></script>
     
     <!-- JavaScript propio-->
@@ -135,15 +136,8 @@
                 $('#formEditarConductor').css("display", "block");
                 $('#form_EditarConductor').attr('action','http://127.0.0.1:8000/conductores/editar/' + id_conductor); 
                 $('#fotoConductor').attr("src", foto); 
-                activarSelect2()           
+                activarSelect2();          
             });
-
-            // $('body').click(function() {
-            //     var id_conductor = $('#inputId').val();
-            //     console.log(id_conductor);
-            //     // $('#formEditarConductor').css("display", "block");
-            //     $('#form_EditarConductor').attr('action','http://127.0.0.1:8000/conductores/editar/' + id_conductor); 
-            // });
 
             //Boton que permite ocultar el formulario de editar conductor
             $('#botonCerrar').click(function(){
@@ -183,7 +177,7 @@
                     <!-- /.card-header -->
                     <div class="card-body">
                         <!-- /.card-body -->
-                        <table id="tabla_conductores" class="table table-bordered table-striped table-hover ">
+                        <table id="tabla_conductores" class="table table-bordered table-striped table-hover">
                             <thead>
                                 <tr>
                                     <th>ID</th>

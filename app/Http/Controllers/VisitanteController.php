@@ -97,15 +97,19 @@ class VisitanteController extends Controller
         $nuevoVisitante['codigo'] = ucfirst($nuevoVisitante['codigo']);
         $nuevoVisitante['id_tipo_persona'] = 1;
         $nuevoVisitante['id_usuario'] = auth()->user()->id_usuarios;
-
-        $img = $request->foto;
-        $img = str_replace('data:image/png;base64,', '', $img);
-        $img = str_replace(' ', '+', $img);
-        $foto = base64_decode($img);
-        $filename = 'visitantes/'. $nuevoVisitante['identificacion']. '_'. date('Y-m-d'). '.png';
-        $ruta = storage_path() . '\app\public/' .  $filename;
-        Image::make($foto)->resize(600, 500)->save($ruta);
-        $url = Storage::url($filename);
+        
+        if(!isset($nuevoVisitante['foto'])){ //saber si es null
+            $url = null;
+        } else{
+            $img = $request->foto;
+            $img = str_replace('data:image/png;base64,', '', $img);
+            $img = str_replace(' ', '+', $img);
+            $foto = base64_decode($img);
+            $filename = 'visitantes/'. $nuevoVisitante['identificacion']. '_'. date('Y-m-d'). '.png';
+            $ruta = storage_path() . '\app\public/' .  $filename;
+            Image::make($foto)->resize(600, 500)->save($ruta);
+            $url = Storage::url($filename);
+        }      
 
         //Crear registro de nuevo visitante dato a dato con la información del request
         $visitante = Persona::create([
@@ -150,14 +154,18 @@ class VisitanteController extends Controller
     //Función que permite registrar un nuevo vehículo creado desde el modulo de visitantes
     public function store2($datos, $id_persona)
     {
-        $img = $datos['foto_vehiculo'];
-        $img = str_replace('data:image/png;base64,', '', $img);
-        $img = str_replace(' ', '+', $img);
-        $foto = base64_decode($img);
-        $filename = 'vehiculos/'. $id_persona. '_'. $datos['identificador']. '_'.date('Y-m-d'). '.png';
-        $ruta = storage_path() . '\app\public/' .  $filename;
-        Image::make($foto)->resize(600, 500)->save($ruta);
-        $url = Storage::url($filename);
+        if(!isset($datos['foto_vehiculo'])){ //saber si es null
+            $url = null;
+        } else {
+            $img = $datos['foto_vehiculo'];
+            $img = str_replace('data:image/png;base64,', '', $img);
+            $img = str_replace(' ', '+', $img);
+            $foto = base64_decode($img);
+            $filename = 'vehiculos/'. $id_persona. '_'. $datos['identificador']. '_'.date('Y-m-d'). '.png';
+            $ruta = storage_path() . '\app\public/' .  $filename;
+            Image::make($foto)->resize(600, 500)->save($ruta);
+            $url = Storage::url($filename);
+        }
 
         if(!isset($datos['id_marca_vehiculo'])){ //saber si existe
             $datos['id_marca_vehiculo'] = null;

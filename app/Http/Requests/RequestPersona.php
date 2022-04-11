@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use PhpParser\Node\Stmt\Else_;
 
 class RequestPersona extends FormRequest
 {
@@ -23,19 +24,19 @@ class RequestPersona extends FormRequest
      */
     public function rules()
     {
-        return [
-            'nombre' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:20|min:3',
-            'apellido' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:20|min:3',   
-            'identificacion' => 'required|numeric|unique:se_personas,identificacion,'.$this->id.',id_personas|digits_between:4,15',
-            'id_tipo_persona' => 'integer',
-            'id_eps' => 'required|integer',         
-            'id_arl' => 'required|integer',
-            'foto' => 'required|string',
-            'tel_contacto' => 'required|numeric|unique:se_personas,tel_contacto,'.$this->id.',id_personas|digits_between:7,10',
-            'id_empresa' => 'required|integer',
-            'colaborador' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:40|min:3',
-            'descripcion' => 'nullable|max:255'
-        ];
+        // dd ($this->method());
+        if($this->method() == 'POST'){
+            $validacionPost = [
+                'id_empresa' => 'required|integer',
+                'colaborador' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:40|min:3',
+                'descripcion' => 'nullable|max:255'
+            ];
+
+            return array_merge($this->validacionGeneral(), $validacionPost);
+
+        } else if($this->method() == 'PUT'){
+            return $this->validacionGeneral();
+        }
     }
 
     public function messages()
@@ -87,4 +88,19 @@ class RequestPersona extends FormRequest
             'id_tipo_persona.integer' => 'El tipo de persona debe ser de tipo entero',
         ];
     }
+
+    //Función que retorna las validaciones en general para las personas ya sean visitantes o conductores
+    public function validacionGeneral()
+    {
+        return[
+            'nombre' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:20|min:3',
+            'apellido' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:20|min:3',   
+            'identificacion' => 'required|numeric|unique:se_personas,identificacion,'.$this->id.',id_personas|digits_between:4,15',
+            'id_eps' => 'required|integer',         
+            'id_arl' => 'required|integer',
+            'foto' => 'required|string',
+            'tel_contacto' => 'required|numeric|unique:se_personas,tel_contacto,'.$this->id.',id_personas|digits_between:7,10',
+            'id_tipo_persona' => 'integer',
+        ];
+    } 
 }

@@ -6,11 +6,14 @@
 
 @section('css')
     {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
+
+    <!-- Select2 -->
     <link rel="stylesheet" href="{{ asset('assets/lte/plugins/select2/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/lte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
 @endsection
 
 @section('scripts')
+    <!-- Select2 -->
     <script src="{{ asset('assets/lte/plugins/select2/js/select2.full.min.js') }}"></script>
 
     <script>
@@ -137,6 +140,9 @@
                 $('#botonActivar').trigger("click");
                 $('.visitante').each(function(index) {
                     $(this).val('');
+                    if($(this).hasClass('is-invalid')){
+                        $(this).removeClass("is-invalid");
+                    }  
                 });
                 activarSelect2Visitante();
             });
@@ -149,6 +155,9 @@
                 $('#botonCapturar2').css("display", "none");
                 $('.vehiculo').each(function(index) {
                     $(this).val('');
+                    if($(this).hasClass('is-invalid')){
+                        $(this).removeClass("is-invalid");
+                    } 
                 });
                 $('#selectMarcaVehiculo').val([]);
                 activarSelect2Vehiculo();
@@ -158,6 +167,9 @@
             $('#botonLimpiar3').click(function() {
                 $('.activo').each(function(index) {
                     $(this).val('');
+                    if($(this).hasClass('is-invalid')){
+                        $(this).removeClass("is-invalid");
+                    } 
                 });
             });
 
@@ -335,7 +347,7 @@
             })();
 
             //Si en un input del cualquier formulario del módulo visitantes esta la clase is-invalid al escribir en el mismo input se elimina esta clase 
-            $('input.visitante, textarea.visitante, input.vehiculo, input.activo').keypress(function(event){
+            $('input.visitante, textarea.visitante, input.vehiculo, input.activo').keydown(function(event){
                 if($(this).hasClass('is-invalid')){
                     $(this).removeClass("is-invalid");
                 }     
@@ -357,6 +369,10 @@
 
                 canvas.setAttribute("width", "640");
                 canvas.setAttribute("height", "600");
+
+                canvas.style.borderStyle = "solid";
+                canvas.style.borderWidth = "1px";
+                canvas.style.borderColor = "#007bff";
 
                 var imagen = new Image();
                 imagen.src = inputFoto;
@@ -393,14 +409,17 @@
                 document.getElementById('checkVehiculo').click();
             }   
 
+            //Botón que aparece si hay errores en el ingreso del formulario crear visitante y se activa si los tres formularios estan visibles, esto mantiene la información y los formularios visibles
             $('#botonRetorno').click(function () {
+                requiredTrue('.activo'); 
+                $('#botonCrear2').css("display", "none");
                 $('#checkActivo').prop("disabled", true);
                 $('#checkActivo').prop("checked", true);
                 $('#crearActivo').css("display", "block");
                 $('#casoIngreso').val("casoVehiculoActivo");
             });
 
-            //Función anónima que se ejecuta si alguno de los botones mencionados se encuentra creado en la interfaz del usuario
+            //Función anónima que se ejecuta si alguno de los elementos mencionados se crea en la interfaz debido a errores cometidos en el ingreso de los formularios del módulo de visitantes
             (function () {
                 if(!!document.getElementById('botonRetorno')){
                     retornarFotoVisitante();
@@ -531,7 +550,7 @@
     <section class="content-header">
         <div class="row">
             <div class="col-md-12">
-                <form id="formularioVisitante" class="needs-validation" action="{{ route('crearVisitante') }}" method="POST" novalidate>
+                <form id="formularioVisitante" action="{{ route('crearVisitante') }}" method="POST" novalidate>
                     @csrf
                     <div>
                         @include('pages.visitantes.formularioCrear')

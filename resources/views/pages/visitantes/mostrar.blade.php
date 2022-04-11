@@ -9,12 +9,13 @@
     <link rel="stylesheet" href="{{ asset('assets/lte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/lte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/lte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+    <!-- Select2 -->
     <link rel="stylesheet" href="{{ asset('assets/lte/plugins/select2/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/lte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
 @endsection
 
 @section('scripts')
-    <!-- DataTables  & Plugins -->
+    <!-- DataTables -->
     <script src="{{ asset('assets/lte/plugins/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/lte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('assets/lte/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
@@ -27,6 +28,7 @@
     <script src="{{ asset('assets/lte/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('assets/lte/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
     <script src="{{ asset('assets/lte/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+    <!-- Select2 -->
     <script src="{{ asset('assets/lte/plugins/select2/js/select2.full.min.js') }}"></script>
     
     <!-- JavaScript propio-->
@@ -96,7 +98,10 @@
             });
 
             //Se elije una fila de la tabla y se toma la información de la persona para mostrarla en un formulario y permitir actualizarla
-            $('#tabla_visitantes tbody').on('click', 'td.editar_visitante', function () {      
+            $('#tabla_visitantes tbody').on('click', 'td.editar_visitante', function () {     
+                if($('.visitante').hasClass('is-invalid')){
+                    $('.visitante').removeClass("is-invalid");
+                }  
                 $('#formularioEditar').css("display", "block");  
                 var tr = $(this).closest('tr');
                 var row = $('#tabla_visitantes').DataTable().row(tr);
@@ -104,6 +109,7 @@
                 // console.log(data);
                 //http://app-seguridad.test/visitantes/editar/   
                 $('#form_editar').attr('action','http://127.0.0.1:8000/visitantes/editar/' + data.id_personas); 
+                $('#inputId').val(data.id_personas); 
                 $('#inputFoto').val(data.foto); 
                 $('#fotoVisitante').attr("src", data.foto);  
                 $('#inputNombre').val(data.nombre);
@@ -127,6 +133,50 @@
                 });
             }
 
+            // Función anónima que genera mensajes de error cuando el usuario intenta enviar el formulario de actualización de visitantes sin los datos requeridos, es una primera validación del lado del cliente
+            (function () {
+                'use strict'
+                var form = document.getElementById('form_editar');
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+
+                        $('.visitante').each(function(index) {
+                            if (!this.checkValidity()) {
+                                $(this).addClass('is-invalid');
+                            }
+                        });
+                    }
+                }, false);
+            })();
+
+            //Si en un input del formulario de actualizar visitantes esta la clase is-invalid al escribir en el mismo input se elimina esta clase 
+            $('input.visitante').keydown(function(event){
+                if($(this).hasClass('is-invalid')){
+                    $(this).removeClass("is-invalid");
+                }     
+            });
+
+            //Si en un select del formulario actualizar visitantes esta la clase is-invalid al seleccionar algo en el mismo select se elimina esta clase 
+            $( 'select.visitante').change(function() {
+                if($(this).hasClass('is-invalid')){
+                    $(this).removeClass("is-invalid");
+                };   
+            }); 
+
+            //Función anónima que permite devolver el formulario de actualización con los datos ingresados por el usuario con anterioridad en caso de que se cometa un error y se dispare una validación
+            (function () {
+                if(!!document.getElementById('botonRetorno')){
+                    var id_visitante = document.getElementById('inputId').value;
+                    var foto = document.getElementById('inputFoto').value;
+                    document.getElementById('formularioEditar').style.display = 'block';
+                    document.getElementById('form_editar').setAttribute('action', 'http://127.0.0.1:8000/visitantes/editar/' + id_visitante);
+                    document.getElementById('fotoVisitante').setAttribute('src', foto);
+                    activarSelect2();
+                }
+            })();
+
             //Boton que permite ocultar el formulario de editar
             $('#botonCerrar').click(function(){
                 $("#formularioEditar").css("display", "none");
@@ -139,7 +189,7 @@
             }, 2000);
 
             // Muestra un modal con los diferentes errores cometidos por el usuario a la hora de actualizar un visitante
-            $('#modal-errores-personas').modal("show");
+            // $('#modal-errores-personas').modal("show");
 
         });        
     </script>
@@ -164,7 +214,7 @@
                     <!-- /.card-header -->
                     <div class="card-body">
                         <!-- /.card-body -->
-                        <table id="tabla_visitantes" class="table table-bordered table-striped table-hover ">
+                        <table id="tabla_visitantes" class="table table-bordered table-striped table-hover">
                             <thead>
                                 <tr>
                                     <th>ID</th>
