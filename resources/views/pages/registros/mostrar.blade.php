@@ -62,16 +62,34 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Nombres</th>
-                                    <th>Apellidos</th>
+                                    <th>Nombre</th>
                                     <th>Identificación</th>
+                                    <th>Fecha ingreso</th>
+                                    <th>Hora ingreso</th>                      
                                     <th>EPS</th>
                                     <th>ARL</th>
                                     <th>Teléfono</th>
+                                    <th>Responsable</th>
                                     <th>Ingresado por</th>
                                     <th>Editar</th>
                                 </tr>
                             </thead>
+                            <tbody>
+                                @foreach($registros as $registro)
+                                    <tr>
+                                        <td>{{ $registro->id_registros }}</td>
+                                        <td>{{ $registro->persona->nombre }} {{ $registro->persona->apellido }}</td>
+                                        <td>{{ $registro->persona->identificacion }}</td>
+                                        <td>{{ $registro->ingreso_persona}}</td>  
+                                        <td></td>                                 
+                                        <td>{{ $registro->persona->id_eps}}</td>
+                                        <td>{{ $registro->persona->id_arl}}</td>
+                                        <td>{{ $registro->persona->tel_contacto}}</td>
+                                        <td>{{ $registro->colaborador}}</td>
+                                        <td>{{ $registro->persona->usuario->name}}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
                         </table>
                     </div>
                     <!-- /.card-body -->

@@ -80,6 +80,10 @@
 
             //Botón que da acceso a la cámara web del computador donde este abierta la aplicación desde el formulario crear conductor
             $('#botonActivar').click(function() {
+                var inputFoto = document.getElementById('inputFoto');
+                if(inputFoto.classList.contains( 'is-invalid' )){
+                    inputFoto.classList.remove('is-invalid');
+                }
                 document.getElementById('canvas').style.display = 'none';
                 document.getElementById('inputFoto').setAttribute('value', '');
                 const video = document.getElementById("video");
@@ -91,7 +95,9 @@
 
                 const constraints = {
                     audio: false,
-                    video: true
+                    video: {
+                        width: 640, height: 480
+                    }
                 };
 
                 navigator.mediaDevices.getUserMedia(constraints)
@@ -103,7 +109,6 @@
 
                         video.srcObject = stream;
                         video.play();
-
                         document.getElementById('botonCapturar').style.display = 'inline';
                     })
                     .catch((err) => console.log(err))
@@ -111,9 +116,13 @@
 
             //Botón que da acceso a la cámara web del computador donde este abierta la aplicación desde el formulario ingresar vehículo
             $('#botonActivar2').click(function() {
+                var inputFotoVehiculo = document.getElementById('inputFotoVehiculo');
+                if(inputFotoVehiculo.classList.contains( 'is-invalid' )){
+                    inputFotoVehiculo.classList.remove('is-invalid');
+                }
                 document.getElementById('canvas2').style.display = 'none';
                 document.getElementById('inputFotoVehiculo').setAttribute('value', '');
-                const video = document.getElementById("video2");
+                const video2 = document.getElementById("video2");
 
                 if (!tieneSoporteUserMedia()) {
                     alert("Lo siento. Tu navegador no soporta esta característica");
@@ -122,18 +131,20 @@
 
                 const constraints = {
                     audio: false,
-                    video: true
+                    video: {
+                        width: 640, height: 480
+                    }
                 };
 
                 navigator.mediaDevices.getUserMedia(constraints)
                     .then((stream) => {                       
-                        video.style.display = 'block';
-                        video.style.borderStyle = "solid";
-                        video.style.borderWidth = "1px";
-                        video.style.borderColor = "#fd7e14";
+                        video2.style.display = 'block';
+                        video2.style.borderStyle = "solid";
+                        video2.style.borderWidth = "1px";
+                        video2.style.borderColor = "#fd7e14";
 
-                        video.srcObject = stream;
-                        video.play(); 
+                        video2.srcObject = stream;
+                        video2.play(); 
 
                         document.getElementById('botonCapturar2').style.backgroundColor = 'rgb(255, 115, 0)'; 
                         document.getElementById('botonCapturar2').style.display = 'inline';                      
@@ -176,43 +187,6 @@
                 document.getElementById('inputFotoVehiculo').setAttribute('value', foto);  
             });
 
-            // Botón que devuelve la fotografía tomanda con anterioridad por el usuario en caso de que se cometa un error en el ingreso de datos
-            $('.botonError').click(function() {
-                var inputFoto = document.getElementById('inputFoto').value;
-                var inputFotoVehiculo = document.getElementById('inputFotoVehiculo').value;
-
-                var video = document.getElementById("video");
-                var canvas = document.getElementById("canvas");
-                var contexto = canvas.getContext("2d");               
-                var video2 = document.getElementById("video2");
-                var canvas2 = document.getElementById("canvas2");
-                var contexto2 = canvas2.getContext("2d");
-
-                canvas.setAttribute("width", "640");
-                canvas.setAttribute("height", "480");
-                canvas2.setAttribute("width", "640");
-                canvas2.setAttribute("height", "480");
-
-                var imagen = new Image();
-                var imagen2 = new Image();
-                imagen.src = inputFoto;
-                imagen2.src = inputFotoVehiculo;
-
-                imagen.onload=function() {
-                    document.getElementById('canvas').style.display = 'block';
-                    document.getElementById('canvas2').style.display = 'block';
-                    contexto.drawImage(imagen, 0, 0, imagen.width, imagen.height);
-                    contexto2.drawImage(imagen2, 0, 0, imagen2.width, imagen2.height);
-                }
-
-                selectMarcaVehiculo();
-            });
-
-            //Función que se activa cuando el usuario selecciona alguna opción del select de marca de vehículo
-            $('#selectTipoVehiculo').change(function() {
-                selectMarcaVehiculo();
-            });
-
             // Función que permite que al momento que el usuario seleccione Bicicleta en el formulario de ingreso de vehículo se desabilite el select de marca de vehículo
             function selectMarcaVehiculo() {
                 var tipo = $('#selectTipoVehiculo option:selected').text();
@@ -235,6 +209,98 @@
                 } 
             }
 
+            //Función que se activa cuando el usuario selecciona alguna opción del select de marca de vehículo
+            $('#selectTipoVehiculo').change(function() {
+                selectMarcaVehiculo();
+            });
+
+            // Función anónima que genera mensajes de error cuando el usuario intenta enviar algún formulario del módulo visitantes sin los datos requeridos, es una primera validación del lado del cliente
+            (function () {
+                'use strict'
+                var form = document.getElementById('formularioConductor');
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+
+                    $('.conductor, .vehiculo').each(function(index) {
+                        if (!this.checkValidity()) {
+                            $(this).addClass('is-invalid');
+                        }
+                    });
+                    }
+                }, false);
+            })();
+
+            //Si en un input del cualquier formulario del módulo conductores esta la clase is-invalid al escribir en el mismo input se elimina esta clase 
+            $('input.conductor, textarea.conductor, input.vehiculo').keydown(function(event){
+                if($(this).hasClass('is-invalid')){
+                    $(this).removeClass("is-invalid");
+                }     
+            });
+
+           //Si en un select del cualquier formulario del módulo conductores esta la clase is-invalid al seleccionar algo en el mismo select se elimina esta clase 
+            $( 'select.conductor, select.vehiculo' ).change(function() {
+                if($(this).hasClass('is-invalid')){
+                    $(this).removeClass("is-invalid");
+                };   
+            }); 
+
+            // Función que permite mantener la fotografía tomada previamente al conductor en caso de que haya errores al enviar el formulario crear conductor
+            function retornarFotoConductor () {
+                var inputFoto = document.getElementById('inputFoto').value;
+                var video = document.getElementById("video");
+                var canvas = document.getElementById("canvas");
+                var contexto = canvas.getContext("2d");
+
+                canvas.setAttribute("width", "640");
+                canvas.setAttribute("height", "480");
+
+                canvas.style.borderStyle = "solid";
+                canvas.style.borderWidth = "1px";
+                canvas.style.borderColor = "#007bff";
+
+                var imagen = new Image();
+                imagen.src = inputFoto;
+
+                imagen.onload=function() {
+                    document.getElementById('canvas').style.display = 'block';           
+                    contexto.drawImage(imagen, 0, 0, imagen.width, imagen.height);
+                }
+            }
+
+            //Función que permite mantener la fotografía tomada previamente al vehículo en caso de que haya errores al enviar el formulario crear vehículo
+            function retornarFotoVehiculo () {
+                var inputFotoVehiculo = document.getElementById('inputFotoVehiculo').value;              
+                var video2 = document.getElementById("video2");
+                var canvas2 = document.getElementById("canvas2");
+                var contexto2 = canvas2.getContext("2d");
+
+                canvas2.setAttribute("width", "640");
+                canvas2.setAttribute("height", "480");
+
+                canvas2.style.borderStyle = "solid";
+                canvas2.style.borderWidth = "1px";
+                canvas2.style.borderColor = "#fd7e14";
+
+                var imagen2 = new Image();;
+                imagen2.src = inputFotoVehiculo;
+
+                imagen2.onload=function() {
+                    document.getElementById('canvas2').style.display = 'block';
+                    contexto2.drawImage(imagen2, 0, 0, imagen2.width, imagen2.height);
+                }
+            } 
+
+            //Función anónima que se ejecuta si alguno de los elementos mencionados se crea en la interfaz debido a errores cometidos en el ingreso de los formularios del módulo de conductores
+            (function () {
+                if(!!document.getElementById('botonRetorno') || !!document.getElementById('botonRetorno2')){
+                    retornarFotoConductor();
+                    retornarFotoVehiculo();
+                    selectMarcaVehiculo();
+                }
+            })();
+
             // Muestra el modal de creación de conductor exitoso y redirecciona en caso de que se oprima el botón continuar
             $('#modal-crear-conductor').modal("show");
 
@@ -242,9 +308,45 @@
                 //http://127.0.0.1:8000/conductores
                 $(location).attr('href', "{{ route('mostrarConductores') }}");
             });
+            
+
+            // Botón que devuelve la fotografía tomanda con anterioridad por el usuario en caso de que se cometa un error en el ingreso de datos
+            // $('.botonError').click(function() {
+            //     var inputFoto = document.getElementById('inputFoto').value;
+            //     var inputFotoVehiculo = document.getElementById('inputFotoVehiculo').value;
+
+            //     var video = document.getElementById("video");
+            //     var canvas = document.getElementById("canvas");
+            //     var contexto = canvas.getContext("2d");               
+            //     var video2 = document.getElementById("video2");
+            //     var canvas2 = document.getElementById("canvas2");
+            //     var contexto2 = canvas2.getContext("2d");
+
+            //     canvas.setAttribute("width", "640");
+            //     canvas.setAttribute("height", "480");
+            //     canvas2.setAttribute("width", "640");
+            //     canvas2.setAttribute("height", "480");
+
+            //     var imagen = new Image();
+            //     var imagen2 = new Image();
+            //     imagen.src = inputFoto;
+            //     imagen2.src = inputFotoVehiculo;
+
+            //     imagen.onload=function() {
+            //         document.getElementById('canvas').style.display = 'block';           
+            //         contexto.drawImage(imagen, 0, 0, imagen.width, imagen.height);
+            //     }
+
+            //     imagen2.onload=function() {
+            //         document.getElementById('canvas2').style.display = 'block';
+            //         contexto2.drawImage(imagen2, 0, 0, imagen2.width, imagen2.height);
+            //     }
+
+            //     selectMarcaVehiculo();
+            // });
 
             // Muestra un modal con los diferentes errores cometidos por el usuario a la hora de ingresar un conductor
-            $('#modal-errores-personas').modal("show");
+            // $('#modal-errores-personas').modal("show");
 
         });
     </script>
@@ -258,11 +360,8 @@
     <section class="content-header">
         <div class="row">
             <div class="col-md-12">
-
-                {{-- <form id="formularioConductor" action="{{ route('crearConductor') }}" method="POST"> --}}
-                <form action="{{ route('crearConductor') }}" method="POST" novalidate>
+                <form id="formularioConductor" action="{{ route('crearConductor') }}" method="POST" novalidate>
                     @csrf
-
                     <div class="card">
                         <div>
                             @include('pages.conductores.formularioCrear')
@@ -277,13 +376,12 @@
                             <button id="botonLimpiar" type='button' class="btn btn-secondary" style="width: 120px">Limpiar</button>
                         </div>
                     </div>
-
                 </form>
             </div>
         </div>
 
         @include('pages.conductores.modales')
-        {{-- @include('pages.modalError') --}}
+        @include('pages.modalError')
 
     </section>
 @endsection

@@ -46,4 +46,8 @@ class User extends Authenticatable implements LdapAuthenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // public function persona(){
+    //     return $this->hasMany(Persona::class, 'id_usuario', 'id_usuarios'); 
+    // }
 }

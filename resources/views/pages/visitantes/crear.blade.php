@@ -468,6 +468,7 @@
                 $(location).attr('href', "{{ route('mostrarVisitantes') }}");
             });          
 
+            
             //
             // (function () {
             //     'use strict'

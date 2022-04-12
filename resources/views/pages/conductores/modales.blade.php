@@ -4,12 +4,12 @@
             <div class="modal-content">
                 <div class="modal-header bg-primary">
                     <div class="d-flex justify-content-center">
-                        <h4 class="modal-title">CONDUCTOR CREADO</h4>
+                        <h4 class="modal-title">REGISTRO CREADO</h4>
                     </div>
                 </div>
                 <div class="modal-body">
-                    <p>Se ha creado al conductor <b>{{ session('crear_conductor')[0] }}</b> asociado al vehículo 
-                        con placa <b>{{ session('crear_conductor')[1] }}</b> exitosamente.</p>
+                    <p>Conductor <b>{{ session('crear_conductor')[0] }}</b> creado exitosamente.</p>
+                    <p>Vehículo con identificador <b>{{ session('crear_conductor')[1] }}</b> creado exitosamente.</p>
                     <p>¿Desea crear otro?</p>
                 </div>
                 <div class="modal-footer justify-content-between">

@@ -50,4 +50,14 @@ class Persona extends Model
         }
         return $response;  
     }
+
+    // Función que permite una relación de uno a muchos, una persona puede tener muchos registros, se usa el modelo de Registro, la llave foránea del tabla se_registros (id_persona) y la llave primaria (id_personas) con la que tiene conexión en la tabla padre (tabla se_personas).
+    public function registros(){
+        return $this->hasMany(Registro::class, 'id_persona', 'id_personas'); 
+    }
+
+    // Función que permite una relación de uno a muchos inversa, una persona solo puede tener un usuario que la haya creado.
+    public function usuario(){
+        return $this->belongsTo(User::class, 'id_usuario', 'id_usuarios');
+    }
 }

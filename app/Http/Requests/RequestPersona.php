@@ -24,7 +24,6 @@ class RequestPersona extends FormRequest
      */
     public function rules()
     {
-        // dd ($this->method());
         if($this->method() == 'POST'){
             $validacionPost = [
                 'id_empresa' => 'required|integer',
@@ -85,22 +84,23 @@ class RequestPersona extends FormRequest
             'foto.string' => 'La información de la foto debe estar en formato de texto',  
             
             
-            'id_tipo_persona.integer' => 'El tipo de persona debe ser de tipo entero',
+            // 'id_tipo_persona.integer' => 'El tipo de persona debe ser de tipo entero',
         ];
     }
 
-    //Función que retorna las validaciones en general para las personas ya sean visitantes o conductores
+    //Función que retorna las validaciones en general para el ingreso de datos de personas
     public function validacionGeneral()
     {
         return[
             'nombre' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:20|min:3',
             'apellido' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:20|min:3',   
             'identificacion' => 'required|numeric|unique:se_personas,identificacion,'.$this->id.',id_personas|digits_between:4,15',
+            'tel_contacto' => 'required|numeric|unique:se_personas,tel_contacto,'.$this->id.',id_personas|digits_between:7,10',
             'id_eps' => 'required|integer',         
             'id_arl' => 'required|integer',
             'foto' => 'required|string',
-            'tel_contacto' => 'required|numeric|unique:se_personas,tel_contacto,'.$this->id.',id_personas|digits_between:7,10',
-            'id_tipo_persona' => 'integer',
+            
+            // 'id_tipo_persona' => 'integer',
         ];
     } 
 }

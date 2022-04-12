@@ -29,10 +29,8 @@
                     @endif
 
                     <div class="mt-2">
-                        <button id="botonActivar2" type="button" class="btn btn-sm"
-                            style="background-color: rgb(255, 115, 0)">Activar</button>
-                        <button id="botonCapturar2" type="button" class="btn btn-sm"
-                            style="display: none">Capturar</button>
+                        <button id="botonActivar2" type="button" class="btn btn-sm" style="background-color: rgb(255, 115, 0)">Activar</button>
+                        <button id="botonCapturar2" type="button" class="btn btn-sm" style="display: none">Capturar</button>
                     </div>
                 </div>
             </div>

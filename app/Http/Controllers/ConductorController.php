@@ -9,6 +9,7 @@ use App\Models\Eps;
 use App\Models\MarcaVehiculo;
 use App\Models\Persona;
 use App\Models\PersonaVehiculo;
+use App\Models\Registro;
 use App\Models\TipoPersona;
 use App\Models\TipoVehiculo;
 use App\Models\Vehiculo;
@@ -71,20 +72,25 @@ class ConductorController extends Controller
         $nuevoConductor = $request->all();
         $nuevoConductor['nombre'] = ucwords(mb_strtolower($nuevoConductor['nombre']));
         $nuevoConductor['apellido'] = ucwords(mb_strtolower($nuevoConductor['apellido']));
+        $nuevoConductor['descripcion'] = ucfirst(mb_strtolower($nuevoConductor['descripcion']));
         $nuevoConductor['identificador'] = strtoupper($nuevoConductor['identificador']);
-
         $nuevoConductor['id_tipo_persona'] = 3;
         $nuevoConductor['id_usuario'] = auth()->user()->id_usuarios;
 
-        $img = $request->foto;
-        $img = str_replace('data:image/png;base64,', '', $img);
-        $img = str_replace(' ', '+', $img);
-        $foto = base64_decode($img);
-        $filename = 'conductores/'. $nuevoConductor['identificacion']. '_'. date('Y-m-d'). '.png';
-        $ruta = storage_path() . '\app\public/' .  $filename;
-        Image::make($foto)->resize(600, 500)->save($ruta);
-        $url = Storage::url($filename);
+        if(!isset($nuevoConductor['foto'])){ //saber si es null
+            $url = null;
+        } else{
+            $img = $request->foto;
+            $img = str_replace('data:image/png;base64,', '', $img);
+            $img = str_replace(' ', '+', $img);
+            $foto = base64_decode($img);
+            $filename = 'conductores/'. $nuevoConductor['identificacion']. '_'. date('Y-m-d'). '.png';
+            $ruta = storage_path() . '\app\public/' .  $filename;
+            Image::make($foto)->resize(600, 500)->save($ruta);
+            $url = Storage::url($filename);
+        } 
 
+        //Crear registro de nuevo conductor dato a dato con la información del request
         $conductor = Persona::create([
             'id_usuario' => $nuevoConductor['id_usuario'],
             'id_tipo_persona' => $nuevoConductor['id_tipo_persona'],
@@ -98,7 +104,8 @@ class ConductorController extends Controller
         ]);
         $conductor->save();
     
-        $mensajeVehiculo = $this->store2($nuevoConductor, $conductor->id_personas);
+        [$mensajeVehiculo, $id_vehiculo] = $this->store2($nuevoConductor, $conductor->id_personas);
+        $this->store3($nuevoConductor, $conductor->id_personas, $id_vehiculo);
         $modal = [$conductor->nombre.' '.$conductor->apellido, $mensajeVehiculo];
         
         return redirect()->action([ConductorController::class, 'create'])->with('crear_conductor', $modal);
@@ -107,14 +114,18 @@ class ConductorController extends Controller
     //Función que permite registrar un nuevo vehículo creado desde el modulo de conductores
     public function store2($datos, $id_persona)
     {
-        $img = $datos['foto_vehiculo'];
-        $img = str_replace('data:image/png;base64,', '', $img);
-        $img = str_replace(' ', '+', $img);
-        $foto = base64_decode($img);
-        $filename = 'vehiculos/'. $id_persona. '_'. $datos['identificador']. '_'.date('Y-m-d'). '.png';
-        $ruta = storage_path() . '\app\public/' .  $filename;
-        Image::make($foto)->resize(600, 500)->save($ruta);
-        $url = Storage::url($filename);
+        if(!isset($datos['foto_vehiculo'])){ //saber si es null
+            $url = null;
+        } else {
+            $img = $datos['foto_vehiculo'];
+            $img = str_replace('data:image/png;base64,', '', $img);
+            $img = str_replace(' ', '+', $img);
+            $foto = base64_decode($img);
+            $filename = 'vehiculos/'. $id_persona. '_'. $datos['identificador']. '_'.date('Y-m-d'). '.png';
+            $ruta = storage_path() . '\app\public/' .  $filename;
+            Image::make($foto)->resize(600, 500)->save($ruta);
+            $url = Storage::url($filename);
+        }
 
         if(!isset($datos['id_marca_vehiculo'])){ //saber si existe
             $datos['id_marca_vehiculo'] = null;
@@ -134,8 +145,24 @@ class ConductorController extends Controller
             'id_persona' => $id_persona,
         ])->save();
 
-        return $vehiculo->identificador;
+        return [$vehiculo->identificador, $vehiculo->id_vehiculos];
     }
+
+    //Función que permite hacer un registro de la entrada de un visitante al momento que se crea un nuevo visitante en la base de datos
+    public function store3($datos, $id_persona, $id_vehiculo)
+    {
+        Registro::create([
+            'id_persona' => $id_persona,
+            'ingreso_persona' => date('Y-m-d H:i:s'),
+            'ingreso_vehiculo' => date('Y-m-d H:i:s'),
+            'id_vehiculo' => $id_vehiculo,
+            'descripcion' => $datos['descripcion'],
+            // 'id_empresa' => $datos['id_empresa'],
+            // 'colaborador' => $datos['colaborador'],
+            'id_usuario' => $datos['id_usuario'],
+        ])->save(); 
+    }
+
 
     /**
      * Update the specified resource in storage.

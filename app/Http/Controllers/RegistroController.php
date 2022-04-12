@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Registro;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 
@@ -14,8 +16,11 @@ class RegistroController extends Controller
      */
     public function index()
     {
-        $exitCode = Artisan::call('cache:clear');
-        return view('pages.registros.mostrar');
+        // $exitCode = Artisan::call('cache:clear');
+        $registros = Registro::all();
+        // $usuarios = User::all()->where('id_usuarios', '1');
+        // dd($registros);
+        return view('pages.registros.mostrar', compact('registros'));
     }
 
     /**

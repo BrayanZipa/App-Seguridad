@@ -7,6 +7,7 @@ use App\Models\Empresa;
 use App\Models\Eps;
 use App\Models\Persona;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 
 class ColaboradorController extends Controller
 {
@@ -29,6 +30,7 @@ class ColaboradorController extends Controller
      */
     public function index()
     {
+        $exitCode = Artisan::call('cache:clear');
         [$eps, $arl, $empresas] = $this->obtenerModelos();
         return view('pages.colaboradores.mostrar', compact('eps', 'arl', 'empresas'));
     }
@@ -40,6 +42,7 @@ class ColaboradorController extends Controller
      */
     public function create()
     {
+        $exitCode = Artisan::call('cache:clear');
         [$eps, $arl, $empresas] = $this->obtenerModelos();
         return view('pages.colaboradores.crear', compact('eps', 'arl', 'empresas'));
     }

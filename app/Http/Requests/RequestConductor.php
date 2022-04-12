@@ -26,13 +26,15 @@ class RequestConductor extends FormRequest
         return [
             'nombre' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:20|min:3',
             'apellido' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:20|min:3',   
-            'identificacion' => 'required|numeric|unique:se_personas,identificacion,'.$this->id.',id_personas|digits_between:4,15',
-            'id_tipo_persona' => 'integer',
+            'identificacion' => 'required|numeric|unique:se_personas,identificacion,'.$this->id.',id_personas|digits_between:4,15',     
+            'tel_contacto' => 'required|numeric|unique:se_personas,tel_contacto,'.$this->id.',id_personas|digits_between:7,10',   
             'id_eps' => 'required|integer',         
             'id_arl' => 'required|integer',
+            'descripcion' => 'nullable|max:255',
             'foto' => 'required|string',
-            'tel_contacto' => 'required|numeric|unique:se_personas,tel_contacto,'.$this->id.',id_personas|digits_between:7,10',
-            'id_empresa' => 'integer|nullable',
+            
+            // 'id_empresa.required' => 'Se requiere que elija una opción en la empresa',
+            // 'id_empresa.integer' => 'La Empresa debe ser de tipo entero',
 
             'identificador' => 'required|string|unique:se_vehiculos,identificador|alpha_num|max:15|min:6',
             'id_tipo_vehiculo' => 'required|integer',   
@@ -61,7 +63,10 @@ class RequestConductor extends FormRequest
             'identificacion.unique' => 'No puede haber dos personas con el mismo número de identificación',
             'identificacion.digits_between' => 'La identificación debe estar en un rago de 4 a 15 caracteres',
 
-            'id_tipo_persona.integer' => 'El tipo de persona debe ser de tipo entero',
+            'tel_contacto.required' => 'Se requiere que ingrese el teléfono',
+            'tel_contacto.numeric' => 'El teléfono debe ser un valor númerico',
+            'tel_contacto.unique' => 'No puede haber dos personas con el mismo teléfono',
+            'tel_contacto.digits_between' => 'El teléfono debe tener 7 o 10 caracteres',
 
             'id_eps.required' => 'Se requiere que elija una opción en la EPS',
             'id_eps.integer' => 'La EPS debe ser de tipo entero',
@@ -69,16 +74,10 @@ class RequestConductor extends FormRequest
             'id_arl.required' => 'Se requiere que elija una opción en la ARL',
             'id_arl.integer' => 'La ARL debe ser de tipo entero',
 
+            'descripcion.max' => 'La descripción solo puede tener un máximo de 255 caracteres',   
+
             'foto.required' => 'Se requiere que tome una foto de la persona',
             'foto.string' => 'La información de la foto debe estar en formato de texto',
-
-            'tel_contacto.required' => 'Se requiere que ingrese el teléfono',
-            'tel_contacto.numeric' => 'El teléfono debe ser un valor númerico',
-            'tel_contacto.unique' => 'No puede haber dos personas con el mismo teléfono',
-            'tel_contacto.digits_between' => 'El teléfono debe tener 7 o 10 caracteres',
-
-            'id_empresa.integer' => 'La Empresa debe ser de tipo entero',
-
 
             'identificador.required' => 'Se requiere que ingrese el identificador del vehículo',
             'identificador.string' => 'El identificador debe ser de tipo texto',
@@ -90,7 +89,7 @@ class RequestConductor extends FormRequest
             'id_tipo_vehiculo.required' => 'Se requiere que elija una opción en el tipo de vehículo',
             'id_tipo_vehiculo.integer' => 'El tipo de vehículo debe ser de tipo entero',
 
-            'id_marca_vehiculo.integer' => 'La marca ded vehículo debe ser de tipo entero',
+            'id_marca_vehiculo.integer' => 'La marca de vehículo debe ser de tipo entero',
 
             'foto_vehiculo.required' => 'Se requiere que tome una foto del vehículo',
             'foto_vehiculo.string' => 'La información de la foto del vehículo debe estar en formato de texto',

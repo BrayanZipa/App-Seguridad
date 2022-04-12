@@ -129,6 +129,21 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="inputDescripcion">Ingrese una descripción</label>
+                            <textarea class="conductor form-control {{ $errors->has('descripcion') ? ' is-invalid ' : '' }}" name="descripcion" id="inputDescripcion">
+                                {{ old('descripcion') }}
+                            </textarea>
+                            @if ($errors->has('descripcion')) 
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('descripcion') }}
+                                </div>          
+                            @endif 
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
