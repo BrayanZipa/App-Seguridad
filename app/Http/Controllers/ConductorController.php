@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RequestConductor;
 use App\Http\Requests\RequestPersona;
 use App\Models\Arl;
+use App\Models\Empresa;
 use App\Models\Eps;
 use App\Models\MarcaVehiculo;
 use App\Models\Persona;
@@ -25,15 +26,17 @@ class ConductorController extends Controller
     protected $arl;
     protected $tipoVehiculos;
     protected $marcaVehiculos;
+    protected $empresas;
     protected $tipoPersonas;
 
-    public function __construct(Persona $conductores, Eps $eps, Arl $arl, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, TipoPersona $tipoPersonas){
+    public function __construct(Persona $conductores, Eps $eps, Arl $arl, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, TipoPersona $tipoPersonas, Empresa $empresas){
         $this->conductores = $conductores;
         $this->eps = $eps;
         $this->arl = $arl;
         $this->tipoVehiculos = $tipoVehiculos;
         $this->marcaVehiculos = $marcaVehiculos;
         $this->tipoPersonas = $tipoPersonas;
+        $this->empresas = $empresas;
     }
   
     /**
@@ -57,8 +60,9 @@ class ConductorController extends Controller
     public function create()
     {
         $exitCode = Artisan::call('cache:clear');
+        $empresas = $this->empresas->obtenerEmpresas();
         [$eps, $arl, $tipoVehiculos, $marcaVehiculos] = $this->obtenerModelos();
-        return view('pages.conductores.crear', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos'));
+        return view('pages.conductores.crear', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos', 'empresas'));
     }
 
     /**
@@ -157,8 +161,8 @@ class ConductorController extends Controller
             'ingreso_vehiculo' => date('Y-m-d H:i:s'),
             'id_vehiculo' => $id_vehiculo,
             'descripcion' => $datos['descripcion'],
-            // 'id_empresa' => $datos['id_empresa'],
-            // 'colaborador' => $datos['colaborador'],
+            'id_empresa' => $datos['id_empresa'],
+            'colaborador' => $datos['colaborador'],
             'id_usuario' => $datos['id_usuario'],
         ])->save(); 
     }

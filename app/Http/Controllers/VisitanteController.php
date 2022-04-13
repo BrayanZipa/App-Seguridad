@@ -26,8 +26,8 @@ class VisitanteController extends Controller
     protected $arl;
     protected $tipoVehiculos;
     protected $marcaVehiculos;
-    protected $tipoPersonas;
     protected $empresas;
+    protected $tipoPersonas;
 
     /**
      * Contructor que inicializa todos los modelos

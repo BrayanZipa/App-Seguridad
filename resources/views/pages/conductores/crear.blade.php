@@ -357,7 +357,7 @@
         @include('pages.conductores.header')
     </div>
 
-    <section class="content-header">
+    <section class="content-header mb-n4">
         <div class="row">
             <div class="col-md-12">
                 <form id="formularioConductor" action="{{ route('crearConductor') }}" method="POST" novalidate>

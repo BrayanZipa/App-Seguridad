@@ -78,7 +78,7 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="inputTelefono">Ingrese un teléfono en caso de emergencia</label>
+                            <label for="inputTelefono">Ingrese un teléfono</label>
                             <input type="tel" class="conductor form-control {{ $errors->has('tel_contacto') ? 'is-invalid' : '' }}" id="inputTelefono" name="tel_contacto"
                                 value="{{ old('tel_contacto') }}" placeholder="Teléfono" required>
                                 @if ($errors->has('tel_contacto')) 
@@ -126,6 +126,39 @@
                                     {{ $errors->first('id_arl') }}
                                 </div>            
                             @endif
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="selectEmpresa">Ingrese la empresa que visita</label>
+                            <select id="selectEmpresa" class="conductor form-control {{ $errors->has('id_empresa') ? 'is-invalid' : '' }}" style="width: 100%;"
+                                name="id_empresa" required>
+                                <option selected="selected" value="" disabled>Seleccione la empresa</option>
+                                @foreach ($empresas as $empresa)
+                                    <option value="{{ $empresa->id_empresas}}"
+                                        {{ $empresa->id_empresas == old('id_empresa') ? 'selected' : '' }}>{{ $empresa->nombre }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @if ($errors->has('id_empresa')) 
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('id_empresa') }}
+                                </div>            
+                            @endif
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="inputColaborador">Ingrese al colaborador a cargo</label>
+                            <input type="text" class="conductor form-control {{ $errors->has('colaborador') ? ' is-invalid ' : '' }}" id="inputColaborador" name="colaborador"
+                                value="{{ old('colaborador') }}" autocomplete="off" placeholder="Colaborador" required>
+                                @if ($errors->has('colaborador')) 
+                                    <div class="invalid-feedback">
+                                        {{ $errors->first('colaborador') }}
+                                    </div>          
+                                @endif      
                         </div>
                     </div>
                 </div>

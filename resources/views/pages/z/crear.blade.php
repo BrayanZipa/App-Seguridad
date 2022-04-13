@@ -468,77 +468,6 @@
                 $(location).attr('href', "{{ route('mostrarVisitantes') }}");
             });          
 
-            
-            //
-            // (function () {
-            //     'use strict'
-
-            //     // Fetch all the forms we want to apply custom Bootstrap validation styles to
-            //     var forms = document.querySelectorAll('.needs-validation');
-                
-            //     // Loop over them and prevent submission
-            //     Array.prototype.slice.call(forms)
-            //         .forEach(function (form) {
-            //         form.addEventListener('submit', function (event) {
-            //             console.log(form); 
-            //             if (!form.checkValidity()) {
-            //                 event.preventDefault();
-            //                 event.stopPropagation();
-
-            //             $('.visitante, .vehiculo, .activo').each(function(index) {
-            //                 // console.log(this);
-            //                 if (!this.checkValidity()) {
-            //                     $(this).addClass('is-invalid');
-            //                 }
-            //             });
-            //             }
-
-            //         }, false)
-            //         })
-            // })()
-    
-            // // Botón que devuelve la fotografía tomanda con anterioridad por el usuario en caso de que se cometa un error en el ingreso de datos
-            //     $('.botonError').click(function() {
-            //     var inputFoto = document.getElementById('inputFoto').value;
-            //     var inputFotoVehiculo = document.getElementById('inputFotoVehiculo').value;
-
-            //     var video = document.getElementById("video");
-            //     var canvas = document.getElementById("canvas");
-            //     var contexto = canvas.getContext("2d");               
-            //     var video2 = document.getElementById("video2");
-            //     var canvas2 = document.getElementById("canvas2");
-            //     var contexto2 = canvas2.getContext("2d");
-
-            //     canvas.setAttribute("width", "640");
-            //     canvas.setAttribute("height", "600");
-            //     canvas2.setAttribute("width", "640");
-            //     canvas2.setAttribute("height", "480");
-
-            //     canvas.style.borderStyle = "solid";
-            //     canvas.style.borderWidth = "1px";
-            //     canvas.style.borderColor = "#007bff";
-
-            //     var imagen = new Image();
-            //     var imagen2 = new Image();
-            //     imagen.src = inputFoto;
-            //     imagen2.src = inputFotoVehiculo;
-
-            //     imagen.onload=function() {
-            //         document.getElementById('canvas').style.display = 'block';           
-            //         contexto.drawImage(imagen, 0, 0, imagen.width, imagen.height);
-            //     }
-
-            //     imagen2.onload=function() {
-            //         document.getElementById('canvas2').style.display = 'block';
-            //         contexto2.drawImage(imagen2, 0, 0, imagen2.width, imagen2.height);
-            //     }
-
-            //     selectMarcaVehiculo();
-            // });
-
-            // Muestra un modal con los diferentes errores cometidos por el usuario a la hora de ingresar un visitante
-            // $('#modal-errores-personas').modal("show");
-
         });
     </script>
 @endsection
@@ -553,7 +482,45 @@
             <div class="col-md-12">
                 <form id="formularioVisitante" action="{{ route('crearVisitante') }}" method="POST" novalidate>
                     @csrf
-                    <div>
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+                          <div class="card card-primary card-tabs">
+                            <div class="card-header p-0 pt-1">
+                              <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                                <li class="nav-item">
+                                  <a class="nav-link active" id="" data-toggle="pill" href="#nuevo_visitante" role="tab" aria-controls="nuevo_visitante" aria-selected="true">Nuevo visitante</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="crearVehiculo" data-toggle="pill" href="#nuevo_vehiculo" role="tab" aria-controls="nuevo_vehiculo" aria-selected="false" style="display: none">Nuevo vehículo</a>
+                                </li>
+                                <li class="nav-item">
+                                  <a class="nav-link" id="crearActivo" data-toggle="pill" href="#nuevo_activo" role="tab" aria-controls="nuevo_activo" aria-selected="false" style="display: none">Nuevo activo</a>
+                                </li>
+                              </ul>
+                            </div>
+                            <div class="card-body">
+                              <div class="tab-content" id="custom-tabs-one-tabContent">
+                                <div class="tab-pane fade show active" id="nuevo_visitante" role="tabpanel" aria-labelledby="nuevo_visitante-tab">
+                                    @include('pages.visitantes.formularioCrear2')
+                                </div>
+                                <div class="tab-pane fade" id="nuevo_vehiculo" role="tabpanel" aria-labelledby="nuevo_vehiculo-tab">
+                                    @include('pages.vehiculos.formCrearVehiculo')
+                                </div>
+                                <div class="tab-pane fade" id="nuevo_activo" role="tabpanel" aria-labelledby="nuevo_activo-tab">
+                                    @include('pages.activos.formCrearActivo')
+                                </div>
+                              </div>
+                            </div>
+                            <!-- /.card -->
+                          </div>
+                        </div>  
+                    </div> 
+
+
+
+                    {{-- <div>
                         @include('pages.visitantes.formularioCrear')
                     </div>
 
@@ -563,7 +530,7 @@
 
                     <div id="crearActivo" style="display: none">
                         @include('pages.formCrearActivo')
-                    </div>
+                    </div> --}}
                 </form>
             </div>
         </div>

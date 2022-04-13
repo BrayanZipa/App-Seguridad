@@ -165,7 +165,7 @@
                 };   
             }); 
 
-            //Función anónima que permite devolver el formulario de actualización con los datos ingresados por el usuario con anterioridad en caso de que se cometa un error y se dispare una validación
+            //Función anónima que permite devolver el formulario de actualización de visitantes con los datos ingresados por el usuario con anterioridad en caso de que se cometa un error y se dispare una validación
             (function () {
                 if(!!document.getElementById('botonRetorno')){
                     var id_visitante = document.getElementById('inputId').value;
@@ -200,11 +200,11 @@
         @include('pages.visitantes.header')
     </div>
 
-    <section id="formularioEditar" class="content-header" style="display: none">
+    <section id="formularioEditar" class="content-header mb-n4" style="display: none">
         @include('pages.visitantes.formularioEditar')
     </section>
 
-    <section class="content-header">
+    <section class="content-header mb-n4">
         <div class="row">
             <div class="col-12">
                 <div class="card card-primary">
