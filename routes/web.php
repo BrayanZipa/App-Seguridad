@@ -4,6 +4,7 @@ use App\Http\Controllers\ColaboradorController;
 use App\Http\Controllers\ConductorController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RegistroController;
+use App\Http\Controllers\VehiculoController;
 use App\Http\Controllers\VisitanteController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -54,6 +55,15 @@ Route::get('/conductores/crear', [ConductorController::class, 'create'])->name('
 Route::post('/conductores/crear', [ConductorController::class, 'store'])->name('crearConductor');
 Route::get('/conductores/informacion', [ConductorController::class, 'informacionConductores'])->name('mostrarInfoConductores');
 Route::put('/conductores/editar/{id}', [ConductorController::class, 'update'])->name('editarConductor');
+
+/**
+ * Rutas del modulo de vehículos
+ */
+Route::get('/vehiculos', [VehiculoController::class, 'index'])->name('mostrarVehiculos');
+Route::get('/vehiculos/crear', [VehiculoController::class, 'create'])->name('formCrearVehiculo');
+Route::post('/vehiculos/crear', [VehiculoController::class, 'store'])->name('crearVehiculo');
+Route::get('/vehiculos/informacion', [VehiculoController::class, 'informacionVehiculos'])->name('mostrarInfoVehiculos');
+Route::put('/vehiculos/editar/{id}', [VehiculoController::class, 'update'])->name('editarVehiculo');
 
 /**
  * Rutas del modulo de registros

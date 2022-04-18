@@ -96,6 +96,16 @@
                 </li>
 
                 <li class="nav-item">
+                    <a href="{{ route('mostrarVehiculos')}}" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Vehículos
+                            <span class="badge badge-info right">2</span>
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
                     <a href="{{ route('mostrarRegistros') }}" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
