@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\MarcaVehiculo;
 use App\Models\Persona;
+use App\Models\PersonaVehiculo;
 use App\Models\TipoPersona;
 use App\Models\TipoVehiculo;
 use App\Models\Vehiculo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class VehiculoController extends Controller
 {
@@ -63,7 +66,43 @@ class VehiculoController extends Controller
     public function store(Request $request)
     {
         $this->validarVehiculo($request);
-        return $request->all();
+        $nuevoVehiculo = $request->all();
+
+        $nuevoVehiculo['identificador'] = strtoupper($nuevoVehiculo['identificador']);
+        $nuevoVehiculo['id_usuario'] = auth()->user()->id_usuarios;
+
+        if(!isset($nuevoVehiculo['foto_vehiculo'])){ //saber si es null
+            $url = null;
+        } else {
+            $img = $nuevoVehiculo['foto_vehiculo'];
+            $img = str_replace('data:image/png;base64,', '', $img);
+            $img = str_replace(' ', '+', $img);
+            $foto = base64_decode($img);
+            $filename = 'vehiculos/'. '$id_persona'. '_'. $nuevoVehiculo['identificador']. '_'.date('Y-m-d'). '.png';
+            $ruta = storage_path() . '\app\public/' .  $filename;
+            Image::make($foto)->resize(600, 500)->save($ruta);
+            $url = Storage::url($filename);
+        }
+
+        if(!isset($nuevoVehiculo['id_marca_vehiculo'])){ //saber si existe
+            $nuevoVehiculo['id_marca_vehiculo'] = null;
+        }
+
+        $vehiculo = Vehiculo::create([
+            'identificador' => $nuevoVehiculo['identificador'],
+            'id_tipo_vehiculo' => $nuevoVehiculo['id_tipo_vehiculo'],
+            'id_marca_vehiculo' => $nuevoVehiculo['id_marca_vehiculo'],
+            'foto_vehiculo' => $url,
+            'id_usuario' => $nuevoVehiculo['id_usuario'],
+        ]);
+        $vehiculo->save();
+
+        // PersonaVehiculo::create([
+        //     'id_vehiculo' => $vehiculo->id_vehiculos,
+        //     'id_persona' => $id_persona,
+        // ])->save();
+
+        return redirect()->action([VehiculoController::class, 'create'])->with('crear_vehiculo', $vehiculo->identificador);
     }
 
     /**

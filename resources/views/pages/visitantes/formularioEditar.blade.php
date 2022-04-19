@@ -23,10 +23,10 @@
                     <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <input type="text" id="inputId" name="id_personas" value="{{ old('id_personas') }}" style="display: none">
+                                <input type="hidden" id="inputId" name="id_personas" value="{{ old('id_personas') }}">
 
                                 <label for="inputFoto">Fotografía</label>
-                                <input type="text" id="inputFoto" class="{{ $errors->has('foto') ? 'is-invalid' : '' }}" name="foto" value="{{ old('foto') }}" style="display: none">
+                                <input type="hidden" id="inputFoto" class="{{ $errors->has('foto') ? 'is-invalid' : '' }}" name="foto" value="{{ old('foto') }}">
                                 <img id="fotoVisitante" class="img-fluid rounded" style="border: 1px solid #007bff" src="" alt="Foto visitante">
                                 @if ($errors->has('foto')) 
                                     <div class="invalid-feedback">

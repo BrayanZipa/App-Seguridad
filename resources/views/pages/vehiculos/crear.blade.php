@@ -224,7 +224,7 @@
                 <form id="formularioVehiculo" action="{{ route('crearVehiculo') }}" method="POST" novalidate>
                     @csrf
                     <div>
-                        @include('pages.formCrearVehiculo')
+                        @include('pages.vehiculos.formularioCrear')
                     </div>
                 </form>
             </div>

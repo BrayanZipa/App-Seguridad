@@ -2,7 +2,7 @@
     <div class="modal fade" id="modal-crear-vehiculo">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header bg-primary">
+                <div class="modal-header bg-orange">
                     <div class="d-flex justify-content-center">
                         <h4 class="modal-title">VEHICULO CREADO</h4>
                     </div>
@@ -13,7 +13,7 @@
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal" style="width: 100px">Si</button>
-                    <button type="submit" class="botonContinuar btn btn-primary">Continuar</button>
+                    <button type="submit" class="botonContinuar btn" style="background-color: rgb(255, 115, 0)">Continuar</button>
                 </div>
             </div>
             <!-- /.modal-content -->

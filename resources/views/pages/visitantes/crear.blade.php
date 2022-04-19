@@ -558,7 +558,7 @@
                     </div>
 
                     <div id="crearVehiculo" style="display:none">
-                        @include('pages.formCrearVehiculo')
+                        @include('pages.visitantes.formularioCrearVehiculo')
                     </div>
 
                     <div id="crearActivo" style="display: none">
