@@ -168,7 +168,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label for="inputDescripcion">Ingrese una descripción</label>
-                                <textarea class="visitante form-control {{ $errors->has('descripcion') ? ' is-invalid ' : '' }}" name="descripcion" id="inputDescripcion">
+                                <textarea id="inputDescripcion" class="visitante form-control {{ $errors->has('descripcion') ? ' is-invalid ' : '' }}" name="descripcion">
                                     {{ old('descripcion') }}
                                 </textarea>
                                 @if ($errors->has('descripcion')) 

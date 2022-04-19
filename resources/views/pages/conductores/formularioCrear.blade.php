@@ -92,7 +92,7 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label>Ingrese la EPS</label>
+                            <label for="selectEps">Ingrese la EPS</label>
                             <select id="selectEps" class="conductor select2bs4 form-control {{ $errors->has('id_eps') ? 'is-invalid' : '' }}" style="width: 100%;"
                                 name="id_eps" required>
                                 <option selected="selected" value="" disabled></option>
@@ -111,7 +111,7 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label>Ingrese el ARL</label>
+                            <label for="selectArl">Ingrese el ARL</label>
                             <select id="selectArl" class="conductor select2bs4 form-control {{ $errors->has('id_arl') ? 'is-invalid' : '' }}" style="width: 100%;"
                                 name="id_arl" required>
                                 <option selected="selected" value="" disabled></option>

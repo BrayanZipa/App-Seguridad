@@ -68,8 +68,8 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label>Ingrese la EPS</label>
-                                        <select class="form-control select2" style="width: 100%;" name="id_eps" required>
+                                        <label for="selectEps">Ingrese la EPS</label>
+                                        <select id="selectEps" class="form-control select2" style="width: 100%;" name="id_eps" required>
                                             <option selected="selected" value="" disabled>Seleccione EPS</option>
                                             @foreach ($eps as $ep)
                                                 <option value="{{ $ep->id_eps }}">{{ $ep->eps }}</option>
@@ -79,8 +79,8 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label>Ingrese el ARL</label>
-                                        <select class="form-control select2" style="width: 100%;" name="id_arl" required>
+                                        <label for="selectArl">Ingrese el ARL</label>
+                                        <select id="selectArl" class="form-control select2" style="width: 100%;" name="id_arl" required>
                                             <option selected="selected" value="" disabled>Seleccione ARL</option>
                                             @foreach ($arl as $ar)
                                                 <option value="{{ $ar->id_arl }}">{{ $ar->arl }}</option>
@@ -92,8 +92,8 @@
                             <div class="row">
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label>Ingrese la empresa de vinculación</label>
-                                        <select class="form-control select2" style="width: 100%;" name="id_empresa"
+                                        <label for="selectEmpresa">Ingrese la empresa de vinculación</label>
+                                        <select id="selectEmpresa" class="form-control select2" style="width: 100%;" name="id_empresa"
                                             required>
                                             <option selected="selected" value="" disabled>Seleccione la empresa</option>
                                             @foreach ($empresas as $empresa)

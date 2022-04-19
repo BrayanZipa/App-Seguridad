@@ -42,7 +42,7 @@ class LoginController extends Controller
     }
 
 
-    /* protected function credentials(Request $request)
+    protected function credentials(Request $request)
     {
         return [
             'uid' => $request->get('username'),
@@ -53,9 +53,9 @@ class LoginController extends Controller
     public function username()
     {
         return 'username';
-    } */
+    }
 
-    protected function credentials(Request $request)
+/*     protected function credentials(Request $request)
     {
         return [
             'mail' => $request->get('username'),
@@ -66,7 +66,7 @@ class LoginController extends Controller
     public function username()
     {
         return 'username';
-    }
+    } */
 
     use ListensForLdapBindFailure {
         handleLdapBindError as baseHandleLdapBindError;

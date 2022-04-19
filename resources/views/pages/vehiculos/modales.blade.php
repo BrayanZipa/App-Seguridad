@@ -8,8 +8,7 @@
                     </div>
                 </div>
                 <div class="modal-body">
-                    <p>Conductor <b>{{ session('crear_conductor')[0] }}</b> creado exitosamente.</p>
-                    <p>Vehículo con identificador <b>{{ session('crear_conductor')[1] }}</b> creado exitosamente.</p>
+                    <p>Vehículo con identificador <b>{{ session('crear_vehiculo')}}</b> creado exitosamente.</p>
                     <p>¿Desea crear otro?</p>
                 </div>
                 <div class="modal-footer justify-content-between">

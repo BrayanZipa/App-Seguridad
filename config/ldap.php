@@ -29,7 +29,7 @@ return [
     'connections' => [
 
         /**Conexion Directorio Activo de Pruebas */
-        /* 'default' => [
+        'default' => [
             'hosts' => [env('LDAP_HOST', 'ldap.forumsys.com')],
             'username' => env('LDAP_USERNAME', 'cn=read-only-admin,dc=example,dc=com'),
             'password' => env('LDAP_PASSWORD', 'password'),
@@ -38,10 +38,10 @@ return [
             'timeout' => env('LDAP_TIMEOUT', 5),
             'use_ssl' => env('LDAP_SSL', false),
             'use_tls' => env('LDAP_TLS', false),
-        ], */
+        ],
 
         /**Conexion Directorio Activo Empresa */
-        'default' => [
+       /*  'default' => [
             'hosts' => [env('LDAP_HOST', '10.0.2.11')],
             'username' => env('LDAP_USERNAME', 'cn=Aplicaciones TI, cn=users, dc=acs, dc=local'),
             'password' => env('LDAP_PASSWORD', '4v10m4r$2021'),
@@ -51,7 +51,7 @@ return [
             'use_ssl' => env('LDAP_SSL', false),
             'use_tls' => env('LDAP_TLS', false),
             'version' => 3,
-        ],
+        ], */
 
     ],
 

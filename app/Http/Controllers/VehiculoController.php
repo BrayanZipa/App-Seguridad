@@ -97,7 +97,10 @@ class VehiculoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validarVehiculo($request);
+        $vehiculo = $request->all();
+        Vehiculo::findOrFail($id)->update($vehiculo);
+        return redirect()->action([VehiculoController::class, 'index'])->with('editar_vehiculo', $vehiculo['identificador']);
     }
 
     /**
@@ -118,8 +121,8 @@ class VehiculoController extends Controller
     public function informacionVehiculos()
     {
         try {
-            $vehiculos = Vehiculo::leftjoin('se_per_vehi AS propietario', 'se_vehiculos.id_vehiculos', '=', 'propietario.id_vehiculo')->leftjoin('se_tipo_vehiculos AS tipo', 'se_vehiculos.id_tipo_vehiculo', '=', 'tipo.id_tipo_vehiculos')->leftjoin('se_marca_vehiculos AS marca', 'se_vehiculos.id_marca_vehiculo', '=', 'marca.id_marca_vehiculos')->leftjoin('se_usuarios AS usuarios', 'se_vehiculos.id_usuario', '=', 'usuarios.id_usuarios')->get();
-            // ->where('id_tipo_persona', )->orderBy('id_personas')
+            $vehiculos = Vehiculo::leftjoin('se_per_vehi AS propietario', 'se_vehiculos.id_vehiculos', '=', 'propietario.id_vehiculo')->leftjoin('se_tipo_vehiculos AS tipo', 'se_vehiculos.id_tipo_vehiculo', '=', 'tipo.id_tipo_vehiculos')->leftjoin('se_marca_vehiculos AS marca', 'se_vehiculos.id_marca_vehiculo', '=', 'marca.id_marca_vehiculos')->leftjoin('se_usuarios AS usuarios', 'se_vehiculos.id_usuario', '=', 'usuarios.id_usuarios')->orderBy('id_vehiculos', 'desc')->get();
+            // ->where('id_tipo_persona', )->orderBy('id_personas')->orderBy('identificador', 'desc')
             $response = ['data' => $vehiculos->all()];
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
@@ -132,7 +135,7 @@ class VehiculoController extends Controller
      */
     public function validarVehiculo(Request $request){
         $this->validate($request, [
-            'identificador' => 'required|string|unique:se_vehiculos,identificador|alpha_num|max:15|min:6',
+            'identificador' => 'required|string|unique:se_vehiculos,identificador,'.$request->id.',id_vehiculos|alpha_num|max:15|min:6',
             'id_tipo_vehiculo' => 'required|integer',   
             'id_marca_vehiculo' => 'integer|nullable',
             'foto_vehiculo'  => 'required|string',

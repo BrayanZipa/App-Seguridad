@@ -54,12 +54,12 @@
                         "name": 'identificador'
                     },
                     {
-                        "data": 'id_tipo_vehiculo',
-                        "name": 'id_tipo_vehiculo',
+                        "data": 'tipo',
+                        "name": 'tipo',
                     },
                     {
-                        "data": 'id_marca_vehiculo',
-                        "name": 'id_marca_vehiculo',
+                        "data": 'marca',
+                        "name": 'marca',
                     },
                     {
                         "data": 'id_persona',
@@ -90,33 +90,30 @@
 
             //Se elije una fila de la tabla y se toma la información del vehículo para mostrarla en un formulario y permitir actualizarla
             $('#tabla_vehiculos tbody').on('click', 'td.editar_vehiculo', function () { 
-                if($('.conductor').hasClass('is-invalid')){
-                    $('.conductor').removeClass("is-invalid");
+                if($('.vehiculo').hasClass('is-invalid')){
+                    $('.vehiculo').removeClass("is-invalid");
                 }      
-                $('#formEditarConductor').css("display", "block");  
+                $('#formEditarVehiculo').css("display", "block");  
                 var tr = $(this).closest('tr');
-                var row = $('#tabla_conductores').DataTable().row(tr);
+                var row = $('#tabla_vehiculos').DataTable().row(tr);
                 var data = row.data();
                 // console.log(data);
                 //http://app-seguridad.test/vehiculos/editar/  
-                $('#form_EditarVehiculo').attr('action','http://127.0.0.1:8000/vehiculos/editar/' + data.id_personas); 
-                $('#inputId').val(data.id_personas); 
-                $('#inputFoto').val(data.foto); 
-                $('#fotoConductor').attr("src", data.foto);  
-                $('#inputNombre').val(data.nombre);
-                $('#inputApellido').val(data.apellido);
-                $('#inputIdentificacion').val(data.identificacion);
-                $('#inputTelefono').val(data.tel_contacto);
-                $('#inputEps').val(data.id_eps);
-                $('#inputArl').val(data.id_arl);
-                $('#inputTipoPersona').val(data.id_tipo_persona);
+                $('#form_EditarVehiculo').attr('action','http://127.0.0.1:8000/vehiculos/editar/' + data.id_vehiculos); 
+                $('#inputIdVehiculo').val(data.id_vehiculos); 
+                $('#inputFotoVehiculo').val(data.foto_vehiculo); 
+                $('#fotoVehiculo').attr("src", data.foto_vehiculo);  
+                $('#inputNumeroIdentificador').val(data.identificador);
+                $('#selectTipoVehiculo').val(data.id_tipo_vehiculo);
+                $('#selectMarcaVehiculo').val(data.id_marca_vehiculo);
                 activarSelect2();
             });
 
-            //Permite que a los select de selección de EPS Y ARL del formulario de actualizar conductor se les asigne una barra de búsqueda haciendolos más dinámicos
+            //Permite que a los select de selección de tipo de vehículo y marca de vehículo del formulario actualizar vehículo se les asigne una barra de búsqueda haciendolos más dinámicos
             function activarSelect2() {
                 $('.select2bs4').select2({
                     theme: 'bootstrap4',
+                    placeholder: 'Seleccione la marca',
                     language: {
                     noResults: function() {
                     return "No hay resultado";        
@@ -124,7 +121,26 @@
                 });
             }
 
-            // Función anónima que genera mensajes de error cuando el usuario intenta enviar el formulario de actualización de visitantes sin los datos requeridos, es una primera validación del lado del cliente
+            // Función que permite que al momento que el usuario seleccione Bicicleta en el formulario de ingreso de vehículo se desabilite el select de marca de vehículo
+            function selectMarcaVehiculo() {
+                var tipo = $('#selectTipoVehiculo option:selected').text();
+                var tipoVehiculo = tipo.replace(/\s+/g, '');
+
+                if( tipoVehiculo == "Bicicleta"){
+                    $('#selectMarcaVehiculo').val('');
+                    $('#selectMarcaVehiculo').prop('disabled', true);
+                    activarSelect2();      
+                } else {
+                    $('#selectMarcaVehiculo').prop('disabled', false);
+                } 
+            }
+
+            //Función que se activa cuando el usuario selecciona alguna opción del select de tipo de vehículo
+            $('#selectTipoVehiculo').change(function() {
+                selectMarcaVehiculo();
+            });
+
+            // Función anónima que genera mensajes de error cuando el usuario intenta enviar el formulario de actualización de vehículos sin los datos requeridos, es una primera validación del lado del cliente
             (function () {
                 'use strict'
                 var form = document.getElementById('form_EditarVehiculo');
@@ -133,7 +149,7 @@
                         event.preventDefault();
                         event.stopPropagation();
 
-                        $('.conductor').each(function(index) {
+                        $('.vehiculo').each(function(index) {
                             if (!this.checkValidity()) {
                                 $(this).addClass('is-invalid');
                             }
@@ -142,29 +158,30 @@
                 }, false);
             })();
 
-            //Si en un input del formulario de actualizar conductores esta la clase is-invalid al escribir en el mismo input se elimina esta clase 
-            $('input.conductor').keydown(function(event){
+            //Si en un input del formulario de actualizar vehículos esta la clase is-invalid al escribir en el mismo input se elimina esta clase 
+            $('input.vehiculo').keydown(function(event){
                 if($(this).hasClass('is-invalid')){
                     $(this).removeClass("is-invalid");
                 }     
             });
 
-            //Si en un select del formulario actualizar conductores esta la clase is-invalid al seleccionar algo en el mismo select se elimina esta clase 
-            $( 'select.conductor').change(function() {
+            //Si en un select del formulario actualizar vehículos esta la clase is-invalid al seleccionar algo en el mismo select se elimina esta clase 
+            $( 'select.vehiculo').change(function() {
                 if($(this).hasClass('is-invalid')){
                     $(this).removeClass("is-invalid");
                 };   
             }); 
 
-            //Función anónima que permite devolver el formulario de actualización de conductores con los datos ingresados por el usuario con anterioridad en caso de que se cometa un error y se dispare una validación
+            //Función anónima que permite devolver el formulario de actualización de vehículos con los datos ingresados por el usuario con anterioridad en caso de que se cometa un error y se dispare una validación
             (function () {
-                if(!!document.getElementById('botonRetorno')){
-                    var id_conductor = document.getElementById('inputId').value;
-                    var foto = document.getElementById('inputFoto').value;
-                    document.getElementById('formEditarConductor').style.display = 'block';
-                    document.getElementById('form_EditarConductor').setAttribute('action', 'http://127.0.0.1:8000/conductores/editar/' + id_conductor);
-                    document.getElementById('fotoConductor').setAttribute('src', foto);
+                if(!!document.getElementById('botonRetorno2')){
+                    var id_vehiculo = document.getElementById('inputIdVehiculo').value;
+                    var foto = document.getElementById('inputFotoVehiculo').value;
+                    document.getElementById('formEditarVehiculo').style.display = 'block';
+                    document.getElementById('form_EditarVehiculo').setAttribute('action', 'http://127.0.0.1:8000/vehiculos/editar/' + id_vehiculo);
+                    document.getElementById('fotoVehiculo').setAttribute('src', foto);
                     activarSelect2();
+                    selectMarcaVehiculo();
                 }
             })();
 
@@ -179,19 +196,6 @@
                 $('#modal-editar-vehiculo').modal('hide');
             }, 2000);
 
-            // Muestra un modal con los diferentes errores cometidos por el usuario a la hora de actualizar un conductor
-            // $('#modal-errores-personas').modal("show");
-
-            // Botón que permite devolver el formulario de actualización con los datos ingresados por el usuario con anterioridad en caso de que se cometa un error y se dispare una validación
-            // $('.botonError').click(function() {
-            //     var id_conductor = $('#inputId').val();
-            //     var foto = $('#inputFoto').val();
-            //     $('#formEditarConductor').css("display", "block");
-            //     $('#form_EditarConductor').attr('action','http://127.0.0.1:8000/conductores/editar/' + id_conductor); 
-            //     $('#fotoConductor').attr("src", foto); 
-            //     activarSelect2();          
-            // });
-
         });
     </script>
 @endsection
@@ -199,7 +203,7 @@
 
 @section('contenido')
     <div class="content mb-n2">
-        @include('pages.conductores.header')
+        @include('pages.vehiculos.header')
     </div>
 
     <section id="formEditarVehiculo" class="content-header mb-n4" style="display: none">

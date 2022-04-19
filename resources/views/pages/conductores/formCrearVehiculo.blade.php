@@ -38,7 +38,7 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="inputNombre">Ingrese el número identificador del vehículo</label>
+                            <label for="inputNumeroIdentificador">Ingrese el número identificador del vehículo</label>
                             <input type="text" class="conductor form-control {{ $errors->has('identificador') ? 'is-invalid' : '' }}" id="inputNumeroIdentificador"
                                 name="identificador" value="{{ old('identificador') }}" autocomplete="off"
                                 placeholder="Número indetificador" required>
@@ -51,7 +51,7 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label>Ingrese el tipo de vehículo</label>
+                            <label for="selectTipoVehiculo">Ingrese el tipo de vehículo</label>
                             <select id="selectTipoVehiculo" class="conductor select2bs4 form-control {{ $errors->has('id_tipo_vehiculo') ? 'is-invalid' : '' }}"
                                 style="width: 100%;" name="id_tipo_vehiculo" required>
                                 <option selected="selected" value="" disabled></option>
@@ -73,7 +73,7 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label>Ingrese la marca del vehículo</label>
+                            <label for="selectMarcaVehiculo">Ingrese la marca del vehículo</label>
                             <select id="selectMarcaVehiculo" class="conductor form-control select2bs4" style="width: 100%;"
                                 name="id_marca_vehiculo">
                                 <option selected="selected" value="" disabled></option>

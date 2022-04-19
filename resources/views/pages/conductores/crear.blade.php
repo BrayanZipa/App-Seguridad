@@ -209,7 +209,7 @@
                 } 
             }
 
-            //Función que se activa cuando el usuario selecciona alguna opción del select de marca de vehículo
+            //Función que se activa cuando el usuario selecciona alguna opción del select de tipo de vehículo
             $('#selectTipoVehiculo').change(function() {
                 selectMarcaVehiculo();
             });

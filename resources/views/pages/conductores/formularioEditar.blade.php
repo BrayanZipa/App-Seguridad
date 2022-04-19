@@ -91,7 +91,7 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label>Actualizar EPS</label>
+                                        <label for="inputEps">Actualizar EPS</label>
                                         <select class="conductor select2bs4 form-control {{ $errors->has('id_eps') ? 'is-invalid' : '' }}" style="width: 100%;" id="inputEps" name="id_eps"
                                             required>
                                             <option selected="selected" value="" disabled></option>
@@ -110,7 +110,7 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label>Actualizar ARL</label>
+                                        <label for="inputArl">Actualizar ARL</label>
                                         <select class="conductor select2bs4 form-control {{ $errors->has('id_arl') ? 'is-invalid' : '' }}" style="width: 100%;" id="inputArl" name="id_arl"
                                             required>
                                             <option selected="selected" value="" disabled></option>
