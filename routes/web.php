@@ -64,6 +64,7 @@ Route::get('/vehiculos/crear', [VehiculoController::class, 'create'])->name('for
 Route::post('/vehiculos/crear', [VehiculoController::class, 'store'])->name('crearVehiculo');
 Route::get('/vehiculos/informacion', [VehiculoController::class, 'informacionVehiculos'])->name('mostrarInfoVehiculos');
 Route::put('/vehiculos/editar/{id}', [VehiculoController::class, 'update'])->name('editarVehiculo');
+Route::get('/vehiculos/personas', [VehiculoController::class, 'getPersonas'])->name('personas');
 
 /**
  * Rutas del modulo de registros

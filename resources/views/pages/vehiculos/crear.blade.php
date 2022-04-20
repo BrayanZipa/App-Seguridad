@@ -17,7 +17,7 @@
     <script>
         $(function() {
 
-            //Permite que a los select de selección Tipo de vehículo y Marca de vehículo se les asigne una barra de búsqueda haciendolos más dinámicos            
+            //Permite que a los select de selección Tipo de vehículo, Marca de vehículo se les asigne una barra de búsqueda haciendolos más dinámicos            
             function activarSelect2Vehiculo() {
                 $('#selectTipoVehiculo').select2({
                     theme: 'bootstrap4',
@@ -35,6 +35,14 @@
                     return "No hay resultado";        
                     }}
                 });
+                $('#selectPersona').select2({
+                    theme: 'bootstrap4',
+                    placeholder: 'Seleccione al propietario',
+                    language: {
+                    noResults: function() {
+                    return "No hay resultado";        
+                    }}
+                }); 
             }
 
             activarSelect2Vehiculo();
@@ -137,6 +145,33 @@
                 selectMarcaVehiculo();
             });
 
+            //Función que se activa cuando el usuario selecciona alguna opción del select tipo de persona, esto permite que se desplegue otro select en el cual se puede buscar y seleccionar al propietario del vehículo
+            $('#selectTipoPersona').change(function() {  
+                if($('#selectPersona').hasClass('is-invalid')){
+                    $('#selectPersona').removeClass("is-invalid");
+                }  
+                $('#selectPersona').empty();
+                $('#selectPersona').append("<option value=''>Seleccione al propietario</option>");
+                $('#selectPropietario').css("display", "block");            
+                
+                $.ajax({
+                    url: '/vehiculos/personas',
+                    type: 'GET',
+                    data: {
+                        tipoPersona: $('#selectTipoPersona option:selected').val(),
+                    },
+                    dataType: 'json',
+                    success: function(response){
+                        $.each(response.data, function(key, value){                   
+                            $('#selectPersona').append("<option value='" + value.id_personas + "'> C.C. " + value.identificacion + " - " + value.nombre + " " + value.apellido + "</option>");
+                        });
+                    }, 
+                    error: function(){
+                        console.log('Error obteniendo los datos');
+                    }
+                });               
+            });     
+
             // Función anónima que genera mensajes de error cuando el usuario intenta enviar algún formulario del módulo vehículos sin los datos requeridos, es una primera validación del lado del cliente
             (function () {
                 'use strict'
@@ -171,6 +206,7 @@
 
             //Función que permite mantener la fotografía tomada previamente al vehículo en caso de que haya errores al enviar el formulario crear vehículo
             function retornarFotoVehiculo () {
+                $('#selectPropietario').css("display", "block");  
                 var inputFotoVehiculo = document.getElementById('inputFotoVehiculo').value;              
                 var video2 = document.getElementById("video2");
                 var canvas2 = document.getElementById("canvas2");

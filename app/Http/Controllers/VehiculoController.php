@@ -66,6 +66,8 @@ class VehiculoController extends Controller
     public function store(Request $request)
     {
         $this->validarVehiculo($request);
+        // return $request->all();
+        
         $nuevoVehiculo = $request->all();
 
         $nuevoVehiculo['identificador'] = strtoupper($nuevoVehiculo['identificador']);
@@ -97,10 +99,10 @@ class VehiculoController extends Controller
         ]);
         $vehiculo->save();
 
-        // PersonaVehiculo::create([
-        //     'id_vehiculo' => $vehiculo->id_vehiculos,
-        //     'id_persona' => $id_persona,
-        // ])->save();
+        PersonaVehiculo::create([
+            'id_vehiculo' => $vehiculo->id_vehiculos,
+            'id_persona' => $nuevoVehiculo['id_persona'],
+        ])->save();
 
         return redirect()->action([VehiculoController::class, 'create'])->with('crear_vehiculo', $vehiculo->identificador);
     }
@@ -169,6 +171,15 @@ class VehiculoController extends Controller
         return $response;     
     }
 
+    //Función que recibe una petición de Ajax para obtener los registros de un grupo de personas en específico (Visitantes, Colaboradores, Conductores) en la tabla se_personas.
+    public function getPersonas(Request $request){
+        $tipoPersona = $request->input('tipoPersona');
+        $personas = $this->personas->obtenerPersonas($tipoPersona);
+        $response = ['data' => $personas];
+
+        return response()->json($response);
+    }
+
     /**
      * Función que permite validar los datos ingresados en el formulario de vehículo.
      */
@@ -177,6 +188,7 @@ class VehiculoController extends Controller
             'identificador' => 'required|string|unique:se_vehiculos,identificador,'.$request->id.',id_vehiculos|alpha_num|max:15|min:6',
             'id_tipo_vehiculo' => 'required|integer',   
             'id_marca_vehiculo' => 'integer|nullable',
+            'id_persona' => 'required|integer', 
             'foto_vehiculo'  => 'required|string',
         ],[
             'identificador.required' => 'Se requiere que ingrese el número identificador del vehículo',
@@ -189,7 +201,10 @@ class VehiculoController extends Controller
             'id_tipo_vehiculo.required' => 'Se requiere que elija una opción en el tipo de vehículo',
             'id_tipo_vehiculo.integer' => 'El tipo de vehículo debe ser de tipo entero',
 
-            'id_marca_vehiculo.integer' => 'La marca ded vehículo debe ser de tipo entero',
+            'id_marca_vehiculo.integer' => 'La marca del vehículo debe ser de tipo entero',
+
+            'id_persona.required' => 'Se requiere que ingrese al propietario del vehículo',
+            'id_persona.integer' => 'El propietario del vehículo debe ser de tipo entero',
 
             'foto_vehiculo.required' => 'Se requiere que tome una foto del vehículo',
             'foto_vehiculo.string' => 'La información de la foto del vehículo debe estar en formato de texto',

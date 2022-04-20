@@ -92,31 +92,48 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="row" >
+                        <div class="col-sm-12">
+                            <label for="selectTipoPersona">Ingrese al propietario del vehículo</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <select id="selectTipoPersona" class="vehiculo select2bs4 form-control" name="tipoPersona" style="width: 100%;" required>
+                                    <option selected="selected" value="" disabled>Seleccione el tipo de persona</option>
+                                    @foreach ($tipoPersonas as $tipo)
+                                        <option value="{{ $tipo->id_tipo_personas }}" {{ $tipo->id_tipo_personas == old('tipoPersona') ? 'selected' : '' }}>{{ $tipo->tipo }}</option>
+                                    @endforeach
+                                </select>  
+                            </div>
+                        </div>
+                        <div id="selectPropietario" class="col-sm-6" style="display: none">
+                            <div class="form-group">
+                                <select id="selectPersona" class="vehiculo select2bs4 form-control {{ $errors->has('id_persona') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_persona" required>
+                                    {{-- <option selected="selected" value="" disabled></option> --}}
+                                    <option value="{{ old('id_persona') }}" selected></option>
+                                    {{-- <option value="{{ $marcaVehiculo->id_marca_vehiculos }}"
+                                        {{ $marcaVehiculo->id_marca_vehiculos == old('id_marca_vehiculo') ? 'selected' : '' }}>
+                                        {{ $marcaVehiculo->marca }}
+                                    </option> --}}
+                                </select>
+                                @if ($errors->has('id_persona')) 
+                                    <div class="invalid-feedback">
+                                        {{ $errors->first('id_persona') }}
+                                    </div>            
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-
-            {{-- <div class="row" style="display:none">
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <div class="form-group">
-                        <input class="form-control select2" type="search">
-                        </div>
-                        <label>Ingrese al propietario del vehículo</label>
-                        <select class="form-control select2" style="width: 100%;" name="id_persona" disabled required >
-                            <option selected="selected" value="" disabled>Seleccione al propietario</option>
-                            @foreach ($personas as $persona)
-                                <option value="{{ $persona->id_personas }}">{{ $persona->nombre }} {{ $persona->apellido }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-            </div> --}}
 
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
             <button id="botonCrear2" type='submit' class="btn"
-                style="background-color: rgb(255, 115, 0)">Crear todo</button>
+                style="background-color: rgb(255, 115, 0)">Crear vehículo</button>
             <button id="botonLimpiar2" type='button' class="btn btn-secondary">Limpiar</button>
         </div>
         <!-- /.card-footer-->

@@ -25,7 +25,7 @@
     <div class="modal fade" id="modal-editar-vehiculo">
         <div class="modal-dialog ">
             <div class="modal-content">
-                <div class="modal-header bg-primary">
+                <div class="modal-header bg-orange">
                     <div class="justify-content-between">
                         <h4 class="modal-title">VEHICULO ACTUALIZADO</h4>
                     </div>
