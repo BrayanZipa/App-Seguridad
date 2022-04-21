@@ -65,9 +65,7 @@ class VehiculoController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validarVehiculo($request);
-        // return $request->all();
-        
+        $this->validarVehiculo($request);     
         $nuevoVehiculo = $request->all();
 
         $nuevoVehiculo['identificador'] = strtoupper($nuevoVehiculo['identificador']);
@@ -140,7 +138,11 @@ class VehiculoController extends Controller
     {
         $this->validarVehiculo($request);
         $vehiculo = $request->all();
+
+        $vehiculo['identificador'] = strtoupper($vehiculo['identificador']);
         Vehiculo::findOrFail($id)->update($vehiculo);
+        PersonaVehiculo::where('id_vehiculo', $id)->update(['id_persona' => $vehiculo['id_persona']]);
+
         return redirect()->action([VehiculoController::class, 'index'])->with('editar_vehiculo', $vehiculo['identificador']);
     }
 
@@ -156,14 +158,14 @@ class VehiculoController extends Controller
         return [$tipoVehiculos, $marcaVehiculos, $tipoPersonas];
     }
 
-     /**
+    /**
      * Función que permite retornar en un formato JSON los datos de los vehículos, tipo, marca y las personas propietarias donde tengan un id en común.
      */
     public function informacionVehiculos()
     {
-        try {
-            $vehiculos = Vehiculo::leftjoin('se_per_vehi AS propietario', 'se_vehiculos.id_vehiculos', '=', 'propietario.id_vehiculo')->leftjoin('se_tipo_vehiculos AS tipo', 'se_vehiculos.id_tipo_vehiculo', '=', 'tipo.id_tipo_vehiculos')->leftjoin('se_marca_vehiculos AS marca', 'se_vehiculos.id_marca_vehiculo', '=', 'marca.id_marca_vehiculos')->leftjoin('se_usuarios AS usuarios', 'se_vehiculos.id_usuario', '=', 'usuarios.id_usuarios')->orderBy('id_vehiculos', 'desc')->get();
-            // ->where('id_tipo_persona', )->orderBy('id_personas')->orderBy('identificador', 'desc')
+        try {       
+            $vehiculos = PersonaVehiculo::leftjoin('se_personas AS persona', 'se_per_vehi.id_persona', '=', 'persona.id_personas')->leftjoin('se_vehiculos AS vehiculo', 'se_per_vehi.id_vehiculo', '=', 'vehiculo.id_vehiculos')->leftjoin('se_tipo_vehiculos AS tipo', 'vehiculo.id_tipo_vehiculo', '=', 'tipo.id_tipo_vehiculos')->leftjoin('se_marca_vehiculos AS marca', 'vehiculo.id_marca_vehiculo', '=', 'marca.id_marca_vehiculos')->leftjoin('se_usuarios AS usuario', 'vehiculo.id_usuario', '=', 'usuario.id_usuarios')->get();
+
             $response = ['data' => $vehiculos->all()];
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);

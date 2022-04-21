@@ -145,8 +145,8 @@
                 selectMarcaVehiculo();
             });
 
-            //Función que se activa cuando el usuario selecciona alguna opción del select tipo de persona, esto permite que se desplegue otro select en el cual se puede buscar y seleccionar al propietario del vehículo
-            $('#selectTipoPersona').change(function() {  
+            //Función que permite que se desplegue otro select en el cual se puede buscar y seleccionar al propietario del vehículo
+            function selectPropietario() {
                 if($('#selectPersona').hasClass('is-invalid')){
                     $('#selectPersona').removeClass("is-invalid");
                 }  
@@ -169,8 +169,27 @@
                     error: function(){
                         console.log('Error obteniendo los datos');
                     }
-                });               
-            });     
+                }); 
+            }
+
+            //Función que se activa cuando el usuario selecciona alguna opción del select tipo de persona
+            $('#selectTipoPersona').change(function() {  
+                selectPropietario();
+            }); 
+
+
+
+
+
+
+
+            
+            $('#selectPersona').change(function() {  
+                $('#retornoPersona').val($('#selectPersona option:selected').val());
+                $('#retornoPersona2').val($('#selectPersona option:selected').text());
+                console.log($('#retornoPersona').val());
+                console.log($('#retornoPersona2').val());
+            });   
 
             // Función anónima que genera mensajes de error cuando el usuario intenta enviar algún formulario del módulo vehículos sin los datos requeridos, es una primera validación del lado del cliente
             (function () {
@@ -205,8 +224,7 @@
             }); 
 
             //Función que permite mantener la fotografía tomada previamente al vehículo en caso de que haya errores al enviar el formulario crear vehículo
-            function retornarFotoVehiculo () {
-                $('#selectPropietario').css("display", "block");  
+            function retornarFotoVehiculo () {       
                 var inputFotoVehiculo = document.getElementById('inputFotoVehiculo').value;              
                 var video2 = document.getElementById("video2");
                 var canvas2 = document.getElementById("canvas2");
@@ -232,7 +250,26 @@
             (function () {
                 if (!!document.getElementById('botonRetorno2')){
                     retornarFotoVehiculo();
-                    selectMarcaVehiculo();
+                    selectMarcaVehiculo();                   
+                    selectPropietario();
+                    console.log('hola');
+                    console.log($('#retornoPersona').val());
+                    document.getElementById('selectPropietario').style.display = 'block';
+                    // $('#selectPropietario').css("display", "block"); 
+
+                    //     $('#selectPersona').val($('#retornoPersona').val());
+                    //     console.log($('#selectPersona').val());
+
+                        var buena = document.getElementById('selectPersona').value = document.getElementById('retornoPersona').value;
+
+                        // var hola = document.getElementById("selectPersona").text = document.getElementById('retornoPersona2').value;
+                        var hola = document.getElementById("selectPersona");
+                        hola.options[hola.selectedIndex].text = document.getElementById('retornoPersona2').value;
+                        console.log(buena);
+                        console.log(hola);
+
+                    
+                    
                 }
             })();
             

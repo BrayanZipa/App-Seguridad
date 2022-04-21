@@ -88,6 +88,41 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="row" >
+                                <div class="col-sm-12">
+                                    <label for="selectTipoPersona">Ingrese al propietario del vehículo</label>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <select id="selectTipoPersona" class="vehiculo select2bs4 form-control" name="tipoPersona" style="width: 100%;" required>
+                                            <option selected="selected" value="" disabled>Seleccione el tipo de persona</option>
+                                            @foreach ($tipoPersonas as $tipo)
+                                                <option value="{{ $tipo->id_tipo_personas }}" {{ $tipo->id_tipo_personas == old('tipoPersona') ? 'selected' : '' }}>{{ $tipo->tipo }}</option>
+                                            @endforeach
+                                        </select>  
+                                    </div>
+                                </div>
+                                <div id="selectPropietario" class="col-sm-6">
+                                    <div class="form-group">
+                                        <select id="selectPersona" class="vehiculo select2bs4 form-control {{ $errors->has('id_persona') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_persona" required>
+                                            {{-- <option selected="selected" value="" disabled></option> --}}
+                                            <option value="{{ old('id_persona') }}" selected></option>
+                                            {{-- <option value="{{ $marcaVehiculo->id_marca_vehiculos }}"
+                                                {{ $marcaVehiculo->id_marca_vehiculos == old('id_marca_vehiculo') ? 'selected' : '' }}>
+                                                {{ $marcaVehiculo->marca }}
+                                            </option> --}}
+                                        </select>
+                                        @if ($errors->has('id_persona')) 
+                                            <div class="invalid-feedback">
+                                                {{ $errors->first('id_persona') }}
+                                            </div>            
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+
+
                         </div>
                     </div>
 

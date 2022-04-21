@@ -62,8 +62,13 @@
                         "name": 'marca',
                     },
                     {
-                        "data": 'id_persona',
-                        "name": 'id_persona',
+                        data: null, render: function ( data, type, row ) {
+                            return data.nombre+' '+data.apellido;
+                        } 
+                    },
+                    {
+                        "data": 'identificacion',
+                        "name": 'identificacion',
                     },
                     {
                         "data": 'name',
@@ -92,7 +97,7 @@
             $('#tabla_vehiculos tbody').on('click', 'td.editar_vehiculo', function () { 
                 if($('.vehiculo').hasClass('is-invalid')){
                     $('.vehiculo').removeClass("is-invalid");
-                }      
+                }     
                 $('#formEditarVehiculo').css("display", "block");  
                 var tr = $(this).closest('tr');
                 var row = $('#tabla_vehiculos').DataTable().row(tr);
@@ -106,6 +111,8 @@
                 $('#inputNumeroIdentificador').val(data.identificador);
                 $('#selectTipoVehiculo').val(data.id_tipo_vehiculo);
                 $('#selectMarcaVehiculo').val(data.id_marca_vehiculo);
+                $('#selectTipoPersona').val(data.id_tipo_persona);
+                selectMarcaVehiculo(); 
                 activarSelect2();
             });
 
@@ -139,6 +146,33 @@
             $('#selectTipoVehiculo').change(function() {
                 selectMarcaVehiculo();
             });
+
+            //Función que se activa cuando el usuario selecciona alguna opción del select tipo de persona, esto permite que se desplegue otro select en el cual se puede buscar y seleccionar al propietario del vehículo
+            $('#selectTipoPersona').change(function() {  
+                if($('#selectPersona').hasClass('is-invalid')){
+                    $('#selectPersona').removeClass("is-invalid");
+                }  
+                $('#selectPersona').empty();
+                $('#selectPersona').append("<option value=''>Seleccione al propietario</option>");
+                $('#selectPropietario').css("display", "block");            
+                
+                $.ajax({
+                    url: '/vehiculos/personas',
+                    type: 'GET',
+                    data: {
+                        tipoPersona: $('#selectTipoPersona option:selected').val(),
+                    },
+                    dataType: 'json',
+                    success: function(response){
+                        $.each(response.data, function(key, value){                   
+                            $('#selectPersona').append("<option value='" + value.id_personas + "'> C.C. " + value.identificacion + " - " + value.nombre + " " + value.apellido + "</option>");
+                        });
+                    }, 
+                    error: function(){
+                        console.log('Error obteniendo los datos');
+                    }
+                });               
+            }); 
 
             // Función anónima que genera mensajes de error cuando el usuario intenta enviar el formulario de actualización de vehículos sin los datos requeridos, es una primera validación del lado del cliente
             (function () {
@@ -228,7 +262,7 @@
                                     <th>Tipo</th>
                                     <th>Marca</th>
                                     <th>Propietario</th>
-                                    {{-- <th>Identificación</th> --}}
+                                    <th>Identificación</th>
                                     <th>Ingresado por</th>
                                     <th>Editar</th>
                                 </tr>

@@ -108,10 +108,12 @@
                             </div>
                         </div>
                         <div id="selectPropietario" class="col-sm-6" style="display: none">
+                            <input type="hidden" id="retornoPersona" name="retornoPersona" value="{{ old('retornoPersona') }}">
+                            <input type="hidden" id="retornoPersona2" name="retornoPersona2" value="{{ old('retornoPersona2') }}">
                             <div class="form-group">
                                 <select id="selectPersona" class="vehiculo select2bs4 form-control {{ $errors->has('id_persona') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_persona" required>
                                     {{-- <option selected="selected" value="" disabled></option> --}}
-                                    <option value="{{ old('id_persona') }}" selected></option>
+                                    {{-- <option selected="selected" value="{{ old('id_persona') }}"></option> --}}
                                     {{-- <option value="{{ $marcaVehiculo->id_marca_vehiculos }}"
                                         {{ $marcaVehiculo->id_marca_vehiculos == old('id_marca_vehiculo') ? 'selected' : '' }}>
                                         {{ $marcaVehiculo->marca }}
