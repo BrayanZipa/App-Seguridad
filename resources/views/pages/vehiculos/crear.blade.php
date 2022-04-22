@@ -151,8 +151,7 @@
                     $('#selectPersona').removeClass("is-invalid");
                 }  
                 $('#selectPersona').empty();
-                $('#selectPersona').append("<option value=''>Seleccione al propietario</option>");
-                $('#selectPropietario').css("display", "block");            
+                // $('#selectPersona').append("<option value=''>Seleccione al propietario</option>");        
                 
                 $.ajax({
                     url: '/vehiculos/personas',
@@ -162,9 +161,11 @@
                     },
                     dataType: 'json',
                     success: function(response){
+                        $('#selectPropietario').css("display", "block"); 
                         $.each(response.data, function(key, value){                   
                             $('#selectPersona').append("<option value='" + value.id_personas + "'> C.C. " + value.identificacion + " - " + value.nombre + " " + value.apellido + "</option>");
-                        });
+                        });                      
+                        $('#selectPersona').val($('#retornoPersona').val());                               
                     }, 
                     error: function(){
                         console.log('Error obteniendo los datos');
@@ -173,22 +174,14 @@
             }
 
             //Función que se activa cuando el usuario selecciona alguna opción del select tipo de persona
-            $('#selectTipoPersona').change(function() {  
+            $('#selectTipoPersona').change(function() { 
+                $('#retornoPersona').val('');  
                 selectPropietario();
             }); 
 
-
-
-
-
-
-
-            
-            $('#selectPersona').change(function() {  
+            //Función que se activa cuando el usuario selecciona alguna opción del select de propietario, permite que se guarde la selección del usuario para que se pueda retanar el valor en caso de que haya errores al momento de enviar la información
+            $('#selectPersona').change(function() {                  
                 $('#retornoPersona').val($('#selectPersona option:selected').val());
-                $('#retornoPersona2').val($('#selectPersona option:selected').text());
-                console.log($('#retornoPersona').val());
-                console.log($('#retornoPersona2').val());
             });   
 
             // Función anónima que genera mensajes de error cuando el usuario intenta enviar algún formulario del módulo vehículos sin los datos requeridos, es una primera validación del lado del cliente
@@ -252,24 +245,6 @@
                     retornarFotoVehiculo();
                     selectMarcaVehiculo();                   
                     selectPropietario();
-                    console.log('hola');
-                    console.log($('#retornoPersona').val());
-                    document.getElementById('selectPropietario').style.display = 'block';
-                    // $('#selectPropietario').css("display", "block"); 
-
-                    //     $('#selectPersona').val($('#retornoPersona').val());
-                    //     console.log($('#selectPersona').val());
-
-                        var buena = document.getElementById('selectPersona').value = document.getElementById('retornoPersona').value;
-
-                        // var hola = document.getElementById("selectPersona").text = document.getElementById('retornoPersona2').value;
-                        var hola = document.getElementById("selectPersona");
-                        hola.options[hola.selectedIndex].text = document.getElementById('retornoPersona2').value;
-                        console.log(buena);
-                        console.log(hola);
-
-                    
-                    
                 }
             })();
             

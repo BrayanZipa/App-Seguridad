@@ -97,8 +97,7 @@
             $('#tabla_vehiculos tbody').on('click', 'td.editar_vehiculo', function () { 
                 if($('.vehiculo').hasClass('is-invalid')){
                     $('.vehiculo').removeClass("is-invalid");
-                }     
-                $('#formEditarVehiculo').css("display", "block");  
+                }                       
                 var tr = $(this).closest('tr');
                 var row = $('#tabla_vehiculos').DataTable().row(tr);
                 var data = row.data();
@@ -111,9 +110,12 @@
                 $('#inputNumeroIdentificador').val(data.identificador);
                 $('#selectTipoVehiculo').val(data.id_tipo_vehiculo);
                 $('#selectMarcaVehiculo').val(data.id_marca_vehiculo);
-                $('#selectTipoPersona').val(data.id_tipo_persona);
+                $('#selectTipoPersona').val(data.id_tipo_persona);             
+                $('#retornoPersona').val(data.id_persona);
                 selectMarcaVehiculo(); 
                 activarSelect2();
+                selectPropietario(data.id_persona); 
+                $('#formEditarVehiculo').css("display", "block");
             });
 
             //Permite que a los select de selección de tipo de vehículo y marca de vehículo del formulario actualizar vehículo se les asigne una barra de búsqueda haciendolos más dinámicos
@@ -121,6 +123,15 @@
                 $('.select2bs4').select2({
                     theme: 'bootstrap4',
                     placeholder: 'Seleccione la marca',
+                    language: {
+                    noResults: function() {
+                    return "No hay resultado";        
+                    }}
+                });
+
+                $('#selectPersona').select2({
+                    theme: 'bootstrap4',
+                    placeholder: 'Seleccione al propietario',
                     language: {
                     noResults: function() {
                     return "No hay resultado";        
@@ -136,7 +147,15 @@
                 if( tipoVehiculo == "Bicicleta"){
                     $('#selectMarcaVehiculo').val('');
                     $('#selectMarcaVehiculo').prop('disabled', true);
-                    activarSelect2();      
+                    $('#selectMarcaVehiculo').select2({
+                        theme: 'bootstrap4',
+                        placeholder: 'Seleccione la marca',
+                        language: {
+                            noResults: function() {
+                                return "No hay resultado";
+                            }
+                        }
+                    });       
                 } else {
                     $('#selectMarcaVehiculo').prop('disabled', false);
                 } 
@@ -148,13 +167,12 @@
             });
 
             //Función que se activa cuando el usuario selecciona alguna opción del select tipo de persona, esto permite que se desplegue otro select en el cual se puede buscar y seleccionar al propietario del vehículo
-            $('#selectTipoPersona').change(function() {  
+            function selectPropietario(idPersona) {
                 if($('#selectPersona').hasClass('is-invalid')){
                     $('#selectPersona').removeClass("is-invalid");
                 }  
                 $('#selectPersona').empty();
-                $('#selectPersona').append("<option value=''>Seleccione al propietario</option>");
-                $('#selectPropietario').css("display", "block");            
+                // $('#selectPersona').append("<option value=''>Seleccione al propietario</option>");          
                 
                 $.ajax({
                     url: '/vehiculos/personas',
@@ -167,12 +185,24 @@
                         $.each(response.data, function(key, value){                   
                             $('#selectPersona').append("<option value='" + value.id_personas + "'> C.C. " + value.identificacion + " - " + value.nombre + " " + value.apellido + "</option>");
                         });
+                        $('#selectPersona').val(idPersona);               
                     }, 
                     error: function(){
                         console.log('Error obteniendo los datos');
                     }
-                });               
+                });
+            }
+
+            //Función que se activa cuando el usuario selecciona alguna opción del select tipo de persona
+            $('#selectTipoPersona').change(function() {  
+                $('#retornoPersona').val(''); 
+                selectPropietario('');                  
             }); 
+
+            //Función que se activa cuando el usuario selecciona alguna opción del select de propietario, permite que se guarde la selección del usuario para que se pueda retanar el valor en caso de que haya errores al momento de enviar la información
+            $('#selectPersona').change(function() {  
+                $('#retornoPersona').val($('#selectPersona option:selected').val());
+            });  
 
             // Función anónima que genera mensajes de error cuando el usuario intenta enviar el formulario de actualización de vehículos sin los datos requeridos, es una primera validación del lado del cliente
             (function () {
@@ -211,11 +241,12 @@
                 if(!!document.getElementById('botonRetorno2')){
                     var id_vehiculo = document.getElementById('inputIdVehiculo').value;
                     var foto = document.getElementById('inputFotoVehiculo').value;
-                    document.getElementById('formEditarVehiculo').style.display = 'block';
                     document.getElementById('form_EditarVehiculo').setAttribute('action', 'http://127.0.0.1:8000/vehiculos/editar/' + id_vehiculo);
-                    document.getElementById('fotoVehiculo').setAttribute('src', foto);
-                    activarSelect2();
+                    document.getElementById('fotoVehiculo').setAttribute('src', foto);        
                     selectMarcaVehiculo();
+                    activarSelect2();
+                    selectPropietario($('#retornoPersona').val());
+                    document.getElementById('formEditarVehiculo').style.display = 'block';
                 }
             })();
 
