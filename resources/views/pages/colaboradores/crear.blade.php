@@ -8,6 +8,30 @@
 @endsection
 
 @section('scripts')
+    <script>
+        $(function() {
+
+            $('#inputCodigo').change(function() { 
+                $.ajax({
+                    url: '/colaboradores/personas',
+                    type: 'GET',
+                    data: {
+                        tipoPersona: $('#inputCodigo option:selected').val(),
+                    },
+                    dataType: 'json',
+                    success: function(response){
+                        $.each(response.data, function(key, value){                   
+                            $('#selectPersona').append("<option value='" + value.id_personas + "'> C.C. " + value.identificacion + " - " + value.nombre + " " + value.apellido + "</option>");
+                        });                                                 
+                    }, 
+                    error: function(){
+                        console.log('Error obteniendo los datos');
+                    }
+                }); 
+            }); 
+
+        });
+    </script>
 @endsection
 
 @section('contenido')
@@ -35,6 +59,20 @@
                         <!-- /.card-header -->
 
                         <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="inputCodigo">Ingrese el activo</label>
+                                        <select name="codigo" id="inputCodigo">
+                                            <option selected="selected" value="" disabled>Seleccione el tipo de persona</option>
+                                            @foreach ($array as $usuario)
+                                                <option value="{{ $usuario['users_id'] }}" {{ $usuario['users_id'] == old('codigo') ? 'selected' : '' }}>{{ $usuario['name'] }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>    
+                            </div>
+
                             <div class="row">
                                 <div class="col-sm-4">
                                     <div class="form-group">

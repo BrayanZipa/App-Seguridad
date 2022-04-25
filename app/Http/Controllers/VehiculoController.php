@@ -116,10 +116,11 @@ class VehiculoController extends Controller
     {
         $this->validarVehiculo($request);
         $vehiculo = $request->all();
+        // return $vehiculo; 
 
         $vehiculo['identificador'] = strtoupper($vehiculo['identificador']);
         Vehiculo::findOrFail($id)->update($vehiculo);
-        PersonaVehiculo::where('id_vehiculo', $id)->update(['id_persona' => $vehiculo['id_persona']]);
+        PersonaVehiculo::where('id_vehiculo', $id)->where('id_persona', $vehiculo['personaAnterior'])->update(['id_persona' => $vehiculo['id_persona']]);
 
         return redirect()->action([VehiculoController::class, 'index'])->with('editar_vehiculo', $vehiculo['identificador']);
     }

@@ -112,6 +112,7 @@
                 $('#selectMarcaVehiculo').val(data.id_marca_vehiculo);
                 $('#selectTipoPersona').val(data.id_tipo_persona);             
                 $('#retornoPersona').val(data.id_persona);
+                $('#personaAnterior').val(data.id_persona);
                 selectMarcaVehiculo(); 
                 activarSelect2();
                 selectPropietario(data.id_persona); 

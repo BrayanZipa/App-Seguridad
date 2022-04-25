@@ -8,6 +8,7 @@ use App\Models\Eps;
 use App\Models\Persona;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Http;
 
 class ColaboradorController extends Controller
 {
@@ -31,6 +32,32 @@ class ColaboradorController extends Controller
     public function index()
     {
         $exitCode = Artisan::call('cache:clear');
+
+        // $session_token = Http::withHeaders([
+        //     'Authorization' => 'user_token '.env('API_KEY', 'No hay Token')
+        // ])->get(env('API_URL', 'No hay URL').'initSession/2');
+
+        // // return 'Session-Token: '.$session_token['session_token'];
+
+        // $usuarios = Http::withHeaders([
+        //     'Session-Token' => $session_token['session_token']
+        // ])->get(env('API_URL', 'No hay URL').'computer/', [
+        //     'range' => '0-300'
+        //     // "items" => ["itemtype" => "User", "items_id"=> 2]
+        //     // "items" => ["itemtype"=> "User", "items_id"=> 2, "itemtype"=> "Entity", "items_id"=> 0]
+        //     // "items" => [{"itemtype"=> "User", "items_id"=> 2}, {"itemtype"=> "Entity", "items_id"=> 0}]
+        // ]);
+
+        // return $usuarios;
+
+        // $usuarios2 = Http::withHeaders([
+        //     'Session-Token' => $session_token['session_token']
+        // ])->get($usuarios[0]['links'][5]['href']);
+
+        // $array = $usuarios->json(); 
+        // // return   $usuarios[0]['links'][5]['href'];  
+        // return $usuarios2;
+
         [$eps, $arl, $empresas] = $this->obtenerModelos();
         return view('pages.colaboradores.mostrar', compact('eps', 'arl', 'empresas'));
     }
@@ -43,9 +70,46 @@ class ColaboradorController extends Controller
     public function create()
     {
         $exitCode = Artisan::call('cache:clear');
+
+        $session_token = Http::withHeaders([
+            'Authorization' => 'user_token '.env('API_KEY', 'No hay Token')
+        ])->get(env('API_URL', 'No hay URL').'initSession/2');
+
+        // return 'Session-Token: '.$session_token['session_token'];
+
+        $usuarios = Http::withHeaders([
+            'Session-Token' => $session_token['session_token']
+        ])->get(env('API_URL', 'No hay URL').'computer/', [
+            'range' => '0-300'
+            // "items" => ["itemtype" => "User", "items_id"=> 2]
+            // "items" => ["itemtype"=> "User", "items_id"=> 2, "itemtype"=> "Entity", "items_id"=> 0]
+            // "items" => [{"itemtype"=> "User", "items_id"=> 2}, {"itemtype"=> "Entity", "items_id"=> 0}]
+        ]);
+
+        $array = $usuarios->json(); 
+        // return $array;
+
         [$eps, $arl, $empresas] = $this->obtenerModelos();
-        return view('pages.colaboradores.crear', compact('eps', 'arl', 'empresas'));
+        return view('pages.colaboradores.crear', compact('eps', 'arl', 'empresas', 'array'));
     }
+
+
+
+    public function getPersona(Request $request){
+
+        // $session_token = Http::withHeaders([
+        //     'Authorization' => 'user_token '.env('API_KEY', 'No hay Token')
+        // ])->get(env('API_URL', 'No hay URL').'initSession/2');
+
+        // $usuarios2 = Http::withHeaders([
+        //         'Session-Token' => $session_token['session_token']
+        // ])->get(env('API_URL', 'No hay URL').);
+    
+        // $array = $usuarios2->json(); 
+    }
+
+
+
 
     /**
      * Store a newly created resource in storage.

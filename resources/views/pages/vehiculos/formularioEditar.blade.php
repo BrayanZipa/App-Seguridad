@@ -104,6 +104,7 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
+                                    <input type="hidden" id="personaAnterior" name="personaAnterior" value="{{ old('personaAnterior') }}">
                                     <input type="hidden" id="retornoPersona" name="retornoPersona" value="{{ old('retornoPersona') }}">
                                     <div class="form-group">
                                         <select id="selectPersona" class="vehiculo form-control {{ $errors->has('id_persona') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_persona" required>

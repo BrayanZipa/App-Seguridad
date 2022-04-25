@@ -72,5 +72,9 @@
                 <!-- /.card -->
             </div>
         </div>
+
+        {{-- @foreach($array as $usuario)
+            {{ $usuario['name'] }}
+        @endforeach --}}
     </section>
 @endsection
