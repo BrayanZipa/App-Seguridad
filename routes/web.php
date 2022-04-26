@@ -47,6 +47,8 @@ Route::get('/colaboradores', [ColaboradorController::class, 'index'])->name('mos
 Route::get('/colaboradores/crear', [ColaboradorController::class, 'create'])->name('formCrearColaborador');
 Route::post('/colaboradores/crear', [ColaboradorController::class, 'store'])->name('crearColaborador');
 
+Route::get('/colaboradores/persona', [ColaboradorController::class, 'getColaborador'])->name('colaborador');
+
 /**
  * Rutas del modulo de conductores
  */

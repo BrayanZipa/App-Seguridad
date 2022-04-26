@@ -152,7 +152,9 @@ class VehiculoController extends Controller
         return $response;     
     }
 
-    //Función que recibe una petición de Ajax para obtener los registros de un grupo de personas en específico (Visitantes, Colaboradores, Conductores) en la tabla se_personas.
+    /**
+    * Función que recibe una petición de Ajax para obtener los registros de un grupo de personas en específico (Visitantes, Colaboradores, Conductores) en la tabla se_personas.
+    */
     public function getPersonas(Request $request){
         $tipoPersona = $request->input('tipoPersona');
         $personas = $this->personas->obtenerPersonas($tipoPersona);

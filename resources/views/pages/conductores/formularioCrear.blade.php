@@ -40,7 +40,7 @@
                         <div class="form-group">
                             <label for="inputNombre">Ingrese el nombre</label>
                             <input type="text" class="conductor form-control {{ $errors->has('nombre') ? 'is-invalid' : '' }}" id="inputNombre" name="nombre"
-                                value="{{ old('nombre') }}" placeholder="Nombre" autofocus required>
+                                value="{{ old('nombre') }}" autocomplete="off" placeholder="Nombre" autofocus required>
                                 @if ($errors->has('nombre')) 
                                     <div class="invalid-feedback">
                                         {{ $errors->first('nombre') }}
@@ -52,7 +52,7 @@
                         <div class="form-group">
                             <label for="inputApellido">Ingrese el apellido</label>
                             <input type="text" class="conductor form-control {{ $errors->has('apellido') ? 'is-invalid' : '' }}" id="inputApellido" name="apellido"
-                                value="{{ old('apellido') }}" placeholder="Apellido" required>
+                                value="{{ old('apellido') }}" autocomplete="off" placeholder="Apellido" required>
                                 @if ($errors->has('apellido')) 
                                     <div class="invalid-feedback">
                                         {{ $errors->first('apellido') }}
@@ -65,7 +65,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="inputIdentificacion">Ingrese la identificación</label>
-                            <input type="text" class="conductor form-control {{ $errors->has('identificacion') ? 'is-invalid' : '' }}" id="inputIdentificacion"
+                            <input type="text" class="conductor form-control {{ $errors->has('identificacion') ? 'is-invalid' : '' }}" id="inputIdentificacion" autocomplete="off"
                                 name="identificacion" value="{{ old('identificacion') }}" placeholder="Identificación"
                                 required>
                                 @if ($errors->has('identificacion')) 
@@ -79,7 +79,7 @@
                         <div class="form-group">
                             <label for="inputTelefono">Ingrese un teléfono</label>
                             <input type="tel" class="conductor form-control {{ $errors->has('tel_contacto') ? 'is-invalid' : '' }}" id="inputTelefono" name="tel_contacto"
-                                value="{{ old('tel_contacto') }}" placeholder="Teléfono" required>
+                                value="{{ old('tel_contacto') }}" autocomplete="off" placeholder="Teléfono" required>
                                 @if ($errors->has('tel_contacto')) 
                                     <div class="invalid-feedback">
                                         {{ $errors->first('tel_contacto') }}
@@ -110,7 +110,7 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="selectArl">Ingrese el ARL</label>
+                            <label for="selectArl">Ingrese la ARL</label>
                             <select id="selectArl" class="conductor select2bs4 form-control {{ $errors->has('id_arl') ? 'is-invalid' : '' }}" style="width: 100%;"
                                 name="id_arl" required>
                                 <option selected="selected" value="" disabled></option>

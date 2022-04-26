@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Http;
 
 class Persona extends Model
 {
@@ -51,12 +52,43 @@ class Persona extends Model
         return $response;  
     }
 
-    // Función que permite una relación de uno a muchos, una persona puede tener muchos registros, se usa el modelo de Registro, la llave foránea del tabla se_registros (id_persona) y la llave primaria (id_personas) con la que tiene conexión en la tabla padre (tabla se_personas).
+    /**
+     * Función que permite traer el Token de autorización para poder iniciar sesión y conectarse al API de GLPI.
+     */
+    public function initSesionGlpi(){
+        try {
+            $session_token = Http::withHeaders([
+                'Authorization' => 'user_token '.env('API_KEY', 'No hay Token')
+            ])->get(env('API_URL', 'No hay URL').'initSession/');
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error al iniciar sesión en GLPI'], 500);
+        }
+        return $session_token['session_token'];
+    }
+
+    /**
+     * Función que permite destruir una sesión identificada por un token de sesión en GLPI.
+     */
+    public function killSesionGlpi($sesion){
+        try {
+            Http::withHeaders([
+                'Session-Token' => $sesion
+            ])->get(env('API_URL', 'No hay URL').'killSession/');
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error al cerrar sesión en GLPI'], 500);
+        }   
+    }
+
+    /**
+     * Función que permite una relación de uno a muchos, una persona puede tener muchos registros, se usa el modelo de Registro, la llave foránea del tabla se_registros (id_persona) y la llave primaria (id_personas) con la que tiene conexión en la tabla padre (tabla se_personas).
+     */
     public function registros(){
         return $this->hasMany(Registro::class, 'id_persona', 'id_personas'); 
     }
 
-    // Función que permite una relación de uno a muchos inversa, una persona solo puede tener un usuario que la haya creado.
+    /**
+     * Función que permite una relación de uno a muchos inversa, una persona solo puede tener un usuario que la haya creado.
+     */
     public function usuario(){
         return $this->belongsTo(User::class, 'id_usuario', 'id_usuarios');
     }

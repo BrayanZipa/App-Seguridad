@@ -12,13 +12,13 @@ use Illuminate\Support\Facades\Http;
 
 class ColaboradorController extends Controller
 {
-    protected $conductores;
+    protected $colaboradores;
     protected $eps;
     protected $arl;
     protected $empresas;
 
-    public function __construct(Persona $conductores, Eps $eps, Arl $arl, Empresa $empresas){
-        $this->conductores = $conductores;
+    public function __construct(Persona $colaboradores, Eps $eps, Arl $arl, Empresa $empresas){
+        $this->colaboradores = $colaboradores;
         $this->eps = $eps;
         $this->arl = $arl;
         $this->empresas = $empresas;
@@ -35,7 +35,7 @@ class ColaboradorController extends Controller
 
         // $session_token = Http::withHeaders([
         //     'Authorization' => 'user_token '.env('API_KEY', 'No hay Token')
-        // ])->get(env('API_URL', 'No hay URL').'initSession/2');
+        // ])->get(env('API_URL', 'No hay URL').'initSession/');
 
         // // return 'Session-Token: '.$session_token['session_token'];
 
@@ -44,7 +44,7 @@ class ColaboradorController extends Controller
         // ])->get(env('API_URL', 'No hay URL').'computer/', [
         //     'range' => '0-300'
         //     // "items" => ["itemtype" => "User", "items_id"=> 2]
-        //     // "items" => ["itemtype"=> "User", "items_id"=> 2, "itemtype"=> "Entity", "items_id"=> 0]
+        //     // ["items" => ["itemtype"=> "User", "items_id"=> 2] , ["itemtype"=> "Entity", "items_id"=> 0]]
         //     // "items" => [{"itemtype"=> "User", "items_id"=> 2}, {"itemtype"=> "Entity", "items_id"=> 0}]
         // ]);
 
@@ -70,46 +70,56 @@ class ColaboradorController extends Controller
     public function create()
     {
         $exitCode = Artisan::call('cache:clear');
-
-        $session_token = Http::withHeaders([
-            'Authorization' => 'user_token '.env('API_KEY', 'No hay Token')
-        ])->get(env('API_URL', 'No hay URL').'initSession/2');
-
-        // return 'Session-Token: '.$session_token['session_token'];
-
-        $usuarios = Http::withHeaders([
-            'Session-Token' => $session_token['session_token']
+        $sesionToken = $this->colaboradores->initSesionGlpi();
+        $consulta = Http::withHeaders([
+            'Session-Token' => $sesionToken
         ])->get(env('API_URL', 'No hay URL').'computer/', [
-            'range' => '0-300'
-            // "items" => ["itemtype" => "User", "items_id"=> 2]
-            // "items" => ["itemtype"=> "User", "items_id"=> 2, "itemtype"=> "Entity", "items_id"=> 0]
-            // "items" => [{"itemtype"=> "User", "items_id"=> 2}, {"itemtype"=> "Entity", "items_id"=> 0}]
+            'range' => '0-400',
+            'get_hateoas' => false
         ]);
-
-        $array = $usuarios->json(); 
-        // return $array;
-
+        $computadores = $consulta->json();
+        $this->colaboradores->killSesionGlpi($sesionToken);
         [$eps, $arl, $empresas] = $this->obtenerModelos();
-        return view('pages.colaboradores.crear', compact('eps', 'arl', 'empresas', 'array'));
+        // // dd($computadores);
+        // return $computadores[0];
+
+        $array=count($computadores);
+        for ($i=0; $i < $array; $i++) { 
+
+            // echo " ";
+            // echo $i;
+            // echo " ";
+
+            if(!isset($computadores[$i]['users_id']) || $computadores[$i]['users_id'] == 0){
+                // echo $i;
+                // echo($computadores[$i]['name']." ".$computadores[$i]['users_id']);
+                // echo(' ');
+                unset($computadores[$i]);
+            }
+            // echo $computadores[$i]['name'];
+            // unset($computadores[$i]);
+            // echo " ";
+            // echo count($computadores);
+            // echo " ";
+        }
+        // echo($computadores[192]['name']." ".$computadores[192]['users_id']);
+        // echo 'hola';
+        // echo count($computadores);
+        // echo count($computadores);
+        // return count($computadores);
+
+        // for ($i=0; $i < count($computadores); $i++) { 
+        //     echo($computadores[$i]['name']." ".$computadores[$i]['users_id']);
+        // }
+        // foreach ($computadores as $computador) {
+        //     if(!isset($computador['users_id']) || $computador['users_id'] == 0){
+        //         echo($computador['name']." ".$computador['users_id']);
+        //         echo(' ');
+        //     }
+        // }
+        // return $computadores[0]['name'];
+        return view('pages.colaboradores.crear', compact('eps', 'arl', 'empresas', 'computadores'));
     }
-
-
-
-    public function getPersona(Request $request){
-
-        // $session_token = Http::withHeaders([
-        //     'Authorization' => 'user_token '.env('API_KEY', 'No hay Token')
-        // ])->get(env('API_URL', 'No hay URL').'initSession/2');
-
-        // $usuarios2 = Http::withHeaders([
-        //         'Session-Token' => $session_token['session_token']
-        // ])->get(env('API_URL', 'No hay URL').);
-    
-        // $array = $usuarios2->json(); 
-    }
-
-
-
 
     /**
      * Store a newly created resource in storage.
@@ -128,28 +138,6 @@ class ColaboradorController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -157,17 +145,6 @@ class ColaboradorController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
     {
         //
     }
@@ -190,4 +167,19 @@ class ColaboradorController extends Controller
     {
         return response()->json( $this->visitantes->informacionPersonas(2));      
     } 
+
+    /**
+     * Función que recibe una petición de Ajax para obtener al colaborador propietario de un computador en específico directamente desde la API de GLPI.
+     */
+    public function getColaborador(Request $request)
+    {
+        $id= $request->input('colaborador');
+        $sesionToken = $this->colaboradores->initSesionGlpi();
+        $colaborador = Http::withHeaders([
+            'Session-Token' => $sesionToken
+        ])->get(env('API_URL', 'No hay URL').'user/'.$id);
+        $this->colaboradores->killSesionGlpi($sesionToken);
+        
+        return $colaborador->json(); 
+    }
 }
