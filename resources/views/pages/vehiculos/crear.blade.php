@@ -145,7 +145,7 @@
                 selectMarcaVehiculo();
             });
 
-            //Función que permite que se desplegue otro select en el cual se puede buscar y seleccionar al propietario del vehículo
+            //Función que permite que se despliegue otro select en el cual se puede buscar y seleccionar al propietario del vehículo
             function selectPropietario() {
                 if($('#selectPersona').hasClass('is-invalid')){
                     $('#selectPersona').removeClass("is-invalid");

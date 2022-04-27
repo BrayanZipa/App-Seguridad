@@ -11,7 +11,7 @@ class Persona extends Model
     use HasFactory;
     protected $table = 'se_personas';
 
-    protected $fillable = ['id_usuario', 'id_tipo_persona', 'nombre', 'apellido', 'identificacion', 'id_arl', 'id_eps', 'foto', 'tel_contacto', 'id_empresa'];
+    protected $fillable = ['id_usuario', 'id_tipo_persona', 'nombre', 'apellido', 'identificacion', 'id_arl', 'id_eps', 'foto', 'tel_contacto', 'email', 'id_empresa'];
 
     protected $primaryKey = 'id_personas';
 

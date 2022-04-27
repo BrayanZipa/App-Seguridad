@@ -74,7 +74,6 @@ class VisitanteController extends Controller
      */
     public function store(RequestPersona $request)
     {
-        // return $request->all();
         $nuevoVisitante = $request->all();
 
         if($nuevoVisitante['casoIngreso'] == 'casoVehiculo'){

@@ -14,88 +14,128 @@
         <div class="row">
             <div class="col-sm-4">
                 <div class="form-group">
+                    <input type="hidden" id="inputCodigo" name="codigo" value="{{ old('codigo') }}">
                     <label for="selectCodigo">Ingrese el activo</label>
-                    <select name="activo" id="selectCodigo" class="form-control">
+                    <select name="selectCodigo" id="selectCodigo" class="colaborador form-control" required>
                         <option selected="selected" value="" disabled>Seleccione código</option>
                         @foreach ($computadores as $computador)
                             <option value="{{ $computador['users_id'] }}"
-                            {{ $computador['users_id'] == old('activo') ? 'selected' : '' }}>{{ $computador['name'] }}
+                            {{ $computador['users_id'] == old('selectCodigo') ? 'selected' : '' }}>{{ $computador['name'] }}
                             </option>
                         @endforeach
-
-                        {{-- @foreach ($computadores as $computador)
-                            <option value="{{ $computador->users_id }}"
-                                {{ $computador->users_id == old('activo') ? 'selected' : '' }}>{{ $computador->name }}
-                            </option>
-                        @endforeach --}}
                     </select>
+                    @if ($errors->has('selectCodigo')) 
+                        <div class="invalid-feedback">
+                            {{ $errors->first('selectCodigo') }}
+                        </div>            
+                    @endif
                 </div>
-            </div>    
-        </div>
-
-        <div class="row">
+            </div> 
             <div class="col-sm-4">
                 <div class="form-group">
                     <label for="inputNombre">Ingrese el nombre</label>
-                    <input type="text" class="form-control" id="inputNombre" name="nombre" value="{{ old('nombre') }}"
+                    <input type="text" class="colaborador form-control {{ $errors->has('nombre') ? 'is-invalid' : '' }}" id="inputNombre" name="nombre" value="{{ old('nombre') }}"
                         placeholder="Nombre" required>
+                        @if ($errors->has('nombre')) 
+                            <div class="invalid-feedback">
+                                {{ $errors->first('nombre') }}
+                            </div>            
+                        @endif
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
                     <label for="inputApellido">Ingrese el apellido</label>
-                    <input type="text" class="form-control" id="inputApellido" name="apellido" value="{{ old('apellido') }}"
+                    <input type="text" class="colaborador form-control {{ $errors->has('apellido') ? 'is-invalid' : '' }}" id="inputApellido" name="apellido" value="{{ old('apellido') }}"
                         placeholder="Apellido" required>
+                        @if ($errors->has('apellido')) 
+                            <div class="invalid-feedback">
+                                {{ $errors->first('apellido') }}
+                            </div>            
+                        @endif
+                </div>
+            </div>   
+        </div>
+
+        <div class="row">          
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="inputIdentificacion">Ingrese la identificación</label>
+                    <input type="text" class="colaborador form-control {{ $errors->has('identificacion') ? 'is-invalid' : '' }}" id="inputIdentificacion"
+                        name="identificacion" value="{{ old('identificacion') }}" placeholder="Identificación" required>
+                        @if ($errors->has('identificacion')) 
+                            <div class="invalid-feedback">
+                                {{ $errors->first('identificacion') }}
+                            </div>          
+                        @endif  
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
-                    <label for="inputIdentificacion">Ingrese la identificación</label>
-                    <input type="text" class="form-control" id="inputIdentificacion"
-                        name="identificacion" value="{{ old('identificacion') }}" placeholder="Identificación" required>
+                    <label for="inputEmail">Ingrese el correo empresarial</label>
+                    <input type="email" class="colaborador form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" id="inputEmail" name="email" value="{{ old('email') }}"
+                        placeholder="Correo empresarial" required>
+                        @if ($errors->has('email')) 
+                            <div class="invalid-feedback">
+                                {{ $errors->first('email') }}
+                            </div>          
+                        @endif  
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="inputTelefono">Ingrese el teléfono</label>
+                    <input type="tel" class="colaborador form-control {{ $errors->has('tel_contacto') ? 'is-invalid' : '' }}" id="inputTelefono" name="tel_contacto" value="{{ old('tel_contacto') }}"
+                        placeholder="Teléfono" required>
+                        @if ($errors->has('tel_contacto')) 
+                            <div class="invalid-feedback">
+                                {{ $errors->first('tel_contacto') }}
+                            </div>          
+                        @endif  
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-4">
                 <div class="form-group">
-                    <label for="inputTelefono">Ingrese el teléfono</label>
-                    <input type="tel" class="form-control" id="inputTelefono" name="tel_contacto" value="{{ old('tel_contacto') }}"
-                        placeholder="Teléfono" required>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="form-group">
                     <label for="selectEps">Ingrese la EPS</label>
-                    <select id="selectEps" class="form-control select2" style="width: 100%;" name="id_eps" required>
-                        <option selected="selected" value="" disabled>Seleccione la EPS</option>
+                    <select id="selectEps" class="colaborador form-control {{ $errors->has('id_eps') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_eps" required>
+                        <option selected="selected" value="" disabled></option>
                         @foreach ($eps as $ep)
                             <option value="{{ $ep->id_eps }}"
                                 {{ $ep->id_eps == old('id_eps') ? 'selected' : '' }}>{{ $ep->eps }}
                             </option>
                         @endforeach
                     </select>
+                    @if ($errors->has('id_eps')) 
+                        <div class="invalid-feedback">
+                            {{ $errors->first('id_eps') }}
+                        </div>            
+                    @endif
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
                     <label for="selectArl">Ingrese el ARL</label>
-                    <select id="selectArl" class="form-control select2" style="width: 100%;" name="id_arl" required>
-                        <option selected="selected" value="" disabled>Seleccione la ARL</option>
+                    <select id="selectArl" class="colaborador form-control {{ $errors->has('id_arl') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_arl" required>
+                        <option selected="selected" value="" disabled></option>
                         @foreach ($arl as $ar)
                             <option value="{{ $ar->id_arl }}"
                                 {{ $ar->id_arl == old('id_arl') ? 'selected' : '' }}>{{ $ar->arl }}
                             </option>
                         @endforeach
                     </select>
+                    @if ($errors->has('id_arl')) 
+                        <div class="invalid-feedback">
+                            {{ $errors->first('id_arl') }}
+                        </div>            
+                    @endif
                 </div>
             </div>
-        </div>
-        <div class="row">
             <div class="col-sm-4">
                 <div class="form-group">
                     <label for="selectEmpresa">Ingrese la empresa de vinculación</label>
-                    <select id="selectEmpresa" class="form-control select2" style="width: 100%;" name="id_empresa"
+                    <select id="selectEmpresa" class="colaborador form-control {{ $errors->has('id_empresa') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_empresa"
                         required>
                         <option selected="selected" value="" disabled>Seleccione la empresa</option>
                         @foreach ($empresas as $empresa)
@@ -104,9 +144,51 @@
                             </option>
                         @endforeach
                     </select>
+                    @if ($errors->has('id_empresa')) 
+                        <div class="invalid-feedback">
+                            {{ $errors->first('id_empresa') }}
+                        </div>            
+                    @endif
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label for="inputDescripcion">Ingrese una descripción</label>
+                    <textarea id="inputDescripcion" class="colaborador form-control {{ $errors->has('descripcion') ? ' is-invalid ' : '' }}" name="descripcion">
+                        {{ old('descripcion') }}
+                    </textarea>
+                    @if ($errors->has('descripcion')) 
+                        <div class="invalid-feedback">
+                            {{ $errors->first('descripcion') }}
+                        </div>          
+                    @endif 
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-sm-12">
+                <!-- checkbox -->
+                <div class="form-group clearfix">
+                    <div class="icheck-primary d-inline">
+                        <label for="checkVehiculo">
+                            ¿El visitante ingresa vehículo?
+                        </label>
+                        <input type="checkbox" id="checkVehiculo">
+                    </div><br>
+                    <div class="icheck-primary d-inline">
+                        <label for="checkActivo">
+                            ¿El visitante ingresa computador?
+                        </label>
+                        <input type="checkbox" id="checkActivo">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         
     </div>
     <!-- /.card-body -->
