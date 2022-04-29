@@ -272,11 +272,11 @@
                         event.preventDefault();
                         event.stopPropagation();
 
-                    $('.colaborador, .vehiculo').each(function(index) {
-                        if (!this.checkValidity()) {
-                            $(this).addClass('is-invalid');
-                        }
-                    });
+                        $('.colaborador, .vehiculo').each(function(index) {
+                            if (!this.checkValidity()) {
+                                $(this).addClass('is-invalid');
+                            }
+                        });
                     }
                 }, false);
             })();
@@ -295,7 +295,62 @@
                 };   
             }); 
 
-            // Muestra los modales de ingreso correcto dependiendo de cuales se hayan ingresado y redirecciona en caso de que se oprima el botón continuar
+            //Función que permite mantener la fotografía tomada previamente al vehículo en caso de que haya errores al enviar el formulario crear vehículo
+            function retornarFotoVehiculo () {
+                var inputFotoVehiculo = document.getElementById('inputFotoVehiculo').value;              
+                var video2 = document.getElementById("video2");
+                var canvas2 = document.getElementById("canvas2");
+                var contexto2 = canvas2.getContext("2d");
+
+                canvas2.setAttribute("width", "640");
+                canvas2.setAttribute("height", "480");
+
+                canvas2.style.borderStyle = "solid";
+                canvas2.style.borderWidth = "1px";
+                canvas2.style.borderColor = "#fd7e14";
+
+                var imagen2 = new Image();;
+                imagen2.src = inputFotoVehiculo;
+
+                imagen2.onload=function() {
+                    document.getElementById('canvas2').style.display = 'block';
+                    contexto2.drawImage(imagen2, 0, 0, imagen2.width, imagen2.height);
+                } 
+            }
+            
+            //Función anónima que se ejecuta si alguno de los elementos mencionados se crea en la interfaz debido a errores cometidos en el ingreso de los formularios del módulo de colaboradores
+            (function () {
+                if(!!document.getElementById('botonRetorno')){
+                    var caso = document.getElementById('casoIngreso').value;
+                    if(caso == 'casoVehiculoActivo'){
+                        retornarFotoVehiculo();
+                        selectMarcaVehiculo();
+                        // document.getElementById('checkVehiculo').click();
+                    } 
+                } if(!!document.getElementById('botonRetorno2')){
+                    var caso = document.getElementById('casoIngreso').value;
+                    if(caso == 'casoVehiculoActivo'){
+                        retornarFotoVehiculo();
+                        selectMarcaVehiculo();
+                        document.getElementById('checkVehiculo').click();
+                    } 
+                }
+
+                // var caso = document.getElementById('casoIngreso').value;
+                // if(caso == 'casoVehiculoActivo'){
+                //     retornarFotoVehiculo();
+                //     document.getElementById('checkVehiculo').click();
+                // }
+
+                // if(!!document.getElementById('botonRetorno2')){
+                //     retornarFotoVehiculo();
+                //     document.getElementById('checkVehiculo').click();
+                //     // selectMarcaVehiculo();
+                // }
+                
+            })();
+
+            //Muestra los modales de ingreso correcto dependiendo de que formularios se hayan ingresado y redirecciona en caso de que se oprima el botón continuar
             $('#modal-crear-colaborador').modal("show");
             $('#modal-crear-colaboradorVehiculo').modal("show");
             $('#modal-crear-colaboradorVehiculoActivo').modal("show");
@@ -332,7 +387,7 @@
         </div>
 
         @include('pages.colaboradores.modales')
-        {{-- @include('pages.modalError') --}}
+        @include('pages.modalError')
 
     </section>
 @endsection

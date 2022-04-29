@@ -58,12 +58,12 @@ class RequestConductor extends FormRequest
             'apellido.min' => 'El apellido no puede tener menos de 3 caracteres',
 
             'identificacion.required' => 'Se requiere que ingrese la identificación',
-            'identificacion.numeric' => 'La identificación debe ser un valor númerico',
+            'identificacion.numeric' => 'La identificación debe ser un valor númerico y no debe contener espacios',
             'identificacion.unique' => 'No puede haber dos personas con el mismo número de identificación',
             'identificacion.digits_between' => 'La identificación debe estar en un rago de 4 a 15 caracteres',
 
             'tel_contacto.required' => 'Se requiere que ingrese el teléfono',
-            'tel_contacto.numeric' => 'El teléfono debe ser un valor númerico',
+            'tel_contacto.numeric' => 'El teléfono debe ser un valor númerico y no debe contener espacios',
             'tel_contacto.unique' => 'No puede haber dos personas con el mismo teléfono',
             'tel_contacto.digits_between' => 'El teléfono debe tener 7 o 10 caracteres',
 
@@ -90,7 +90,7 @@ class RequestConductor extends FormRequest
             'identificador.required' => 'Se requiere que ingrese el identificador del vehículo',
             'identificador.string' => 'El identificador debe ser de tipo texto',
             'identificador.unique' => 'No puede haber dos vehículos con el mismo número identificador',
-            'identificador.alpha_num' => 'El identificador del vehículo solo debe contener valores alfanuméricos',
+            'identificador.alpha_num' => 'El identificador solo debe contener valores alfanuméricos y no debe contener espacios',
             'identificador.max' => 'El identificador del vehículo no puede tener más de 15 caracteres',
             'identificador.min' => 'El identificador del vehículo no puede tener menos de 6 caracteres',
 

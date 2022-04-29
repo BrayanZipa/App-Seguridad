@@ -74,7 +74,7 @@
             <div class="col-sm-4">
                 <div class="form-group">
                     <label for="inputEmail">Ingrese el correo empresarial</label>
-                    <input type="email" class="colaborador form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" id="inputEmail" name="email" value="{{ old('email') }}"
+                    <input type="text" class="colaborador form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" id="inputEmail" name="email" value="{{ old('email') }}"
                         placeholder="Correo empresarial" required>
                         @if ($errors->has('email')) 
                             <div class="invalid-feedback">
@@ -135,7 +135,7 @@
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
-                    <label for="selectEmpresa">Ingrese la empresa de vinculación</label>
+                    <label for="selectEmpresa">Ingrese la empresa a la que pertenece</label>
                     <select id="selectEmpresa" class="colaborador form-control {{ $errors->has('id_empresa') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_empresa"
                         required>
                         <option selected="selected" value="" disabled>Seleccione la empresa</option>

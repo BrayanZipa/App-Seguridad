@@ -54,12 +54,12 @@ class RequestPersona extends FormRequest
             'apellido.min' => 'El apellido no puede tener menos de 3 caracteres',
 
             'identificacion.required' => 'Se requiere que ingrese la identificación',
-            'identificacion.numeric' => 'La identificación debe ser un valor númerico',
+            'identificacion.numeric' => 'La identificación debe ser un valor númerico y no debe contener espacios',
             'identificacion.unique' => 'No puede haber dos personas con el mismo número de identificación',
             'identificacion.digits_between' => 'La identificación debe estar en un rango de 4 a 15 números',
 
             'tel_contacto.required' => 'Se requiere que ingrese el teléfono',
-            'tel_contacto.numeric' => 'El teléfono debe ser un valor númerico',
+            'tel_contacto.numeric' => 'El teléfono debe ser un valor númerico y no debe contener espacios',
             'tel_contacto.unique' => 'No puede haber dos personas con el mismo teléfono',
             'tel_contacto.digits_between' => 'El teléfono debe tener 7 o 10 números',
 
@@ -82,9 +82,6 @@ class RequestPersona extends FormRequest
 
             'foto.required' => 'Se requiere que tome una foto de la persona',
             'foto.string' => 'La información de la foto debe estar en formato de texto',  
-            
-            
-            // 'id_tipo_persona.integer' => 'El tipo de persona debe ser de tipo entero',
         ];
     }
 
@@ -99,8 +96,6 @@ class RequestPersona extends FormRequest
             'id_eps' => 'required|integer',         
             'id_arl' => 'required|integer',
             'foto' => 'required|string',
-            
-            // 'id_tipo_persona' => 'integer',
         ];
     } 
 }

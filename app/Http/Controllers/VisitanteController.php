@@ -331,7 +331,7 @@ class VisitanteController extends Controller
             'identificador.required' => 'Se requiere que ingrese el número identificador del vehículo',
             'identificador.string' => 'El número identificador debe ser de tipo texto',
             'identificador.unique' => 'No puede haber dos vehículos con el mismo número identificador',
-            'identificador.alpha_num' => 'El identificador del vehículo solo debe contener valores alfanuméricos',
+            'identificador.alpha_num' => 'El identificador solo debe contener valores alfanuméricos y no debe contener espacios',
             'identificador.max' => 'El identificador del vehículo no puede tener más de 15 caracteres',
             'identificador.min' => 'El identificador del vehículo no puede tener menos de 6 caracteres',
 

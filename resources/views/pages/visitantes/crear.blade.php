@@ -456,7 +456,7 @@
                 }
             })();
             
-            // Muestra los modales de ingreso correcto dependiendo de cuales se hayan ingresado y redirecciona en caso de que se oprima el botón continuar
+            //Muestra los modales de ingreso correcto dependiendo de que formularios se hayan ingresado y redirecciona en caso de que se oprima el botón continuar
             $('#modal-crear-visitante').modal("show");
             $('#modal-crear-visitanteVehiculo').modal("show");
             $('#modal-crear-visitanteActivo').modal("show");

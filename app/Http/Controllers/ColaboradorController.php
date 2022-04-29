@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RequestColaborador;
 use App\Models\Activo;
 use App\Models\Arl;
 use App\Models\Empresa;
@@ -112,7 +113,7 @@ class ColaboradorController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RequestColaborador $request)
     {
         $nuevoColaborador = $request->all();
 
