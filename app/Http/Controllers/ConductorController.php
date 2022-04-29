@@ -11,7 +11,6 @@ use App\Models\MarcaVehiculo;
 use App\Models\Persona;
 use App\Models\PersonaVehiculo;
 use App\Models\Registro;
-use App\Models\TipoPersona;
 use App\Models\TipoVehiculo;
 use App\Models\Vehiculo;
 use Illuminate\Http\Request;
@@ -27,15 +26,13 @@ class ConductorController extends Controller
     protected $tipoVehiculos;
     protected $marcaVehiculos;
     protected $empresas;
-    protected $tipoPersonas;
 
-    public function __construct(Persona $conductores, Eps $eps, Arl $arl, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, TipoPersona $tipoPersonas, Empresa $empresas){
+    public function __construct(Persona $conductores, Eps $eps, Arl $arl, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, Empresa $empresas){
         $this->conductores = $conductores;
         $this->eps = $eps;
         $this->arl = $arl;
         $this->tipoVehiculos = $tipoVehiculos;
         $this->marcaVehiculos = $marcaVehiculos;
-        $this->tipoPersonas = $tipoPersonas;
         $this->empresas = $empresas;
     }
   
@@ -47,9 +44,9 @@ class ConductorController extends Controller
     public function index()
     {
         $exitCode = Artisan::call('cache:clear');
-        $tipoPersonas = $this->tipoPersonas->obtenerTipoPersona();
-        [$eps, $arl, $tipoVehiculos, $marcaVehiculos] = $this->obtenerModelos();
-        return view('pages.conductores.mostrar', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos', 'tipoPersonas'));
+        $eps = $this->eps->obtenerEps();
+        $arl = $this->arl->obtenerArl();
+        return view('pages.conductores.mostrar', compact('eps', 'arl'));
     }
 
     /**
@@ -59,9 +56,8 @@ class ConductorController extends Controller
      */
     public function create()
     {
-        $exitCode = Artisan::call('cache:clear');
-        $empresas = $this->empresas->obtenerEmpresas();
-        [$eps, $arl, $tipoVehiculos, $marcaVehiculos] = $this->obtenerModelos();
+        $exitCode = Artisan::call('cache:clear');   
+        [$eps, $arl, $tipoVehiculos, $marcaVehiculos, $empresas] = $this->obtenerModelos();
         return view('pages.conductores.crear', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos', 'empresas'));
     }
 
@@ -152,7 +148,7 @@ class ConductorController extends Controller
         return [$vehiculo->identificador, $vehiculo->id_vehiculos];
     }
 
-    //Función que permite hacer un registro de la entrada de un visitante al momento que se crea un nuevo visitante en la base de datos
+    //Función que permite hacer un registro de la entrada de un conductor al momento que se crea un nuevo conductor en la base de datos
     public function store3($datos, $id_persona, $id_vehiculo)
     {
         Registro::create([
@@ -166,7 +162,6 @@ class ConductorController extends Controller
             'id_usuario' => $datos['id_usuario'],
         ])->save(); 
     }
-
 
     /**
      * Update the specified resource in storage.
@@ -186,7 +181,7 @@ class ConductorController extends Controller
     }
 
     /**
-     * Función que permite traer la información de los modelos de la Eps, Arl, TipoVehiculo y MarcaVehiculo
+     * Función que permite traer la información de los modelos de la Eps, Arl, TipoVehiculo, MarcaVehiculo y Empresa
      */
     public function obtenerModelos()
     {
@@ -194,8 +189,9 @@ class ConductorController extends Controller
         $arl = $this->arl->obtenerArl();
         $tipoVehiculos = $this->tipoVehiculos->obtenerTipoVehiculos();
         $marcaVehiculos = $this->marcaVehiculos->obtenerMarcaVehiculos();
+        $empresas = $this->empresas->obtenerEmpresas();
 
-        return [$eps, $arl, $tipoVehiculos, $marcaVehiculos];
+        return [$eps, $arl, $tipoVehiculos, $marcaVehiculos, $empresas];
     }
 
     /**

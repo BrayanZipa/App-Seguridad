@@ -1,8 +1,10 @@
+<input id="casoIngreso" type="hidden" name="casoIngreso" value="{{ old('casoIngreso') }}">
+
 <div class="card card-primary">
     <div class="card-header">
         <h3 class="card-title">Crear nuevo colaborador</h3>
         <div class="card-tools">
-            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
+            <button id="botonComprimirColaborador" type="button" class="btn btn-tool" data-card-widget="collapse"><i
                     class="fas fa-minus"></i>
             </button>
         </div>
@@ -10,23 +12,23 @@
     </div>
     <!-- /.card-header -->
 
-    <div class="card-body">
+    <div class="card-body mb-n4">
         <div class="row">
             <div class="col-sm-4">
                 <div class="form-group">
-                    <input type="hidden" id="inputCodigo" name="codigo" value="{{ old('codigo') }}">
+                    <input type="hidden" id="inputCodigo" name="codigo" value="{{ old('codigo') }}" required>
                     <label for="selectCodigo">Ingrese el activo</label>
-                    <select name="selectCodigo" id="selectCodigo" class="colaborador form-control" required>
-                        <option selected="selected" value="" disabled>Seleccione código</option>
+                    <select name="selectCodigo" id="selectCodigo" class="colaborador form-control" style="width: 100%;" required>
+                        <option selected="selected" value="" disabled></option>
                         @foreach ($computadores as $computador)
                             <option value="{{ $computador['users_id'] }}"
                             {{ $computador['users_id'] == old('selectCodigo') ? 'selected' : '' }}>{{ $computador['name'] }}
                             </option>
                         @endforeach
                     </select>
-                    @if ($errors->has('selectCodigo')) 
+                    @if ($errors->has('codigo')) 
                         <div class="invalid-feedback">
-                            {{ $errors->first('selectCodigo') }}
+                            {{ $errors->first('codigo') }}
                         </div>            
                     @endif
                 </div>
@@ -56,7 +58,6 @@
                 </div>
             </div>   
         </div>
-
         <div class="row">          
             <div class="col-sm-4">
                 <div class="form-group">
@@ -153,7 +154,18 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm-4">
+                <!-- checkbox -->
+                <div class="form-group clearfix pt-4">
+                    <div class="icheck-primary d-inline">
+                        <label for="checkVehiculo">
+                            ¿El colaborador ingresa vehículo?
+                        </label>
+                        <input type="checkbox" id="checkVehiculo">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
                 <div class="form-group">
                     <label for="inputDescripcion">Ingrese una descripción</label>
                     <textarea id="inputDescripcion" class="colaborador form-control {{ $errors->has('descripcion') ? ' is-invalid ' : '' }}" name="descripcion">
@@ -168,33 +180,11 @@
             </div>
         </div>
 
-        <div class="row mt-2">
-            <div class="col-sm-12">
-                <!-- checkbox -->
-                <div class="form-group clearfix">
-                    <div class="icheck-primary d-inline">
-                        <label for="checkVehiculo">
-                            ¿El visitante ingresa vehículo?
-                        </label>
-                        <input type="checkbox" id="checkVehiculo">
-                    </div><br>
-                    <div class="icheck-primary d-inline">
-                        <label for="checkActivo">
-                            ¿El visitante ingresa computador?
-                        </label>
-                        <input type="checkbox" id="checkActivo">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        
     </div>
     <!-- /.card-body -->
     <div class="card-footer">
-        <button type='submit' class="btn btn-primary">Crear colaborador</button>
-        <button type='reset' class="btn btn-secondary">Limpiar</button>
+        <button id="botonCrear" type='submit' class="btn btn-primary">Crear colaborador</button>
+        <button id="botonLimpiar" type='button' class="btn btn-secondary">Limpiar</button>
     </div>
     <!-- /.card-footer-->
 </div>

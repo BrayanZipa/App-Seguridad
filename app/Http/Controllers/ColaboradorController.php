@@ -6,23 +6,33 @@ use App\Models\Activo;
 use App\Models\Arl;
 use App\Models\Empresa;
 use App\Models\Eps;
+use App\Models\MarcaVehiculo;
 use App\Models\Persona;
+use App\Models\PersonaVehiculo;
 use App\Models\Registro;
+use App\Models\TipoVehiculo;
+use App\Models\Vehiculo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class ColaboradorController extends Controller
 {
     protected $colaboradores;
     protected $eps;
     protected $arl;
+    protected $tipoVehiculos;
+    protected $marcaVehiculos;
     protected $empresas;
 
-    public function __construct(Persona $colaboradores, Eps $eps, Arl $arl, Empresa $empresas){
+    public function __construct(Persona $colaboradores, Eps $eps, Arl $arl, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, Empresa $empresas){
         $this->colaboradores = $colaboradores;
         $this->eps = $eps;
         $this->arl = $arl;
+        $this->tipoVehiculos = $tipoVehiculos;
+        $this->marcaVehiculos = $marcaVehiculos;
         $this->empresas = $empresas;
     }
     
@@ -60,7 +70,9 @@ class ColaboradorController extends Controller
         // // return   $usuarios[0]['links'][5]['href'];  
         // return $usuarios2;
 
-        [$eps, $arl, $empresas] = $this->obtenerModelos();
+        $eps = $this->eps->obtenerEps();
+        $arl = $this->arl->obtenerArl();
+        $empresas = $this->empresas->obtenerEmpresas();
         return view('pages.colaboradores.mostrar', compact('eps', 'arl', 'empresas'));
     }
 
@@ -89,9 +101,9 @@ class ColaboradorController extends Controller
             }
         }
 
-        [$eps, $arl, $empresas] = $this->obtenerModelos();
+        [$eps, $arl, $tipoVehiculos, $marcaVehiculos, $empresas] = $this->obtenerModelos();
 
-        return view('pages.colaboradores.crear', compact('eps', 'arl', 'empresas', 'computadores'));
+        return view('pages.colaboradores.crear', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos', 'empresas', 'computadores'));
     }
 
     /**
@@ -104,10 +116,21 @@ class ColaboradorController extends Controller
     {
         $nuevoColaborador = $request->all();
 
+        // if($nuevoColaborador['casoIngreso'] == 'casoVehiculo'){
+        //     $this->validarVehiculo($request);
+          
+        // } else if ($nuevoColaborador['casoIngreso'] == 'casoActivo'){
+        //     $this->validarActivo($request);
+
+        // } else if ($nuevoColaborador['casoIngreso'] == 'casoVehiculoActivo'){
+        //     $this->validarVehiculo($request);
+        //     $this->validarActivo($request);
+        // }
+
         $nuevoColaborador['nombre'] = ucwords(mb_strtolower($nuevoColaborador['nombre']));
         $nuevoColaborador['apellido'] = ucwords(mb_strtolower($nuevoColaborador['apellido']));
         $nuevoColaborador['descripcion'] = ucfirst(mb_strtolower($nuevoColaborador['descripcion']));
-        // $nuevoColaborador['identificador'] = strtoupper($nuevoColaborador['identificador']);
+        $nuevoColaborador['identificador'] = strtoupper($nuevoColaborador['identificador']);
         $nuevoColaborador['activo'] = 'Computador';
         $nuevoColaborador['codigo'] = ucfirst($nuevoColaborador['codigo']);
         $nuevoColaborador['id_tipo_persona'] = 2;
@@ -129,14 +152,58 @@ class ColaboradorController extends Controller
         ]);
         $colaborador->save();
 
-        $mensajeActivo = $this->store3($nuevoColaborador, $colaborador->id_personas);
+        if ($nuevoColaborador['casoIngreso'] == 'casoVehiculoActivo'){
+            [$mensajeVehiculo, $id_vehiculo] = $this->store2($nuevoColaborador, $colaborador->id_personas);
+            $mensajeActivo = $this->store3($nuevoColaborador, $colaborador->id_personas);
+            $this->store4($nuevoColaborador, $colaborador->id_personas, $id_vehiculo);
+            $modal = [$colaborador->nombre.' '.$colaborador->apellido, $mensajeVehiculo, $mensajeActivo];
+            return redirect()->action([ColaboradorController::class, 'create'])->with('crear_colaborador_vehiculoActivo', $modal);
+        } else{
+            $mensajeActivo = $this->store3($nuevoColaborador, $colaborador->id_personas);
             $this->store4($nuevoColaborador, $colaborador->id_personas, null);
             $modal = [$colaborador->nombre.' '.$colaborador->apellido, $mensajeActivo];
-
-        return redirect()->action([ColaboradorController::class, 'index']);
+            return redirect()->action([ColaboradorController::class, 'create'])->with('crear_colaborador', $modal);
+        }
     }
 
-    //Función que permite registrar un nuevo activo creado desde el modulo de visitantes
+    //Función que permite registrar un nuevo vehículo creado desde el modulo de visitantes
+    public function store2($datos, $id_persona)
+    {
+        if(!isset($datos['foto_vehiculo'])){ //saber si es null
+            $url = null;
+        } else {
+            $img = $datos['foto_vehiculo'];
+            $img = str_replace('data:image/png;base64,', '', $img);
+            $img = str_replace(' ', '+', $img);
+            $foto = base64_decode($img);
+            $filename = 'vehiculos/'. $id_persona. '_'. $datos['identificador']. '_'.date('Y-m-d'). '.png';
+            $ruta = storage_path() . '\app\public/' .  $filename;
+            Image::make($foto)->resize(600, 500)->save($ruta);
+            $url = Storage::url($filename);
+        }
+    
+        if(!isset($datos['id_marca_vehiculo'])){ //saber si existe
+            $datos['id_marca_vehiculo'] = null;
+        }
+    
+        $vehiculo = Vehiculo::create([
+            'identificador' => $datos['identificador'],
+            'id_tipo_vehiculo' => $datos['id_tipo_vehiculo'],
+            'id_marca_vehiculo' => $datos['id_marca_vehiculo'],
+            'foto_vehiculo' => $url,
+            'id_usuario' => $datos['id_usuario'],
+        ]);
+        $vehiculo->save();
+    
+        PersonaVehiculo::create([
+            'id_vehiculo' => $vehiculo->id_vehiculos,
+            'id_persona' => $id_persona,
+        ])->save();
+    
+        return [$vehiculo->identificador, $vehiculo->id_vehiculos];
+    }
+
+    //Función que permite registrar un nuevo activo creado desde el modulo de colaboradores
     public function store3($datos, $id_persona)
     {
         $activo = Activo::create([
@@ -149,22 +216,21 @@ class ColaboradorController extends Controller
         return $activo->codigo;
     }
 
-    //Función que permite hacer un registro de la entrada de un visitante al momento que se crea un nuevo visitante en la base de datos
+    //Función que permite hacer un registro de la entrada de un colaborador al momento que se crea un nuevo colaborador en la base de datos
     public function store4($datos, $id_persona, $id_vehiculo)
     {
-        // if($datos['casoIngreso'] == 'casoVehiculo'){
-        //     Registro::create([
-        //         'id_persona' => $id_persona,
-        //         'ingreso_persona' => date('Y-m-d H:i:s'),
-        //         'ingreso_vehiculo' => date('Y-m-d H:i:s'),
-        //         'id_vehiculo' => $id_vehiculo,
-        //         'descripcion' => $datos['descripcion'],
-        //         'id_empresa' => $datos['id_empresa'],
-        //         'colaborador' => $datos['colaborador'],
-        //         'id_usuario' => $datos['id_usuario'],
-        //     ])->save(); 
+        if ($datos['casoIngreso'] == 'casoVehiculoActivo'){
+            Registro::create([
+                'id_persona' => $id_persona,
+                'ingreso_persona' => date('Y-m-d H:i:s'),
+                'ingreso_vehiculo' => date('Y-m-d H:i:s'),
+                'id_vehiculo' => $id_vehiculo,
+                'ingreso_activo' => date('Y-m-d H:i:s'),
+                'descripcion' => $datos['descripcion'],
+                'id_usuario' => $datos['id_usuario'],
+                ])->save();  
 
-        // } else if ($datos['casoIngreso'] == 'casoActivo'){
+        } else {
             Registro::create([
                 'id_persona' => $id_persona,
                 'ingreso_persona' => date('Y-m-d H:i:s'),
@@ -173,6 +239,7 @@ class ColaboradorController extends Controller
                 'id_usuario' => $datos['id_usuario'],
             ])->save(); 
         }
+    }
 
     /**
      * Update the specified resource in storage.
@@ -193,8 +260,11 @@ class ColaboradorController extends Controller
     {
         $eps = $this->eps->obtenerEps();
         $arl = $this->arl->obtenerArl();
+        $tipoVehiculos = $this->tipoVehiculos->obtenerTipoVehiculos();
+        $marcaVehiculos = $this->marcaVehiculos->obtenerMarcaVehiculos();
         $empresas = $this->empresas->obtenerEmpresas();
-        return [$eps, $arl, $empresas];
+
+        return [$eps, $arl, $tipoVehiculos, $marcaVehiculos, $empresas];
     }
 
     /**

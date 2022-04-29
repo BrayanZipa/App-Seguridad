@@ -107,7 +107,7 @@
 
                 <li class="nav-item">
                     <a href="{{ route('mostrarRegistros') }}" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
+                        <i class="nav-icon far fa-clock"></i>
                         <p>
                             Registros
                             <span class="badge badge-info right">2</span>

@@ -11,7 +11,6 @@ use App\Models\MarcaVehiculo;
 use App\Models\Persona;
 use App\Models\PersonaVehiculo;
 use App\Models\Registro;
-use App\Models\TipoPersona;
 use App\Models\TipoVehiculo;
 use App\Models\Vehiculo;
 use Illuminate\Http\Request;
@@ -27,19 +26,17 @@ class VisitanteController extends Controller
     protected $tipoVehiculos;
     protected $marcaVehiculos;
     protected $empresas;
-    protected $tipoPersonas;
 
     /**
      * Contructor que inicializa todos los modelos
      */
-    public function __construct(Persona $visitantes, Eps $eps, Arl $arl, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, TipoPersona $tipoPersonas, Empresa $empresas)
+    public function __construct(Persona $visitantes, Eps $eps, Arl $arl, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, Empresa $empresas)
     {
         $this->visitantes = $visitantes;
         $this->eps = $eps;
         $this->arl = $arl;
         $this->tipoVehiculos = $tipoVehiculos;
         $this->marcaVehiculos = $marcaVehiculos;
-        $this->tipoPersonas = $tipoPersonas;
         $this->empresas = $empresas;
     }
 
@@ -50,9 +47,9 @@ class VisitanteController extends Controller
     public function index()
     {
         $exitCode = Artisan::call('cache:clear');
-        $tipoPersonas = $this->tipoPersonas->obtenerTipoPersona();
-        [$eps, $arl, $tipoVehiculos, $marcaVehiculos] = $this->obtenerModelos();
-        return view('pages.visitantes.mostrar', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos', 'tipoPersonas'));
+        $eps = $this->eps->obtenerEps();
+        $arl = $this->arl->obtenerArl();
+        return view('pages.visitantes.mostrar', compact('eps', 'arl'));
     }
 
     /**
@@ -62,8 +59,7 @@ class VisitanteController extends Controller
     public function create()
     {
         $exitCode = Artisan::call('cache:clear');
-        $empresas = $this->empresas->obtenerEmpresas();
-        [$eps, $arl, $tipoVehiculos, $marcaVehiculos] = $this->obtenerModelos();
+        [$eps, $arl, $tipoVehiculos, $marcaVehiculos, $empresas] = $this->obtenerModelos();
         return view('pages.visitantes.crear', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos', 'empresas'));
     }
 
@@ -309,8 +305,9 @@ class VisitanteController extends Controller
         $arl = $this->arl->obtenerArl();
         $tipoVehiculos = $this->tipoVehiculos->obtenerTipoVehiculos();
         $marcaVehiculos = $this->marcaVehiculos->obtenerMarcaVehiculos();
+        $empresas = $this->empresas->obtenerEmpresas();
 
-        return [$eps, $arl, $tipoVehiculos, $marcaVehiculos];
+        return [$eps, $arl, $tipoVehiculos, $marcaVehiculos, $empresas];
     }
 
     /**

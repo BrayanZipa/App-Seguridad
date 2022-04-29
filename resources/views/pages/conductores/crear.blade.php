@@ -73,6 +73,9 @@
                 $('#botonActivar').trigger("click");
                 $('.conductor').each(function(index) {
                     $(this).val('');
+                    if($(this).hasClass('is-invalid')){
+                        $(this).removeClass("is-invalid");
+                    } 
                 });
                 activarSelect2Conductor();
                 activarSelect2Vehiculo();
