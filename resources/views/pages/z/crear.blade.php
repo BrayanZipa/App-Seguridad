@@ -540,3 +540,12 @@
 
     </section>
 @endsection
+
+{{-- <div class="card-footer mt-n4">
+    <div class="col-sm-12">
+        <div class="float-right">
+        <button id="botonCrear2" type='submit' class="btn" style="background-color: rgb(255, 115, 0)">Crear todo</button>
+        <button id="botonLimpiar2" type='button' class="btn btn-secondary">Limpiar</button>
+        </div>
+    </div>
+</div> --}}

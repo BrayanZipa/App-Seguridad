@@ -5,9 +5,6 @@
                 <button id="botonComprimirVehiculo" type="button" class="btn btn-tool" data-card-widget="collapse"><i
                         class="fas fa-minus"></i>
                 </button>
-                <button id="botonCerrar2" type="button" class="btn btn-tool">
-                    <i class="fas fa-times"></i>
-                </button>
             </div>
             <!-- /.card-tools -->
         </div>
@@ -44,7 +41,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="inputNumeroIdentificador">Ingrese el número identificador del vehículo</label>
-                                <input type="text" class="vehiculo form-control {{ $errors->has('identificador') ? 'is-invalid' : '' }}" id="inputNumeroIdentificador"
+                                <input type="text" class="colaboradorVehiculo form-control {{ $errors->has('identificador') ? 'is-invalid' : '' }}" id="inputNumeroIdentificador"
                                     name="identificador" value="{{ old('identificador') }}" autocomplete="off"
                                     placeholder="Número indetificador" required>
                                     @if ($errors->has('identificador')) 
@@ -57,7 +54,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="selectTipoVehiculo">Ingrese el tipo de vehículo</label>
-                                <select id="selectTipoVehiculo" class="vehiculo  select2bs4 form-control {{ $errors->has('id_tipo_vehiculo') ? 'is-invalid' : '' }}"
+                                <select id="selectTipoVehiculo" class="colaboradorVehiculo  select2bs4 form-control {{ $errors->has('id_tipo_vehiculo') ? 'is-invalid' : '' }}"
                                     style="width: 100%;" name="id_tipo_vehiculo" required>
                                     <option selected="selected" value="" disabled></option>
                                     @foreach ($tipoVehiculos as $tipoVehiculo)

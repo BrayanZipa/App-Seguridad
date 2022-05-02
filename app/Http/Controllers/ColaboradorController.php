@@ -86,12 +86,16 @@ class ColaboradorController extends Controller
     {
         $exitCode = Artisan::call('cache:clear');
         $sesionToken = $this->colaboradores->initSesionGlpi();
-        $consulta = Http::withHeaders([
-            'Session-Token' => $sesionToken
-        ])->get(env('API_URL', 'No hay URL').'computer/', [
-            'range' => '0-1000',
-            'get_hateoas' => false
-        ]);
+        try {
+            $consulta = Http::withHeaders([
+                'Session-Token' => $sesionToken
+            ])->get(env('API_URL', 'No hay URL').'computer/', [
+                'range' => '0-1000',
+                'get_hateoas' => false
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error al traer la información de los activos desde GLPI'], 500);
+        }      
         $computadores = $consulta->json();
         $this->colaboradores->killSesionGlpi($sesionToken);
 
@@ -272,20 +276,24 @@ class ColaboradorController extends Controller
     {
         $id= $request->input('colaborador');
         $sesionToken = $this->colaboradores->initSesionGlpi();
-        $consulta = Http::withHeaders([
-            'Session-Token' => $sesionToken
-        ])->get(env('API_URL', 'No hay URL').'user/'.$id, [
-            'get_hateoas' => false
-        ]);
-        $colaborador = $consulta->json();
-
-        $consulta2 = Http::withHeaders([
-            'Session-Token' => $sesionToken
-        ])->get(env('API_URL', 'No hay URL').'userEmail/', [
-            'range' => '0-1000',
-            'get_hateoas' => false
-        ]);
-        $correos = $consulta2->json(); 
+        try {
+            $consulta = Http::withHeaders([
+                'Session-Token' => $sesionToken
+            ])->get(env('API_URL', 'No hay URL').'user/'.$id, [
+                'get_hateoas' => false
+            ]);
+            $colaborador = $consulta->json();
+    
+            $consulta2 = Http::withHeaders([
+                'Session-Token' => $sesionToken
+            ])->get(env('API_URL', 'No hay URL').'userEmail/', [
+                'range' => '0-1000',
+                'get_hateoas' => false
+            ]);
+            $correos = $consulta2->json(); 
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error al traer la información del colaborador seleccionado desde GLPI'], 500);
+        }
         $this->colaboradores->killSesionGlpi($sesionToken);
 
         foreach ($correos as $correo) {

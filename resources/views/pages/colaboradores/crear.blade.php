@@ -391,7 +391,7 @@
             <div class="col-md-12">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="card card-dark card-tabs mb-n2">
+                            <div class="card card-dark card-tabs mt-n1 mb-n2">
                                 <div class="card-header p-0 pt-1">
                                     <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
                                         <li class="nav-item">
@@ -430,7 +430,7 @@
                                                 </div>
 
                                                 <div id="crearVehiculo" class="mt-n2 mb-n4 mx-n3">
-                                                    @include('pages.colaboradores.formularioCrearVehiculo')
+                                                    @include('pages.colaboradores.formularioCrearVehiculo2')
                                                 </div> 
                                             </form>
                                         </div>
