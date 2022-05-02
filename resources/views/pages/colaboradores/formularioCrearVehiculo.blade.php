@@ -1,4 +1,4 @@
-    <div class="card card-orange">
+    <div class="card card-orange mt-3 mb-n3 mx-n1">
         <div class="card-header">
             <h3 class="card-title">Crear nuevo vehículo</h3>
             <div class="card-tools">
@@ -97,7 +97,7 @@
 
         </div>
         <!-- /.card-body -->
-        <div class="card-footer">
+        <div class="card-footer mt-n4">
             <button id="botonCrear2" type='submit' class="btn"
                 style="background-color: rgb(255, 115, 0)">Crear todo</button>
             <button id="botonLimpiar2" type='button' class="btn btn-secondary">Limpiar</button>

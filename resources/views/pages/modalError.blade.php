@@ -1,4 +1,4 @@
-@if ($errors->has('nombre') || $errors->has('apellido') || $errors->has('identificacion') || $errors->has('tel_contacto') || $errors->has('tel_contacto') || 
+@if ($errors->has('nombre') || $errors->has('apellido') || $errors->has('identificacion') || $errors->has('email') || $errors->has('tel_contacto') || 
     $errors->has('id_eps') || $errors->has('id_arl') || $errors->has('id_empresa') || $errors->has('colaborador') || $errors->has('descripcion') || $errors->has('foto'))
     <div class="text-center" style="display: none">
         <button type="button" id="botonRetorno" class="btn btn-danger">Error</button>

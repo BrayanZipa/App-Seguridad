@@ -116,18 +116,7 @@ class ColaboradorController extends Controller
     public function store(RequestColaborador $request)
     {
         $nuevoColaborador = $request->all();
-
-        // if($nuevoColaborador['casoIngreso'] == 'casoVehiculo'){
-        //     $this->validarVehiculo($request);
-          
-        // } else if ($nuevoColaborador['casoIngreso'] == 'casoActivo'){
-        //     $this->validarActivo($request);
-
-        // } else if ($nuevoColaborador['casoIngreso'] == 'casoVehiculoActivo'){
-        //     $this->validarVehiculo($request);
-        //     $this->validarActivo($request);
-        // }
-
+        
         $nuevoColaborador['nombre'] = ucwords(mb_strtolower($nuevoColaborador['nombre']));
         $nuevoColaborador['apellido'] = ucwords(mb_strtolower($nuevoColaborador['apellido']));
         $nuevoColaborador['descripcion'] = ucfirst(mb_strtolower($nuevoColaborador['descripcion']));

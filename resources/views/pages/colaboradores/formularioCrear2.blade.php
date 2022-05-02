@@ -1,6 +1,6 @@
 <input id="casoIngreso" type="hidden" name="casoIngreso" value="{{ old('casoIngreso') }}">
 
-<div class="card card-primary mt-n3 mb-n1 mx-n1">
+<div class="card card-primary">
     <div class="card-header">
         <h3 class="card-title">Crear nuevo colaborador</h3>
         <div class="card-tools">
