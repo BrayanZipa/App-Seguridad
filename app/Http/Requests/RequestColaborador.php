@@ -27,15 +27,16 @@ class RequestColaborador extends FormRequest
         $datos = $this->all();
 
         if($this->method() == 'POST'){
-            if($datos['casoIngreso'] == 'casoVehiculoActivo'){
-                return array_merge($this->validacionGeneral(), $this->validacionVehiculo(), $this->validacionFaltante());
-
-            } else if($datos['casoIngreso'] == 'casoVehiculo'){
+            if(array_key_exists('casoIngreso', $datos)){
+                if($datos['casoIngreso'] == 'casoVehiculoActivo'){
+                    return array_merge($this->validacionGeneral(), $this->validacionVehiculo(), $this->validacionFaltante());
+    
+                } else {  
+                    return array_merge($this->validacionGeneral(), $this->validacionFaltante());
+                }   
+            } else if(array_key_exists('casoIngreso2', $datos)){
                 return array_merge($this->validacionGeneral(), $this->validacionVehiculo());
-
-            } else {  
-                return array_merge($this->validacionGeneral(), $this->validacionFaltante());
-            }           
+            }
         } else if($this->method() == 'PUT'){
             return $this->validacionGeneral();
         }

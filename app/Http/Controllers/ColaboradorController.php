@@ -125,8 +125,6 @@ class ColaboradorController extends Controller
         $nuevoColaborador['apellido'] = ucwords(mb_strtolower($nuevoColaborador['apellido']));
         $nuevoColaborador['descripcion'] = ucfirst(mb_strtolower($nuevoColaborador['descripcion']));
         $nuevoColaborador['identificador'] = strtoupper($nuevoColaborador['identificador']);
-        $nuevoColaborador['activo'] = 'Computador';
-        $nuevoColaborador['codigo'] = ucfirst($nuevoColaborador['codigo']);
         $nuevoColaborador['id_tipo_persona'] = 2;
         $nuevoColaborador['id_usuario'] = auth()->user()->id_usuarios;
 
@@ -146,18 +144,27 @@ class ColaboradorController extends Controller
         ]);
         $colaborador->save();
 
-        if ($nuevoColaborador['casoIngreso'] == 'casoVehiculoActivo'){
+        if(array_key_exists('casoIngreso', $nuevoColaborador)){
+            if ($nuevoColaborador['casoIngreso'] == 'casoVehiculoActivo'){
+                [$mensajeVehiculo, $id_vehiculo] = $this->store2($nuevoColaborador, $colaborador->id_personas);
+                $mensajeActivo = $this->store3($nuevoColaborador, $colaborador->id_personas);
+                $this->store4($nuevoColaborador, $colaborador->id_personas, $id_vehiculo);
+                $modal = [$colaborador->nombre.' '.$colaborador->apellido, $mensajeVehiculo, $mensajeActivo];
+                return redirect()->action([ColaboradorController::class, 'create'])->with('crear_colaborador_vehiculoActivo', $modal);
+            } else{
+                $mensajeActivo = $this->store3($nuevoColaborador, $colaborador->id_personas);
+                $this->store4($nuevoColaborador, $colaborador->id_personas, null);
+                $modal = [$colaborador->nombre.' '.$colaborador->apellido, $mensajeActivo];
+                return redirect()->action([ColaboradorController::class, 'create'])->with('crear_colaborador', $modal);
+            }
+        } else if (array_key_exists('casoIngreso2', $nuevoColaborador)){
             [$mensajeVehiculo, $id_vehiculo] = $this->store2($nuevoColaborador, $colaborador->id_personas);
-            $mensajeActivo = $this->store3($nuevoColaborador, $colaborador->id_personas);
             $this->store4($nuevoColaborador, $colaborador->id_personas, $id_vehiculo);
-            $modal = [$colaborador->nombre.' '.$colaborador->apellido, $mensajeVehiculo, $mensajeActivo];
-            return redirect()->action([ColaboradorController::class, 'create'])->with('crear_colaborador_vehiculoActivo', $modal);
-        } else{
-            $mensajeActivo = $this->store3($nuevoColaborador, $colaborador->id_personas);
-            $this->store4($nuevoColaborador, $colaborador->id_personas, null);
-            $modal = [$colaborador->nombre.' '.$colaborador->apellido, $mensajeActivo];
-            return redirect()->action([ColaboradorController::class, 'create'])->with('crear_colaborador', $modal);
+            $modal = [$colaborador->nombre.' '.$colaborador->apellido, $mensajeVehiculo];
+            return redirect()->action([ColaboradorController::class, 'create'])->with('crear_colaborador_vehiculo', $modal);
         }
+
+        
     }
 
     //Función que permite registrar un nuevo vehículo creado desde el modulo de visitantes
@@ -200,8 +207,10 @@ class ColaboradorController extends Controller
     //Función que permite registrar un nuevo activo creado desde el modulo de colaboradores
     public function store3($datos, $id_persona)
     {
+        $datos['codigo'] = ucfirst($datos['codigo']);
+
         $activo = Activo::create([
-            'activo' => $datos['activo'],
+            'activo' => 'Computador',
             'codigo' => $datos['codigo'],
             'id_usuario' => $datos['id_usuario'],
             'id_persona' => $id_persona,
@@ -213,26 +222,37 @@ class ColaboradorController extends Controller
     //Función que permite hacer un registro de la entrada de un colaborador al momento que se crea un nuevo colaborador en la base de datos
     public function store4($datos, $id_persona, $id_vehiculo)
     {
-        if ($datos['casoIngreso'] == 'casoVehiculoActivo'){
+        if(array_key_exists('casoIngreso', $datos)){
+            if ($datos['casoIngreso'] == 'casoVehiculoActivo'){
+                Registro::create([
+                    'id_persona' => $id_persona,
+                    'ingreso_persona' => date('Y-m-d H:i:s'),
+                    'ingreso_vehiculo' => date('Y-m-d H:i:s'),
+                    'id_vehiculo' => $id_vehiculo,
+                    'ingreso_activo' => date('Y-m-d H:i:s'),
+                    'descripcion' => $datos['descripcion'],
+                    'id_usuario' => $datos['id_usuario'],
+                    ])->save();  
+    
+            } else {
+                Registro::create([
+                    'id_persona' => $id_persona,
+                    'ingreso_persona' => date('Y-m-d H:i:s'),
+                    'ingreso_activo' => date('Y-m-d H:i:s'),
+                    'descripcion' => $datos['descripcion'],
+                    'id_usuario' => $datos['id_usuario'],
+                ])->save(); 
+            }
+        } else if (array_key_exists('casoIngreso2', $datos)){
             Registro::create([
                 'id_persona' => $id_persona,
                 'ingreso_persona' => date('Y-m-d H:i:s'),
                 'ingreso_vehiculo' => date('Y-m-d H:i:s'),
                 'id_vehiculo' => $id_vehiculo,
-                'ingreso_activo' => date('Y-m-d H:i:s'),
-                'descripcion' => $datos['descripcion'],
-                'id_usuario' => $datos['id_usuario'],
-                ])->save();  
-
-        } else {
-            Registro::create([
-                'id_persona' => $id_persona,
-                'ingreso_persona' => date('Y-m-d H:i:s'),
-                'ingreso_activo' => date('Y-m-d H:i:s'),
                 'descripcion' => $datos['descripcion'],
                 'id_usuario' => $datos['id_usuario'],
             ])->save(); 
-        }
+        }  
     }
 
     /**

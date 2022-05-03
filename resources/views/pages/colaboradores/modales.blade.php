@@ -33,7 +33,7 @@
                     </div>
                 </div>
                 <div class="modal-body">
-                    <p>Visitante <b>{{ session('crear_colaborador_vehiculo')[0] }}</b> creado exitosamente.</p>
+                    <p>Colaborador <b>{{ session('crear_colaborador_vehiculo')[0] }}</b> creado exitosamente.</p>
                     <p>Vehículo con identificador <b>{{ session('crear_colaborador_vehiculo')[1] }}</b> creado exitosamente.</p>
                     <p>¿Desea crear otro?</p>
                 </div>

@@ -1,8 +1,8 @@
-    <div class="card card-orange mt-3 mb-n3 mx-n1">
-        <div class="card-header">
+    <div class="card card-orange mt-3 mb-n4 mx-n1">
+        <div class="card-header pb-1">
             <h3 class="card-title">Crear nuevo vehículo</h3>
             <div class="card-tools">
-                <button id="botonComprimirVehiculo" type="button" class="btn btn-tool" data-card-widget="collapse"><i
+                <button id="botonComprimirVehiculo" type="button" class="btn btn-tool pb-3 mr-n3" data-card-widget="collapse"><i
                         class="fas fa-minus"></i>
                 </button>
             </div>
@@ -14,9 +14,9 @@
             <div class="row">
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label for="inputFotoVehiculo">Fotografía</label>
+                        <label for="inputFotoVehiculo2">Fotografía</label>
 
-                        <input type="hidden" id="inputFotoVehiculo" class="{{ $errors->has('foto_vehiculo') ? 'is-invalid' : '' }}" name="foto_vehiculo"
+                        <input type="hidden" id="inputFotoVehiculo2" class="{{ $errors->has('foto_vehiculo') ? 'is-invalid' : '' }}" name="foto_vehiculo"
                             value="{{ old('foto_vehiculo') }}">
 
                         <video src="" id="video2" class="img-fluid rounded" style="display: none"></video>
@@ -54,7 +54,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="selectTipoVehiculo">Ingrese el tipo de vehículo</label>
-                                <select id="selectTipoVehiculo" class="colaboradorVehiculo  select2bs4 form-control {{ $errors->has('id_tipo_vehiculo') ? 'is-invalid' : '' }}"
+                                <select id="selectTipoVehiculo" class="select2tipo colaboradorVehiculo  select2bs4 form-control {{ $errors->has('id_tipo_vehiculo') ? 'is-invalid' : '' }}"
                                     style="width: 100%;" name="id_tipo_vehiculo" required>
                                     <option selected="selected" value="" disabled></option>
                                     @foreach ($tipoVehiculos as $tipoVehiculo)
@@ -76,7 +76,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="selectMarcaVehiculo">Ingrese la marca del vehículo</label>
-                                <select id="selectMarcaVehiculo" class="form-control select2bs4" style="width: 100%;"
+                                <select id="selectMarcaVehiculo" class="select2marca form-control select2bs4" style="width: 100%;"
                                     name="id_marca_vehiculo">
                                     <option selected="selected" value="" disabled></option>
                                     @foreach ($marcaVehiculos as $marcaVehiculo)

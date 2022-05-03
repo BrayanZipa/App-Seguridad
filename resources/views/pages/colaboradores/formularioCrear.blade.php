@@ -1,10 +1,10 @@
 <input id="casoIngreso" type="hidden" name="casoIngreso" value="{{ old('casoIngreso') }}">
 
 <div class="card card-primary mb-n1 mx-n1">
-    <div class="card-header">
+    <div class="card-header pb-1">
         <h3 class="card-title">Crear nuevo colaborador</h3>
         <div class="card-tools">
-            <button id="botonComprimirColaborador" type="button" class="btn btn-tool" data-card-widget="collapse"><i
+            <button id="botonComprimirColaborador" type="button" class="btn btn-tool pb-3 mr-n3" data-card-widget="collapse"><i
                     class="fas fa-minus"></i>
             </button>
         </div>
@@ -100,7 +100,7 @@
             <div class="col-sm-4">
                 <div class="form-group">
                     <label for="selectEps">Ingrese la EPS</label>
-                    <select id="selectEps" class="colaborador form-control {{ $errors->has('id_eps') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_eps" required>
+                    <select id="selectEps" class="select2eps colaborador form-control {{ $errors->has('id_eps') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_eps" required>
                         <option selected="selected" value="" disabled></option>
                         @foreach ($eps as $ep)
                             <option value="{{ $ep->id_eps }}"
@@ -118,7 +118,7 @@
             <div class="col-sm-4">
                 <div class="form-group">
                     <label for="selectArl">Ingrese el ARL</label>
-                    <select id="selectArl" class="colaborador form-control {{ $errors->has('id_arl') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_arl" required>
+                    <select id="selectArl" class="select2arl colaborador form-control {{ $errors->has('id_arl') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_arl" required>
                         <option selected="selected" value="" disabled></option>
                         @foreach ($arl as $ar)
                             <option value="{{ $ar->id_arl }}"
