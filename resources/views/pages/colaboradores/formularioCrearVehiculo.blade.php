@@ -57,7 +57,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="selectTipoVehiculo">Ingrese el tipo de vehículo</label>
-                                <select id="selectTipoVehiculo" class="vehiculo   form-control {{ $errors->has('id_tipo_vehiculo') ? 'is-invalid' : '' }}"
+                                <select id="selectTipoVehiculo" class="select2tipo vehiculo form-control {{ $errors->has('id_tipo_vehiculo') ? 'is-invalid' : '' }}"
                                     style="width: 100%;" name="id_tipo_vehiculo" required>
                                     <option selected="selected" value="" disabled></option>
                                     @foreach ($tipoVehiculos as $tipoVehiculo)
@@ -79,7 +79,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="selectMarcaVehiculo">Ingrese la marca del vehículo</label>
-                                <select id="selectMarcaVehiculo" class=" form-control select2bs4" style="width: 100%;"
+                                <select id="selectMarcaVehiculo" class="select2marca form-control" style="width: 100%;"
                                     name="id_marca_vehiculo">
                                     <option selected="selected" value="" disabled></option>
                                     @foreach ($marcaVehiculos as $marcaVehiculo)

@@ -75,7 +75,7 @@
                 <div class="form-group">
                     <label for="inputEmail">Ingrese el correo empresarial</label>
                     <input type="text" class="colaborador form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" id="inputEmail" name="email" value="{{ old('email') }}"
-                        placeholder="Correo empresarial" required>
+                        placeholder="Correo empresarial">
                         @if ($errors->has('email')) 
                             <div class="invalid-feedback">
                                 {{ $errors->first('email') }}

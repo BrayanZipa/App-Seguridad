@@ -75,7 +75,7 @@
                 <div class="form-group">
                     <label for="inputEmail2">Ingrese el correo empresarial</label>
                     <input type="text" class="colaboradorVehiculo form-control {{ $errors->has('email') && old('casoIngreso2') == 'casoVehiculo' ? 'is-invalid' : '' }}" id="inputEmail2" name="email" value="{{ old('email') }}"
-                        placeholder="Correo empresarial" required>
+                        placeholder="Correo empresarial">
                         @if ($errors->has('email')) 
                             <div class="invalid-feedback">
                                 {{ $errors->first('email') }}

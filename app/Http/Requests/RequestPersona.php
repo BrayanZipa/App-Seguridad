@@ -27,7 +27,7 @@ class RequestPersona extends FormRequest
         if($this->method() == 'POST'){
             $validacionPost = [
                 'id_empresa' => 'required|integer',
-                'colaborador' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:40|min:3',
+                'colaborador' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:50|min:3',
                 'descripcion' => 'nullable|max:255'
             ];
 
@@ -44,13 +44,13 @@ class RequestPersona extends FormRequest
             'nombre.required' => 'Se requiere que ingrese el nombre',
             'nombre.string' => 'El nombre debe ser de tipo texto',
             'nombre.regex' => 'El nombre solo debe contener valores alfabéticos',
-            'nombre.max' => 'El nombre no puede tener más de 20 caracteres',
+            'nombre.max' => 'El nombre no puede tener más de 25 caracteres',
             'nombre.min' => 'El nombre no puede tener menos de 3 caracteres',
 
             'apellido.required' => 'Se requiere que ingrese el apellido',
             'apellido.string' => 'El apellido debe ser de tipo texto',
             'apellido.regex' => 'El apellido solo debe contener valores alfabéticos',
-            'apellido.max' => 'El apellido no puede tener más de 20 caracteres',
+            'apellido.max' => 'El apellido no puede tener más de 25 caracteres',
             'apellido.min' => 'El apellido no puede tener menos de 3 caracteres',
 
             'identificacion.required' => 'Se requiere que ingrese la identificación',
@@ -75,7 +75,7 @@ class RequestPersona extends FormRequest
             'colaborador.required' => 'Se requiere que ingrese al colaborador a cargo',
             'colaborador.string' => 'El colaborador debe ser de tipo texto',
             'colaborador.regex' => 'El colaborador solo debe contener valores alfabéticos',
-            'colaborador.max' => 'El colaborador no puede tener más de 40 caracteres',
+            'colaborador.max' => 'El colaborador no puede tener más de 50 caracteres',
             'colaborador.min' => 'El colaborador no puede tener menos de 3 caracteres',
 
             'descripcion.max' => 'La descripción solo puede tener un máximo de 255 caracteres',   
@@ -89,8 +89,8 @@ class RequestPersona extends FormRequest
     public function validacionGeneral()
     {
         return[
-            'nombre' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:20|min:3',
-            'apellido' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:20|min:3',   
+            'nombre' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:25|min:3',
+            'apellido' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:25|min:3',   
             'identificacion' => 'required|numeric|unique:se_personas,identificacion,'.$this->id.',id_personas|digits_between:4,15',
             'tel_contacto' => 'required|numeric|unique:se_personas,tel_contacto,'.$this->id.',id_personas|digits_between:7,10',
             'id_eps' => 'required|integer',         

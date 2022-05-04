@@ -40,8 +40,8 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="inputNumeroIdentificador">Ingrese el número identificador del vehículo</label>
-                                <input type="text" class="colaboradorVehiculo form-control {{ $errors->has('identificador') ? 'is-invalid' : '' }}" id="inputNumeroIdentificador"
+                                <label for="inputNumeroIdentificador2">Ingrese el número identificador del vehículo</label>
+                                <input type="text" class="colaboradorVehiculo form-control {{ $errors->has('identificador') ? 'is-invalid' : '' }}" id="inputNumeroIdentificador2"
                                     name="identificador" value="{{ old('identificador') }}" autocomplete="off"
                                     placeholder="Número indetificador" required>
                                     @if ($errors->has('identificador')) 
@@ -53,8 +53,8 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="selectTipoVehiculo">Ingrese el tipo de vehículo</label>
-                                <select id="selectTipoVehiculo" class="select2tipo colaboradorVehiculo  select2bs4 form-control {{ $errors->has('id_tipo_vehiculo') ? 'is-invalid' : '' }}"
+                                <label for="selectTipoVehiculo2">Ingrese el tipo de vehículo</label>
+                                <select id="selectTipoVehiculo2" class="select2tipo colaboradorVehiculo form-control {{ $errors->has('id_tipo_vehiculo') ? 'is-invalid' : '' }}"
                                     style="width: 100%;" name="id_tipo_vehiculo" required>
                                     <option selected="selected" value="" disabled></option>
                                     @foreach ($tipoVehiculos as $tipoVehiculo)
@@ -75,8 +75,8 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="selectMarcaVehiculo">Ingrese la marca del vehículo</label>
-                                <select id="selectMarcaVehiculo" class="select2marca form-control select2bs4" style="width: 100%;"
+                                <label for="selectMarcaVehiculo2">Ingrese la marca del vehículo</label>
+                                <select id="selectMarcaVehiculo2" class="select2marca colaboradorVehiculo form-control" style="width: 100%;"
                                     name="id_marca_vehiculo">
                                     <option selected="selected" value="" disabled></option>
                                     @foreach ($marcaVehiculos as $marcaVehiculo)
@@ -95,8 +95,8 @@
         </div>
         <!-- /.card-body -->
         <div class="card-footer mt-n4">
-            <button id="botonCrear2" type='submit' class="btn" style="background-color: rgb(255, 115, 0)">Crear todo</button>
-            <button id="botonLimpiar2" type='button' class="btn btn-secondary">Limpiar</button>
+            <button id="botonCrear3" type='submit' class="btn" style="background-color: rgb(255, 115, 0)">Crear todo</button>
+            <button id="botonLimpiar3" type='button' class="btn btn-secondary">Limpiar</button>
         </div>
         <!-- /.card-footer-->
     </div>

@@ -19,8 +19,8 @@ class SePersonas extends Migration
             $table->foreign('id_usuario')->references('id_usuarios')->on('se_usuarios');
             $table->unsignedInteger('id_tipo_persona');  
             $table->foreign('id_tipo_persona')->references('id_tipo_personas')->on('se_tipo_personas');
-            $table->string('nombre', 20);
-            $table->string('apellido', 20);
+            $table->string('nombre', 25);
+            $table->string('apellido', 25);
             $table->string('identificacion', 15)->unique();
             $table->unsignedInteger('id_eps');  
             $table->foreign('id_eps')->references('id_eps')->on('se_eps');

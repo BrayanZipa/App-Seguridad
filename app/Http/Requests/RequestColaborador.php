@@ -35,7 +35,7 @@ class RequestColaborador extends FormRequest
                     return array_merge($this->validacionGeneral(), $this->validacionFaltante());
                 }   
             } else if(array_key_exists('casoIngreso2', $datos)){
-                return array_merge($this->validacionGeneral(), $this->validacionVehiculo());
+                return array_merge($this->validacionGeneral(), $this->validacionVehiculo(), ['descripcion' => 'nullable|max:255']);
             }
         } else if($this->method() == 'PUT'){
             return $this->validacionGeneral();
@@ -55,13 +55,13 @@ class RequestColaborador extends FormRequest
             'nombre.required' => 'Se requiere que ingrese el nombre',
             'nombre.string' => 'El nombre debe ser de tipo texto',
             'nombre.regex' => 'El nombre solo debe contener valores alfabéticos',
-            'nombre.max' => 'El nombre no puede tener más de 20 caracteres',
+            'nombre.max' => 'El nombre no puede tener más de 25 caracteres',
             'nombre.min' => 'El nombre no puede tener menos de 3 caracteres',
 
             'apellido.required' => 'Se requiere que ingrese el apellido',
             'apellido.string' => 'El apellido debe ser de tipo texto',
             'apellido.regex' => 'El apellido solo debe contener valores alfabéticos',
-            'apellido.max' => 'El apellido no puede tener más de 20 caracteres',
+            'apellido.max' => 'El apellido no puede tener más de 25 caracteres',
             'apellido.min' => 'El apellido no puede tener menos de 3 caracteres',
 
             'identificacion.required' => 'Se requiere que ingrese la identificación',
@@ -69,7 +69,7 @@ class RequestColaborador extends FormRequest
             'identificacion.unique' => 'No puede haber dos personas con el mismo número de identificación',
             'identificacion.digits_between' => 'La identificación debe estar en un rango de 4 a 15 números',
 
-            'email.required' => 'Se requiere que ingrese el correo empresarial',
+            // 'email.required' => 'Se requiere que ingrese el correo empresarial',
             'email.email' => 'El correo empresarial debe tener un formato correcto',
             'email.unique' => 'No puede haber dos personas con el mismo correo empresarial',
             'email.max' => 'El correo empresarial no puede tener más de 50 caracteres',
@@ -114,10 +114,10 @@ class RequestColaborador extends FormRequest
     public function validacionGeneral()
     {
         return[
-            'nombre' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:20|min:3',
-            'apellido' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:20|min:3',   
+            'nombre' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:25|min:3',
+            'apellido' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:25|min:3',   
             'identificacion' => 'required|numeric|unique:se_personas,identificacion,'.$this->id.',id_personas|digits_between:4,15',
-            'email' => 'required|email:rfc,dns|unique:se_personas,email,'.$this->id.',id_personas|max:50',
+            'email' => 'nullable|email:rfc,dns|unique:se_personas,email,'.$this->id.',id_personas|max:50',
             'tel_contacto' => 'required|numeric|unique:se_personas,tel_contacto,'.$this->id.',id_personas|digits_between:7,10',
             'id_eps' => 'required|integer',         
             'id_arl' => 'required|integer',
