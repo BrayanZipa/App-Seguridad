@@ -19,8 +19,8 @@
                     <div class="form-group">
                         <label for="inputFotoVehiculo">Fotografía</label>
 
-                        <input type="hidden" id="inputFotoVehiculo" class="{{ $errors->has('foto_vehiculo') ? 'is-invalid' : '' }}" name="foto_vehiculo"
-                            value="{{ old('foto_vehiculo') }}">
+                        <input type="hidden" id="inputFotoVehiculo" class="{{ $errors->has('foto_vehiculo') && old('casoIngreso2') == '' ? 'is-invalid' : '' }}" name="foto_vehiculo"
+                            value="{{ old('casoIngreso2') == '' ? old('foto_vehiculo') : ''}}">
 
                         <video src="" id="video" class="img-fluid rounded" style="display: none"></video>
                         <canvas id="canvas" class="img-fluid rounded" style="display: none"></canvas>
@@ -44,9 +44,9 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="inputNumeroIdentificador">Ingrese el número identificador del vehículo</label>
-                                <input type="text" class="vehiculo form-control {{ $errors->has('identificador') ? 'is-invalid' : '' }}" id="inputNumeroIdentificador"
-                                    name="identificador" value="{{ old('identificador') }}" autocomplete="off"
-                                    placeholder="Número indetificador" required>
+                                <input type="text" class="vehiculo form-control {{ $errors->has('identificador') && old('casoIngreso2') == '' ? 'is-invalid' : '' }}" id="inputNumeroIdentificador"
+                                    name="identificador" value="{{ old('casoIngreso2') == '' ? old('identificador') : ''}}" autocomplete="off"
+                                    placeholder="Número identificador" required>
                                     @if ($errors->has('identificador')) 
                                         <div class="invalid-feedback">
                                             {{ $errors->first('identificador') }}
@@ -57,12 +57,12 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="selectTipoVehiculo">Ingrese el tipo de vehículo</label>
-                                <select id="selectTipoVehiculo" class="select2tipo vehiculo form-control {{ $errors->has('id_tipo_vehiculo') ? 'is-invalid' : '' }}"
+                                <select id="selectTipoVehiculo" class="select2tipo vehiculo form-control {{ $errors->has('id_tipo_vehiculo') && old('casoIngreso2') == '' ? 'is-invalid' : '' }}"
                                     style="width: 100%;" name="id_tipo_vehiculo" required>
                                     <option selected="selected" value="" disabled></option>
                                     @foreach ($tipoVehiculos as $tipoVehiculo)
                                         <option value="{{ $tipoVehiculo->id_tipo_vehiculos }}"
-                                            {{ $tipoVehiculo->id_tipo_vehiculos == old('id_tipo_vehiculo') ? 'selected' : '' }}>
+                                            {{ $tipoVehiculo->id_tipo_vehiculos == old('id_tipo_vehiculo') && old('casoIngreso2') == '' ? 'selected' : '' }}>
                                             {{ $tipoVehiculo->tipo }}
                                         </option>
                                     @endforeach
@@ -84,7 +84,7 @@
                                     <option selected="selected" value="" disabled></option>
                                     @foreach ($marcaVehiculos as $marcaVehiculo)
                                         <option value="{{ $marcaVehiculo->id_marca_vehiculos }}"
-                                            {{ $marcaVehiculo->id_marca_vehiculos == old('id_marca_vehiculo') ? 'selected' : '' }}>
+                                            {{ $marcaVehiculo->id_marca_vehiculos == old('id_marca_vehiculo') && old('casoIngreso2') == '' ? 'selected' : '' }}>
                                             {{ $marcaVehiculo->marca }}
                                         </option>
                                     @endforeach

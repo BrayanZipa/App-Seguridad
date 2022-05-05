@@ -36,8 +36,8 @@
             <div class="col-sm-4">
                 <div class="form-group">
                     <label for="inputNombre2">Ingrese el nombre</label>
-                    <input type="text" class="colaboradorVehiculo form-control {{ $errors->has('nombre') && old('casoIngreso2') == 'casoVehiculo' ? 'is-invalid' : '' }}" id="inputNombre2" name="nombre" value="{{ old('nombre') }}"
-                        placeholder="Nombre" required>
+                    <input type="text" class="colaboradorVehiculo form-control {{ $errors->has('nombre') && old('casoIngreso2') == 'casoVehiculo' ? 'is-invalid' : '' }}" id="inputNombre2" name="nombre" value="{{ old('casoIngreso2') == 'casoVehiculo' ? old('nombre') : '' }}"
+                        placeholder="Nombre" autocomplete="off" required>
                         @if ($errors->has('nombre')) 
                             <div class="invalid-feedback">
                                 {{ $errors->first('nombre') }}
@@ -48,8 +48,8 @@
             <div class="col-sm-4">
                 <div class="form-group">
                     <label for="inputApellido2">Ingrese el apellido</label>
-                    <input type="text" class="colaboradorVehiculo form-control {{ $errors->has('apellido') && old('casoIngreso2') == 'casoVehiculo' ? 'is-invalid' : '' }}" id="inputApellido2" name="apellido" value="{{ old('apellido') }}"
-                        placeholder="Apellido" required>
+                    <input type="text" class="colaboradorVehiculo form-control {{ $errors->has('apellido') && old('casoIngreso2') == 'casoVehiculo' ? 'is-invalid' : '' }}" id="inputApellido2" name="apellido" value="{{ old('casoIngreso2') == 'casoVehiculo' ? old('apellido') : '' }}"
+                        placeholder="Apellido" autocomplete="off" required>
                         @if ($errors->has('apellido')) 
                             <div class="invalid-feedback">
                                 {{ $errors->first('apellido') }}
@@ -61,7 +61,7 @@
                 <div class="form-group">
                     <label for="inputIdentificacion2">Ingrese la identificación</label>
                     <input type="text" class="colaboradorVehiculo form-control {{ $errors->has('identificacion') && old('casoIngreso2') == 'casoVehiculo' ? 'is-invalid' : '' }}" id="inputIdentificacion2"
-                        name="identificacion" value="{{ old('identificacion') }}" placeholder="Identificación" required>
+                        name="identificacion" value="{{ old('casoIngreso2') == 'casoVehiculo' ? old('identificacion') : '' }}" placeholder="Identificación" autocomplete="off" required>
                         @if ($errors->has('identificacion')) 
                             <div class="invalid-feedback">
                                 {{ $errors->first('identificacion') }}
@@ -74,8 +74,8 @@
             <div class="col-sm-4">
                 <div class="form-group">
                     <label for="inputEmail2">Ingrese el correo empresarial</label>
-                    <input type="text" class="colaboradorVehiculo form-control {{ $errors->has('email') && old('casoIngreso2') == 'casoVehiculo' ? 'is-invalid' : '' }}" id="inputEmail2" name="email" value="{{ old('email') }}"
-                        placeholder="Correo empresarial">
+                    <input type="text" class="colaboradorVehiculo form-control {{ $errors->has('email') && old('casoIngreso2') == 'casoVehiculo' ? 'is-invalid' : '' }}" id="inputEmail2" name="email" value="{{ old('casoIngreso2') == 'casoVehiculo' ? old('email') : '' }}"
+                        placeholder="Correo empresarial" autocomplete="off">
                         @if ($errors->has('email')) 
                             <div class="invalid-feedback">
                                 {{ $errors->first('email') }}
@@ -86,8 +86,8 @@
             <div class="col-sm-4">
                 <div class="form-group">
                     <label for="inputTelefono2">Ingrese el teléfono</label>
-                    <input type="tel" class="colaboradorVehiculo form-control {{ $errors->has('tel_contacto') && old('casoIngreso2') == 'casoVehiculo' ? 'is-invalid' : '' }}" id="inputTelefono2" name="tel_contacto" value="{{ old('tel_contacto') }}"
-                        placeholder="Teléfono" required>
+                    <input type="tel" class="colaboradorVehiculo form-control {{ $errors->has('tel_contacto') && old('casoIngreso2') == 'casoVehiculo' ? 'is-invalid' : '' }}" id="inputTelefono2" name="tel_contacto" value="{{ old('casoIngreso2') == 'casoVehiculo' ? old('tel_contacto') : '' }}"
+                        placeholder="Teléfono" autocomplete="off" required>
                         @if ($errors->has('tel_contacto')) 
                             <div class="invalid-feedback">
                                 {{ $errors->first('tel_contacto') }}
@@ -98,7 +98,7 @@
             <div class="col-sm-4">
                 <div class="form-group">
                     <label for="selectEps2">Ingrese la EPS</label>
-                    <select id="selectEps2" class="select2eps colaboradorVehiculo form-control {{ $errors->has('id_eps') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_eps" required>
+                    <select id="selectEps2" class="select2eps colaboradorVehiculo form-control {{ $errors->has('id_eps') && old('casoIngreso2') == 'casoVehiculo' ? 'is-invalid' : '' }}" style="width: 100%;" name="id_eps" required>
                         <option selected="selected" value="" disabled></option>
                         @foreach ($eps as $ep)
                             <option value="{{ $ep->id_eps }}"
@@ -122,7 +122,7 @@
                         <option selected="selected" value="" disabled></option>
                         @foreach ($arl as $ar)
                             <option value="{{ $ar->id_arl }}"
-                                {{ $ar->id_arl == old('id_arl') ? 'selected' : '' }}>{{ $ar->arl }}
+                                {{ $ar->id_arl == old('id_arl') && old('casoIngreso2') == 'casoVehiculo' ? 'selected' : '' }}>{{ $ar->arl }}
                             </option>
                         @endforeach
                     </select>
@@ -141,7 +141,7 @@
                         <option selected="selected" value="" disabled>Seleccione la empresa</option>
                         @foreach ($empresas as $empresa)
                             <option value="{{ $empresa->id_empresas}}"
-                                {{ $empresa->id_empresas == old('id_empresa') ? 'selected' : '' }}>{{ $empresa->nombre }}
+                                {{ $empresa->id_empresas == old('id_empresa') && old('casoIngreso2') == 'casoVehiculo' ? 'selected' : '' }}>{{ $empresa->nombre }}
                             </option>
                         @endforeach
                     </select>
@@ -156,7 +156,7 @@
                 <div class="form-group">
                     <label for="inputDescripcion2">Ingrese una descripción</label>
                     <textarea id="inputDescripcion2" class="colaboradorVehiculo form-control {{ $errors->has('descripcion') && old('casoIngreso2') == 'casoVehiculo' ? ' is-invalid ' : '' }}" name="descripcion">
-                        {{ old('descripcion') }}
+                        {{ old('casoIngreso2') == 'casoVehiculo' ? old('descripcion') : '' }}
                     </textarea>
                     @if ($errors->has('descripcion')) 
                         <div class="invalid-feedback">
