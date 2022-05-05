@@ -284,7 +284,7 @@ class ColaboradorController extends Controller
     /**
      * Función que permite retornar en un formato JSON los datos de los colaboradores, arl, eps y empresa donde tengan un id en común.
      */
-    public function informacionVisitantes()
+    public function informacionColaboradores()
     {
         return response()->json( $this->colaboradores->informacionPersonas(2));      
     } 

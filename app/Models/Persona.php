@@ -44,7 +44,7 @@ class Persona extends Model
      */
     public function informacionPersonas($tipoPersona){
         try {
-            $personas = Persona::leftjoin('se_eps AS eps', 'se_personas.id_eps', '=', 'eps.id_eps')->leftjoin('se_arl AS arl', 'se_personas.id_arl', '=', 'arl.id_arl')->leftjoin('se_usuarios AS usuarios', 'se_personas.id_usuario', '=', 'usuarios.id_usuarios')->where('id_tipo_persona', $tipoPersona)->orderBy('id_personas')->get();
+            $personas = Persona::select('se_personas.*', 'eps.eps', 'arl.arl', 'usuarios.name', 'empresas.nombre AS empresa')->leftjoin('se_eps AS eps', 'se_personas.id_eps', '=', 'eps.id_eps')->leftjoin('se_arl AS arl', 'se_personas.id_arl', '=', 'arl.id_arl')->leftjoin('se_usuarios AS usuarios', 'se_personas.id_usuario', '=', 'usuarios.id_usuarios')->leftjoin('se_empresas AS empresas', 'se_personas.id_empresa', '=', 'empresas.id_empresas')->where('id_tipo_persona', $tipoPersona)->orderBy('id_personas')->get();
             $response = ['data' => $personas->all()];
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);

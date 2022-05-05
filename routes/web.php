@@ -46,7 +46,7 @@ Route::put('/visitantes/editar/{id}', [VisitanteController::class, 'update'])->n
 Route::get('/colaboradores', [ColaboradorController::class, 'index'])->name('mostrarColaboradores');
 Route::get('/colaboradores/crear', [ColaboradorController::class, 'create'])->name('formCrearColaborador');
 Route::post('/colaboradores/crear', [ColaboradorController::class, 'store'])->name('crearColaborador');
-
+Route::get('/colaboradores/informacion', [ColaboradorController::class, 'informacionColaboradores'])->name('mostrarInfoColaboradores');
 Route::get('/colaboradores/persona', [ColaboradorController::class, 'getColaborador'])->name('colaborador');
 
 /**
