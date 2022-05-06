@@ -130,7 +130,7 @@
                 $('#inputTelefono').val(data.tel_contacto);
                 $('#inputEps').val(data.id_eps);
                 $('#inputArl').val(data.id_arl);
-                $('#inputTipoPersona').val(data.id_tipo_persona);
+                // $('#inputTipoPersona').val(data.id_tipo_persona);
                 activarSelect2();
             });
 

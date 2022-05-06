@@ -5,15 +5,12 @@
                 <button id="botonComprimirVehiculo" type="button" class="btn btn-tool" data-card-widget="collapse"><i
                         class="fas fa-minus"></i>
                 </button>
-                <button id="botonCerrar2" type="button" class="btn btn-tool">
-                    <i class="fas fa-times"></i>
-                </button>
             </div>
             <!-- /.card-tools -->
         </div>
         <!-- /.card-header -->
 
-        <div class="card-body">
+        <div class="card-body mb-n4">
             <div class="row">
                 <div class="col-sm-4">
                     <div class="form-group">
@@ -91,10 +88,28 @@
                                 </select>
                             </div>
                         </div>
+
+
+
+                        
+ 
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="selectTipoPersona">Ingrese al propietario del vehículo</label>
+                                <select id="selectTipoPersona" class="vehiculo select2bs4 form-control" name="tipoPersona" style="width: 100%;" required>
+                                    <option selected="selected" value="" disabled>Seleccione el tipo de persona</option>
+                                    @foreach ($tipoPersonas as $tipo)
+                                        <option value="{{ $tipo->id_tipo_personas }}" {{ $tipo->id_tipo_personas == old('tipoPersona') ? 'selected' : '' }}>{{ $tipo->tipo }}</option>
+                                    @endforeach
+                                </select>  
+                            </div>
+                        </div>
+
+
                     </div>
 
                     <div class="row" >
-                        <div class="col-sm-12">
+                        {{-- <div class="col-sm-12">
                             <label for="selectTipoPersona">Ingrese al propietario del vehículo</label>
                         </div>
                         <div class="col-sm-6">
@@ -106,10 +121,11 @@
                                     @endforeach
                                 </select>  
                             </div>
-                        </div>
+                        </div> --}}
                         <div id="selectPropietario" class="col-sm-6" style="display: none">
                             <input type="hidden" id="retornoPersona" name="retornoPersona" value="{{ old('retornoPersona') }}">
                             <div class="form-group">
+                                <label for="selectTipoPersona">Propietario</label>
                                 <select id="selectPersona" class="vehiculo select2bs4 form-control {{ $errors->has('id_persona') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_persona" required>
                                     <option selected="selected" value="" disabled></option>
                                 </select>

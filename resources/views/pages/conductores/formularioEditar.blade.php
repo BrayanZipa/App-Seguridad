@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row mb-n2">
     <div class="col-md-12">
         <form id="form_EditarConductor" action="" method="POST" novalidate>
             @csrf
@@ -18,7 +18,7 @@
                 </div>
                 <!-- /.card-header -->
 
-                <div class="card-body">
+                <div class="card-body mb-n4">
 
                     <div class="row">
                         <div class="col-sm-4">
@@ -128,22 +128,6 @@
                                     </div>
                                 </div>
                             </div>
-                            {{-- <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label>Actualizar tipo de persona</label>
-                                        <select class="conductor form-control" style="width: 100%;" id="inputTipoPersona" name="id_tipo_persona"
-                                            required>
-                                            <option selected="selected" value="" disabled>Seleccione el tipo de persona</option>
-                                            @foreach ($tipoPersonas as $persona)
-                                                <option value="{{ $persona->id_tipo_personas }}"
-                                                    {{ $persona->id_tipo_personas == old('id_tipo_persona') ? 'selected' : '' }}>{{ $persona->tipo }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            </div> --}}
                         </div>
                     </div>
 

@@ -75,12 +75,12 @@
     </div>
 
 @elseif (session('editar_colaborador'))
-    <div class="modal fade" id="modal-editar">
+    <div class="modal fade" id="modal-editar-colaborador">
         <div class="modal-dialog ">
             <div class="modal-content">
                 <div class="modal-header bg-primary">
                     <div class="justify-content-between">
-                        <h4 class="modal-title">VISITANTE ACTUALIZADO</h4>
+                        <h4 class="modal-title">COLABORADOR ACTUALIZADO</h4>
                     </div>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>

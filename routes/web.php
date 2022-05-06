@@ -48,6 +48,7 @@ Route::get('/colaboradores/crear', [ColaboradorController::class, 'create'])->na
 Route::post('/colaboradores/crear', [ColaboradorController::class, 'store'])->name('crearColaborador');
 Route::get('/colaboradores/informacion', [ColaboradorController::class, 'informacionColaboradores'])->name('mostrarInfoColaboradores');
 Route::get('/colaboradores/persona', [ColaboradorController::class, 'getColaborador'])->name('colaborador');
+Route::put('/colaboradores/editar/{id}', [ColaboradorController::class, 'update'])->name('editarColaborador');
 
 /**
  * Rutas del modulo de conductores

@@ -264,7 +264,13 @@ class ColaboradorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $colaborador = $request->all();
+        return $colaborador;
+        // $colaborador['nombre'] = ucwords(mb_strtolower($colaborador['nombre']));
+        // $colaborador['apellido'] = ucwords(mb_strtolower($colaborador['apellido']));
+        // // $visitante = Visitante::find($id)->fill($request->all())->save();
+        // Persona::findOrFail($id)->update($colaborador);
+        // return redirect()->action([ColaboradorController::class, 'index'])->with('editar_visitante', $colaborador['nombre']." ".$colaborador['apellido']);
     }
 
     /**

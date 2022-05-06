@@ -129,7 +129,6 @@
                 $('#inputTelefono').val(data.tel_contacto);
                 $('#inputEps').val(data.id_eps);
                 $('#inputArl').val(data.id_arl);
-                $('#inputTipoPersona').val(data.id_tipo_persona);
                 activarSelect2();
             });
 
@@ -201,16 +200,6 @@
 
             // Muestra un modal con los diferentes errores cometidos por el usuario a la hora de actualizar un conductor
             // $('#modal-errores-personas').modal("show");
-
-            // Botón que permite devolver el formulario de actualización con los datos ingresados por el usuario con anterioridad en caso de que se cometa un error y se dispare una validación
-            // $('.botonError').click(function() {
-            //     var id_conductor = $('#inputId').val();
-            //     var foto = $('#inputFoto').val();
-            //     $('#formEditarConductor').css("display", "block");
-            //     $('#form_EditarConductor').attr('action','http://127.0.0.1:8000/conductores/editar/' + id_conductor); 
-            //     $('#fotoConductor').attr("src", foto); 
-            //     activarSelect2();          
-            // });
 
         });
     </script>

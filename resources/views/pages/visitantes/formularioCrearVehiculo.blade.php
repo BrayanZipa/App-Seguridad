@@ -1,4 +1,4 @@
-    <div class="card card-orange">
+    <div class="card card-orange mt-n2">
         <div class="card-header">
             <h3 class="card-title">Crear nuevo vehículo</h3>
             <div class="card-tools">
@@ -13,7 +13,7 @@
         </div>
         <!-- /.card-header -->
 
-        <div class="card-body">
+        <div class="card-body mb-n4">
             <div class="row">
                 <div class="col-sm-4">
                     <div class="form-group">

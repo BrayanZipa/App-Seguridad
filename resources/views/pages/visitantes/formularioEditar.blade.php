@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row mb-n2">
     <div class="col-md-12">
         <form id="form_editar" action="" method="POST" novalidate>
             @csrf
@@ -18,7 +18,7 @@
                 </div>
                 <!-- /.card-header -->
 
-                <div class="card-body">
+                <div class="card-body mb-n4">
 
                     <div class="row">
                         <div class="col-sm-4">

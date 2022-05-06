@@ -12,7 +12,7 @@
         </div>
         <!-- /.card-header -->
 
-        <div class="card-body">
+        <div class="card-body mb-n4">
             <div class="row">
                 <div class="col-sm-4">
                     <div class="form-group">
@@ -181,7 +181,7 @@
                     <div class="row mt-2">
                         <div class="col-sm-12">
                             <!-- checkbox -->
-                            <div class="form-group clearfix">
+                            <div class="form-group clearfix mt-n2 mb-1">
                                 <div class="icheck-primary d-inline">
                                     <label for="checkVehiculo">
                                         ¿El visitante ingresa vehículo?
