@@ -39,7 +39,7 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="inputNombre">Actualizar nombre</label>
+                                        <label for="inputNombre">Nombre</label>
                                         <input type="text" class="conductor form-control {{ $errors->has('nombre') ? 'is-invalid' : '' }}" id="inputNombre" name="nombre" value="{{ old('nombre') }}" autocomplete="off"
                                             placeholder="Nombre" readonly required>
                                         @if ($errors->has('nombre')) 
@@ -51,7 +51,7 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="inputApellido">Actualizar apellido</label>
+                                        <label for="inputApellido">Apellido</label>
                                         <input type="text" class="conductor form-control {{ $errors->has('apellido') ? 'is-invalid' : '' }}" id="inputApellido" name="apellido" value="{{ old('apellido') }}" autocomplete="off"
                                             placeholder="Apellido" readonly required>
                                         @if ($errors->has('apellido')) 
@@ -65,7 +65,7 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="inputIdentificacion">Actualizar identificación</label>
+                                        <label for="inputIdentificacion">Identificación</label>
                                         <input type="text" class="conductor form-control {{ $errors->has('identificacion') ? 'is-invalid' : '' }}" id="inputIdentificacion" name="identificacion" autocomplete="off"
                                         value="{{ old('identificacion') }}" placeholder="Identificación" readonly required>
                                         @if ($errors->has('identificacion')) 

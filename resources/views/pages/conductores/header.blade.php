@@ -5,10 +5,10 @@
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="{{ route('mostrarConductores')}}" class="nav-link">Conductores</a>
+            <a href="{{ route('mostrarConductores')}}" class="nav-link {{ Route::is('mostrarConductores') ? 'active' : '' }}">Conductores</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="{{ route('formCrearConductor')}}" class="nav-link">Nuevo conductor</a>
+            <a href="{{ route('formCrearConductor')}}" class="nav-link {{ Route::is('formCrearConductor') ? 'active' : '' }}">Nuevo conductor</a>
         </li>
     </ul>
 

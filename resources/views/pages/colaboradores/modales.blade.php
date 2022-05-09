@@ -94,4 +94,28 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
+{{-- @endif --}}
+
+@elseif  (session('colaborador_repetido'))
+    <div class="modal fade" id="modal-colaboradorRepetido">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger">
+                    <h4 class="modal-title">Colaborador repetido</h4>
+                    <button type="button" class="botonError close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ session('colaborador_repetido') }}
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button id="botonError" type="button" class="botonError btn btn-danger" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
 @endif

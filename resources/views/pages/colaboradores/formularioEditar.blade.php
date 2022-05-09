@@ -43,7 +43,7 @@
 
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label for="inputNombre">Ingrese el nombre</label>
+                                <label for="inputNombre">Nombre</label>
                                 <input type="text" class="colaborador form-control {{ $errors->has('nombre') ? 'is-invalid' : '' }}" id="inputNombre" name="nombre" value="{{ old('nombre') }}"
                                     placeholder="Nombre" autocomplete="off" required>
                                     @if ($errors->has('nombre')) 
@@ -55,7 +55,7 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label for="inputApellido">Ingrese el apellido</label>
+                                <label for="inputApellido">Apellido</label>
                                 <input type="text" class="colaborador form-control {{ $errors->has('apellido') ? 'is-invalid' : '' }}" id="inputApellido" name="apellido" value="{{ old('apellido') }}"
                                     placeholder="Apellido" autocomplete="off" required>
                                     @if ($errors->has('apellido')) 
@@ -69,7 +69,7 @@
                     <div class="row">          
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label for="inputIdentificacion">Ingrese la identificación</label>
+                                <label for="inputIdentificacion">Identificación</label>
                                 <input type="text" class="colaborador form-control {{ $errors->has('identificacion') ? 'is-invalid' : '' }}" id="inputIdentificacion" name="identificacion" value="{{ old('identificacion') }}" placeholder="Identificación" autocomplete="off" required>
                                     @if ($errors->has('identificacion')) 
                                         <div class="invalid-feedback">
@@ -80,7 +80,7 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label for="inputEmail">Ingrese el correo empresarial</label>
+                                <label for="inputEmail">Actualizar correo empresarial</label>
                                 <input type="text" class="colaborador form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" id="inputEmail" name="email" value="{{ old('email') }}"
                                     placeholder="Correo empresarial" autocomplete="off">
                                     @if ($errors->has('email')) 
@@ -92,7 +92,7 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label for="inputTelefono">Ingrese el teléfono</label>
+                                <label for="inputTelefono">Actualizar teléfono</label>
                                 <input type="tel" class="colaborador form-control {{ $errors->has('tel_contacto') ? 'is-invalid' : '' }}" id="inputTelefono" name="tel_contacto" value="{{ old('tel_contacto') }}"
                                     placeholder="Teléfono" autocomplete="off" required>
                                     @if ($errors->has('tel_contacto')) 
@@ -106,7 +106,7 @@
                     <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label for="selectEps">Ingrese la EPS</label>
+                                <label for="selectEps">Actualizar EPS</label>
                                 <select id="selectEps" class="select2bs4 colaborador form-control {{ $errors->has('id_eps') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_eps" required>
                                     <option selected="selected" value="" disabled></option>
                                     @foreach ($eps as $ep)
@@ -124,7 +124,7 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label for="selectArl">Ingrese el ARL</label>
+                                <label for="selectArl">Actualizar ARL</label>
                                 <select id="selectArl" class="select2bs4 colaborador form-control {{ $errors->has('id_arl') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_arl" required>
                                     <option selected="selected" value="" disabled></option>
                                     @foreach ($arl as $ar)
@@ -142,7 +142,7 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label for="selectEmpresa">Ingrese la empresa a la que pertenece</label>
+                                <label for="selectEmpresa">Actualizar empresa a la que pertenece</label>
                                 <select id="selectEmpresa" class="colaborador form-control {{ $errors->has('id_empresa') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_empresa"
                                     required>
                                     <option selected="selected" value="" disabled>Seleccione la empresa</option>

@@ -24,6 +24,9 @@ class RequestColaborador extends FormRequest
     public function rules()
 
     {
+        // $dato = $this->get('identificacion');
+        // dd( $dato);
+
         $datos = $this->all();
 
         if($this->method() == 'POST'){

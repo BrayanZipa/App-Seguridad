@@ -5,10 +5,10 @@
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="{{ route('mostrarVisitantes')}}" class="nav-link">Visitantes</a>
+            <a href="{{ route('mostrarVisitantes')}}" class="nav-link {{ Route::is('mostrarVisitantes') ? 'active' : '' }}">Visitantes</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="{{ route('formCrearVisitante')}}" class="nav-link">Nuevo visitante</a>
+            <a href="{{ route('formCrearVisitante')}}" class="nav-link {{ Route::is('formCrearVisitante') ? 'active' : '' }}">Nuevo visitante</a>
         </li>
     </ul>
 

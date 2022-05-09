@@ -312,45 +312,6 @@
                 $(location).attr('href', "{{ route('mostrarConductores') }}");
             });
             
-
-            // Botón que devuelve la fotografía tomanda con anterioridad por el usuario en caso de que se cometa un error en el ingreso de datos
-            // $('.botonError').click(function() {
-            //     var inputFoto = document.getElementById('inputFoto').value;
-            //     var inputFotoVehiculo = document.getElementById('inputFotoVehiculo').value;
-
-            //     var video = document.getElementById("video");
-            //     var canvas = document.getElementById("canvas");
-            //     var contexto = canvas.getContext("2d");               
-            //     var video2 = document.getElementById("video2");
-            //     var canvas2 = document.getElementById("canvas2");
-            //     var contexto2 = canvas2.getContext("2d");
-
-            //     canvas.setAttribute("width", "640");
-            //     canvas.setAttribute("height", "480");
-            //     canvas2.setAttribute("width", "640");
-            //     canvas2.setAttribute("height", "480");
-
-            //     var imagen = new Image();
-            //     var imagen2 = new Image();
-            //     imagen.src = inputFoto;
-            //     imagen2.src = inputFotoVehiculo;
-
-            //     imagen.onload=function() {
-            //         document.getElementById('canvas').style.display = 'block';           
-            //         contexto.drawImage(imagen, 0, 0, imagen.width, imagen.height);
-            //     }
-
-            //     imagen2.onload=function() {
-            //         document.getElementById('canvas2').style.display = 'block';
-            //         contexto2.drawImage(imagen2, 0, 0, imagen2.width, imagen2.height);
-            //     }
-
-            //     selectMarcaVehiculo();
-            // });
-
-            // Muestra un modal con los diferentes errores cometidos por el usuario a la hora de ingresar un conductor
-            // $('#modal-errores-personas').modal("show");
-
         });
     </script>
 @endsection
@@ -370,13 +331,8 @@
                             @include('pages.conductores.formularioCrear')
                         </div>
 
-                        <div class="mt-n2">
+                        <div class="mt-n2 mb-n3">
                             @include('pages.conductores.formCrearVehiculo')
-                        </div>
-
-                        <div class="mx-auto mb-3">
-                            <button id="botonCrear" type='submit' class="btn btn-dark">Crear conductor</button>
-                            <button id="botonLimpiar" type='button' class="btn btn-secondary" style="width: 120px">Limpiar</button>
                         </div>
                     </div>
                 </form>

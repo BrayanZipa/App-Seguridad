@@ -116,7 +116,6 @@ class VehiculoController extends Controller
     {
         $this->validarVehiculo($request);
         $vehiculo = $request->all();
-        // return $vehiculo; 
 
         $vehiculo['identificador'] = strtoupper($vehiculo['identificador']);
         Vehiculo::findOrFail($id)->update($vehiculo);

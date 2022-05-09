@@ -5,10 +5,10 @@
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="{{ route('mostrarVehiculos')}}" class="nav-link">Vehículos</a>
+            <a href="{{ route('mostrarVehiculos')}}" class="nav-link {{ Route::is('mostrarVehiculos') ? 'active' : '' }}">Vehículos</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="{{ route('formCrearVehiculo')}}" class="nav-link">Nuevo vehículo</a>
+            <a href="{{ route('formCrearVehiculo')}}" class="nav-link {{ Route::is('formCrearVehiculo') ? 'active' : '' }}">Nuevo vehículo</a>
         </li>
     </ul>
 

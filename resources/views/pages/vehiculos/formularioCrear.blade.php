@@ -88,11 +88,6 @@
                                 </select>
                             </div>
                         </div>
-
-
-
-                        
- 
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="selectTipoPersona">Ingrese al propietario del vehículo</label>
@@ -104,28 +99,12 @@
                                 </select>  
                             </div>
                         </div>
-
-
                     </div>
-
                     <div class="row" >
-                        {{-- <div class="col-sm-12">
-                            <label for="selectTipoPersona">Ingrese al propietario del vehículo</label>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <select id="selectTipoPersona" class="vehiculo select2bs4 form-control" name="tipoPersona" style="width: 100%;" required>
-                                    <option selected="selected" value="" disabled>Seleccione el tipo de persona</option>
-                                    @foreach ($tipoPersonas as $tipo)
-                                        <option value="{{ $tipo->id_tipo_personas }}" {{ $tipo->id_tipo_personas == old('tipoPersona') ? 'selected' : '' }}>{{ $tipo->tipo }}</option>
-                                    @endforeach
-                                </select>  
-                            </div>
-                        </div> --}}
                         <div id="selectPropietario" class="col-sm-6" style="display: none">
                             <input type="hidden" id="retornoPersona" name="retornoPersona" value="{{ old('retornoPersona') }}">
                             <div class="form-group">
-                                <label for="selectTipoPersona">Propietario</label>
+                                <label for="selectPersona">Propietario</label>
                                 <select id="selectPersona" class="vehiculo select2bs4 form-control {{ $errors->has('id_persona') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_persona" required>
                                     <option selected="selected" value="" disabled></option>
                                 </select>
@@ -137,10 +116,8 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
-
         </div>
         <!-- /.card-body -->
         <div class="card-footer">

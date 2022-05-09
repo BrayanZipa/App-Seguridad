@@ -111,6 +111,21 @@ class ColaboradorController extends Controller
         return view('pages.colaboradores.crear', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos', 'empresas', 'computadores'));
     }
 
+    public function existeRegistro(Request $request)
+    {
+        $identificacion = $request->get('identificacion');
+
+        $persona = Persona::where('id_tipo_persona', 1)->where('identificacion', $identificacion)->first();
+        // return $persona;
+        // $this->colaboradores->obtenerPersona($identificacion);
+        if (!$persona) {
+            return 'vacia';
+        } else {
+        
+            return redirect()->action([ColaboradorController::class, 'create'])->with('colaborador_repetido', 'se repitio');
+        }
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -167,7 +182,9 @@ class ColaboradorController extends Controller
         
     }
 
-    //Función que permite registrar un nuevo vehículo creado desde el modulo de visitantes
+    /**
+     * Función que permite registrar un nuevo vehículo creado desde el modulo de visitantes
+     */
     public function store2($datos, $id_persona)
     {
         if(!isset($datos['foto_vehiculo'])){ //saber si es null
@@ -204,7 +221,9 @@ class ColaboradorController extends Controller
         return [$vehiculo->identificador, $vehiculo->id_vehiculos];
     }
 
-    //Función que permite registrar un nuevo activo creado desde el modulo de colaboradores
+    /**
+     * Función que permite registrar un nuevo activo creado desde el modulo de colaboradores
+     */
     public function store3($datos, $id_persona)
     {
         $datos['codigo'] = ucfirst($datos['codigo']);
@@ -219,7 +238,9 @@ class ColaboradorController extends Controller
         return $activo->codigo;
     }
 
-    //Función que permite hacer un registro de la entrada de un colaborador al momento que se crea un nuevo colaborador en la base de datos
+    /**
+     * Función que permite hacer un registro de la entrada de un colaborador al momento que se crea un nuevo colaborador en la base de datos
+     */
     public function store4($datos, $id_persona, $id_vehiculo)
     {
         if(array_key_exists('casoIngreso', $datos)){

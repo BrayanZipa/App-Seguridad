@@ -40,7 +40,7 @@ class Persona extends Model
     }
 
     /**
-     * Función que permite retornar los datos de las personas unidos a su correspondiente ARL y ESP donde tenga un id en común.
+     * Función que permite retornar los datos de las personas unidos a su correspondiente ARL, ESP, Empresa y usuario que las crea donde tenga un id en común.
      */
     public function informacionPersonas($tipoPersona){
         try {
