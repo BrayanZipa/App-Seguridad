@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 
 class ColaboradorController extends Controller
@@ -111,19 +112,44 @@ class ColaboradorController extends Controller
         return view('pages.colaboradores.crear', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos', 'empresas', 'computadores'));
     }
 
+
+
+
+
     public function existeRegistro(Request $request)
     {
-        $identificacion = $request->get('identificacion');
+        if(array_key_exists('casoIngreso', $request->all())){
 
-        $persona = Persona::where('id_tipo_persona', 1)->where('identificacion', $identificacion)->first();
+        } else if (array_key_exists('casoIngreso2', $request->all())){
+            $identificacion = $request->get('identificacion');
+            $persona = Persona::where('id_tipo_persona', 1)->where('identificacion', $identificacion)->first();
+
+            if (!$persona) {
+                // return $request;
+                $request2 = new RequestColaborador($request->all());
+                // dd($request2);
+                // $request2->request->add(array($request->all()));
+                $this->store($request2);
+            } else {
+                return back()->withInput()->with('colaborador_repetido', 'se repitio');
+                // return redirect()->action([ColaboradorController::class, 'create'])->with('colaborador_repetido', 'se repitio');
+            }
+        }
+
+        // $this->store($request);
+
+        
+
+        // $caso = $request->get('casoIngreso');
+        // return $caso;
+
+        
         // return $persona;
         // $this->colaboradores->obtenerPersona($identificacion);
-        if (!$persona) {
-            return 'vacia';
-        } else {
         
-            return redirect()->action([ColaboradorController::class, 'create'])->with('colaborador_repetido', 'se repitio');
-        }
+
+        // $caso = $request->get('casoIngreso2');
+        // return $caso;
     }
 
     /**
@@ -142,6 +168,53 @@ class ColaboradorController extends Controller
         $nuevoColaborador['identificador'] = strtoupper($nuevoColaborador['identificador']);
         $nuevoColaborador['id_tipo_persona'] = 2;
         $nuevoColaborador['id_usuario'] = auth()->user()->id_usuarios;
+
+
+        $validator = Validator::make($request->all(), 
+        [
+            'identificacion' => 'unique:se_personas,identificacion'
+        ], 
+        [
+            'identificacion.unique' => 'No puede haber dos personas con el mismo número de identificación',
+        ]);
+ 
+        if ($validator->fails()) {
+            $persona = $this->colaboradores->PersonaExiste(1, $request->get('identificacion'));
+
+            if($persona){
+                // return $this->update($request, $persona->id_personas);
+                // $nuevoColaborador = $request->all();
+                // $colaborador['nombre'] = ucwords(mb_strtolower($colaborador['nombre']));
+                // $colaborador['apellido'] = ucwords(mb_strtolower($colaborador['apellido']));
+
+                Persona::findOrFail($persona->id_personas)->update($nuevoColaborador);
+
+                return 'colaborador actualizado';
+            }
+
+            
+            // if(!){
+            //     return back()->withInput()->with('colaborador_repetido', 'La persona ingresada ya existe como visitante');
+            // } else if (!$this->colaboradores->PersonaExiste(2, $request->get('identificacion'))){
+            //     return back()->withInput()->with('colaborador_repetido', 'El colaborador ya se encuentra creado, desea asignarle el activo');
+            // }
+
+            // return 'hola '. !$this->colaboradores->PersonaExiste(1, $request->get('identificacion'));
+
+
+            // $identificacion = $request->get('identificacion');
+            // $persona = Persona::where('id_tipo_persona', 1)->where($request->get('identificacion'), $identificacion)->first();
+            // return back()->withInput()->with('colaborador_repetido', 'se repitio');
+        
+            
+            // redirect('post/create')
+            //             ->withErrors($validator)
+            //             ->withInput();
+        }
+
+        // return $request;
+
+        
 
         // return $nuevoColaborador;
 
@@ -177,9 +250,7 @@ class ColaboradorController extends Controller
             $this->store4($nuevoColaborador, $colaborador->id_personas, $id_vehiculo);
             $modal = [$colaborador->nombre.' '.$colaborador->apellido, $mensajeVehiculo];
             return redirect()->action([ColaboradorController::class, 'create'])->with('crear_colaborador_vehiculo', $modal);
-        }
-
-        
+        }   
     }
 
     /**
@@ -287,10 +358,10 @@ class ColaboradorController extends Controller
     {
         $colaborador = $request->all();
         return $colaborador;
-        // $colaborador['nombre'] = ucwords(mb_strtolower($colaborador['nombre']));
-        // $colaborador['apellido'] = ucwords(mb_strtolower($colaborador['apellido']));
-        // // $visitante = Visitante::find($id)->fill($request->all())->save();
-        // Persona::findOrFail($id)->update($colaborador);
+        $colaborador['nombre'] = ucwords(mb_strtolower($colaborador['nombre']));
+        $colaborador['apellido'] = ucwords(mb_strtolower($colaborador['apellido']));
+
+        Persona::findOrFail($id)->update($colaborador);
         // return redirect()->action([ColaboradorController::class, 'index'])->with('editar_visitante', $colaborador['nombre']." ".$colaborador['apellido']);
     }
 
