@@ -8,13 +8,14 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Control de seguridad') }}</title>
+    <link rel="shortcut icon" href="{{ asset('assets/imagenes/icono.png') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
 
     <!-- Fonts -->
-    <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     {{-- <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet"> --}}
 
@@ -28,21 +29,20 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
+        {{-- <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+            <div class="container-md">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Control de seguridad') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                </a> --}}
+                {{-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
-                </button>
+                </button> --}}
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                {{-- <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-
-                    </ul>
-
+                        
+                    </ul>     --}}
                     <!-- Right Side Of Navbar -->
                     {{-- <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
@@ -78,11 +78,16 @@
                             </li>
                         @endguest
                     </ul> --}}
+                {{-- </div>
+                <div>
+                    <img class="ml-3" src="../assets/imagenes/aviomar.png" height="62px" alt="">
+                    <img class="ml-3" src="../assets/imagenes/snider.png" height="62px" alt="">
+                    <img class="ml-3" src="../assets/imagenes/colvan.png" height="62px" alt="">
                 </div>
             </div>
-        </nav>
-
-        <main class="py-4">
+        </nav> --}}
+        
+        <main class="py-4  hold-transition login-page">
             @yield('content')
         </main>
     </div>

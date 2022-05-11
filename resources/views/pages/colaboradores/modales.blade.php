@@ -96,7 +96,7 @@
     </div>
 {{-- @endif --}}
 
-@elseif  (session('colaborador_repetido'))
+{{-- @elseif  (session('colaborador_repetido'))
     <div class="modal fade" id="modal-colaboradorRepetido">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -117,5 +117,5 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
-    <!-- /.modal -->
+    <!-- /.modal --> --}}
 @endif

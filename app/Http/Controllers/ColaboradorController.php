@@ -109,7 +109,7 @@ class ColaboradorController extends Controller
 
         [$eps, $arl, $tipoVehiculos, $marcaVehiculos, $empresas] = $this->obtenerModelos();
 
-        return view('pages.colaboradores.crear', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos', 'empresas', 'computadores'));
+        return view('pages.colaboradores.crearCopia', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos', 'empresas', 'computadores'));
     }
 
 
@@ -170,27 +170,27 @@ class ColaboradorController extends Controller
         $nuevoColaborador['id_usuario'] = auth()->user()->id_usuarios;
 
 
-        $validator = Validator::make($request->all(), 
-        [
-            'identificacion' => 'unique:se_personas,identificacion'
-        ], 
-        [
-            'identificacion.unique' => 'No puede haber dos personas con el mismo número de identificación',
-        ]);
+        // $validator = Validator::make($request->all(), 
+        // [
+        //     'identificacion' => 'unique:se_personas,identificacion'
+        // ], 
+        // [
+        //     'identificacion.unique' => 'No puede haber dos personas con el mismo número de identificación',
+        // ]);
  
-        if ($validator->fails()) {
-            $persona = $this->colaboradores->PersonaExiste(1, $request->get('identificacion'));
+        // if ($validator->fails()) {
+        //     $persona = $this->colaboradores->PersonaExiste(1, $request->get('identificacion'));
 
-            if($persona){
-                // return $this->update($request, $persona->id_personas);
-                // $nuevoColaborador = $request->all();
-                // $colaborador['nombre'] = ucwords(mb_strtolower($colaborador['nombre']));
-                // $colaborador['apellido'] = ucwords(mb_strtolower($colaborador['apellido']));
+        //     if($persona){
+        //         // return $this->update($request, $persona->id_personas);
+        //         // $nuevoColaborador = $request->all();
+        //         // $colaborador['nombre'] = ucwords(mb_strtolower($colaborador['nombre']));
+        //         // $colaborador['apellido'] = ucwords(mb_strtolower($colaborador['apellido']));
 
-                Persona::findOrFail($persona->id_personas)->update($nuevoColaborador);
+        //         Persona::findOrFail($persona->id_personas)->update($nuevoColaborador);
 
-                return 'colaborador actualizado';
-            }
+        //         return 'colaborador actualizado';
+        //     }
 
             
             // if(!){
@@ -210,7 +210,7 @@ class ColaboradorController extends Controller
             // redirect('post/create')
             //             ->withErrors($validator)
             //             ->withInput();
-        }
+        // }
 
         // return $request;
 

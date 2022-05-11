@@ -583,11 +583,11 @@
                                             <form id="formularioColaborador2" action="{{ route('crearColaborador') }}" method="POST" novalidate>
                                                 @csrf
                                                 <div class="mt-n3 mx-n3">
-                                                    @include('pages.colaboradores.formularioCrear2')
+                                                    @include('pages.colaboradores.formularioCrear2Copia')
                                                 </div>
 
                                                 <div id="crearVehiculo" class="mt-n2 mx-n3">
-                                                    @include('pages.colaboradores.formularioCrearVehiculo2')
+                                                    @include('pages.colaboradores.formularioCrearVehiculo2Copia')
                                                 </div> 
                                             </form>
                                         </div>
