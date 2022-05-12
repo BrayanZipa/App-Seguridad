@@ -15,27 +15,27 @@
     <script src="{{ asset('assets/lte/plugins/select2/js/select2.full.min.js') }}"></script>
 
     <script>
-
         $(function() {
 
-            $('#colaboradorActivo').click(function() {
+            //Cuando se selecciona en el menú a nuevo colaborador con activo dependiendo si esta selecionado el vehículo o no cambia el caso de ingreso de información
+            $('#colaboradorConActivo').click(function() {
                 if($('#checkVehiculo').prop("checked") == true){
-                    $('#casoIngreso').val('casoVehiculoActivo');
+                    $('#casoIngreso').val('conActivoVehiculo');
+                } else {
+                    $('#casoIngreso').val('');
                 }
                 $('#casoIngreso2').val('');
             });
             
-            $('#colaboradorVehiculo').click(function() {
-                $('#casoIngreso2').val('casoVehiculo');
+            //Cuando se selecciona en el menú a nuevo colaborador sin activo dependiendo si esta selecionado el vehículo o no cambia el caso de ingreso de información
+            $('#colaboradorSinActivo').click(function() {
+                if($('#checkVehiculo2').prop("checked") == true){
+                    $('#casoIngreso2').val('sinActivoVehiculo');
+                } else {
+                    $('#casoIngreso2').val('colaboradorSinActivo');
+                }
                 $('#casoIngreso').val('');
             });
-
-        });
-
-    </script>
-
-    <script>
-        $(function() {
 
             //Permite que a los select de selección de Activo, EPS y ARL se les asigne una barra de búsqueda haciendolos más dinámicos
             function activarSelect2Colaborador() {
@@ -132,20 +132,32 @@
                 });
             });
 
-            //Manejo del checkbox que muestra el formulario de crear vehículo si es seleccionado
+            //Manejo del checkbox que muestra el formulario de crear vehículo si es seleccionado en la vista de colaborador con activo
             $('#checkVehiculo').on('change', function() {
                 if ($('#checkVehiculo').is(":checked")) {
                     $('#botonComprimirColaborador').trigger("click");
                     $('#crearVehiculo').css("display", "block");
                     $('#botonCrear').css("display", "none");
                     $('#checkVehiculo').prop("disabled", true);
-                    $('#casoIngreso').val("casoVehiculoActivo");
+                    $('#casoIngreso').val("conActivoVehiculo");
                     requiredTrue('.vehiculo');
                 }
             });
 
+            //Manejo del checkbox que muestra el formulario de crear vehículo si es seleccionado en la vista de colaborador sin activo
+            $('#checkVehiculo2').on('change', function() {
+                if ($('#checkVehiculo2').is(":checked")) {
+                    $('#botonComprimirColaborador2').trigger("click");
+                    $('#crearVehiculo2').css("display", "block");
+                    $('#botonCrear3').css("display", "none");
+                    $('#checkVehiculo2').prop("disabled", true);
+                    $('#casoIngreso2').val("sinActivoVehiculo");
+                    requiredTrue('.vehiculo2');
+                }
+            });
+
             //Manejo del botón eliminar del formulario de Vehiculo en la vista de colaborador con activo
-            $('#botonCerrar2').click(function() {
+            $('#botonCerrar').click(function() {
                 $('#botonComprimirColaborador').trigger("click");
                 $('#botonCrear').css("display", "inline");
                 $('#casoIngreso').val("");
@@ -154,6 +166,18 @@
                 $('#checkVehiculo').prop('disabled', false);
                 $('#checkVehiculo').prop("checked", false);
                 requiredFalse('.vehiculo');
+            });
+
+            //Manejo del botón eliminar del formulario de Vehiculo en la vista de colaborador sin activo
+            $('#botonCerrar2').click(function() {
+                $('#botonComprimirColaborador2').trigger("click");
+                $('#botonCrear3').css("display", "inline");
+                $('#casoIngreso2').val("colaboradorSinActivo");
+                $('#crearVehiculo2').css("display", "none");
+                $('#botonLimpiar4').trigger("click");
+                $('#checkVehiculo2').prop('disabled', false);
+                $('#checkVehiculo2').prop("checked", false);
+                requiredFalse('.vehiculo2');
             });
 
             //Botón que limpia la información del formulario de colaborador en la vista de colaborador con activo
@@ -167,7 +191,7 @@
                 activarSelect2Colaborador();
             });
 
-            //Botón que limpia la información del formulario de Vehículo en la vista de colaborador con activo
+            //Botón que limpia la información del formulario de vehículo en la vista de colaborador con activo
             $('#botonLimpiar2').click(function() {
                 document.getElementById('inputFotoVehiculo').setAttribute('value', '');
                 $('#video').css("display", "none");
@@ -183,25 +207,40 @@
                 activarSelect2Vehiculo();
             });
 
-            //Botón que limpia la información del formulario de colaborador y vehículo en la vista de colaborador con vehículo
+            //Botón que limpia la información del formulario de colaborador en la vista de colaborador sin activo
             $('#botonLimpiar3').click(function() {
+                $('.colaborador2').each(function(index) {
+                    $(this).val('');
+                    if ($(this).hasClass('is-invalid')) {
+                        $(this).removeClass("is-invalid");
+                    }
+                });
+                activarSelect2Colaborador();
+            });
+
+            //Botón que limpia la información del formulario de vehículo en la vista de colaborador sin activo
+            $('#botonLimpiar4').click(function() {
                 document.getElementById('inputFotoVehiculo2').setAttribute('value', '');
                 $('#video2').css("display", "none");
                 $('#canvas2').css("display", "none");
                 $('#botonCapturar2').css("display", "none");
-                $('.colaboradorVehiculo').each(function(index) {
+                $('.vehiculo2').each(function(index) {
                     $(this).val('');
                     if($(this).hasClass('is-invalid')){
                         $(this).removeClass("is-invalid");
                     } 
                 });
-                activarSelect2Colaborador();
                 activarSelect2Vehiculo();   
             });
 
-            //Al iniciar la página inhabilita la propiedad required del formulario de Vehiculo mientras no sea seleccionado por el usuario
+            //Al iniciar la página inhabilita la propiedad required del formulario de Vehiculo mientras no sea seleccionado por el usuario en la vista colaborador con activo
             if ($('#crearVehiculo').is(":hidden")) {
                 requiredFalse('.vehiculo');
+            }
+
+            //Al iniciar la página inhabilita la propiedad required del formulario de Vehiculo mientras no sea seleccionado por el usuario en la vista colaborador sin activo
+            if ($('#crearVehiculo2').is(":hidden")) {
+                requiredFalse('.vehiculo2');
             }
 
             //Función que permite volver verdadera la propiedad required de los formularios  
@@ -256,7 +295,7 @@
                     .catch((err) => console.log(err))            
             });
 
-            //Botón que da acceso a la cámara web del computador donde este abierta la aplicación desde el formulario ingresar vehículo en la vista nuevo colaborador con vehículo
+            //Botón que da acceso a la cámara web del computador donde este abierta la aplicación desde el formulario ingresar vehículo en la vista nuevo colaborador sin activo
             $('#botonActivar2').click(function() {
                 var inputFotoVehiculo = document.getElementById('inputFotoVehiculo2');
                 if (inputFotoVehiculo.classList.contains('is-invalid')) {
@@ -352,7 +391,7 @@
                 }
             }
 
-            // Función que permite que al momento que el usuario seleccione Bicicleta en el formulario de ingreso de vehículo en la vista nuevo colaborador con vehículo se desabilite el select de marca de vehículo
+            // Función que permite que al momento que el usuario seleccione Bicicleta en el formulario de ingreso de vehículo en la vista nuevo colaborador sin activo se desabilite el select de marca de vehículo
             function selectMarcaVehiculo2() {  
                 var tipo = $('#selectTipoVehiculo2 option:selected').text();     
                 var tipoVehiculo = tipo.replace(/\s+/g, '');
@@ -379,7 +418,7 @@
                 selectMarcaVehiculo();
             });
 
-            //Función que se activa cuando el usuario selecciona alguna opción del select de tipo de vehículo en la vista de colaborador con vehículo
+            //Función que se activa cuando el usuario selecciona alguna opción del select de tipo de vehículo en la vista de colaborador sin activo
             $('#selectTipoVehiculo2').change(function() {
                 selectMarcaVehiculo2();
             });
@@ -402,7 +441,7 @@
                 }, false);
             })();
 
-            // Función anónima que genera mensajes de error cuando el usuario intenta enviar algún formulario en la vista de colaborador con vehículo sin los datos requeridos, es una primera validación del lado del cliente
+            // Función anónima que genera mensajes de error cuando el usuario intenta enviar algún formulario en la vista de colaborador sin activo sin los datos requeridos, es una primera validación del lado del cliente
             (function() {
                 'use strict'
                 var form = document.getElementById('formularioColaborador2');
@@ -411,7 +450,7 @@
                         event.preventDefault();
                         event.stopPropagation();
 
-                        $('.colaboradorVehiculo').each(function(index) {
+                        $('.colaborador2, .vehiculo2').each(function(index) {
                             if (!this.checkValidity()) {
                                 $(this).addClass('is-invalid');
                             }
@@ -421,14 +460,14 @@
             })();
 
             //Si en un input del cualquier formulario del módulo colaboradores esta la clase is-invalid al escribir en el mismo input se elimina esta clase 
-            $('input.colaborador, textarea.colaborador, input.vehiculo, input.colaboradorVehiculo, textarea.colaboradorVehiculo').keydown(function(event) {
+            $('input.colaborador, textarea.colaborador, input.colaborador2, textarea.colaborador2, input.vehiculo, input.vehiculo2').keydown(function(event) {
                 if ($(this).hasClass('is-invalid')) {
                     $(this).removeClass('is-invalid');
                 }
             });
 
             //Si en un select del cualquier formulario del módulo colaboradores esta la clase is-invalid al seleccionar algo en el mismo select se elimina esta clase 
-            $('select.colaborador, select.vehiculo, select.colaboradorVehiculo').change(function() {
+            $('select.colaborador, select.colaborador2, select.vehiculo, select.vehiculo2').change(function() {
                 if ($(this).hasClass('is-invalid')) {
                     $(this).removeClass('is-invalid');
                 };
@@ -457,7 +496,7 @@
                 }
             }
 
-            //Función que permite mantener la fotografía tomada previamente al vehículo en la vista de colaborador con vehículo en caso de que haya errores al enviar el formulario crear vehículo
+            //Función que permite mantener la fotografía tomada previamente al vehículo en la vista de colaborador sin activo en caso de que haya errores al enviar el formulario crear vehículo
             function retornarFotoVehiculo2() {
                 var inputFotoVehiculo2 = document.getElementById('inputFotoVehiculo2').value;
                 var video2 = document.getElementById("video2");
@@ -480,42 +519,43 @@
                 }
             }
 
-            //Botón que aparece si hay errores en el ingreso del formulario crear colaborador y se activa si los dos formularios de la vista de colaborador con activo estan visibles, esto mantiene la información y los formularios visibles
-            $('#botonRetorno').click(function() {
-                $('#crearVehiculo').css("display", "block");
-                $('#botonCrear').css("display", "none");
-                $('#checkVehiculo').prop("disabled", true);
-                $('#checkVehiculo').prop("checked", true);
-                requiredTrue('.vehiculo');
-            });
-
             //Función anónima que se ejecuta si alguno de los elementos mencionados se crea en la interfaz debido a errores cometidos en el ingreso de los formularios del módulo de colaboradores
             (function() {
                 if (!!document.getElementById('botonRetorno')) {
                     var caso = document.getElementById('casoIngreso').value;
                     var caso2 = document.getElementById('casoIngreso2').value;
 
-                    if(caso2 == 'casoVehiculo'){
-                        retornarFotoVehiculo2();
-                        selectMarcaVehiculo2();
-
-                    } else if(caso == 'casoVehiculoActivo'){
+                    if(caso == 'conActivoVehiculo'){
                         retornarFotoVehiculo();
                         selectMarcaVehiculo();
-                        document.getElementById('botonRetorno').click();
-                    } 
+                        $('#crearVehiculo').css("display", "block");
+                        $('#botonCrear').css("display", "none");
+                        $('#checkVehiculo').prop("disabled", true);
+                        $('#checkVehiculo').prop("checked", true);
+                        requiredTrue('.vehiculo');
+
+                    } else if(caso2 == 'sinActivoVehiculo'){
+                        retornarFotoVehiculo2();
+                        selectMarcaVehiculo2();
+                        $('#crearVehiculo2').css("display", "block");
+                        $('#botonCrear3').css("display", "none");
+                        $('#checkVehiculo2').prop("disabled", true);
+                        $('#checkVehiculo2').prop("checked", true);
+                        requiredTrue('.vehiculo2');
+                    }
                 } else if (!!document.getElementById('botonRetorno2')) {
                     var caso = document.getElementById('casoIngreso').value;
                     var caso2 = document.getElementById('casoIngreso2').value;
 
-                    if(caso2 == 'casoVehiculo'){
-                        retornarFotoVehiculo2();
-                        selectMarcaVehiculo2();
-
-                    } else if(caso == 'casoVehiculoActivo') {
+                    if(caso == 'conActivoVehiculo'){
                         retornarFotoVehiculo();
                         selectMarcaVehiculo();
                         document.getElementById('checkVehiculo').click();
+
+                    } else if(caso2 == 'sinActivoVehiculo') {
+                        retornarFotoVehiculo2();
+                        selectMarcaVehiculo2();
+                        document.getElementById('checkVehiculo2').click();
                     }
                 }
             })();
@@ -552,19 +592,19 @@
                                 <div class="card-header p-0 pt-1">
                                     <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
                                         <li class="nav-item">
-                                            <a class="nav-link {{ (old('casoIngreso') == '' || old('casoIngreso') == 'casoVehiculoActivo') && old('casoIngreso2') == '' ? 'active' : '' }}" id="colaboradorActivo" data-toggle="pill" href="#nuevo_colaborador"
-                                                role="tab" aria-controls="nuevo_colaborador" aria-selected="true">Nuevo colabordor con activo</a>
+                                            <a id="colaboradorConActivo" class="nav-link {{ old('casoIngreso2') == '' ? 'active' : '' }}" data-toggle="pill" href="#nuevo_colaboradorConActivo"
+                                                role="tab" aria-controls="nuevo_colaboradorConActivo" aria-selected="true">Nuevo colaborador con activo</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link {{ old('casoIngreso2') == 'casoVehiculo' && old('casoIngreso') == '' ? 'active' : '' }}" id="colaboradorVehiculo" data-toggle="pill"
-                                                href="#nuevo_colaboradorVehiculo" role="tab" aria-controls="nuevo_colaboradorVehiculo"
+                                            <a id="colaboradorSinActivo" class="nav-link {{ old('casoIngreso2')  != '' ? 'active' : '' }}" data-toggle="pill"
+                                                href="#nuevo_colaboradorSinActivo" role="tab" aria-controls="nuevo_colaboradorSinActivo"
                                                 aria-selected="false">Nuevo colaborador sin activo</a>
                                         </li>
                                     </ul>
                                 </div>
                                 <div class="card-body">
                                     <div class="tab-content p-0" id="custom-tabs-one-tabContent" >
-                                        <div class="tab-pane fade {{ (old('casoIngreso') == '' || old('casoIngreso') == 'casoVehiculoActivo') && old('casoIngreso2') == '' ? 'show active' : '' }} mb-n4" id="nuevo_colaborador" role="tabpanel" aria-labelledby="nuevo_colaborador-tab">
+                                        <div class="tab-pane fade {{ old('casoIngreso2') == '' ? 'show active' : '' }} mb-n4" id="nuevo_colaboradorConActivo" role="tabpanel" aria-labelledby="nuevo_colaboradorConActivo-tab">
                                             
                                             <form id="formularioColaborador" action="{{ route('crearColaborador') }}" method="POST" novalidate>
                                                 @csrf
@@ -578,7 +618,7 @@
                                             </form>
                                         </div>
 
-                                        <div class="tab-pane fade {{ old('casoIngreso2') == 'casoVehiculo' && old('casoIngreso') == ''  ? 'show active' : '' }}" id="nuevo_colaboradorVehiculo" role="tabpanel" aria-labelledby="nuevo_colaboradorVehiculo-tab">
+                                        <div class="tab-pane fade {{ old('casoIngreso2') != ''  ? 'show active' : '' }}" id="nuevo_colaboradorSinActivo" role="tabpanel" aria-labelledby="nuevo_colaboradorSinActivo-tab">
 
                                             <form id="formularioColaborador2" action="{{ route('crearColaborador') }}" method="POST" novalidate>
                                                 @csrf
@@ -586,7 +626,7 @@
                                                     @include('pages.colaboradores.formularioCrear2')
                                                 </div>
 
-                                                <div id="crearVehiculo" class="mt-n2 mx-n3">
+                                                <div id="crearVehiculo2" class="mt-4 mx-n3" style="display: none">
                                                     @include('pages.colaboradores.formularioCrearVehiculo2')
                                                 </div> 
                                             </form>

@@ -22,23 +22,27 @@ class RequestColaborador extends FormRequest
      * @return array
      */
     public function rules()
-
     {
-        // $dato = $this->get('identificacion');
+        // $dato = $this->all();
         // dd( $dato);
 
         $datos = $this->all();
 
         if($this->method() == 'POST'){
             if(array_key_exists('casoIngreso', $datos)){
-                if($datos['casoIngreso'] == 'casoVehiculoActivo'){
-                    return array_merge($this->validacionGeneral(), $this->validacionVehiculo(), $this->validacionFaltante());
+                if($datos['casoIngreso'] == 'conActivoVehiculo'){
+                    return array_merge($this->validacionGeneral(), $this->validacionFaltante(), $this->validacionVehiculo()); 
     
                 } else {  
                     return array_merge($this->validacionGeneral(), $this->validacionFaltante());
                 }   
             } else if(array_key_exists('casoIngreso2', $datos)){
-                return array_merge($this->validacionGeneral(), $this->validacionVehiculo(), ['descripcion' => 'nullable|max:255']);
+                if($datos['casoIngreso2'] == 'colaboradorSinActivo'){
+                    return array_merge($this->validacionGeneral(), ['descripcion' => 'nullable|max:255']);
+    
+                } else if($datos['casoIngreso2'] == 'sinActivoVehiculo') {  
+                    return array_merge($this->validacionGeneral(), $this->validacionVehiculo(), ['descripcion' => 'nullable|max:255']);
+                } 
             }
         } else if($this->method() == 'PUT'){
             return $this->validacionGeneral();
@@ -69,7 +73,7 @@ class RequestColaborador extends FormRequest
 
             'identificacion.required' => 'Se requiere que ingrese la identificación',
             'identificacion.numeric' => 'La identificación debe ser un valor númerico y no debe contener espacios',
-            // 'identificacion.unique' => 'No puede haber dos personas con el mismo número de identificación',
+            'identificacion.unique' => 'No puede haber dos personas con el mismo número de identificación',
             'identificacion.digits_between' => 'La identificación debe estar en un rango de 4 a 15 números',
 
             // 'email.required' => 'Se requiere que ingrese el correo empresarial',
@@ -119,7 +123,7 @@ class RequestColaborador extends FormRequest
         return[
             'nombre' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:25|min:3',
             'apellido' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:25|min:3',   
-            'identificacion' => 'required|numeric|digits_between:4,15',
+            'identificacion' => 'required|numeric|unique:se_personas,identificacion,'.$this->id.',id_personas|digits_between:4,15',
             'email' => 'nullable|email:rfc,dns|unique:se_personas,email,'.$this->id.',id_personas|max:50',
             'tel_contacto' => 'required|numeric|unique:se_personas,tel_contacto,'.$this->id.',id_personas|digits_between:7,10',
             'id_eps' => 'required|integer',         

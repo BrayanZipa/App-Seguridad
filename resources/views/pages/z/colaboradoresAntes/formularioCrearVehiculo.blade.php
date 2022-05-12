@@ -5,7 +5,7 @@
                 <button id="botonComprimirVehiculo" type="button" class="btn btn-tool pb-2" data-card-widget="collapse"><i
                         class="fas fa-minus"></i>
                 </button>
-                <button id="botonCerrar" type="button" class="btn btn-tool pb-2 mr-n3">
+                <button id="botonCerrar2" type="button" class="btn btn-tool pb-2 mr-n3">
                     <i class="fas fa-times"></i>
                 </button>
             </div>

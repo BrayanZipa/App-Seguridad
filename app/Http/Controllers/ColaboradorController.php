@@ -109,7 +109,7 @@ class ColaboradorController extends Controller
 
         [$eps, $arl, $tipoVehiculos, $marcaVehiculos, $empresas] = $this->obtenerModelos();
 
-        return view('pages.colaboradores.crearCopia', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos', 'empresas', 'computadores'));
+        return view('pages.colaboradores.crear', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos', 'empresas', 'computadores'));
     }
 
 
@@ -216,7 +216,7 @@ class ColaboradorController extends Controller
 
         
 
-        // return $nuevoColaborador;
+        return $nuevoColaborador;
 
         $colaborador = Persona::create([
             'id_usuario' => $nuevoColaborador['id_usuario'],
