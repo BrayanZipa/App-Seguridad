@@ -216,7 +216,7 @@ class ColaboradorController extends Controller
 
         
 
-        return $nuevoColaborador;
+        // return $nuevoColaborador;
 
         $colaborador = Persona::create([
             'id_usuario' => $nuevoColaborador['id_usuario'],
@@ -233,7 +233,7 @@ class ColaboradorController extends Controller
         $colaborador->save();
 
         if(array_key_exists('casoIngreso', $nuevoColaborador)){
-            if ($nuevoColaborador['casoIngreso'] == 'casoVehiculoActivo'){
+            if ($nuevoColaborador['casoIngreso'] == 'conActivoVehiculo'){
                 [$mensajeVehiculo, $id_vehiculo] = $this->store2($nuevoColaborador, $colaborador->id_personas);
                 $mensajeActivo = $this->store3($nuevoColaborador, $colaborador->id_personas);
                 $this->store4($nuevoColaborador, $colaborador->id_personas, $id_vehiculo);
@@ -243,13 +243,18 @@ class ColaboradorController extends Controller
                 $mensajeActivo = $this->store3($nuevoColaborador, $colaborador->id_personas);
                 $this->store4($nuevoColaborador, $colaborador->id_personas, null);
                 $modal = [$colaborador->nombre.' '.$colaborador->apellido, $mensajeActivo];
-                return redirect()->action([ColaboradorController::class, 'create'])->with('crear_colaborador', $modal);
+                return redirect()->action([ColaboradorController::class, 'create'])->with('crear_colaborador_activo', $modal);
             }
         } else if (array_key_exists('casoIngreso2', $nuevoColaborador)){
-            [$mensajeVehiculo, $id_vehiculo] = $this->store2($nuevoColaborador, $colaborador->id_personas);
-            $this->store4($nuevoColaborador, $colaborador->id_personas, $id_vehiculo);
-            $modal = [$colaborador->nombre.' '.$colaborador->apellido, $mensajeVehiculo];
-            return redirect()->action([ColaboradorController::class, 'create'])->with('crear_colaborador_vehiculo', $modal);
+            if($nuevoColaborador['casoIngreso2'] == 'sinActivoVehiculo'){
+                [$mensajeVehiculo, $id_vehiculo] = $this->store2($nuevoColaborador, $colaborador->id_personas);
+                $this->store4($nuevoColaborador, $colaborador->id_personas, $id_vehiculo);
+                $modal = [$colaborador->nombre.' '.$colaborador->apellido, $mensajeVehiculo];
+                return redirect()->action([ColaboradorController::class, 'create'])->with('crear_colaborador_vehiculo', $modal);
+            } else if ($nuevoColaborador['casoIngreso2'] == 'colaboradorSinActivo'){
+                $this->store4($nuevoColaborador, $colaborador->id_personas, null);
+                return redirect()->action([ColaboradorController::class, 'create'])->with('crear_colaborador', $colaborador->nombre.' '.$colaborador->apellido);
+            }       
         }   
     }
 
@@ -315,7 +320,7 @@ class ColaboradorController extends Controller
     public function store4($datos, $id_persona, $id_vehiculo)
     {
         if(array_key_exists('casoIngreso', $datos)){
-            if ($datos['casoIngreso'] == 'casoVehiculoActivo'){
+            if ($datos['casoIngreso'] == 'conActivoVehiculo'){
                 Registro::create([
                     'id_persona' => $id_persona,
                     'ingreso_persona' => date('Y-m-d H:i:s'),
@@ -336,14 +341,23 @@ class ColaboradorController extends Controller
                 ])->save(); 
             }
         } else if (array_key_exists('casoIngreso2', $datos)){
-            Registro::create([
-                'id_persona' => $id_persona,
-                'ingreso_persona' => date('Y-m-d H:i:s'),
-                'ingreso_vehiculo' => date('Y-m-d H:i:s'),
-                'id_vehiculo' => $id_vehiculo,
-                'descripcion' => $datos['descripcion'],
-                'id_usuario' => $datos['id_usuario'],
-            ])->save(); 
+            if ($datos['casoIngreso2'] == 'sinActivoVehiculo'){
+                Registro::create([
+                    'id_persona' => $id_persona,
+                    'ingreso_persona' => date('Y-m-d H:i:s'),
+                    'ingreso_vehiculo' => date('Y-m-d H:i:s'),
+                    'id_vehiculo' => $id_vehiculo,
+                    'descripcion' => $datos['descripcion'],
+                    'id_usuario' => $datos['id_usuario'],
+                ])->save();
+            } else if($datos['casoIngreso2'] == 'colaboradorSinActivo'){
+                Registro::create([
+                    'id_persona' => $id_persona,
+                    'ingreso_persona' => date('Y-m-d H:i:s'),
+                    'descripcion' => $datos['descripcion'],
+                    'id_usuario' => $datos['id_usuario'],
+                ])->save(); 
+            }
         }  
     }
 
@@ -392,7 +406,7 @@ class ColaboradorController extends Controller
      */
     public function getColaborador(Request $request)
     {
-        $id= $request->input('colaborador');
+        $id = $request->input('colaborador');
         $sesionToken = $this->colaboradores->initSesionGlpi();
         try {
             $consulta = Http::withHeaders([
@@ -421,5 +435,31 @@ class ColaboradorController extends Controller
         }
         
         return $colaborador;
+    }
+
+    public function pruebaglpi()
+    {
+        $exitCode = Artisan::call('cache:clear');
+        $sesionToken = $this->colaboradores->initSesionGlpi();
+        try {
+            $consulta = Http::withHeaders([
+                'Session-Token' => $sesionToken
+            ])->get(env('API_URL', 'No hay URL').'user/', [
+                'range' => '0-1000',
+                // 'get_hateoas' => false
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error al traer la información de los activos desde GLPI'], 500);
+        }      
+        $colaboradores = $consulta->json();
+        $this->colaboradores->killSesionGlpi($sesionToken);
+
+        // $numComputadores=count($colaboradores);
+        // for ($i=0; $i < $numComputadores; $i++) { 
+        //     if(!isset($computadores[$i]['users_id']) || $computadores[$i]['users_id'] == 0){
+        //         unset($computadores[$i]);
+        //     }
+        // }
+        return view('pages.colaboradores.prueba')->with('colaboradores', $colaboradores);
     }
 }

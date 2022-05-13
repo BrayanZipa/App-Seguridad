@@ -230,6 +230,7 @@
                         $(this).removeClass("is-invalid");
                     } 
                 });
+                $('#selectMarcaVehiculo2').val([]);
                 activarSelect2Vehiculo();   
             });
 
@@ -562,6 +563,7 @@
 
             //Muestra los modales de ingreso correcto dependiendo de que formularios se hayan ingresado y redirecciona en caso de que se oprima el botón continuar
             $('#modal-crear-colaborador').modal("show");
+            $('#modal-crear-colaboradorActivo').modal("show");
             $('#modal-crear-colaboradorVehiculo').modal("show");
             $('#modal-crear-colaboradorVehiculoActivo').modal("show");
 

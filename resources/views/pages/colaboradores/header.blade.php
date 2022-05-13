@@ -10,6 +10,9 @@
         <li class="nav-item d-none d-sm-inline-block">
             <a href="{{ route('formCrearColaborador')}}" class="nav-link {{ Route::is('formCrearColaborador') ? 'active' : '' }}">Nuevo colaborador</a>
         </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="{{ route('pruebaglpi')}}" class="nav-link {{ Route::is('pruebaglpi') ? 'active' : '' }}">Prueba GLPI</a>
+        </li>
     </ul>
 
     <!-- SEARCH FORM -->

@@ -8,8 +8,32 @@
                     </div>
                 </div>
                 <div class="modal-body">
-                    <p>Colaborador <b>{{ session('crear_colaborador')[0] }}</b> creado exitosamente.</p>
-                    <p>Computador con código <b>{{ session('crear_colaborador')[1] }}</b> creado exitosamente.</p>
+                    <p>Se ha creado al colaborador <b>{{ session('crear_colaborador') }}</b> exitosamente.</p>
+                    <p>¿Desea crear otro?</p>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"
+                        style="width: 100px">Si</button>
+                    <button type="submit" class="botonContinuar btn btn-primary">Continuar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+@elseif (session('crear_colaborador_activo'))
+    <div class="modal fade" id="modal-crear-colaboradorActivo">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <div class="d-flex justify-content-center">
+                        <h4 class="modal-title">REGISTRO CREADO</h4>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <p>Colaborador <b>{{ session('crear_colaborador_activo')[0] }}</b> creado exitosamente.</p>
+                    <p>Computador con código <b>{{ session('crear_colaborador_activo')[1] }}</b> creado exitosamente.</p>
                     <p>¿Desea crear otro?</p>
                 </div>
                 <div class="modal-footer justify-content-between">

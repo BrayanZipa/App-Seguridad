@@ -34,44 +34,46 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 /**
  * Rutas del modulo de visitantes
  */
-Route::get('/visitantes', [VisitanteController::class, 'index'])->name('mostrarVisitantes');
-Route::get('/visitantes/crear', [VisitanteController::class, 'create'])->name('formCrearVisitante');
-Route::post('/visitantes/crear', [VisitanteController::class, 'store'])->name('crearVisitante');
-Route::get('/visitantes/informacion', [VisitanteController::class, 'informacionVisitantes'])->name('mostrarInformacion');
-Route::put('/visitantes/editar/{id}', [VisitanteController::class, 'update'])->name('editarVisitante');
+Route::get('/visitantes', [VisitanteController::class, 'index'])->name('mostrarVisitantes')->middleware('auth');
+Route::get('/visitantes/crear', [VisitanteController::class, 'create'])->name('formCrearVisitante')->middleware('auth');
+Route::post('/visitantes/crear', [VisitanteController::class, 'store'])->name('crearVisitante')->middleware('auth');
+Route::get('/visitantes/informacion', [VisitanteController::class, 'informacionVisitantes'])->name('mostrarInformacion')->middleware('auth');
+Route::put('/visitantes/editar/{id}', [VisitanteController::class, 'update'])->name('editarVisitante')->middleware('auth');
 
 /**
  * Rutas del modulo de colaboradores
  */
-Route::get('/colaboradores', [ColaboradorController::class, 'index'])->name('mostrarColaboradores');
-Route::get('/colaboradores/crear', [ColaboradorController::class, 'create'])->name('formCrearColaborador');
-Route::post('/colaboradores/crear', [ColaboradorController::class, 'store'])->name('crearColaborador');
-Route::get('/colaboradores/informacion', [ColaboradorController::class, 'informacionColaboradores'])->name('mostrarInfoColaboradores');
-Route::get('/colaboradores/persona', [ColaboradorController::class, 'getColaborador'])->name('colaborador');
-Route::put('/colaboradores/editar/{id}', [ColaboradorController::class, 'update'])->name('editarColaborador');
+Route::get('/colaboradores', [ColaboradorController::class, 'index'])->name('mostrarColaboradores')->middleware('auth');
+Route::get('/colaboradores/crear', [ColaboradorController::class, 'create'])->name('formCrearColaborador')->middleware('auth');
+Route::post('/colaboradores/crear', [ColaboradorController::class, 'store'])->name('crearColaborador')->middleware('auth');
+Route::get('/colaboradores/informacion', [ColaboradorController::class, 'informacionColaboradores'])->name('mostrarInfoColaboradores')->middleware('auth');
+Route::get('/colaboradores/persona', [ColaboradorController::class, 'getColaborador'])->name('colaborador')->middleware('auth');
+Route::put('/colaboradores/editar/{id}', [ColaboradorController::class, 'update'])->name('editarColaborador')->middleware('auth');
+
+Route::get('/colaboradores/pruebaglpi', [ColaboradorController::class, 'pruebaglpi'])->name('pruebaglpi')->middleware('auth');
 
 /**
  * Rutas del modulo de conductores
  */
-Route::get('/conductores', [ConductorController::class, 'index'])->name('mostrarConductores');
-Route::get('/conductores/crear', [ConductorController::class, 'create'])->name('formCrearConductor');
-Route::post('/conductores/crear', [ConductorController::class, 'store'])->name('crearConductor');
-Route::get('/conductores/informacion', [ConductorController::class, 'informacionConductores'])->name('mostrarInfoConductores');
-Route::put('/conductores/editar/{id}', [ConductorController::class, 'update'])->name('editarConductor');
+Route::get('/conductores', [ConductorController::class, 'index'])->name('mostrarConductores')->middleware('auth');
+Route::get('/conductores/crear', [ConductorController::class, 'create'])->name('formCrearConductor')->middleware('auth');
+Route::post('/conductores/crear', [ConductorController::class, 'store'])->name('crearConductor')->middleware('auth');
+Route::get('/conductores/informacion', [ConductorController::class, 'informacionConductores'])->name('mostrarInfoConductores')->middleware('auth');
+Route::put('/conductores/editar/{id}', [ConductorController::class, 'update'])->name('editarConductor')->middleware('auth');
 
 /**
  * Rutas del modulo de vehículos
  */
-Route::get('/vehiculos', [VehiculoController::class, 'index'])->name('mostrarVehiculos');
-Route::get('/vehiculos/crear', [VehiculoController::class, 'create'])->name('formCrearVehiculo');
-Route::post('/vehiculos/crear', [VehiculoController::class, 'store'])->name('crearVehiculo');
-Route::get('/vehiculos/informacion', [VehiculoController::class, 'informacionVehiculos'])->name('mostrarInfoVehiculos');
-Route::put('/vehiculos/editar/{id}', [VehiculoController::class, 'update'])->name('editarVehiculo');
-Route::get('/vehiculos/personas', [VehiculoController::class, 'getPersonas'])->name('personas');
+Route::get('/vehiculos', [VehiculoController::class, 'index'])->name('mostrarVehiculos')->middleware('auth');
+Route::get('/vehiculos/crear', [VehiculoController::class, 'create'])->name('formCrearVehiculo')->middleware('auth');
+Route::post('/vehiculos/crear', [VehiculoController::class, 'store'])->name('crearVehiculo')->middleware('auth');
+Route::get('/vehiculos/informacion', [VehiculoController::class, 'informacionVehiculos'])->name('mostrarInfoVehiculos')->middleware('auth');
+Route::put('/vehiculos/editar/{id}', [VehiculoController::class, 'update'])->name('editarVehiculo')->middleware('auth');
+Route::get('/vehiculos/personas', [VehiculoController::class, 'getPersonas'])->name('personas')->middleware('auth');
 
 /**
  * Rutas del modulo de registros
  */
-Route::get('/registros', [RegistroController::class, 'index'])->name('mostrarRegistros');
+Route::get('/registros', [RegistroController::class, 'index'])->name('mostrarRegistros')->middleware('auth');
 
 
