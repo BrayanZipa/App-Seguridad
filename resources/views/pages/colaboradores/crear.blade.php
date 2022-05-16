@@ -567,7 +567,7 @@
             $('#modal-crear-colaboradorVehiculo').modal("show");
             $('#modal-crear-colaboradorVehiculoActivo').modal("show");
 
-            $('#modal-colaboradorRepetido').modal("show");
+            // $('#modal-colaboradorRepetido').modal("show");
 
             $('.botonContinuar').click(function() {
                 //http://app-seguridad.test/colaboradores

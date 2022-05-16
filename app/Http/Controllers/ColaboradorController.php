@@ -46,32 +46,6 @@ class ColaboradorController extends Controller
     public function index()
     {
         $exitCode = Artisan::call('cache:clear');
-
-        // $session_token = Http::withHeaders([
-        //     'Authorization' => 'user_token '.env('API_KEY', 'No hay Token')
-        // ])->get(env('API_URL', 'No hay URL').'initSession/');
-
-        // // return 'Session-Token: '.$session_token['session_token'];
-
-        // $usuarios = Http::withHeaders([
-        //     'Session-Token' => $session_token['session_token']
-        // ])->get(env('API_URL', 'No hay URL').'computer/', [
-        //     'range' => '0-300'
-        //     // "items" => ["itemtype" => "User", "items_id"=> 2]
-        //     // ["items" => ["itemtype"=> "User", "items_id"=> 2] , ["itemtype"=> "Entity", "items_id"=> 0]]
-        //     // "items" => [{"itemtype"=> "User", "items_id"=> 2}, {"itemtype"=> "Entity", "items_id"=> 0}]
-        // ]);
-
-        // return $usuarios;
-
-        // $usuarios2 = Http::withHeaders([
-        //     'Session-Token' => $session_token['session_token']
-        // ])->get($usuarios[0]['links'][5]['href']);
-
-        // $array = $usuarios->json(); 
-        // // return   $usuarios[0]['links'][5]['href'];  
-        // return $usuarios2;
-
         $eps = $this->eps->obtenerEps();
         $arl = $this->arl->obtenerArl();
         $empresas = $this->empresas->obtenerEmpresas();
@@ -446,7 +420,7 @@ class ColaboradorController extends Controller
                 'Session-Token' => $sesionToken
             ])->get(env('API_URL', 'No hay URL').'user/', [
                 'range' => '0-1000',
-                // 'get_hateoas' => false
+                'get_hateoas' => false
             ]);
         } catch (\Throwable $th) {
             return response()->json(['message' => 'Error al traer la información de los activos desde GLPI'], 500);
@@ -454,12 +428,49 @@ class ColaboradorController extends Controller
         $colaboradores = $consulta->json();
         $this->colaboradores->killSesionGlpi($sesionToken);
 
-        // $numComputadores=count($colaboradores);
-        // for ($i=0; $i < $numComputadores; $i++) { 
-        //     if(!isset($computadores[$i]['users_id']) || $computadores[$i]['users_id'] == 0){
-        //         unset($computadores[$i]);
-        //     }
-        // }
-        return view('pages.colaboradores.prueba')->with('colaboradores', $colaboradores);
+        $numColaboradores=count($colaboradores);
+        for ($i=0; $i < $numColaboradores; $i++) { 
+            if(!isset($colaboradores[$i]['realname']) || $colaboradores[$i]['registration_number'] == ''){
+                unset($colaboradores[$i]);
+            }
+        }
+
+        [$eps, $arl, $tipoVehiculos, $marcaVehiculos, $empresas] = $this->obtenerModelos();
+
+        return view('pages.colaboradores.prueba', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos', 'empresas', 'colaboradores'));
+    }
+
+
+
+    public function getComputador(Request $request)
+    {
+        $id = $request->input('colaborador');
+        $sesionToken = $this->colaboradores->initSesionGlpi();
+        try {
+            $consulta = Http::withHeaders([
+                'Session-Token' => $sesionToken
+            ])->get(env('API_URL', 'No hay URL').'computer/', [
+                'range' => '0-1000',
+                'get_hateoas' => false
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error al traer la información del activo desde GLPI'], 500);
+        }
+        $computadores = $consulta->json();
+        $this->colaboradores->killSesionGlpi($sesionToken);
+
+        // $respuesta = '';
+        $numComputadores=count($computadores);
+        for ($i=0; $i < $numComputadores; $i++) { 
+            if($computadores[$i]['users_id'] == $id){
+                $computador = $computadores[$i];
+            }
+        }
+
+        if(!isset($computador)){
+            $computador['error'] = 'Sin activo asignado para este ususario';
+        }
+        // echo(gettype($respuesta));     
+        return $computador;
     }
 }

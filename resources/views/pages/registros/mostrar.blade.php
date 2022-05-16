@@ -35,6 +35,87 @@
     <script>
         $(function() {
 
+            //Uso de DataTables para mostrar la información de todos los colaboradores creados
+            $('#tabla_colaboradores').DataTable({
+                "destroy": true,
+                "processing": true,
+                // "serverSide": true,
+                "responsive": true,
+                "autoWidth": false,
+                // "scrollY": '300px',
+                "ajax": "{{ route('mostrarInfoColaboradores') }}",
+                "columns": [
+                    {
+                        "data": 'id_registros',
+                        "name": 'id_registros'
+                    },
+                    {
+                        "data": 'nombre',
+                        "name": 'nombre'
+                    },
+                    {
+                        "data": 'apellido',
+                        "name": 'apellido',
+                    },
+                    {
+                        "data": 'identificacion',
+                        "name": 'identificacion',
+                    },
+                    {
+                        "data": 'eps',
+                        "name": 'eps',
+                    },
+                    {
+                        "data": 'arl',
+                        "name": 'arl',
+                    },
+                    {
+                        "data": 'tel_contacto',
+                        "name": 'tel_contacto',
+                    },      
+                    {
+                        "data": 'empresa',
+                        "name": 'empresa',
+                    },
+                    {
+                        "data": 'email',
+                        "name": 'email',
+                    },
+                    {
+                        "data": 'name',
+                        "name": 'name',
+                    },
+                    {
+                        "class": 'editar_colaborador',
+                        "orderable": false,
+                        "data": null,
+                        "defaultContent": '<td>' +
+                            '<div class="action-buttons text-center">' +
+                            '<a href="#" class="btn btn-primary btn-icon btn-sm">' +
+                            '<i class="fas fa-edit"></i>' +
+                            '</a>' +
+                            '</div>' +
+                            '</td>',
+                    }],
+                "lengthChange": true,
+                "lengthMenu": [
+                    [5, 10, 25, 50, 75, 100, -1],
+                    [5, 10, 25, 50, 75, 100, 'ALL']
+                ],
+                "language": {
+                    "lengthMenu": "Mostrar _MENU_ registros por página",
+                    "zeroRecords": "No hay registros",
+                    "info": "Mostrando página _PAGE_ de _PAGES_",
+                    "infoEmpty": "No hay registros disponibles",
+                    "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                    "search": "Buscar:",
+                    "paginate": {
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                }       
+            });
+
         });
     </script>
 @endsection

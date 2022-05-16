@@ -51,6 +51,7 @@ Route::get('/colaboradores/persona', [ColaboradorController::class, 'getColabora
 Route::put('/colaboradores/editar/{id}', [ColaboradorController::class, 'update'])->name('editarColaborador')->middleware('auth');
 
 Route::get('/colaboradores/pruebaglpi', [ColaboradorController::class, 'pruebaglpi'])->name('pruebaglpi')->middleware('auth');
+Route::get('/colaboradores/computador', [ColaboradorController::class, 'getComputador'])->name('computador')->middleware('auth');
 
 /**
  * Rutas del modulo de conductores
