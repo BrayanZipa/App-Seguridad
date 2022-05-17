@@ -12,8 +12,31 @@
         </div>
         <!-- /.card-header -->
 
-        <div class="card-body mb-n4">
-            <div class="row">
+        <div class="card-body mb-n4 mt-n1" >
+
+            <div class="row" style="background-color: grey">
+                <div class="col-12" >
+                    <div class="form-group clearfix" >
+                        <label>Visitante que ingresa</label>
+                        
+                        <div class="icheck-peterriver d-inline ml-5">
+                            <input type="radio" id="radioEntrevista" name="r1">
+                            <label for="radioEntrevista">
+                                Entrevista
+                            </label>
+                        </div>
+                    
+                        <div class="icheck-peterriver d-inline ml-4">
+                            <input type="radio" id="radioTercero" name="r1">
+                            <label for="radioTercero"> 
+                                Tercero
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="hola" class="row" style="display: none">
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="inputFoto">Fotografía</label>
@@ -179,16 +202,16 @@
                         </div>
                     </div>
                     <div class="row mt-2">
-                        <div class="col-sm-12">
+                        <div class="col-12">
                             <!-- checkbox -->
                             <div class="form-group clearfix mt-n2 mb-1">
-                                <div class="icheck-primary d-inline">
+                                <div class="icheck-primary d-inline ml-n4">
                                     <label for="checkVehiculo">
                                         ¿El visitante ingresa vehículo?
                                     </label>
                                     <input type="checkbox" id="checkVehiculo">
                                 </div><br>
-                                <div class="icheck-primary d-inline">
+                                <div class="icheck-primary d-inline ml-n4">
                                     <label for="checkActivo">
                                         ¿El visitante ingresa computador?
                                     </label>
@@ -201,7 +224,7 @@
             </div>
         </div>
         <!-- /.card-body -->
-        <div class="card-footer">
+        <div class="card-footer" >
             <button id="botonCrear" type='submit' class="btn btn-primary">Crear visitante</button>
             <button id="botonLimpiar" type='button' class="btn btn-secondary">Limpiar</button>
         </div>

@@ -139,7 +139,7 @@ class ColaboradorController extends Controller
         $nuevoColaborador['nombre'] = ucwords(mb_strtolower($nuevoColaborador['nombre']));
         $nuevoColaborador['apellido'] = ucwords(mb_strtolower($nuevoColaborador['apellido']));
         $nuevoColaborador['descripcion'] = ucfirst(mb_strtolower($nuevoColaborador['descripcion']));
-        $nuevoColaborador['identificador'] = strtoupper($nuevoColaborador['identificador']);
+        // $nuevoColaborador['identificador'] = strtoupper($nuevoColaborador['identificador']);
         $nuevoColaborador['id_tipo_persona'] = 2;
         $nuevoColaborador['id_usuario'] = auth()->user()->id_usuarios;
 

@@ -30,36 +30,54 @@
     <script src="{{ asset('assets/lte/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
     <!-- Select2 -->
     <script src="{{ asset('assets/lte/plugins/select2/js/select2.full.min.js') }}"></script>
+
+    <script src="{{ asset('assets/lte/plugins/moment/moment.min.js') }}"></script>
     
     <!-- JavaScript propio-->
     <script>
         $(function() {
 
             //Uso de DataTables para mostrar la información de todos los colaboradores creados
-            $('#tabla_colaboradores').DataTable({
+            $('#tabla_registros').DataTable({
                 "destroy": true,
                 "processing": true,
-                // "serverSide": true,
+                "serverSide": true,
                 "responsive": true,
                 "autoWidth": false,
                 // "scrollY": '300px',
-                "ajax": "{{ route('mostrarInfoColaboradores') }}",
+                "ajax": "{{ route('mostrarInfoRegistros') }}",
+                "dataType": "json",
+                "type": "POST",
                 "columns": [
                     {
                         "data": 'id_registros',
                         "name": 'id_registros'
                     },
                     {
-                        "data": 'nombre',
-                        "name": 'nombre'
-                    },
-                    {
-                        "data": 'apellido',
-                        "name": 'apellido',
+                        data: null, 
+                        render: function ( data, type, row ) {
+                            return data.nombre+' '+data.apellido;
+                        },
                     },
                     {
                         "data": 'identificacion',
                         "name": 'identificacion',
+                    },
+                    {
+                        "data": 'ingreso_persona',
+                        render: function (data) {
+                            return moment(data).format('DD-MM-YYYY');
+                        } 
+                    },
+                    {
+                        "data": 'ingreso_persona',
+                        render: function (data) {
+                            return moment(data).format('h:mm:ss a');
+                        } 
+                    },
+                    {
+                        "data": 'tel_contacto',
+                        "name": 'tel_contacto',
                     },
                     {
                         "data": 'eps',
@@ -68,25 +86,23 @@
                     {
                         "data": 'arl',
                         "name": 'arl',
-                    },
-                    {
-                        "data": 'tel_contacto',
-                        "name": 'tel_contacto',
                     },      
                     {
                         "data": 'empresa',
                         "name": 'empresa',
                     },
                     {
-                        "data": 'email',
-                        "name": 'email',
+                        "data": 'colaborador',
+                        "name": 'colaborador',
                     },
                     {
                         "data": 'name',
                         "name": 'name',
+                        // "searchable": false,
+                        // "orderable": false
                     },
                     {
-                        "class": 'editar_colaborador',
+                        "class": 'editar_registro',
                         "orderable": false,
                         "data": null,
                         "defaultContent": '<td>' +
@@ -126,7 +142,7 @@
     </div>
 
     <section id="formRegistros" class="content-header" style="display: none">
-        {{-- @include('pages.conductores.formularioEditar') --}}
+        {{-- @include('pages.registros.formularioEditar') --}}
     </section>
 
     <section class="content-header">
@@ -139,24 +155,25 @@
                     <!-- /.card-header -->
                     <div class="card-body">
                         <!-- /.card-body -->
-                        <table id="tabla_conductores" class="table table-bordered table-striped table-hover">
+                        <table id="tabla_registros" class="table table-bordered table-striped table-hover">
                             <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th>Nombre</th>
                                     <th>Identificación</th>
                                     <th>Fecha ingreso</th>
-                                    <th>Hora ingreso</th>                      
+                                    <th>Hora ingreso</th> 
+                                    <th>Teléfono</th>                     
                                     <th>EPS</th>
                                     <th>ARL</th>
-                                    <th>Teléfono</th>
+                                    <th>Empresa</th>
                                     <th>Responsable</th>
                                     <th>Ingresado por</th>
-                                    <th>Editar</th>
+                                    <th>Acción</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($registros as $registro)
+                                {{-- @foreach($registros as $registro)
                                     <tr>
                                         <td>{{ $registro->id_registros }}</td>
                                         <td>{{ $registro->persona->nombre }} {{ $registro->persona->apellido }}</td>
@@ -169,7 +186,7 @@
                                         <td>{{ $registro->colaborador}}</td>
                                         <td>{{ $registro->persona->usuario->name}}</td>
                                     </tr>
-                                @endforeach
+                                @endforeach --}}
                             </tbody>
                         </table>
                     </div>

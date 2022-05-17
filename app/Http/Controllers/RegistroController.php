@@ -3,12 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\Registro;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Yajra\DataTables\DataTables;
 
 class RegistroController extends Controller
 {
+
+    protected $registros;
+    protected $eps;
+    protected $arl;
+    protected $tipoVehiculos;
+    protected $marcaVehiculos;
+    protected $empresas;
+
+    public function __construct(Registro $registros){
+        $this->registros = $registros;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -17,10 +29,7 @@ class RegistroController extends Controller
     public function index()
     {
         // $exitCode = Artisan::call('cache:clear');
-        $registros = Registro::all();
-        // $usuarios = User::all()->where('id_usuarios', '1');
-        // dd($registros);
-        return view('pages.registros.mostrar', compact('registros'));
+        return view('pages.registros.mostrar');
     }
 
     /**
@@ -88,4 +97,15 @@ class RegistroController extends Controller
     {
         //
     }
+
+    /**
+     * Función que permite retornar todos los registros de la tabla se_registros asociados a las personas, vehículos y activos donde tengan un id en común.
+     */
+    public function informacionRegistros(Request $request)
+    {
+        if($request->ajax()){
+            $registros = $this->registros->informacionRegistros();
+            return DataTables::of($registros)->make(true);
+        }     
+    } 
 }

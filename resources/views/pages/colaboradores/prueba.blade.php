@@ -80,14 +80,12 @@
                                     $('#inputApellido').val(response['realname']);
                                     $('#inputEmail').val(response['email']);
 
-                                    if (response['user_dn'].includes('Aviomar')) {
+                                    if (response['phone2'].includes('Aviomar')) {
                                         $('#selectEmpresa').val(1);
-                                    } else if (response['user_dn'].includes('Snider')) {
+                                    } else if (response['phone2'].includes('Snider')) {
                                         $('#selectEmpresa').val(2);
-                                    } else if (response['user_dn'].includes('Colvan')) {
+                                    } else if (response['phone2'].includes('Colvan')) {
                                         $('#selectEmpresa').val(3);
-                                    } else {
-                                        $('#selectEmpresa').val('');
                                     }
 
                                     // $('.colaborador').each(function(index) {

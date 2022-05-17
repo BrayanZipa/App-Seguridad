@@ -62,7 +62,8 @@
                         "name": 'marca',
                     },
                     {
-                        data: null, render: function ( data, type, row ) {
+                        "data": null, 
+                        render: function ( data, type, row ) {
                             return data.nombre+' '+data.apellido;
                         } 
                     },

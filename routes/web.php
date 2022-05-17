@@ -63,7 +63,7 @@ Route::get('/conductores/informacion', [ConductorController::class, 'informacion
 Route::put('/conductores/editar/{id}', [ConductorController::class, 'update'])->name('editarConductor')->middleware('auth');
 
 /**
- * Rutas del modulo de vehículos
+ * Rutas del módulo de vehículos
  */
 Route::get('/vehiculos', [VehiculoController::class, 'index'])->name('mostrarVehiculos')->middleware('auth');
 Route::get('/vehiculos/crear', [VehiculoController::class, 'create'])->name('formCrearVehiculo')->middleware('auth');
@@ -73,8 +73,7 @@ Route::put('/vehiculos/editar/{id}', [VehiculoController::class, 'update'])->nam
 Route::get('/vehiculos/personas', [VehiculoController::class, 'getPersonas'])->name('personas')->middleware('auth');
 
 /**
- * Rutas del modulo de registros
+ * Rutas del módulo de registros
  */
 Route::get('/registros', [RegistroController::class, 'index'])->name('mostrarRegistros')->middleware('auth');
-
-
+Route::get('/registros/informacion', [RegistroController::class, 'informacionRegistros'])->name('mostrarInfoRegistros')->middleware('auth');
