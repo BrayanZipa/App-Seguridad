@@ -70,11 +70,42 @@
             activarSelect2Visitante();
             activarSelect2Vehiculo();
 
-            $("#radioEntrevista").change(function () {	 
-			    if( $(this).is(':checked')) {
-                    $('#hola').css("display", "");
-                 }
-			});
+            //Manejo de los radio buttons al ser seleccionados, dependiendo de la selección se retira o no la propiedad required de los select de EPS y ARL
+            $('input[type=radio]').on('change', function() {
+                if( $('#radioEntrevista').is(':checked')) {
+                    $('#tipoVisitante').val('entrevista');
+                    $('#cardFormulario').css("display", "none");
+                    $('#selectEps').prop("required", false);
+                    $('#selectArl').prop("required", false);
+
+                    $('.visitante, .vehiculo, .activo').each(function(index) {
+                        if ($(this).hasClass('is-invalid')) {
+                            $(this).removeClass("is-invalid");
+                        }
+                    });
+
+                    setTimeout(() => {
+                        $('#cardFormulario').css("display", "");  
+                    }, 100);
+
+                } else if( $('#radioTercero').is(':checked')) {
+                    $('#tipoVisitante').val('tercero');
+                    $('#cardFormulario').css("display", "none");
+                    $('#selectEps').prop("required", true);
+                    $('#selectArl').prop("required", true);
+
+                    $('.visitante, .vehiculo, .activo').each(function(index) {
+                        if ($(this).hasClass('is-invalid')) {
+                            $(this).removeClass("is-invalid");
+                        }
+                    });
+
+                    setTimeout(() => {
+                        $('#cardFormulario').css("display", "");  
+                    }, 100);
+                    
+                }
+            });
             
             //Manejo de los checkbox al ser seleccionados y control de la vista de formularios   
             $('input[type=checkbox]').on('change', function() {
@@ -415,7 +446,20 @@
 
                 selectMarcaVehiculo();
                 document.getElementById('checkVehiculo').click();
-            }   
+            } 
+            
+            //Función que permite identificar que tipo de visitante habia elegido el usuario y vuelve a marcar la opción seleccionada en caso de que se cometan errores al momento de enviar información 
+            function tipoVisitante() {
+                var visitante = document.getElementById('tipoVisitante').value;
+                if(visitante == 'entrevista'){
+                    $('#radioEntrevista').prop("checked", true);
+                    $('#selectEps').prop("required", false);
+                    $('#selectArl').prop("required", false); 
+                } else if(visitante == 'tercero'){
+                    $('#radioTercero').prop("checked", true); 
+                }
+                document.getElementById('cardFormulario').style.display = '';   
+            }
 
             //Botón que aparece si hay errores en el ingreso del formulario crear visitante y se activa si los tres formularios estan visibles, esto mantiene la información y los formularios visibles
             $('#botonRetorno').click(function () {
@@ -431,6 +475,7 @@
             (function () {
                 if(!!document.getElementById('botonRetorno')){
                     retornarFotoVisitante();
+                    tipoVisitante();
                     var caso = document.getElementById('casoIngreso').value;
 
                     if(caso == 'casoVehiculo'){
@@ -441,8 +486,10 @@
                         retornarFotoVehiculo();
                         document.getElementById('botonRetorno').click(); 
                     }
+
                 } else if (!!document.getElementById('botonRetorno2')){
                     retornarFotoVisitante();
+                    tipoVisitante();
                     var caso = document.getElementById('casoIngreso').value;
 
                     if(caso == 'casoVehiculo'){
@@ -450,9 +497,11 @@
                     } else if(caso == 'casoVehiculoActivo'){
                         retornarFotoVehiculo();
                         document.getElementById('checkActivo').click(); 
-                    }                  
+                    }; 
+
                 } else if (!!document.getElementById('botonRetorno3')){
                     retornarFotoVisitante();
+                    tipoVisitante();
                     var caso = document.getElementById('casoIngreso').value;
 
                     if(caso == 'casoActivo'){
@@ -502,7 +551,7 @@
                     </div>
 
                     <div id="crearActivo" style="display: none">
-                        @include('pages.formCrearActivo')
+                        @include('pages.visitantes.formularioCrearActivo')
                     </div>
                 </form>
             </div>

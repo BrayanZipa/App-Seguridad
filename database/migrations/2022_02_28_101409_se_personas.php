@@ -22,9 +22,9 @@ class SePersonas extends Migration
             $table->string('nombre', 25);
             $table->string('apellido', 25);
             $table->string('identificacion', 15)->unique();
-            $table->unsignedInteger('id_eps');  
+            $table->unsignedInteger('id_eps')->nullable();
             $table->foreign('id_eps')->references('id_eps')->on('se_eps');
-            $table->unsignedInteger('id_arl');  
+            $table->unsignedInteger('id_arl')->nullable();  
             $table->foreign('id_arl')->references('id_arl')->on('se_arl');
             $table->string('foto', 100);
             $table->string('tel_contacto', 10)->unique();

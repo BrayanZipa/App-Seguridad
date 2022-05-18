@@ -24,17 +24,29 @@ class RequestPersona extends FormRequest
      */
     public function rules()
     {
+        $datos = $this->all();
+        
         if($this->method() == 'POST'){
-            $validacionPost = [
-                'id_empresa' => 'required|integer',
-                'colaborador' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:50|min:3',
-                'descripcion' => 'nullable|max:255'
-            ];
-
-            return array_merge($this->validacionGeneral(), $validacionPost);
+            if($datos['tipoVisitante'] == 'entrevista'){
+                $validacion = [
+                    'id_eps' => 'nullable|integer',         
+                    'id_arl' => 'nullable|integer',   
+                ];
+                return array_merge($this->validacionGeneral(), $this->validacionFaltante(), $validacion);
+            } else if($datos['tipoVisitante'] == 'tercero'){
+                $validacion = [
+                    'id_eps' => 'required|integer',         
+                    'id_arl' => 'required|integer',   
+                ];
+                return array_merge($this->validacionGeneral(), $this->validacionFaltante(), $validacion);
+            }
 
         } else if($this->method() == 'PUT'){
-            return $this->validacionGeneral();
+            $validacion = [
+                'id_eps' => 'nullable|integer',         
+                'id_arl' => 'nullable|integer',  
+            ];
+            return array_merge($this->validacionGeneral(), $validacion);
         }
     }
 
@@ -85,7 +97,7 @@ class RequestPersona extends FormRequest
         ];
     }
 
-    //Función que retorna las validaciones en general para el ingreso de datos de personas
+    //Función que retorna las validaciones en general para el ingreso de datos de las personas
     public function validacionGeneral()
     {
         return[
@@ -93,9 +105,19 @@ class RequestPersona extends FormRequest
             'apellido' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:25|min:3',   
             'identificacion' => 'required|numeric|unique:se_personas,identificacion,'.$this->id.',id_personas|digits_between:4,15',
             'tel_contacto' => 'required|numeric|unique:se_personas,tel_contacto,'.$this->id.',id_personas|digits_between:7,10',
-            'id_eps' => 'required|integer',         
-            'id_arl' => 'required|integer',
             'foto' => 'required|string',
+        ];
+    }
+    
+    /**
+     * Función que retorna las validaciones faltantes del ingreso de datos de las personas
+     */
+    public function validacionFaltante()
+    {
+        return[
+            'id_empresa' => 'required|integer',
+            'colaborador' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:50|min:3',
+            'descripcion' => 'nullable|max:255'
         ];
     } 
 }

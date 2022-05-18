@@ -8,7 +8,7 @@
             <a href="{{ route('mostrarVisitantes')}}" class="nav-link {{ Route::is('mostrarVisitantes') ? 'active' : '' }}">Visitantes</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="{{ route('formCrearVisitante')}}" class="nav-link {{ Route::is('formCrearVisitante') ? 'active' : '' }}">Nuevo visitante</a>
+            <a href="{{ route('formCrearVisitante')}}" class="nav-link {{ Route::is('formCrearVisitante') ? 'active' : '' }}">Nuevo visitane</a>
         </li>
     </ul>
 

@@ -92,9 +92,8 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="inputEps">Actualizar EPS</label>
-                                        <select class="visitante select2bs4 form-control {{ $errors->has('id_eps') ? 'is-invalid' : '' }}" style="width: 100%;" id="inputEps" name="id_eps"
-                                            required>
-                                            <option selected="selected" value="" disabled></option>
+                                        <select class="visitante select2bs4 form-control {{ $errors->has('id_eps') ? 'is-invalid' : '' }}" style="width: 100%;" id="inputEps" name="id_eps">
+                                            <option selected="selected" value="" disabled>Seleccione EPS</option>
                                             @foreach ($eps as $ep)
                                                 <option value="{{ $ep->id_eps }}"
                                                     {{ $ep->id_eps == old('id_eps') ? 'selected' : '' }}>{{ $ep->eps }}
@@ -111,9 +110,8 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="inputArl">Actualizar ARL</label>
-                                        <select class="visitante select2bs4 form-control {{ $errors->has('id_arl') ? 'is-invalid' : '' }}" style="width: 100%;" id="inputArl" name="id_arl"
-                                            required>
-                                            <option selected="selected" value="" disabled></option>
+                                        <select class="visitante select2bs4 form-control {{ $errors->has('id_arl') ? 'is-invalid' : '' }}" style="width: 100%;" id="inputArl" name="id_arl">
+                                            <option selected="selected" value="" disabled>Seleccione ARL</option>
                                             @foreach ($arl as $ar)
                                                 <option value="{{ $ar->id_arl }}"
                                                     {{ $ar->id_arl == old('id_arl') ? 'selected' : '' }}>{{ $ar->arl }}
@@ -128,22 +126,6 @@
                                     </div>
                                 </div>
                             </div>
-                            {{-- <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label for="inputTipoPersona">Actualizar tipo de persona</label>
-                                        <select class="visitante form-control" style="width: 100%;" id="inputTipoPersona" name="id_tipo_persona"
-                                            required>
-                                            <option selected="selected" value="" disabled>Seleccione el tipo de persona</option>
-                                            @foreach ($tipoPersonas as $persona)
-                                                <option value="{{ $persona->id_tipo_personas }}"
-                                                    {{ $persona->id_tipo_personas == old('id_tipo_persona') ? 'selected' : '' }}>{{ $persona->tipo }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            </div> --}}
                         </div>
                     </div>
 

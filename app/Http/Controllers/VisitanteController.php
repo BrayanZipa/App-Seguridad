@@ -92,6 +92,12 @@ class VisitanteController extends Controller
         $nuevoVisitante['codigo'] = ucfirst($nuevoVisitante['codigo']);
         $nuevoVisitante['id_tipo_persona'] = 1;
         $nuevoVisitante['id_usuario'] = auth()->user()->id_usuarios;
+
+        if(!isset($nuevoVisitante['id_eps'])){ //saber si existe
+            $nuevoVisitante['id_eps'] = null;
+        } if (!isset($nuevoVisitante['id_arl'])){ //saber si existe
+            $nuevoVisitante['id_arl'] = null;
+        }
         
         if(!isset($nuevoVisitante['foto'])){ //saber si es null
             $url = null;

@@ -1,6 +1,27 @@
+    <div class="card card-dark">
+        <div class="card-header">
+            <input id="tipoVisitante" type="hidden" name="tipoVisitante" value="{{ old('tipoVisitante') }}">
+            <div class="form-group clearfix mb-n2" >
+                <label style="font-weight: normal">Visitante que ingresa</label>       
+                <div class="icheck-peterriver d-inline ml-5">
+                    <input type="radio" id="radioEntrevista" name="radio">
+                    <label for="radioEntrevista" style="font-weight: normal">
+                        Entrevista
+                    </label>
+                </div>       
+                <div class="icheck-peterriver d-inline ml-4">
+                    <input type="radio" id="radioTercero" name="radio">
+                    <label for="radioTercero" style="font-weight: normal"> 
+                        Tercero
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <input id="casoIngreso" type="hidden" name="casoIngreso" value="{{ old('casoIngreso') }}">
 
-    <div class="card card-primary">
+    <div id="cardFormulario" class="card card-primary mt-n2" style="display: none">
         <div class="card-header">
             <h3 class="card-title">Crear nuevo visitante</h3>
             <div class="card-tools">
@@ -13,30 +34,7 @@
         <!-- /.card-header -->
 
         <div class="card-body mb-n4 mt-n1" >
-
-            <div class="row" style="background-color: grey">
-                <div class="col-12" >
-                    <div class="form-group clearfix" >
-                        <label>Visitante que ingresa</label>
-                        
-                        <div class="icheck-peterriver d-inline ml-5">
-                            <input type="radio" id="radioEntrevista" name="r1">
-                            <label for="radioEntrevista">
-                                Entrevista
-                            </label>
-                        </div>
-                    
-                        <div class="icheck-peterriver d-inline ml-4">
-                            <input type="radio" id="radioTercero" name="r1">
-                            <label for="radioTercero"> 
-                                Tercero
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="hola" class="row" style="display: none">
+            <div class="row">
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="inputFoto">Fotografía</label>

@@ -31,7 +31,7 @@
                     <div class="form-group">
                         <label for="inputCodigo">Ingrese el código único del activo</label>
                         <input type="text" class="activo form-control {{ $errors->has('codigo') ? 'is-invalid' : '' }}" id="inputCodigo" name="codigo"
-                            value="{{ old('codigo') }}" autocomplete="off" required>
+                            value="{{ old('codigo') }}" autocomplete="off" placeholder="Código" required>
                             @if ($errors->has('codigo')) 
                                 <div class="invalid-feedback">
                                     {{ $errors->first('codigo') }}
@@ -39,17 +39,6 @@
                             @endif 
                     </div>
                 </div>
-                {{-- <div class="col-sm-4" style="display:none">
-                    <div class="form-group">
-                        <label>Ingrese al propietario del activo</label>
-                        <select class="activo form-control select2" style="width: 100%;" name="id_persona" disabled required>
-                            <option selected="selected" value=""  disabled>Seleccione al propietario</option>
-                            @foreach ($personas as $persona)
-                                <option value="{{ $persona->id_personas }}">{{ $persona->nombre }} {{ $persona->apellido }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div> --}}
             </div>
         </div>
         <!-- /.card-body -->
