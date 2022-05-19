@@ -37,11 +37,20 @@
                 $('#casoIngreso').val('');
             });
 
-            //Permite que a los select de selección de Activo, EPS y ARL se les asigne una barra de búsqueda haciendolos más dinámicos
+            //Permite que a los select de selección de identificación, EPS y ARL se les asigne una barra de búsqueda haciendolos más dinámicos
             function activarSelect2Colaborador() {
-                $('#selectCodigo').select2({
+                $('#selectIdentificacion').select2({
                     theme: 'bootstrap4',
-                    placeholder: 'Seleccione el código',
+                    placeholder: 'Seleccione la identificación',
+                    language: {
+                        noResults: function() {
+                            return 'No hay resultado';
+                        }
+                    }
+                });
+                $('#selectPersona').select2({
+                    theme: 'bootstrap4',
+                    placeholder: 'Buscar el colaborador si ya esta creado en el sistema',
                     language: {
                         noResults: function() {
                             return 'No hay resultado';
@@ -93,39 +102,88 @@
             activarSelect2Vehiculo();
             activarSelect2Colaborador();
 
-            //Función que permite traer los datos del propietario del código del activo seleccionado y una vez traidos, se coloquen automáticamente en su respectivo input
-            $('#selectCodigo').change(function() {
+            //Función que permite traer los datos del propietario y el código del activo que tiene asigando desde GLPI cuando se selecciona una identificación en el formulario de la vista de colaborador con activo, una vez traidos se colocan automáticamente en su respectivo input
+            $('#selectIdentificacion').change(function() {
+                var idColaborador = $('#selectIdentificacion option:selected').val();
+
                 $.ajax({
-                    url: '/colaboradores/persona',
+                    url: '/colaboradores/computador',
                     type: 'GET',
                     data: {
-                        colaborador: $('#selectCodigo option:selected').val(),
+                        colaborador: idColaborador,
                     },
                     dataType: 'json',
                     success: function(response) {
-                        $('#inputCodigo').val($('#selectCodigo option:selected').text());
-                        $('#inputNombre').val(response['firstname']);
-                        $('#inputApellido').val(response['realname']);
-                        $('#inputIdentificacion').val(response['registration_number']);
-                        $('#inputEmail').val(response['email']);
 
-                        if (response['phone2'].includes('Aviomar')) {
-                            $('#selectEmpresa').val(1);
-                        } else if (response['phone2'].includes('Snider')) {
-                            $('#selectEmpresa').val(2);
-                        } else if (response['phone2'].includes('Colvan')) {
-                            $('#selectEmpresa').val(3);
-                        }
+                        if ('name' in response) {
+                            $('#inputCodigo').val(response['name']);
 
-                        $('.colaborador').each(function(index) {
-                            if ((!$(this).val() == '') && ($(this).hasClass(
-                                    'is-invalid'))) {
-                                $(this).removeClass("is-invalid");
-                            }
-                        });
+                            $.ajax({
+                                url: '/colaboradores/persona',
+                                type: 'GET',
+                                data: {
+                                    colaborador: idColaborador,
+                                },
+                                dataType: 'json',
+                                success: function(response) {
+                                    $('#inputIdentificacion').val(response['registration_number']);
+                                    $('#inputNombre').val(response['firstname']);
+                                    $('#inputApellido').val(response['realname']);
+                                    $('#inputEmail').val(response['email']);
+
+                                    if (response['phone2'].includes('Aviomar')) {
+                                        $('#selectEmpresa').val(1);
+                                    } else if (response['phone2'].includes('Snider')) {
+                                        $('#selectEmpresa').val(2);
+                                    } else if (response['phone2'].includes('Colvan')) {
+                                        $('#selectEmpresa').val(3);
+                                    }
+
+                                    $('.colaborador').each(function(index) {
+                                        if ((!$(this).val() == '') && ($(this).hasClass('is-invalid'))) {
+                                            $(this).removeClass("is-invalid");
+                                        }
+                                    });
+                                },
+                                error: function() {
+                                    console.log('Error obteniendo los datos de GLPI');
+                                }
+                            });
+
+                        } else {
+                            $('#botonLimpiar').trigger("click");
+                            $('#inputCodigo').val('Sin activo');                    
+                        }         
                     },
                     error: function() {
                         console.log('Error obteniendo los datos de GLPI');
+                    }
+                });
+            });
+
+            //Función que permite trae los datos de una persona de la base de datos cuando se selecciona una identificación en el formulario de la vista de colaborador sin activo, una vez traidos se colocan automáticamente en su respectivo input
+            $('#selectPersona').change(function() {
+                $.ajax({
+                    url: '/colaboradores/personacreada',
+                    type: 'GET',
+                    data: {
+                        persona: $('#selectPersona option:selected').val()
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log(response);
+                        $('#inputNombre2').val(response['nombre']);
+                        $('#inputApellido2').val(response['apellido']);
+                        $('#inputIdentificacion2').val(response['identificacion']);
+                        $('#inputTelefono2').val(response['tel_contacto']);
+                        $('#selectEps2').val(response['id_eps']);
+                        console.log(response['id_eps']);
+                        document.getElementById('selectEps2').setAttribute('value', response['id_eps']);
+                        $('#selectArl2').val(response['id_arl']);
+                        $('#selectEmpresa2').val(response['id_empresa']);
+                    }, 
+                    error: function() {
+                        console.log('Error al traer los datos de la base de datos');
                     }
                 });
             });
@@ -586,67 +644,57 @@
     <section class="content-header">
         <div class="row">
             <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card card-dark card-tabs mt-n1 mb-n2">
-                                <div class="card-header p-0 pt-1">
-                                    <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
-                                        <li class="nav-item">
-                                            <a id="colaboradorConActivo" class="nav-link {{ old('casoIngreso2') == '' ? 'active' : '' }}" data-toggle="pill" href="#nuevo_colaboradorConActivo"
-                                                role="tab" aria-controls="nuevo_colaboradorConActivo" aria-selected="true">Nuevo colaborador con activo</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a id="colaboradorSinActivo" class="nav-link {{ old('casoIngreso2')  != '' ? 'active' : '' }}" data-toggle="pill"
-                                                href="#nuevo_colaboradorSinActivo" role="tab" aria-controls="nuevo_colaboradorSinActivo"
-                                                aria-selected="false">Nuevo colaborador sin activo</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="card-body">
-                                    <div class="tab-content p-0" id="custom-tabs-one-tabContent" >
-                                        <div class="tab-pane fade {{ old('casoIngreso2') == '' ? 'show active' : '' }} mb-n4" id="nuevo_colaboradorConActivo" role="tabpanel" aria-labelledby="nuevo_colaboradorConActivo-tab">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card card-dark card-tabs mt-n1 mb-n2">
+                            <div class="card-header p-0 pt-1">
+                                <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                                    <li class="nav-item">
+                                        <a id="colaboradorConActivo" class="nav-link {{ old('casoIngreso2') == '' ? 'active' : '' }}" data-toggle="pill" href="#nuevo_colaboradorConActivo"
+                                            role="tab" aria-controls="nuevo_colaboradorConActivo" aria-selected="true">Nuevo colaborador con activo</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a id="colaboradorSinActivo" class="nav-link {{ old('casoIngreso2')  != '' ? 'active' : '' }}" data-toggle="pill"
+                                            href="#nuevo_colaboradorSinActivo" role="tab" aria-controls="nuevo_colaboradorSinActivo"
+                                            aria-selected="false">Nuevo colaborador sin activo</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card-body">
+                                <div class="tab-content p-0" id="custom-tabs-one-tabContent" >
+                                    <div class="tab-pane fade {{ old('casoIngreso2') == '' ? 'show active' : '' }} mb-n4" id="nuevo_colaboradorConActivo" role="tabpanel" aria-labelledby="nuevo_colaboradorConActivo-tab">
                                             
-                                            <form id="formularioColaborador" action="{{ route('crearColaborador') }}" method="POST" novalidate>
-                                                @csrf
-                                                <div class="mt-n3 mx-n3">
-                                                    @include('pages.colaboradores.formularioCrear')
-                                                </div>
+                                        <form id="formularioColaborador" action="{{ route('crearColaborador') }}" method="POST" novalidate>
+                                            @csrf
+                                            <div class="mt-n3 mx-n3">
+                                                @include('pages.colaboradores.formularioCrear')
+                                            </div>
                                         
-                                                <div id="crearVehiculo" class="mt-n2 mx-n3" style="display: none">
-                                                    @include('pages.colaboradores.formularioCrearVehiculo')
-                                                </div>
-                                            </form>
-                                        </div>
+                                            <div id="crearVehiculo" class="mt-n2 mx-n3" style="display: none">
+                                                @include('pages.colaboradores.formularioCrearVehiculo')
+                                            </div>
+                                        </form>
+                                    </div>
 
-                                        <div class="tab-pane fade {{ old('casoIngreso2') != ''  ? 'show active' : '' }}" id="nuevo_colaboradorSinActivo" role="tabpanel" aria-labelledby="nuevo_colaboradorSinActivo-tab">
+                                    <div class="tab-pane fade {{ old('casoIngreso2') != ''  ? 'show active' : '' }}" id="nuevo_colaboradorSinActivo" role="tabpanel" aria-labelledby="nuevo_colaboradorSinActivo-tab">
 
-                                            <form id="formularioColaborador2" action="{{ route('crearColaborador') }}" method="POST" novalidate>
-                                                @csrf
-                                                <div class="mt-n3 mx-n3">
-                                                    @include('pages.colaboradores.formularioCrear2')
-                                                </div>
+                                        <form id="formularioColaborador2" action="{{ route('crearColaborador') }}" method="POST" novalidate>
+                                            @csrf
+                                            <div class="mt-n3 mx-n3">
+                                                @include('pages.colaboradores.formularioCrear2')
+                                            </div>
 
-                                                <div id="crearVehiculo2" class="mt-4 mx-n3" style="display: none">
+                                            <div id="crearVehiculo2" class="mt-4 mx-n3" style="display: none">
                                                     @include('pages.colaboradores.formularioCrearVehiculo2')
-                                                </div> 
-                                            </form>
-                                        </div>
+                                            </div> 
+                                        </form>
                                     </div>
                                 </div>
-                                <!-- /.card -->
                             </div>
+                            <!-- /.card -->
                         </div>
                     </div>
-
-
-                    {{-- <div>
-                        @include('pages.colaboradores.formularioCrear')
-                    </div>
-
-                    <div id="crearVehiculo" class="mt-n2 mb-n4" style="display:none">
-                        @include('pages.colaboradores.formularioCrearVehiculo')
-                    </div> --}}
-                
+                </div>       
             </div>
         </div>
 

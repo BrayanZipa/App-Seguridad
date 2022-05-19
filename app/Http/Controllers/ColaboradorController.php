@@ -64,29 +64,28 @@ class ColaboradorController extends Controller
         try {
             $consulta = Http::withHeaders([
                 'Session-Token' => $sesionToken
-            ])->get(env('API_URL', 'No hay URL').'computer/', [
+            ])->get(env('API_URL', 'No hay URL').'user/', [
                 'range' => '0-1000',
                 'get_hateoas' => false
             ]);
         } catch (\Throwable $th) {
             return response()->json(['message' => 'Error al traer la información de los activos desde GLPI'], 500);
         }      
-        $computadores = $consulta->json();
+        $listaColaboradores = $consulta->json();
         $this->colaboradores->killSesionGlpi($sesionToken);
 
-        $numComputadores=count($computadores);
-        for ($i=0; $i < $numComputadores; $i++) { 
-            if(!isset($computadores[$i]['users_id']) || $computadores[$i]['users_id'] == 0){
-                unset($computadores[$i]);
+        $numColaboradores=count($listaColaboradores);
+        for ($i=0; $i < $numColaboradores; $i++) { 
+            if(!isset($listaColaboradores[$i]['realname']) || $listaColaboradores[$i]['registration_number'] == ''){
+                unset($listaColaboradores[$i]);
             }
         }
 
+        $personas = Persona::all();
         [$eps, $arl, $tipoVehiculos, $marcaVehiculos, $empresas] = $this->obtenerModelos();
 
-        return view('pages.colaboradores.crear', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos', 'empresas', 'computadores'));
+        return view('pages.colaboradores.crear', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos', 'empresas', 'listaColaboradores', 'personas'));
     }
-
-
 
 
 
@@ -112,16 +111,12 @@ class ColaboradorController extends Controller
 
         // $this->store($request);
 
-        
-
         // $caso = $request->get('casoIngreso');
         // return $caso;
-
-        
+      
         // return $persona;
         // $this->colaboradores->obtenerPersona($identificacion);
         
-
         // $caso = $request->get('casoIngreso2');
         // return $caso;
     }
@@ -139,8 +134,6 @@ class ColaboradorController extends Controller
         $nuevoColaborador['nombre'] = ucwords(mb_strtolower($nuevoColaborador['nombre']));
         $nuevoColaborador['apellido'] = ucwords(mb_strtolower($nuevoColaborador['apellido']));
         $nuevoColaborador['descripcion'] = ucfirst(mb_strtolower($nuevoColaborador['descripcion']));
-        // $nuevoColaborador['identificador'] = strtoupper($nuevoColaborador['identificador']);
-        $nuevoColaborador['id_tipo_persona'] = 2;
         $nuevoColaborador['id_usuario'] = auth()->user()->id_usuarios;
 
 
@@ -192,19 +185,35 @@ class ColaboradorController extends Controller
 
         // return $nuevoColaborador;
 
-        $colaborador = Persona::create([
-            'id_usuario' => $nuevoColaborador['id_usuario'],
-            'id_tipo_persona' => $nuevoColaborador['id_tipo_persona'],
-            'nombre' => $nuevoColaborador['nombre'],
-            'apellido' => $nuevoColaborador['apellido'],
-            'identificacion' => $nuevoColaborador['identificacion'],
-            'id_eps' => $nuevoColaborador['id_eps'],
-            'id_arl' => $nuevoColaborador['id_arl'],
-            'tel_contacto' => $nuevoColaborador['tel_contacto'],
-            'email' => $nuevoColaborador['email'],
-            'id_empresa' => $nuevoColaborador['id_empresa'],
-        ]);
-        $colaborador->save();
+        $colaborador = Persona::updateOrCreate(
+            ['identificacion' => $nuevoColaborador['identificacion']],
+            [
+                'id_usuario' => $nuevoColaborador['id_usuario'],
+                'id_tipo_persona' => 2,
+                'nombre' => $nuevoColaborador['nombre'],
+                'apellido' => $nuevoColaborador['apellido'],
+                'id_eps' => $nuevoColaborador['id_eps'],
+                'id_arl' => $nuevoColaborador['id_arl'],
+                'tel_contacto' => $nuevoColaborador['tel_contacto'],
+                'email' => $nuevoColaborador['email'],
+                'id_empresa' => $nuevoColaborador['id_empresa']
+            ]
+        );
+        // return $colaborador;
+
+        // $colaborador = Persona::create([
+        //     'id_usuario' => $nuevoColaborador['id_usuario'],
+        //     'id_tipo_persona' => $nuevoColaborador['id_tipo_persona'],
+        //     'nombre' => $nuevoColaborador['nombre'],
+        //     'apellido' => $nuevoColaborador['apellido'],
+        //     'identificacion' => $nuevoColaborador['identificacion'],
+        //     'id_eps' => $nuevoColaborador['id_eps'],
+        //     'id_arl' => $nuevoColaborador['id_arl'],
+        //     'tel_contacto' => $nuevoColaborador['tel_contacto'],
+        //     'email' => $nuevoColaborador['email'],
+        //     'id_empresa' => $nuevoColaborador['id_empresa'],
+        // ]);
+        // $colaborador->save();
 
         if(array_key_exists('casoIngreso', $nuevoColaborador)){
             if ($nuevoColaborador['casoIngreso'] == 'conActivoVehiculo'){
@@ -249,7 +258,8 @@ class ColaboradorController extends Controller
             Image::make($foto)->resize(600, 500)->save($ruta);
             $url = Storage::url($filename);
         }
-    
+
+        $datos['identificador'] = strtoupper($datos['identificador']);
         if(!isset($datos['id_marca_vehiculo'])){ //saber si existe
             $datos['id_marca_vehiculo'] = null;
         }
@@ -277,6 +287,15 @@ class ColaboradorController extends Controller
     public function store3($datos, $id_persona)
     {
         $datos['codigo'] = ucfirst($datos['codigo']);
+
+        // $activo = Activo::updateOrCreate(
+        //     ['codigo' => $datos['codigo']],
+        //     [
+        //         'activo' => 'Computador', 
+        //         'id_usuario' => $datos['id_usuario'],
+        //         'id_persona' => $id_persona,
+        //     ]
+        // );
 
         $activo = Activo::create([
             'activo' => 'Computador',
@@ -411,37 +430,41 @@ class ColaboradorController extends Controller
         return $colaborador;
     }
 
-    public function pruebaglpi()
+    /**
+     * Función que que hace una consulta al API de GLPI y trae todos los computadores creados en el sistema y los envia a  una vista con el formulario de creación de colaborador.
+     */
+    public function getComputadores()
     {
         $exitCode = Artisan::call('cache:clear');
         $sesionToken = $this->colaboradores->initSesionGlpi();
         try {
             $consulta = Http::withHeaders([
                 'Session-Token' => $sesionToken
-            ])->get(env('API_URL', 'No hay URL').'user/', [
+            ])->get(env('API_URL', 'No hay URL').'computer/', [
                 'range' => '0-1000',
                 'get_hateoas' => false
             ]);
         } catch (\Throwable $th) {
             return response()->json(['message' => 'Error al traer la información de los activos desde GLPI'], 500);
         }      
-        $colaboradores = $consulta->json();
+        $computadores = $consulta->json();
         $this->colaboradores->killSesionGlpi($sesionToken);
 
-        $numColaboradores=count($colaboradores);
-        for ($i=0; $i < $numColaboradores; $i++) { 
-            if(!isset($colaboradores[$i]['realname']) || $colaboradores[$i]['registration_number'] == ''){
-                unset($colaboradores[$i]);
+        $numComputadores=count($computadores);
+        for ($i=0; $i < $numComputadores; $i++) { 
+            if(!isset($computadores[$i]['users_id']) || $computadores[$i]['users_id'] == 0){
+                unset($computadores[$i]);
             }
         }
 
         [$eps, $arl, $tipoVehiculos, $marcaVehiculos, $empresas] = $this->obtenerModelos();
 
-        return view('pages.colaboradores.prueba', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos', 'empresas', 'colaboradores'));
+        return view('pages.colaboradores.prueba', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos', 'empresas', 'computadores'));
     }
 
-
-
+    /**
+     * Función que recibe una petición de Ajax para obtener al computador de un colaborador en específico directamente desde la API de GLPI.
+     */
     public function getComputador(Request $request)
     {
         $id = $request->input('colaborador');
@@ -459,7 +482,6 @@ class ColaboradorController extends Controller
         $computadores = $consulta->json();
         $this->colaboradores->killSesionGlpi($sesionToken);
 
-        // $respuesta = '';
         $numComputadores=count($computadores);
         for ($i=0; $i < $numComputadores; $i++) { 
             if($computadores[$i]['users_id'] == $id){
@@ -469,8 +491,16 @@ class ColaboradorController extends Controller
 
         if(!isset($computador)){
             $computador['error'] = 'Sin activo asignado para este ususario';
-        }
-        // echo(gettype($respuesta));     
+        }    
+
         return $computador;
+    }
+
+
+    public function getPersona(Request $request)
+    {
+        $id = $request->input('persona');
+        return $this->colaboradores->obtenerPersona($id);
+        // Persona::where('id_tipo_persona', 1)->where('identificacion', $busqueda)->orWhere();  
     }
 }

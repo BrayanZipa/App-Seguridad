@@ -17,108 +17,86 @@
     <script>
 
         $(function() {
-            
-            $('#selectIdentificacion').select2({
-                theme: 'bootstrap4',
-                placeholder: 'Identificación',
-                language: {
-                    noResults: function() {
-                        return 'No hay resultado';
+
+            //Permite que a los select de selección de identificación, EPS y ARL se les asigne una barra de búsqueda haciendolos más dinámicos
+            function activarSelect2Colaborador() {
+                $('#selectCodigo').select2({
+                    theme: 'bootstrap4',
+                    placeholder: 'Activo',
+                    language: {
+                        noResults: function() {
+                            return 'No hay resultado';
+                        }
                     }
-                }
-            });
-
-            $('#selectEps').select2({
-                theme: 'bootstrap4',
-                placeholder: 'Seleccione EPS',
-                language: {
-                    noResults: function() {
-                        return 'No hay resultado';
+                });
+                $('.select2eps').select2({
+                    theme: 'bootstrap4',
+                    placeholder: 'Seleccione EPS',
+                    language: {
+                        noResults: function() {
+                            return 'No hay resultado';
+                        }
                     }
-                }
-            });
-
-            $('#selectArl').select2({
-                theme: 'bootstrap4',
-                placeholder: 'Seleccione ARL',
-                language: {
-                    noResults: function() {
-                        return 'No hay resultado';
+                });
+                $('.select2arl').select2({
+                    theme: 'bootstrap4',
+                    placeholder: 'Seleccione ARL',
+                    language: {
+                        noResults: function() {
+                            return 'No hay resultado';
+                        }
                     }
-                }
-            });
+                });
+            }
 
-            $('#selectIdentificacion').change(function() {
-                var idColaborador = $('#selectIdentificacion option:selected').val();
+            activarSelect2Colaborador();
 
+            //Función que permite traer los datos del propietario del código del activo seleccionado y una vez traidos, se colocan automáticamente en su respectivo input
+            $('#selectCodigo').change(function() {
                 $.ajax({
-                    url: '/colaboradores/computador',
+                    url: '/colaboradores/persona',
                     type: 'GET',
                     data: {
-                        colaborador: idColaborador,
+                        colaborador: $('#selectCodigo option:selected').val(),
                     },
                     dataType: 'json',
                     success: function(response) {
-                        console.log(response);
-                        // $('#inputCodigo').val($('#selectCodigo option:selected').text());
+                        $('#inputCodigo').val($('#selectCodigo option:selected').text());
+                        $('#inputNombre').val(response['firstname']);
+                        $('#inputApellido').val(response['realname']);
+                        $('#inputIdentificacion').val(response['registration_number']);
+                        $('#inputEmail').val(response['email']);
 
-                        // console.log(typeof response);
-                        if ('name' in response) {
-                            $('#inputCodigo').val(response['name']);
-                            // $('#inputIdentificacion').val($('#selectIdentificacion option:selected').text());
+                        if (response['phone2'].includes('Aviomar')) {
+                            $('#selectEmpresa').val(1);
+                        } else if (response['phone2'].includes('Snider')) {
+                            $('#selectEmpresa').val(2);
+                        } else if (response['phone2'].includes('Colvan')) {
+                            $('#selectEmpresa').val(3);
+                        }
 
-                            $.ajax({
-                                url: '/colaboradores/persona',
-                                type: 'GET',
-                                data: {
-                                    colaborador: idColaborador,
-                                },
-                                dataType: 'json',
-                                success: function(response) {
-                                    $('#inputIdentificacion').val(response['registration_number']);
-                                    $('#inputNombre').val(response['firstname']);
-                                    $('#inputApellido').val(response['realname']);
-                                    $('#inputEmail').val(response['email']);
-
-                                    if (response['phone2'].includes('Aviomar')) {
-                                        $('#selectEmpresa').val(1);
-                                    } else if (response['phone2'].includes('Snider')) {
-                                        $('#selectEmpresa').val(2);
-                                    } else if (response['phone2'].includes('Colvan')) {
-                                        $('#selectEmpresa').val(3);
-                                    }
-
-                                    // $('.colaborador').each(function(index) {
-                                    //     if ((!$(this).val() == '') && ($(this).hasClass(
-                                    //             'is-invalid'))) {
-                                    //         $(this).removeClass("is-invalid");
-                                    //     }
-                                    // });
-                                },
-                                error: function() {
-                                    console.log('Error obteniendo los datos de GLPI');
-                                }
-                            });
-
-
-
-
-
-                        } else {
-                            $('#inputCodigo').val('Sin activo');
-                        }         
-
-                        // $('.colaborador').each(function(index) {
-                        //     if ((!$(this).val() == '') && ($(this).hasClass(
-                        //             'is-invalid'))) {
-                        //         $(this).removeClass("is-invalid");
-                        //     }
-                        // });
+                        $('.colaborador').each(function(index) {
+                            if ((!$(this).val() == '') && ($(this).hasClass(
+                                    'is-invalid'))) {
+                                $(this).removeClass("is-invalid");
+                            }
+                        });
                     },
                     error: function() {
                         console.log('Error obteniendo los datos de GLPI');
                     }
                 });
+            });
+
+            //Botón que limpia la información del formulario de colaborador 
+            $('#botonLimpiar').click(function() {
+                $('.colaborador').each(function(index) {
+                    $(this).val('');
+                    if ($(this).hasClass('is-invalid')) {
+                        $(this).removeClass("is-invalid");
+                    }
+                });
+                activarSelect2Colaborador();
             });
 
         });
@@ -190,32 +168,21 @@
                             <div class="row">
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <input type="hidden" id="inputIdentificacion" name="identificacion" value="{{ old('identificacion') }}" required>
-                                        <label for="selectIdentificacion">Ingrese la identificación</label>
-                                        <select id="selectIdentificacion"  name="selectIdentificacion" class="colaborador form-control {{ $errors->has('identificacion') ? 'is-invalid' : '' }}" style="width: 100%;" required>
+                                        <input type="hidden" id="inputCodigo" name="codigo" value="{{ old('codigo') }}" required>
+                                        <label for="selectCodigo">Ingrese el activo</label>
+                                        <select name="selectCodigo" id="selectCodigo" class="colaborador form-control {{ $errors->has('codigo') ? 'is-invalid' : '' }}" style="width: 100%;" required>
                                             <option selected="selected" value="" disabled></option>
-                                            @foreach ($colaboradores as $colaborador)
-                                                <option value="{{  $colaborador['id'] }}"
-                                                {{ $colaborador['id'] == old('selectIdentificacion') ? 'selected' : '' }}>C.C. {{ $colaborador['registration_number'] }}
+                                            @foreach ($computadores as $computador)
+                                                <option value="{{ $computador['users_id'] }}"
+                                                {{ $computador['users_id'] == old('selectCodigo') ? 'selected' : '' }}>{{ $computador['name'] }}
                                                 </option>
                                             @endforeach
                                         </select>
-                                        @if ($errors->has('identificacion')) 
+                                        @if ($errors->has('codigo')) 
                                             <div class="invalid-feedback">
-                                                {{ $errors->first('identificacion') }}
+                                                {{ $errors->first('codigo') }}
                                             </div>            
                                         @endif
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label for="inputCodigo">Ingrese el activo</label>
-                                        <input type="text" class="colaborador form-control {{ $errors->has('codigo') ? 'is-invalid' : '' }}" id="inputCodigo" name="codigo" value="{{ old('codigo') }}" placeholder="Activo" autocomplete="off" required>
-                                            @if ($errors->has('codigo')) 
-                                                <div class="invalid-feedback">
-                                                    {{ $errors->first('codigo') }}
-                                                </div>          
-                                            @endif  
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
@@ -229,8 +196,6 @@
                                             @endif
                                     </div>
                                 </div> 
-                            </div>
-                            <div class="row">          
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label for="inputApellido">Ingrese el apellido</label>
@@ -242,7 +207,19 @@
                                             @endif
                                     </div>
                                 </div>  
-                    
+                            </div>
+                            <div class="row">          
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="inputIdentificacion">Ingrese la identificación</label>
+                                        <input type="text" class="colaborador form-control {{ $errors->has('identificacion') ? 'is-invalid' : '' }}" id="inputIdentificacion" name="identificacion" value="{{ old('identificacion') }}" placeholder="Identificación" autocomplete="off" required>
+                                            @if ($errors->has('identificacion')) 
+                                                <div class="invalid-feedback">
+                                                    {{ $errors->first('identificacion') }}
+                                                </div>          
+                                            @endif  
+                                    </div>
+                                </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label for="inputEmail">Ingrese el correo empresarial</label>
@@ -322,9 +299,10 @@
                                         @endif
                                     </div>
                                 </div>
-                            </div>
+                            </div>                           
                             <div class="row">
-                                <div class="col-sm-4">
+
+                                {{-- <div class="col-sm-4">
                                     <!-- checkbox -->
                                     <div class="form-group clearfix pt-4">
                                         <div class="icheck-primary d-inline">
@@ -334,7 +312,8 @@
                                             <input type="checkbox" id="checkVehiculo">
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
+
                                 <div class="col-sm-8">
                                     <div class="form-group">
                                         <label for="inputDescripcion">Ingrese una descripción</label>
@@ -359,18 +338,6 @@
                         <!-- /.card-footer-->
                     </div>
                 </form>
-
-
-
-
-
-
-
-
-
-
-
-
 
             </div>
         </div>

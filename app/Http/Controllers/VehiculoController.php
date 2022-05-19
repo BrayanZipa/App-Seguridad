@@ -69,7 +69,6 @@ class VehiculoController extends Controller
         $nuevoVehiculo = $request->all();
 
         $nuevoVehiculo['identificador'] = strtoupper($nuevoVehiculo['identificador']);
-        $nuevoVehiculo['id_usuario'] = auth()->user()->id_usuarios;
 
         if(!isset($nuevoVehiculo['foto_vehiculo'])){ //saber si es null
             $url = null;
@@ -93,7 +92,7 @@ class VehiculoController extends Controller
             'id_tipo_vehiculo' => $nuevoVehiculo['id_tipo_vehiculo'],
             'id_marca_vehiculo' => $nuevoVehiculo['id_marca_vehiculo'],
             'foto_vehiculo' => $url,
-            'id_usuario' => $nuevoVehiculo['id_usuario'],
+            'id_usuario' => auth()->user()->id_usuarios,
         ]);
         $vehiculo->save();
 

@@ -74,7 +74,7 @@ class VisitanteController extends Controller
 
         if($nuevoVisitante['casoIngreso'] == 'casoVehiculo'){
             $this->validarVehiculo($request);
-          
+
         } else if ($nuevoVisitante['casoIngreso'] == 'casoActivo'){
             $this->validarActivo($request);
 
@@ -90,7 +90,6 @@ class VisitanteController extends Controller
         $nuevoVisitante['identificador'] = strtoupper($nuevoVisitante['identificador']);
         $nuevoVisitante['activo'] = ucwords(mb_strtolower($nuevoVisitante['activo']));
         $nuevoVisitante['codigo'] = ucfirst($nuevoVisitante['codigo']);
-        $nuevoVisitante['id_tipo_persona'] = 1;
         $nuevoVisitante['id_usuario'] = auth()->user()->id_usuarios;
 
         if(!isset($nuevoVisitante['id_eps'])){ //saber si existe
@@ -115,7 +114,7 @@ class VisitanteController extends Controller
         //Crear registro de nuevo visitante dato a dato con la información del request
         $visitante = Persona::create([
             'id_usuario' => $nuevoVisitante['id_usuario'],
-            'id_tipo_persona' => $nuevoVisitante['id_tipo_persona'],
+            'id_tipo_persona' => 1,
             'nombre' => $nuevoVisitante['nombre'],
             'apellido' => $nuevoVisitante['apellido'],
             'identificacion' => $nuevoVisitante['identificacion'],
@@ -253,7 +252,7 @@ class VisitanteController extends Controller
         }
     }
 
-   /*  public function show($id)
+    /*  public function show($id)
     {
         $visitante = $this->visitantes->obtenerVisitante($id);
         return view('pages.visitantes.ver', ['visitante' => $visitante]);

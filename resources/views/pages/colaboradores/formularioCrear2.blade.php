@@ -13,26 +13,26 @@
     <!-- /.card-header -->
 
     <div class="card-body mb-n4">
-        <div class="row">
-            {{-- <div class="col-sm-4">
+
+        <div class="row justify-content-center">
+            <div class="col-sm-12">
                 <div class="form-group">
-                    <input type="hidden" id="inputCodigo" name="codigo" value="{{ old('codigo') }}" required>
-                    <label for="selectCodigo">Ingrese el activo</label>
-                    <select name="selectCodigo" id="selectCodigo" class="colaborador form-control {{ $errors->has('codigo') ? 'is-invalid' : '' }}" style="width: 100%;" required>
+                    {{-- <label for="selectPersona">Buscar persona</label> --}}
+                    <select id="selectPersona" class="select2persona colaborador2 form-control" style="width: 100%;" name="persona">
                         <option selected="selected" value="" disabled></option>
-                        @foreach ($computadores as $computador)
-                            <option value="{{ $computador['users_id'] }}"
-                            {{ $computador['users_id'] == old('selectCodigo') ? 'selected' : '' }}>{{ $computador['name'] }}
+                        @foreach ($personas as $persona)
+                            <option value="{{ $persona->id_personas }}"
+                                {{ $persona->id_personas == old('persona') && old('casoIngreso2') != '' ? 'selected' : '' }}>C.C. {{ $persona->identificacion }} - {{ $persona->nombre }} {{ $persona->apellido }}
                             </option>
                         @endforeach
                     </select>
-                    @if ($errors->has('codigo')) 
-                        <div class="invalid-feedback">
-                            {{ $errors->first('codigo') }}
-                        </div>            
-                    @endif
                 </div>
-            </div>  --}}
+            </div>
+        </div>
+        
+
+
+        <div class="row">
             <div class="col-sm-4">
                 <div class="form-group">
                     <label for="inputNombre2">Ingrese el nombre</label>
@@ -177,7 +177,7 @@
 
     </div>
     <!-- /.card-body -->
-    <div class="card-footer">
+    <div class="card-footer mt-n2">
         <button id="botonCrear3" type='submit' class="btn btn-primary">Crear colaborador</button>
         <button id="botonLimpiar3" type='button' class="btn btn-secondary">Limpiar</button>
     </div>

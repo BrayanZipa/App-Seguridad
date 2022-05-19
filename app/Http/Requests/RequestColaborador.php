@@ -73,17 +73,17 @@ class RequestColaborador extends FormRequest
 
             'identificacion.required' => 'Se requiere que ingrese la identificación',
             'identificacion.numeric' => 'La identificación debe ser un valor númerico y no debe contener espacios',
-            'identificacion.unique' => 'No puede haber dos personas con el mismo número de identificación',
+            // 'identificacion.unique' => 'No puede haber dos personas con el mismo número de identificación',
             'identificacion.digits_between' => 'La identificación debe estar en un rango de 4 a 15 números',
 
             // 'email.required' => 'Se requiere que ingrese el correo empresarial',
             'email.email' => 'El correo empresarial debe tener un formato correcto',
-            'email.unique' => 'No puede haber dos personas con el mismo correo empresarial',
+            // 'email.unique' => 'No puede haber dos personas con el mismo correo empresarial',
             'email.max' => 'El correo empresarial no puede tener más de 50 caracteres',
 
             'tel_contacto.required' => 'Se requiere que ingrese el teléfono',
             'tel_contacto.numeric' => 'El teléfono debe ser un valor númerico y no debe contener espacios',
-            'tel_contacto.unique' => 'No puede haber dos personas con el mismo teléfono',
+            // 'tel_contacto.unique' => 'No puede haber dos personas con el mismo teléfono',
             'tel_contacto.digits_between' => 'El teléfono debe tener 7 o 10 números',
 
             'id_eps.required' => 'Se requiere que elija una opción en la EPS',
@@ -123,15 +123,17 @@ class RequestColaborador extends FormRequest
         return[
             'nombre' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:25|min:3',
             'apellido' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:25|min:3',   
-            'identificacion' => 'required|numeric|unique:se_personas,identificacion,'.$this->id.',id_personas|digits_between:4,15',
-            'email' => 'nullable|email:rfc,dns|unique:se_personas,email,'.$this->id.',id_personas|max:50',
-            'tel_contacto' => 'required|numeric|unique:se_personas,tel_contacto,'.$this->id.',id_personas|digits_between:7,10',
+            'identificacion' => 'required|numeric|digits_between:4,15',
+            'email' => 'nullable|email:rfc,dns|max:50',
+            'tel_contacto' => 'required|numeric|digits_between:7,10',
             'id_eps' => 'required|integer',         
             'id_arl' => 'required|integer',
             'id_empresa' => 'required|integer',
         ];
 
         // |unique:se_personas,identificacion,'.$this->id.',id_personas
+        // |unique:se_personas,email,'.$this->id.',id_personas
+        // |unique:se_personas,tel_contacto,'.$this->id.',id_personas
     } 
 
     /**
@@ -140,9 +142,11 @@ class RequestColaborador extends FormRequest
     public function validacionFaltante()
     {
         return[
-            'codigo' => 'required|string|alpha_num|unique:se_activos,codigo|max:5|min:4', 
+            'codigo' => 'required|string|alpha_num|max:5|min:4', 
             'descripcion' => 'nullable|max:255'
         ];
+
+        // |unique:se_activos,codigo
     } 
 
     /**

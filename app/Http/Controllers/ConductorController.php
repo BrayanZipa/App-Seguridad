@@ -74,7 +74,6 @@ class ConductorController extends Controller
         $nuevoConductor['apellido'] = ucwords(mb_strtolower($nuevoConductor['apellido']));
         $nuevoConductor['descripcion'] = ucfirst(mb_strtolower($nuevoConductor['descripcion']));
         $nuevoConductor['identificador'] = strtoupper($nuevoConductor['identificador']);
-        $nuevoConductor['id_tipo_persona'] = 3;
         $nuevoConductor['id_usuario'] = auth()->user()->id_usuarios;
 
         if(!isset($nuevoConductor['foto'])){ //saber si es null
@@ -93,7 +92,7 @@ class ConductorController extends Controller
         //Crear registro de nuevo conductor dato a dato con la información del request
         $conductor = Persona::create([
             'id_usuario' => $nuevoConductor['id_usuario'],
-            'id_tipo_persona' => $nuevoConductor['id_tipo_persona'],
+            'id_tipo_persona' => 3,
             'nombre' => $nuevoConductor['nombre'],
             'apellido' => $nuevoConductor['apellido'],
             'identificacion' => $nuevoConductor['identificacion'],

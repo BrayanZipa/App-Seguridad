@@ -16,23 +16,34 @@
         <div class="row">
             <div class="col-sm-4">
                 <div class="form-group">
-                    <input type="hidden" id="inputCodigo" name="codigo" value="{{ old('codigo') }}" required>
-                    <label for="selectCodigo">Ingrese el activo</label>
-                    <select name="selectCodigo" id="selectCodigo" class="colaborador form-control {{ $errors->has('codigo') ? 'is-invalid' : '' }}" style="width: 100%;" required>
+                    <input type="hidden" id="inputIdentificacion" name="identificacion" value="{{ old('casoIngreso2') == '' ?  old('identificacion') : '' }}" required>
+                    <label for="selectIdentificacion">Ingrese la identificación</label>
+                    <select id="selectIdentificacion"  name="selectIdentificacion" class="colaborador form-control {{ $errors->has('identificacion') && old('casoIngreso2') == '' ? 'is-invalid' : '' }}" style="width: 100%;" required>
                         <option selected="selected" value="" disabled></option>
-                        @foreach ($computadores as $computador)
-                            <option value="{{ $computador['users_id'] }}"
-                            {{ $computador['users_id'] == old('selectCodigo') ? 'selected' : '' }}>{{ $computador['name'] }}
+                        @foreach ($listaColaboradores as $colaborador)
+                            <option value="{{  $colaborador['id'] }}"
+                            {{ $colaborador['id'] == old('selectIdentificacion') && old('casoIngreso2') == '' ? 'selected' : '' }}>C.C. {{ $colaborador['registration_number'] }}
                             </option>
                         @endforeach
                     </select>
-                    @if ($errors->has('codigo')) 
+                    @if ($errors->has('identificacion')) 
                         <div class="invalid-feedback">
-                            {{ $errors->first('codigo') }}
+                            {{ $errors->first('identificacion') }}
                         </div>            
                     @endif
                 </div>
-            </div> 
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="inputCodigo">Ingrese el activo</label>
+                    <input type="text" class="colaborador form-control {{ $errors->has('codigo') && old('casoIngreso2') == ''  ? 'is-invalid' : '' }}" id="inputCodigo" name="codigo" value="{{ old('casoIngreso2') == '' ? old('codigo') : '' }}" placeholder="Activo" autocomplete="off" required>
+                        @if ($errors->has('codigo')) 
+                            <div class="invalid-feedback">
+                                {{ $errors->first('codigo') }}
+                            </div>          
+                        @endif  
+                </div>
+            </div>
             <div class="col-sm-4">
                 <div class="form-group">
                     <label for="inputNombre">Ingrese el nombre</label>
@@ -45,6 +56,8 @@
                         @endif
                 </div>
             </div>
+        </div>
+        <div class="row">   
             <div class="col-sm-4">
                 <div class="form-group">
                     <label for="inputApellido">Ingrese el apellido</label>
@@ -56,20 +69,7 @@
                             </div>            
                         @endif
                 </div>
-            </div>   
-        </div>
-        <div class="row">          
-            <div class="col-sm-4">
-                <div class="form-group">
-                    <label for="inputIdentificacion">Ingrese la identificación</label>
-                    <input type="text" class="colaborador form-control {{ $errors->has('identificacion') && old('casoIngreso2') == '' ? 'is-invalid' : '' }}" id="inputIdentificacion" name="identificacion" value="{{ old('casoIngreso2') == '' ? old('identificacion') : '' }}" placeholder="Identificación" autocomplete="off" required>
-                        @if ($errors->has('identificacion')) 
-                            <div class="invalid-feedback">
-                                {{ $errors->first('identificacion') }}
-                            </div>          
-                        @endif  
-                </div>
-            </div>
+            </div>  
             <div class="col-sm-4">
                 <div class="form-group">
                     <label for="inputEmail">Ingrese el correo empresarial</label>

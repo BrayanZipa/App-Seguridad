@@ -47,11 +47,12 @@ Route::get('/colaboradores', [ColaboradorController::class, 'index'])->name('mos
 Route::get('/colaboradores/crear', [ColaboradorController::class, 'create'])->name('formCrearColaborador')->middleware('auth');
 Route::post('/colaboradores/crear', [ColaboradorController::class, 'store'])->name('crearColaborador')->middleware('auth');
 Route::get('/colaboradores/informacion', [ColaboradorController::class, 'informacionColaboradores'])->name('mostrarInfoColaboradores')->middleware('auth');
-Route::get('/colaboradores/persona', [ColaboradorController::class, 'getColaborador'])->name('colaborador')->middleware('auth');
 Route::put('/colaboradores/editar/{id}', [ColaboradorController::class, 'update'])->name('editarColaborador')->middleware('auth');
 
-Route::get('/colaboradores/pruebaglpi', [ColaboradorController::class, 'pruebaglpi'])->name('pruebaglpi')->middleware('auth');
+Route::get('/colaboradores/persona', [ColaboradorController::class, 'getColaborador'])->name('colaborador')->middleware('auth');
+Route::get('/colaboradores/computadores', [ColaboradorController::class, 'getComputadores'])->name('computadores')->middleware('auth');
 Route::get('/colaboradores/computador', [ColaboradorController::class, 'getComputador'])->name('computador')->middleware('auth');
+Route::get('/colaboradores/personacreada', [ColaboradorController::class, 'getPersona'])->name('persona')->middleware('auth');
 
 /**
  * Rutas del modulo de conductores
