@@ -178,7 +178,7 @@
     </div>
     <!-- /.card-body -->
     <div class="card-footer mt-n2">
-        <button id="botonCrear3" type='submit' class="btn btn-primary">Crear colaborador</button>
+        <button id="botonCrear3" type='submit' class="btn btn-primary">Crear</button>
         <button id="botonLimpiar3" type='button' class="btn btn-secondary">Limpiar</button>
     </div>
     <!-- /.card-footer-->

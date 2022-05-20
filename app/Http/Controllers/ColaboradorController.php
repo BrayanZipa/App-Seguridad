@@ -81,7 +81,7 @@ class ColaboradorController extends Controller
             }
         }
 
-        $personas = Persona::all();
+        $personas = $this->colaboradores->obtenerPersonas(1);
         [$eps, $arl, $tipoVehiculos, $marcaVehiculos, $empresas] = $this->obtenerModelos();
 
         return view('pages.colaboradores.crear', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos', 'empresas', 'listaColaboradores', 'personas'));
@@ -130,60 +130,11 @@ class ColaboradorController extends Controller
     public function store(RequestColaborador $request)
     {
         $nuevoColaborador = $request->all();
-        
+
         $nuevoColaborador['nombre'] = ucwords(mb_strtolower($nuevoColaborador['nombre']));
         $nuevoColaborador['apellido'] = ucwords(mb_strtolower($nuevoColaborador['apellido']));
         $nuevoColaborador['descripcion'] = ucfirst(mb_strtolower($nuevoColaborador['descripcion']));
         $nuevoColaborador['id_usuario'] = auth()->user()->id_usuarios;
-
-
-        // $validator = Validator::make($request->all(), 
-        // [
-        //     'identificacion' => 'unique:se_personas,identificacion'
-        // ], 
-        // [
-        //     'identificacion.unique' => 'No puede haber dos personas con el mismo número de identificación',
-        // ]);
- 
-        // if ($validator->fails()) {
-        //     $persona = $this->colaboradores->PersonaExiste(1, $request->get('identificacion'));
-
-        //     if($persona){
-        //         // return $this->update($request, $persona->id_personas);
-        //         // $nuevoColaborador = $request->all();
-        //         // $colaborador['nombre'] = ucwords(mb_strtolower($colaborador['nombre']));
-        //         // $colaborador['apellido'] = ucwords(mb_strtolower($colaborador['apellido']));
-
-        //         Persona::findOrFail($persona->id_personas)->update($nuevoColaborador);
-
-        //         return 'colaborador actualizado';
-        //     }
-
-            
-            // if(!){
-            //     return back()->withInput()->with('colaborador_repetido', 'La persona ingresada ya existe como visitante');
-            // } else if (!$this->colaboradores->PersonaExiste(2, $request->get('identificacion'))){
-            //     return back()->withInput()->with('colaborador_repetido', 'El colaborador ya se encuentra creado, desea asignarle el activo');
-            // }
-
-            // return 'hola '. !$this->colaboradores->PersonaExiste(1, $request->get('identificacion'));
-
-
-            // $identificacion = $request->get('identificacion');
-            // $persona = Persona::where('id_tipo_persona', 1)->where($request->get('identificacion'), $identificacion)->first();
-            // return back()->withInput()->with('colaborador_repetido', 'se repitio');
-        
-            
-            // redirect('post/create')
-            //             ->withErrors($validator)
-            //             ->withInput();
-        // }
-
-        // return $request;
-
-        
-
-        // return $nuevoColaborador;
 
         $colaborador = Persona::updateOrCreate(
             ['identificacion' => $nuevoColaborador['identificacion']],
@@ -199,21 +150,6 @@ class ColaboradorController extends Controller
                 'id_empresa' => $nuevoColaborador['id_empresa']
             ]
         );
-        // return $colaborador;
-
-        // $colaborador = Persona::create([
-        //     'id_usuario' => $nuevoColaborador['id_usuario'],
-        //     'id_tipo_persona' => $nuevoColaborador['id_tipo_persona'],
-        //     'nombre' => $nuevoColaborador['nombre'],
-        //     'apellido' => $nuevoColaborador['apellido'],
-        //     'identificacion' => $nuevoColaborador['identificacion'],
-        //     'id_eps' => $nuevoColaborador['id_eps'],
-        //     'id_arl' => $nuevoColaborador['id_arl'],
-        //     'tel_contacto' => $nuevoColaborador['tel_contacto'],
-        //     'email' => $nuevoColaborador['email'],
-        //     'id_empresa' => $nuevoColaborador['id_empresa'],
-        // ]);
-        // $colaborador->save();
 
         if(array_key_exists('casoIngreso', $nuevoColaborador)){
             if ($nuevoColaborador['casoIngreso'] == 'conActivoVehiculo'){
@@ -221,22 +157,42 @@ class ColaboradorController extends Controller
                 $mensajeActivo = $this->store3($nuevoColaborador, $colaborador->id_personas);
                 $this->store4($nuevoColaborador, $colaborador->id_personas, $id_vehiculo);
                 $modal = [$colaborador->nombre.' '.$colaborador->apellido, $mensajeVehiculo, $mensajeActivo];
-                return redirect()->action([ColaboradorController::class, 'create'])->with('crear_colaborador_vehiculoActivo', $modal);
+
+                if ($colaborador->wasChanged()) {
+                    return redirect()->action([ColaboradorController::class, 'create'])->with('editar_colaborador_vehiculoActivo', $modal);
+                } else {
+                    return redirect()->action([ColaboradorController::class, 'create'])->with('crear_colaborador_vehiculoActivo', $modal);
+                }
             } else{
                 $mensajeActivo = $this->store3($nuevoColaborador, $colaborador->id_personas);
                 $this->store4($nuevoColaborador, $colaborador->id_personas, null);
                 $modal = [$colaborador->nombre.' '.$colaborador->apellido, $mensajeActivo];
-                return redirect()->action([ColaboradorController::class, 'create'])->with('crear_colaborador_activo', $modal);
+                
+                if ($colaborador->wasChanged()) {
+                    return redirect()->action([ColaboradorController::class, 'create'])->with('editar_colaborador_activo', $modal);
+                } else {
+                    return redirect()->action([ColaboradorController::class, 'create'])->with('crear_colaborador_activo', $modal);
+                }
             }
         } else if (array_key_exists('casoIngreso2', $nuevoColaborador)){
             if($nuevoColaborador['casoIngreso2'] == 'sinActivoVehiculo'){
                 [$mensajeVehiculo, $id_vehiculo] = $this->store2($nuevoColaborador, $colaborador->id_personas);
                 $this->store4($nuevoColaborador, $colaborador->id_personas, $id_vehiculo);
                 $modal = [$colaborador->nombre.' '.$colaborador->apellido, $mensajeVehiculo];
-                return redirect()->action([ColaboradorController::class, 'create'])->with('crear_colaborador_vehiculo', $modal);
+
+                if ($colaborador->wasChanged()) {
+                    return redirect()->action([ColaboradorController::class, 'create'])->with('editar_colaborador_vehiculo', $modal);
+                } else {
+                    return redirect()->action([ColaboradorController::class, 'create'])->with('crear_colaborador_vehiculo', $modal);
+                }
             } else if ($nuevoColaborador['casoIngreso2'] == 'colaboradorSinActivo'){
                 $this->store4($nuevoColaborador, $colaborador->id_personas, null);
-                return redirect()->action([ColaboradorController::class, 'create'])->with('crear_colaborador', $colaborador->nombre.' '.$colaborador->apellido);
+                
+                if ($colaborador->wasChanged()) {
+                    return redirect()->action([ColaboradorController::class, 'create'])->with('editar_colaborador', $colaborador->nombre.' '.$colaborador->apellido);
+                } else {
+                    return redirect()->action([ColaboradorController::class, 'create'])->with('crear_colaborador', $colaborador->nombre.' '.$colaborador->apellido);
+                }
             }       
         }   
     }
@@ -288,22 +244,22 @@ class ColaboradorController extends Controller
     {
         $datos['codigo'] = ucfirst($datos['codigo']);
 
-        // $activo = Activo::updateOrCreate(
-        //     ['codigo' => $datos['codigo']],
-        //     [
-        //         'activo' => 'Computador', 
-        //         'id_usuario' => $datos['id_usuario'],
-        //         'id_persona' => $id_persona,
-        //     ]
-        // );
+        $activo = Activo::updateOrCreate(
+            ['codigo' => $datos['codigo']],
+            [
+                'activo' => 'Computador', 
+                'id_usuario' => $datos['id_usuario'],
+                'id_persona' => $id_persona,
+            ]
+        );
 
-        $activo = Activo::create([
-            'activo' => 'Computador',
-            'codigo' => $datos['codigo'],
-            'id_usuario' => $datos['id_usuario'],
-            'id_persona' => $id_persona,
-        ]);
-        $activo->save();
+        // $activo = Activo::create([
+        //     'activo' => 'Computador',
+        //     'codigo' => $datos['codigo'],
+        //     'id_usuario' => $datos['id_usuario'],
+        //     'id_persona' => $id_persona,
+        // ]);
+        // $activo->save();
         return $activo->codigo;
     }
 
@@ -496,7 +452,9 @@ class ColaboradorController extends Controller
         return $computador;
     }
 
-
+    /**
+     * Función que recibe una petición de Ajax para obtener los datos de una persona de tipo visitante que este creada en la tabla se_personas.
+     */
     public function getPersona(Request $request)
     {
         $id = $request->input('persona');

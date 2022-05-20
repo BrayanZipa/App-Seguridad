@@ -91,7 +91,7 @@
     </div>
     <!-- /.card-body -->
     <div class="card-footer mt-n4">
-        <button id="botonCrear" type='submit' class="btn" style="background-color: rgb(255, 115, 0)">Crear todo</button>
+        <button id="botonCrear" type='submit' class="btn" style="background-color: rgb(255, 115, 0)">Crear</button>
         <button id="botonLimpiar" type='button' class="btn btn-secondary">Limpiar</button>
     </div>
     <!-- /.card-footer-->

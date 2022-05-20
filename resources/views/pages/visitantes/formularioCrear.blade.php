@@ -223,7 +223,7 @@
         </div>
         <!-- /.card-body -->
         <div class="card-footer" >
-            <button id="botonCrear" type='submit' class="btn btn-primary">Crear visitante</button>
+            <button id="botonCrear" type='submit' class="btn btn-primary">Crear</button>
             <button id="botonLimpiar" type='button' class="btn btn-secondary">Limpiar</button>
         </div>
         <!-- /.card-footer-->

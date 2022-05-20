@@ -122,7 +122,7 @@
         <!-- /.card-body -->
         <div class="card-footer">
             <button id="botonCrear2" type='submit' class="btn"
-                style="background-color: rgb(255, 115, 0)">Crear vehículo</button>
+                style="background-color: rgb(255, 115, 0)">Crear</button>
             <button id="botonLimpiar2" type='button' class="btn btn-secondary">Limpiar</button>
         </div>
         <!-- /.card-footer-->

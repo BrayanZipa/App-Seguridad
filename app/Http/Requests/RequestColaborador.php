@@ -55,7 +55,7 @@ class RequestColaborador extends FormRequest
             'codigo.required' => 'Se requiere que ingrese el código del activo',
             'codigo.string' => 'El código del activo debe ser de tipo texto',
             'codigo.alpha_num' => 'El código del activo solo debe contener valores alfanuméricos',
-            'codigo.unique' => 'No puede haber más de un activo con el mismo código',
+            // 'codigo.unique' => 'No puede haber más de un activo con el mismo código',
             'codigo.max' => 'El código del activo no puede tener más de 5 caracteres',
             'codigo.min' => 'El código del activo no puede tener menos de 4 caracteres',
 

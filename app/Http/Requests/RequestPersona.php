@@ -72,7 +72,7 @@ class RequestPersona extends FormRequest
 
             'tel_contacto.required' => 'Se requiere que ingrese el teléfono',
             'tel_contacto.numeric' => 'El teléfono debe ser un valor númerico y no debe contener espacios',
-            'tel_contacto.unique' => 'No puede haber dos personas con el mismo teléfono',
+            // 'tel_contacto.unique' => 'No puede haber dos personas con el mismo teléfono',
             'tel_contacto.digits_between' => 'El teléfono debe tener 7 o 10 números',
 
             'id_eps.required' => 'Se requiere que elija una opción en la EPS',
@@ -104,7 +104,8 @@ class RequestPersona extends FormRequest
             'nombre' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:25|min:3',
             'apellido' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:25|min:3',   
             'identificacion' => 'required|numeric|unique:se_personas,identificacion,'.$this->id.',id_personas|digits_between:4,15',
-            'tel_contacto' => 'required|numeric|unique:se_personas,tel_contacto,'.$this->id.',id_personas|digits_between:7,10',
+            'tel_contacto' => 'required|numeric|digits_between:7,10',
+            //|unique:se_personas,tel_contacto,'.$this->id.',id_personas
             'foto' => 'required|string',
         ];
     }

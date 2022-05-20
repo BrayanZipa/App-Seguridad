@@ -50,7 +50,7 @@
                 });
                 $('#selectPersona').select2({
                     theme: 'bootstrap4',
-                    placeholder: 'Buscar el colaborador si ya esta creado en el sistema',
+                    placeholder: 'Buscar colaborador si ya esta creado como visitante',
                     language: {
                         noResults: function() {
                             return 'No hay resultado';
@@ -177,10 +177,11 @@
                         $('#inputIdentificacion2').val(response['identificacion']);
                         $('#inputTelefono2').val(response['tel_contacto']);
                         $('#selectEps2').val(response['id_eps']);
-                        console.log(response['id_eps']);
-                        document.getElementById('selectEps2').setAttribute('value', response['id_eps']);
+                        // console.log(response['id_eps']);
+                        // document.getElementById('selectEps2').setAttribute('value', response['id_eps']);
                         $('#selectArl2').val(response['id_arl']);
                         $('#selectEmpresa2').val(response['id_empresa']);
+                        activarSelect2Colaborador();
                     }, 
                     error: function() {
                         console.log('Error al traer los datos de la base de datos');
@@ -618,6 +619,10 @@
             })();
 
             //Muestra los modales de ingreso correcto dependiendo de que formularios se hayan ingresado y redirecciona en caso de que se oprima el botón continuar
+            $('#modal-editar-colaborador').modal("show");
+            $('#modal-editar-colaboradorActivo').modal("show");
+            $('#modal-editar-colaboradorVehiculo').modal("show");
+            $('#modal-editar-colaboradorVehiculoActivo').modal("show");
             $('#modal-crear-colaborador').modal("show");
             $('#modal-crear-colaboradorActivo').modal("show");
             $('#modal-crear-colaboradorVehiculo').modal("show");
