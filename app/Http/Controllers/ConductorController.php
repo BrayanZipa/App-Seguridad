@@ -13,7 +13,6 @@ use App\Models\PersonaVehiculo;
 use App\Models\Registro;
 use App\Models\TipoVehiculo;
 use App\Models\Vehiculo;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;

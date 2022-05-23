@@ -36,7 +36,7 @@
             <div class="col-sm-4">
                 <div class="form-group">
                     <label for="inputCodigo">Ingrese el activo</label>
-                    <input type="text" class="colaborador form-control {{ $errors->has('codigo') && old('casoIngreso2') == ''  ? 'is-invalid' : '' }}" id="inputCodigo" name="codigo" value="{{ old('casoIngreso2') == '' ? old('codigo') : '' }}" placeholder="Activo" autocomplete="off" required>
+                    <input type="text" class="colaborador form-control {{ $errors->has('codigo') && old('casoIngreso2') == ''  ? 'is-invalid' : '' }}" id="inputCodigo" name="codigo" value="{{ old('casoIngreso2') == '' ? old('codigo') : '' }}" placeholder="Activo" autocomplete="off" readonly required>
                         @if ($errors->has('codigo')) 
                             <div class="invalid-feedback">
                                 {{ $errors->first('codigo') }}
@@ -48,7 +48,7 @@
                 <div class="form-group">
                     <label for="inputNombre">Ingrese el nombre</label>
                     <input type="text" class="colaborador form-control {{ $errors->has('nombre') && old('casoIngreso2') == '' ? 'is-invalid' : '' }}" id="inputNombre" name="nombre" value="{{ old('casoIngreso2') == '' ? old('nombre') : '' }}"
-                        placeholder="Nombre" autocomplete="off" required>
+                        placeholder="Nombre" autocomplete="off" readonly required>
                         @if ($errors->has('nombre')) 
                             <div class="invalid-feedback">
                                 {{ $errors->first('nombre') }}
@@ -62,7 +62,7 @@
                 <div class="form-group">
                     <label for="inputApellido">Ingrese el apellido</label>
                     <input type="text" class="colaborador form-control {{ $errors->has('apellido') && old('casoIngreso2') == '' ? 'is-invalid' : '' }}" id="inputApellido" name="apellido" value="{{ old('casoIngreso2') == '' ? old('apellido') : '' }}"
-                        placeholder="Apellido" autocomplete="off" required>
+                        placeholder="Apellido" autocomplete="off" readonly required>
                         @if ($errors->has('apellido')) 
                             <div class="invalid-feedback">
                                 {{ $errors->first('apellido') }}
@@ -74,7 +74,7 @@
                 <div class="form-group">
                     <label for="inputEmail">Ingrese el correo empresarial</label>
                     <input type="text" class="colaborador form-control {{ $errors->has('email') && old('casoIngreso2') == '' ? 'is-invalid' : '' }}" id="inputEmail" name="email" value="{{ old('casoIngreso2') == '' ? old('email') : '' }}"
-                        placeholder="Correo empresarial" autocomplete="off">
+                        placeholder="Correo empresarial" autocomplete="off" readonly>
                         @if ($errors->has('email')) 
                             <div class="invalid-feedback">
                                 {{ $errors->first('email') }}

@@ -45,7 +45,9 @@ class RequestColaborador extends FormRequest
                 } 
             }
         } else if($this->method() == 'PUT'){
-            return $this->validacionGeneral();
+            $validacion =  $this->validacionGeneral();
+            $validacion['identificacion'] = $validacion['identificacion'].'|unique:se_personas,identificacion,'.$this->id.',id_personas';
+            return $validacion;
         }
     }
 
@@ -73,10 +75,9 @@ class RequestColaborador extends FormRequest
 
             'identificacion.required' => 'Se requiere que ingrese la identificación',
             'identificacion.numeric' => 'La identificación debe ser un valor númerico y no debe contener espacios',
-            // 'identificacion.unique' => 'No puede haber dos personas con el mismo número de identificación',
+            'identificacion.unique' => 'No puede haber dos personas con el mismo número de identificación',
             'identificacion.digits_between' => 'La identificación debe estar en un rango de 4 a 15 números',
 
-            // 'email.required' => 'Se requiere que ingrese el correo empresarial',
             'email.email' => 'El correo empresarial debe tener un formato correcto',
             // 'email.unique' => 'No puede haber dos personas con el mismo correo empresarial',
             'email.max' => 'El correo empresarial no puede tener más de 50 caracteres',

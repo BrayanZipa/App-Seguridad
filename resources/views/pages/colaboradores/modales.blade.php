@@ -198,7 +198,7 @@
         <!-- /.modal-dialog -->
     </div>
 
-@elseif (session('editar_colaborador'))
+@elseif (session('editar_colaborador2'))
     <div class="modal fade" id="modal-editar-colaborador">
         <div class="modal-dialog ">
             <div class="modal-content">
@@ -211,35 +211,32 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Se ha actualizado al colaborador <b>{{ session('editar_colaborador') }}</b> exitosamente.</p>
+                    <p>Se ha actualizado al colaborador <b>{{ session('editar_colaborador2') }}</b> exitosamente.</p>
                 </div>
             </div>
             <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
     </div>
-{{-- @endif --}}
 
-{{-- @elseif  (session('colaborador_repetido'))
-    <div class="modal fade" id="modal-colaboradorRepetido">
-        <div class="modal-dialog">
+@elseif (session('editar_colaborador_activo'))
+    <div class="modal fade" id="modal-editar-colaboradorActivo">
+        <div class="modal-dialog ">
             <div class="modal-content">
-                <div class="modal-header bg-danger">
-                    <h4 class="modal-title">Colaborador repetido</h4>
-                    <button type="button" class="botonError close" data-dismiss="modal" aria-label="Close">
+                <div class="modal-header bg-primary">
+                    <div class="justify-content-between">
+                        <h4 class="modal-title">COLABORADOR ACTUALIZADO</h4>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    {{ session('colaborador_repetido') }}
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <button id="botonError" type="button" class="botonError btn btn-danger" data-dismiss="modal">Cerrar</button>
+                    <p>Se ha actualizado al colaborador <b>{{ session('editar_colaborador_activo') }}</b> exitosamente.</p>
                 </div>
             </div>
             <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
     </div>
-    <!-- /.modal --> --}}
 @endif

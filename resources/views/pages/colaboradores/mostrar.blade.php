@@ -125,9 +125,9 @@
                 var tr = $(this).closest('tr');
                 var row = $('#tabla_colaboradores').DataTable().row(tr);
                 var data = row.data();
-                console.log(data);
+                // console.log(data);
                 //http://app-seguridad.test/colaboradores/editar/   
-                $('#form_EditarConductor').attr('action','http://127.0.0.1:8000/colaboradores/editar/' + data.id_personas); 
+                $('#form_EditarColaborador').attr('action','http://127.0.0.1:8000/colaboradores/editar/' + data.id_personas); 
                 $('#inputId').val(data.id_personas); 
                 $('#inputNombre').val(data.nombre);
                 $('#inputApellido').val(data.apellido);
@@ -137,7 +137,6 @@
                 $('#selectArl').val(data.id_arl);
                 $('#selectEmpresa').val(data.id_empresa);
                 $('#inputEmail').val(data.email);
-                // $('#inputTipoPersona').val(data.id_tipo_persona);
                 activarSelect2();
             });
 
@@ -155,7 +154,7 @@
             // Función anónima que genera mensajes de error cuando el usuario intenta enviar el formulario de actualización de colaboradores sin los datos requeridos, es una primera validación del lado del cliente
             (function () {
                 'use strict'
-                var form = document.getElementById('form_EditarConductor');
+                var form = document.getElementById('form_EditarColaborador');
                 form.addEventListener('submit', function (event) {
                     if (!form.checkValidity()) {
                         event.preventDefault();
@@ -189,7 +188,7 @@
                 if(!!document.getElementById('botonRetorno')){
                     var id_colaborador = document.getElementById('inputId').value;
                     document.getElementById('formEditarColaborador').style.display = 'block';
-                    document.getElementById('form_editar').setAttribute('action', 'http://127.0.0.1:8000/colaboradores/editar/' + id_colaborador);
+                    document.getElementById('form_EditarColaborador').setAttribute('action', 'http://127.0.0.1:8000/colaboradores/editar/' + id_colaborador);
                     activarSelect2();
                 }
             })();

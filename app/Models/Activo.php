@@ -25,4 +25,17 @@ class Activo extends Model
         }
         return $activos;
     }
+
+    /**
+     * Función que permite saber si un activo existe en la base de datos por medio de su código único y si es el caso lo elimina de la misma.
+     */
+    public function existeActivoEliminar($codigo){
+        try {
+            if (Activo::where('codigo', $codigo)->exists()){
+                Activo::where('codigo', $codigo)->delete();
+            }
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error al consultar la información de la base de datos'], 500);
+        }
+    }
 }

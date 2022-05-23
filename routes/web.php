@@ -78,3 +78,6 @@ Route::get('/vehiculos/personas', [VehiculoController::class, 'getPersonas'])->n
  */
 Route::get('/registros', [RegistroController::class, 'index'])->name('mostrarRegistros')->middleware('auth');
 Route::get('/registros/informacion', [RegistroController::class, 'informacionRegistros'])->name('mostrarInfoRegistros')->middleware('auth');
+
+
+// Route::get('/prueba', [ColaboradorController::class, 'prueba'])->name('prueba')->middleware('auth');

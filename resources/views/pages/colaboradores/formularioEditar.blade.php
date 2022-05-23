@@ -1,6 +1,6 @@
 <div class="row mb-n2">
     <div class="col-md-12">
-        <form id="form_EditarConductor" action="" method="POST" novalidate>
+        <form id="form_EditarColaborador" action="" method="POST" novalidate>
             @csrf
             @method('PUT')
             <div class="card card-primary">
@@ -64,9 +64,7 @@
                                         </div>            
                                     @endif
                             </div>
-                        </div>   
-                    </div>
-                    <div class="row">          
+                        </div> 
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label for="inputIdentificacion">Identificación</label>
@@ -77,7 +75,9 @@
                                         </div>          
                                     @endif  
                             </div>
-                        </div>
+                        </div>  
+                    </div>
+                    <div class="row">          
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label for="inputEmail">Actualizar correo empresarial</label>
@@ -102,8 +102,6 @@
                                     @endif  
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label for="selectEps">Actualizar EPS</label>
@@ -122,6 +120,8 @@
                                 @endif
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label for="selectArl">Actualizar ARL</label>

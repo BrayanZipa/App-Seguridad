@@ -58,18 +58,6 @@ class Persona extends Model
     }
 
     /**
-     * Función que permite buscar en la tabla se_personas si una persona ya existe en un determinado grupo (colaboradores, vistantes) por medio de su número de identificación.
-     */
-    public function PersonaExiste($tipoPersona, $identificacion){
-        try {
-            $persona = Persona::where('id_tipo_persona', $tipoPersona)->where('identificacion', $identificacion)->first();
-        } catch (\Throwable $e) {
-            return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
-        }
-        return $persona;  
-    }
-
-    /**
      * Función que permite traer el Token de autorización para poder iniciar sesión y conectarse al API de GLPI.
      */
     public function initSesionGlpi(){

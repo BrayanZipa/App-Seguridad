@@ -17,7 +17,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 
 class ColaboradorController extends Controller
@@ -28,14 +27,16 @@ class ColaboradorController extends Controller
     protected $tipoVehiculos;
     protected $marcaVehiculos;
     protected $empresas;
+    protected $activos;
 
-    public function __construct(Persona $colaboradores, Eps $eps, Arl $arl, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, Empresa $empresas){
+    public function __construct(Persona $colaboradores, Eps $eps, Arl $arl, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, Empresa $empresas, Activo $activos){
         $this->colaboradores = $colaboradores;
         $this->eps = $eps;
         $this->arl = $arl;
         $this->tipoVehiculos = $tipoVehiculos;
         $this->marcaVehiculos = $marcaVehiculos;
         $this->empresas = $empresas;
+        $this->activos = $activos;
     }
     
     /**
@@ -155,7 +156,7 @@ class ColaboradorController extends Controller
             if ($nuevoColaborador['casoIngreso'] == 'conActivoVehiculo'){
                 [$mensajeVehiculo, $id_vehiculo] = $this->store2($nuevoColaborador, $colaborador->id_personas);
                 $mensajeActivo = $this->store3($nuevoColaborador, $colaborador->id_personas);
-                $this->store4($nuevoColaborador, $colaborador->id_personas, $id_vehiculo);
+                $this->store4($nuevoColaborador, $colaborador->id_personas, $id_vehiculo, $mensajeActivo);
                 $modal = [$colaborador->nombre.' '.$colaborador->apellido, $mensajeVehiculo, $mensajeActivo];
 
                 if ($colaborador->wasChanged()) {
@@ -165,7 +166,7 @@ class ColaboradorController extends Controller
                 }
             } else{
                 $mensajeActivo = $this->store3($nuevoColaborador, $colaborador->id_personas);
-                $this->store4($nuevoColaborador, $colaborador->id_personas, null);
+                $this->store4($nuevoColaborador, $colaborador->id_personas, null, $mensajeActivo);
                 $modal = [$colaborador->nombre.' '.$colaborador->apellido, $mensajeActivo];
                 
                 if ($colaborador->wasChanged()) {
@@ -177,7 +178,7 @@ class ColaboradorController extends Controller
         } else if (array_key_exists('casoIngreso2', $nuevoColaborador)){
             if($nuevoColaborador['casoIngreso2'] == 'sinActivoVehiculo'){
                 [$mensajeVehiculo, $id_vehiculo] = $this->store2($nuevoColaborador, $colaborador->id_personas);
-                $this->store4($nuevoColaborador, $colaborador->id_personas, $id_vehiculo);
+                $this->store4($nuevoColaborador, $colaborador->id_personas, $id_vehiculo, null);
                 $modal = [$colaborador->nombre.' '.$colaborador->apellido, $mensajeVehiculo];
 
                 if ($colaborador->wasChanged()) {
@@ -186,7 +187,7 @@ class ColaboradorController extends Controller
                     return redirect()->action([ColaboradorController::class, 'create'])->with('crear_colaborador_vehiculo', $modal);
                 }
             } else if ($nuevoColaborador['casoIngreso2'] == 'colaboradorSinActivo'){
-                $this->store4($nuevoColaborador, $colaborador->id_personas, null);
+                $this->store4($nuevoColaborador, $colaborador->id_personas, null, null);
                 
                 if ($colaborador->wasChanged()) {
                     return redirect()->action([ColaboradorController::class, 'create'])->with('editar_colaborador', $colaborador->nombre.' '.$colaborador->apellido);
@@ -243,11 +244,13 @@ class ColaboradorController extends Controller
     public function store3($datos, $id_persona)
     {
         $datos['codigo'] = ucfirst($datos['codigo']);
+        $this->activos->existeActivoEliminar($datos['codigo']);
 
         $activo = Activo::updateOrCreate(
-            ['codigo' => $datos['codigo']],
+            ['id_persona' => $id_persona],
             [
                 'activo' => 'Computador', 
+                'codigo' => $datos['codigo'],
                 'id_usuario' => $datos['id_usuario'],
                 'id_persona' => $id_persona,
             ]
@@ -266,7 +269,7 @@ class ColaboradorController extends Controller
     /**
      * Función que permite hacer un registro de la entrada de un colaborador al momento que se crea un nuevo colaborador en la base de datos
      */
-    public function store4($datos, $id_persona, $id_vehiculo)
+    public function store4($datos, $id_persona, $id_vehiculo, $activo)
     {
         if(array_key_exists('casoIngreso', $datos)){
             if ($datos['casoIngreso'] == 'conActivoVehiculo'){
@@ -276,15 +279,16 @@ class ColaboradorController extends Controller
                     'ingreso_vehiculo' => date('Y-m-d H:i:s'),
                     'id_vehiculo' => $id_vehiculo,
                     'ingreso_activo' => date('Y-m-d H:i:s'),
+                    'codigo_activo' => $activo,
                     'descripcion' => $datos['descripcion'],
                     'id_usuario' => $datos['id_usuario'],
                     ])->save();  
-    
             } else {
                 Registro::create([
                     'id_persona' => $id_persona,
                     'ingreso_persona' => date('Y-m-d H:i:s'),
                     'ingreso_activo' => date('Y-m-d H:i:s'),
+                    'codigo_activo' => $activo,
                     'descripcion' => $datos['descripcion'],
                     'id_usuario' => $datos['id_usuario'],
                 ])->save(); 
@@ -317,15 +321,15 @@ class ColaboradorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(RequestColaborador $request, $id)
     {
         $colaborador = $request->all();
-        return $colaborador;
+        // return $colaborador;
         $colaborador['nombre'] = ucwords(mb_strtolower($colaborador['nombre']));
         $colaborador['apellido'] = ucwords(mb_strtolower($colaborador['apellido']));
 
         Persona::findOrFail($id)->update($colaborador);
-        // return redirect()->action([ColaboradorController::class, 'index'])->with('editar_visitante', $colaborador['nombre']." ".$colaborador['apellido']);
+        return redirect()->action([ColaboradorController::class, 'index'])->with('editar_colaborador2', $colaborador['nombre']." ".$colaborador['apellido']);
     }
 
     /**
