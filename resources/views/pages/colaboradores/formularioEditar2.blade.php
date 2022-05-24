@@ -5,7 +5,7 @@
             @method('PUT')
             <div class="card card-primary">
                 <div class="card-header">
-                    <h3 class="card-title">Actualizar colaborador con activo</h3>
+                    <h3 class="card-title">Actualizar colaborador sin activo</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
                             class="fas fa-minus"></i>
@@ -20,35 +20,7 @@
 
                 <div class="card-body mb-n4">
                     <input type="hidden" id="inputId" name="id_personas" value="{{ old('id_personas') }}">
-
-                    <div class="row justify-content-center">
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                {{-- <label for="selectPersona">Buscar persona</label> --}}
-                                <select id="selectPersona" class="colaborador form-control" style="width: 100%;" name="persona">
-                                    <option selected="selected" value="" disabled></option>
-                                    @foreach ($listaColaboradores as $colaborador)
-                                        <option value="{{ $colaborador['id'] }}"
-                                            {{ $colaborador['id'] == old('persona') ? 'selected' : '' }}>C.C. {{ $colaborador['registration_number']  }} - {{ $colaborador['firstname'] }} {{ $colaborador['realname'] }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="row">
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label for="inputCodigo">Ingrese el activo</label>
-                                <input type="text" class="colaborador form-control {{ $errors->has('codigo') ? 'is-invalid' : '' }}" id="inputCodigo" name="codigo" value="{{ old('codigo') }}" placeholder="Activo" autocomplete="off" readonly required>
-                                    @if ($errors->has('codigo')) 
-                                        <div class="invalid-feedback">
-                                            {{ $errors->first('codigo') }}
-                                        </div>          
-                                    @endif  
-                            </div>
-                        </div>
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label for="inputNombre">Nombre</label>
@@ -73,8 +45,6 @@
                                     @endif
                             </div>
                         </div> 
-                    </div>
-                    <div class="row">   
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label for="inputIdentificacion">Identificación</label>
@@ -85,7 +55,9 @@
                                         </div>          
                                     @endif  
                             </div>
-                        </div>         
+                        </div>  
+                    </div>
+                    <div class="row">          
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label for="inputEmail">Actualizar correo empresarial</label>
@@ -110,8 +82,6 @@
                                     @endif  
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label for="selectEps">Actualizar EPS</label>
@@ -130,6 +100,8 @@
                                 @endif
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label for="selectArl">Actualizar ARL</label>

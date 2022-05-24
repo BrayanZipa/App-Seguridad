@@ -177,8 +177,6 @@
                         $('#inputIdentificacion2').val(response['identificacion']);
                         $('#inputTelefono2').val(response['tel_contacto']);
                         $('#selectEps2').val(response['id_eps']);
-                        // console.log(response['id_eps']);
-                        // document.getElementById('selectEps2').setAttribute('value', response['id_eps']);
                         $('#selectArl2').val(response['id_arl']);
                         $('#selectEmpresa2').val(response['id_empresa']);
                         activarSelect2Colaborador();

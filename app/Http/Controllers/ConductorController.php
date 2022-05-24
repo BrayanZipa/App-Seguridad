@@ -91,7 +91,7 @@ class ConductorController extends Controller
         //Crear registro de nuevo conductor dato a dato con la información del request
         $conductor = Persona::create([
             'id_usuario' => $nuevoConductor['id_usuario'],
-            'id_tipo_persona' => 3,
+            'id_tipo_persona' => 4,
             'nombre' => $nuevoConductor['nombre'],
             'apellido' => $nuevoConductor['apellido'],
             'identificacion' => $nuevoConductor['identificacion'],
@@ -197,6 +197,6 @@ class ConductorController extends Controller
      */
     public function informacionConductores()
     {
-        return response()->json( $this->conductores ->informacionPersonas(3));      
+        return response()->json( $this->conductores ->informacionPersonas(4));      
     } 
 }

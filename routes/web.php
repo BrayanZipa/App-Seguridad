@@ -43,10 +43,11 @@ Route::put('/visitantes/editar/{id}', [VisitanteController::class, 'update'])->n
 /**
  * Rutas del modulo de colaboradores
  */
-Route::get('/colaboradores', [ColaboradorController::class, 'index'])->name('mostrarColaboradores')->middleware('auth');
+Route::get('/colaboradores_con_activo', [ColaboradorController::class, 'index'])->name('mostrarColaboradores')->middleware('auth');
+Route::get('/colaboradores_sin_activo', [ColaboradorController::class, 'index2'])->name('mostrarColaboradores2')->middleware('auth');
 Route::get('/colaboradores/crear', [ColaboradorController::class, 'create'])->name('formCrearColaborador')->middleware('auth');
 Route::post('/colaboradores/crear', [ColaboradorController::class, 'store'])->name('crearColaborador')->middleware('auth');
-Route::get('/colaboradores/informacion', [ColaboradorController::class, 'informacionColaboradores'])->name('mostrarInfoColaboradores')->middleware('auth');
+Route::get('/colaboradores/informacion', [ColaboradorController::class, 'informacionColaboradores'])->name('mostrarInfoColaboradores')->middleware('auth'); 
 Route::put('/colaboradores/editar/{id}', [ColaboradorController::class, 'update'])->name('editarColaborador')->middleware('auth');
 
 Route::get('/colaboradores/persona', [ColaboradorController::class, 'getColaborador'])->name('colaborador')->middleware('auth');
@@ -80,4 +81,4 @@ Route::get('/registros', [RegistroController::class, 'index'])->name('mostrarReg
 Route::get('/registros/informacion', [RegistroController::class, 'informacionRegistros'])->name('mostrarInfoRegistros')->middleware('auth');
 
 
-// Route::get('/prueba', [ColaboradorController::class, 'prueba'])->name('prueba')->middleware('auth');
+Route::get('/prueba', [ColaboradorController::class, 'prueba'])->name('prueba');

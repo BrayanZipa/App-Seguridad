@@ -44,11 +44,12 @@ class Persona extends Model
      */
     public function informacionPersonas($tipoPersona){
         try {
-            $personas = Persona::select('se_personas.*', 'eps.eps', 'arl.arl', 'usuarios.name', 'empresas.nombre AS empresa')
+            $personas = Persona::select('se_personas.*', 'eps.eps', 'arl.arl', 'usuarios.name', 'empresas.nombre AS empresa', 'activos.activo', 'activos.codigo')
             ->leftjoin('se_eps AS eps', 'se_personas.id_eps', '=', 'eps.id_eps')
             ->leftjoin('se_arl AS arl', 'se_personas.id_arl', '=', 'arl.id_arl')
             ->leftjoin('se_usuarios AS usuarios', 'se_personas.id_usuario', '=', 'usuarios.id_usuarios')
             ->leftjoin('se_empresas AS empresas', 'se_personas.id_empresa', '=', 'empresas.id_empresas')
+            ->leftjoin('se_activos AS activos', 'se_personas.id_personas', '=', 'activos.id_persona')
             ->where('id_tipo_persona', $tipoPersona)->orderBy('id_personas')->get();
             $response = ['data' => $personas->all()];
         } catch (\Throwable $e) {

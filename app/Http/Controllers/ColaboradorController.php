@@ -47,10 +47,16 @@ class ColaboradorController extends Controller
     public function index()
     {
         $exitCode = Artisan::call('cache:clear');
-        $eps = $this->eps->obtenerEps();
-        $arl = $this->arl->obtenerArl();
-        $empresas = $this->empresas->obtenerEmpresas();
-        return view('pages.colaboradores.mostrar', compact('eps', 'arl', 'empresas'));
+        $listaColaboradores = $this->getColaboradores();
+        [$eps, $arl, $empresas] = $this->obtenerModelos();
+        return view('pages.colaboradores.mostrar', compact('eps', 'arl', 'empresas', 'listaColaboradores'));
+    }
+
+    public function index2()
+    {
+        $exitCode = Artisan::call('cache:clear');
+        [$eps, $arl, $empresas] = $this->obtenerModelos();
+        return view('pages.colaboradores.mostrar2', compact('eps', 'arl', 'empresas'));
     }
 
     /**
@@ -61,65 +67,11 @@ class ColaboradorController extends Controller
     public function create()
     {
         $exitCode = Artisan::call('cache:clear');
-        $sesionToken = $this->colaboradores->initSesionGlpi();
-        try {
-            $consulta = Http::withHeaders([
-                'Session-Token' => $sesionToken
-            ])->get(env('API_URL', 'No hay URL').'user/', [
-                'range' => '0-1000',
-                'get_hateoas' => false
-            ]);
-        } catch (\Throwable $th) {
-            return response()->json(['message' => 'Error al traer la información de los activos desde GLPI'], 500);
-        }      
-        $listaColaboradores = $consulta->json();
-        $this->colaboradores->killSesionGlpi($sesionToken);
-
-        $numColaboradores=count($listaColaboradores);
-        for ($i=0; $i < $numColaboradores; $i++) { 
-            if(!isset($listaColaboradores[$i]['realname']) || $listaColaboradores[$i]['registration_number'] == ''){
-                unset($listaColaboradores[$i]);
-            }
-        }
-
+        $listaColaboradores = $this->getColaboradores();
         $personas = $this->colaboradores->obtenerPersonas(1);
-        [$eps, $arl, $tipoVehiculos, $marcaVehiculos, $empresas] = $this->obtenerModelos();
+        [$eps, $arl, $tipoVehiculos, $marcaVehiculos, $empresas] = $this->obtenerModelos2();
 
         return view('pages.colaboradores.crear', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos', 'empresas', 'listaColaboradores', 'personas'));
-    }
-
-
-
-    public function existeRegistro(Request $request)
-    {
-        if(array_key_exists('casoIngreso', $request->all())){
-
-        } else if (array_key_exists('casoIngreso2', $request->all())){
-            $identificacion = $request->get('identificacion');
-            $persona = Persona::where('id_tipo_persona', 1)->where('identificacion', $identificacion)->first();
-
-            if (!$persona) {
-                // return $request;
-                $request2 = new RequestColaborador($request->all());
-                // dd($request2);
-                // $request2->request->add(array($request->all()));
-                $this->store($request2);
-            } else {
-                return back()->withInput()->with('colaborador_repetido', 'se repitio');
-                // return redirect()->action([ColaboradorController::class, 'create'])->with('colaborador_repetido', 'se repitio');
-            }
-        }
-
-        // $this->store($request);
-
-        // $caso = $request->get('casoIngreso');
-        // return $caso;
-      
-        // return $persona;
-        // $this->colaboradores->obtenerPersona($identificacion);
-        
-        // $caso = $request->get('casoIngreso2');
-        // return $caso;
     }
 
     /**
@@ -136,12 +88,17 @@ class ColaboradorController extends Controller
         $nuevoColaborador['apellido'] = ucwords(mb_strtolower($nuevoColaborador['apellido']));
         $nuevoColaborador['descripcion'] = ucfirst(mb_strtolower($nuevoColaborador['descripcion']));
         $nuevoColaborador['id_usuario'] = auth()->user()->id_usuarios;
+        if(array_key_exists('casoIngreso', $nuevoColaborador)){
+            $nuevoColaborador['id_tipo_persona'] = $nuevoColaborador['id_tipo_persona'] = 3;
+        } else{
+            $nuevoColaborador['id_tipo_persona'] = $nuevoColaborador['id_tipo_persona'] = 2;
+        }
 
         $colaborador = Persona::updateOrCreate(
             ['identificacion' => $nuevoColaborador['identificacion']],
             [
                 'id_usuario' => $nuevoColaborador['id_usuario'],
-                'id_tipo_persona' => 2,
+                'id_tipo_persona' => $nuevoColaborador['id_tipo_persona'],
                 'nombre' => $nuevoColaborador['nombre'],
                 'apellido' => $nuevoColaborador['apellido'],
                 'id_eps' => $nuevoColaborador['id_eps'],
@@ -199,7 +156,7 @@ class ColaboradorController extends Controller
     }
 
     /**
-     * Función que permite registrar un nuevo vehículo creado desde el modulo de visitantes
+     * Función que permite registrar un nuevo vehículo creado desde el modulo de colaboradores
      */
     public function store2($datos, $id_persona)
     {
@@ -324,7 +281,7 @@ class ColaboradorController extends Controller
     public function update(RequestColaborador $request, $id)
     {
         $colaborador = $request->all();
-        // return $colaborador;
+        return $colaborador;
         $colaborador['nombre'] = ucwords(mb_strtolower($colaborador['nombre']));
         $colaborador['apellido'] = ucwords(mb_strtolower($colaborador['apellido']));
 
@@ -339,6 +296,18 @@ class ColaboradorController extends Controller
     {
         $eps = $this->eps->obtenerEps();
         $arl = $this->arl->obtenerArl();
+        $empresas = $this->empresas->obtenerEmpresas();
+
+        return [$eps, $arl, $empresas];
+    }
+
+    /**
+     * Función que permite traer la información de los modelos de la Eps, Arl, TipoVehiculo, MarcaVehiculo y Empresa
+     */
+    public function obtenerModelos2()
+    {
+        $eps = $this->eps->obtenerEps();
+        $arl = $this->arl->obtenerArl();
         $tipoVehiculos = $this->tipoVehiculos->obtenerTipoVehiculos();
         $marcaVehiculos = $this->marcaVehiculos->obtenerMarcaVehiculos();
         $empresas = $this->empresas->obtenerEmpresas();
@@ -347,12 +316,50 @@ class ColaboradorController extends Controller
     }
 
     /**
-     * Función que permite retornar en un formato JSON los datos de los colaboradores, arl, eps y empresa donde tengan un id en común.
+     * Función que recibe una petición Ajax con un parámetro que trae el tipo de colaborador, retorna en un formato JSON los datos de los colaboradores, arl, eps, empresa y activo donde tengan un id en común.
      */
-    public function informacionColaboradores()
+    public function informacionColaboradores(Request $request)
     {
-        return response()->json( $this->colaboradores->informacionPersonas(2));      
-    } 
+        $tipoPersona = $request->input('tipoPersona');
+        return response()->json( $this->colaboradores->informacionPersonas($tipoPersona));      
+    }
+
+    /**
+     * Función que recibe una petición de Ajax para obtener los datos de una persona de tipo visitante que este creada en la tabla se_personas.
+     */
+    public function getPersona(Request $request)
+    {
+        $id = $request->input('persona');
+        return $this->colaboradores->obtenerPersona($id);
+    }
+
+    /**
+     * Función que que hace una consulta al API de GLPI y trae todos los colaboradores con un activo asigando en el sistema y retorna esta información en una lista.
+     */
+    public function getColaboradores()
+    {
+        $sesionToken = $this->colaboradores->initSesionGlpi();
+        try {
+            $consulta = Http::withHeaders([
+                'Session-Token' => $sesionToken
+            ])->get(env('API_URL', 'No hay URL').'user/', [
+                'range' => '0-1000',
+                'get_hateoas' => false
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error al traer la información de los activos desde GLPI'], 500);
+        }      
+        $listaColaboradores = $consulta->json();
+        $this->colaboradores->killSesionGlpi($sesionToken);
+
+        $numColaboradores=count($listaColaboradores);
+        for ($i=0; $i < $numColaboradores; $i++) { 
+            if(!isset($listaColaboradores[$i]['realname']) || $listaColaboradores[$i]['registration_number'] == ''){
+                unset($listaColaboradores[$i]);
+            }
+        }
+        return $listaColaboradores;
+    }
 
     /**
      * Función que recibe una petición de Ajax para obtener al colaborador propietario de un computador en específico directamente desde la API de GLPI.
@@ -417,7 +424,7 @@ class ColaboradorController extends Controller
             }
         }
 
-        [$eps, $arl, $tipoVehiculos, $marcaVehiculos, $empresas] = $this->obtenerModelos();
+        [$eps, $arl, $tipoVehiculos, $marcaVehiculos, $empresas] = $this->obtenerModelos2();
 
         return view('pages.colaboradores.prueba', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos', 'empresas', 'computadores'));
     }
@@ -456,13 +463,49 @@ class ColaboradorController extends Controller
         return $computador;
     }
 
-    /**
-     * Función que recibe una petición de Ajax para obtener los datos de una persona de tipo visitante que este creada en la tabla se_personas.
-     */
-    public function getPersona(Request $request)
+
+
+
+
+
+    public function prueba(Request $request)
     {
-        $id = $request->input('persona');
-        return $this->colaboradores->obtenerPersona($id);
-        // Persona::where('id_tipo_persona', 1)->where('identificacion', $busqueda)->orWhere();  
+        // $identificacion = $request->input('colaborador');
+        // $colaboradores = $this->getColaboradores();
+        // $numColaboradores = count($colaboradores);
+
+        // // for ($i=0; $i < $numColaboradores; $i++) { 
+        // //     if($colaboradores[$i]['registration_number'] ==  $identificacion){
+        // //         $colaborador = $colaboradores[$i];
+        // //     }
+        // // }
+        // return $colaboradores;
+
+
+        $sesionToken = $this->colaboradores->initSesionGlpi();
+        try {
+            $consulta = Http::withHeaders([
+                'Session-Token' => $sesionToken
+            ])->get(env('API_URL', 'No hay URL').'user/', [
+                'range' => '0-1000',
+                'get_hateoas' => false
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error al traer la información de los activos desde GLPI'], 500);
+        }      
+        $listaColaboradores = $consulta->json();
+        $this->colaboradores->killSesionGlpi($sesionToken);
+
+        $numColaboradores=count($listaColaboradores);
+        
+        for ($i=0; $i < $numColaboradores; $i++) { 
+            if(!isset($listaColaboradores[$i]['realname']) || $listaColaboradores[$i]['registration_number'] == ''){
+                unset($listaColaboradores[$i]);
+            }
+        }
+        $numColaboradores2=count($listaColaboradores);
+        
+        return $listaColaboradores[278];
     }
+
 }

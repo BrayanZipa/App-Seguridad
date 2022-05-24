@@ -15,7 +15,7 @@ class SeTipoPersonas extends Migration
     {
         Schema::create('se_tipo_personas', function (Blueprint $table) {
             $table->increments('id_tipo_personas');
-            $table->string('tipo', 15);
+            $table->string('tipo', 25);
             $table->timestamps();
         });
     }

@@ -107,5 +107,7 @@ class RegistroController extends Controller
             $registros = $this->registros->informacionRegistros();
             return DataTables::of($registros)->make(true);
         }     
-    } 
+    }
+    
+    // Persona::where('id_tipo_persona', 1)->where('identificacion', $busqueda)->orWhere();  
 }
