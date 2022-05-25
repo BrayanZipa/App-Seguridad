@@ -128,109 +128,105 @@
             });
 
             //Se elije una fila de la tabla y se toma la información de la persona para mostrarla en un formulario y permitir actualizarla
-            $('#tabla_colaboradores tbody').on('click', 'td.editar_colaborador', function () {     
-                if($('.colaborador').hasClass('is-invalid')){
-                    $('.colaborador').removeClass("is-invalid");
-                }  
-                $('#formEditarColaborador').css("display", "block");  
-                var tr = $(this).closest('tr');
-                var row = $('#tabla_colaboradores').DataTable().row(tr);
-                var data = row.data();
-                // console.log(data);
-                //http://app-seguridad.test/colaboradores/editar/   
-                $('#form_EditarColaborador').attr('action','http://127.0.0.1:8000/colaboradores/editar/' + data.id_personas); 
-                $('#inputId').val(data.id_personas); 
-                $('#inputNombre').val(data.nombre);
-                $('#inputApellido').val(data.apellido);
-                $('#inputIdentificacion').val(data.identificacion);
-                $('#inputTelefono').val(data.tel_contacto);
-                $('#selectEps').val(data.id_eps);
-                $('#selectArl').val(data.id_arl);
-                $('#selectEmpresa').val(data.id_empresa);
-                $('#inputEmail').val(data.email);
-                $('#inputCodigo').val(data.codigo);
-                activarSelect2();
-            });
+            // $('#tabla_colaboradores tbody').on('click', 'td.editar_colaborador', function () {     
+            //     if($('.colaborador').hasClass('is-invalid')){
+            //         $('.colaborador').removeClass("is-invalid");
+            //     }  
+            //     $('#formEditarColaborador').css("display", "block");  
+            //     var tr = $(this).closest('tr');
+            //     var row = $('#tabla_colaboradores').DataTable().row(tr);
+            //     var data = row.data();
+            //     // console.log(data);
+            //     //http://app-seguridad.test/colaboradores/editar/   
+            //     $('#form_EditarColaborador').attr('action','http://127.0.0.1:8000/colaboradores/editar/' + data.id_personas); 
+            //     $('#inputId').val(data.id_personas); 
+            //     $('#inputNombre').val(data.nombre);
+            //     $('#inputApellido').val(data.apellido);
+            //     $('#inputIdentificacion').val(data.identificacion);
+            //     $('#inputTelefono').val(data.tel_contacto);
+            //     $('#selectEps').val(data.id_eps);
+            //     $('#selectArl').val(data.id_arl);
+            //     $('#selectEmpresa').val(data.id_empresa);
+            //     $('#inputEmail').val(data.email);
+            //     $('#inputCodigo').val(data.codigo);
+            //     activarSelect2();
+            // });
 
             //Se elije una fila de la tabla y se toma la información de la persona para mostrarla en un formulario y permitir actualizarla
-            $('#tabla_colaboradores tbody').on('click', 'td.editar_colaborador', function () {     
-                if($('.colaborador').hasClass('is-invalid')){
-                    $('.colaborador').removeClass("is-invalid");
-                }  
-                $('#formEditarColaborador').css("display", "block");  
+            $('#tabla_colaboradores tbody').on('click', 'td.editar_colaborador', function () {  
                 var tr = $(this).closest('tr');
                 var row = $('#tabla_colaboradores').DataTable().row(tr);
-                var data = row.data();
+                var data = row.data();  
 
-                
+                if($('.colaborador').hasClass('is-invalid')){
+                    $('.colaborador').removeClass("is-invalid");
+                }
+                if($('#mensajeError').length){
+                    $('#mensajeError').remove();
+                }  
+
+                $('#formEditarColaborador').css("display", "block");  
+                $('#form_EditarColaborador').attr('action','http://127.0.0.1:8000/colaboradores/editar/' + data.id_personas); 
+                $('#inputId').val(data.id_personas); 
+
                 $.ajax({
-                    url: '/colaboradores/computador',
+                    url: "{{ route('colaboradoridentificado') }}" ,
                     type: 'GET',
                     data: {
-                        colaborador: data.identificacion,
+                        colaborador: data.identificacion
                     },
                     dataType: 'json',
-                    success: function(response) {
+                    success: function(response) {;
+                        if ('error' in response) {
+                            $('.colaborador').each(function(index) {
+                                $(this).val('');
+                            });
+                            $('#inputNombre').addClass('is-invalid');
+                            $('#inputCodigo').addClass('is-invalid');
+                            $('#inputNombre').val('El colaborador no esta registrado en el sistema GLPI');
+                            $('#inputCodigo').val('Sin activo');
 
-                        if ('name' in response) {
-                            $('#inputCodigo').val(response['name']);
-
+                        } else {                  
                             $.ajax({
-                                url: '/colaboradores/persona',
+                                url: "{{ route('computador') }}" ,
                                 type: 'GET',
                                 data: {
-                                    colaborador: data.identificacion,
+                                    colaborador: response.id,
                                 },
                                 dataType: 'json',
-                                success: function(response) {
-                                    $('#inputIdentificacion').val(response['registration_number']);
-                                    $('#inputNombre').val(response['firstname']);
-                                    $('#inputApellido').val(response['realname']);
-                                    $('#inputEmail').val(response['email']);
-
-                                    if (response['phone2'].includes('Aviomar')) {
-                                        $('#selectEmpresa').val(1);
-                                    } else if (response['phone2'].includes('Snider')) {
-                                        $('#selectEmpresa').val(2);
-                                    } else if (response['phone2'].includes('Colvan')) {
-                                        $('#selectEmpresa').val(3);
+                                success: function(activo) {
+                                    $('#inputCodigo').val(activo['name']); 
+                                    if(data.codigo != activo['name']){
+                                        $('#inputCodigo').addClass('is-invalid');
+                                        $('#inputCodigo').after($('<div id="mensajeError" class="invalid-feedback">El colaborador tiene asignado un nuevo activo, debe actualizar</div>'));
                                     }
-
-                                    $('.colaborador').each(function(index) {
-                                        if ((!$(this).val() == '') && ($(this).hasClass('is-invalid'))) {
-                                            $(this).removeClass("is-invalid");
-                                        }
-                                    });
                                 },
                                 error: function() {
                                     console.log('Error obteniendo los datos de GLPI');
                                 }
                             });
 
-                        } else {
-                            $('#botonLimpiar').trigger("click");
-                            $('#inputCodigo').val('Sin activo');                    
+                            $('#inputIdentificacion').val(response['registration_number']);
+                            $('#inputNombre').val(response['firstname']);
+                            $('#inputApellido').val(response['realname']);
+                            $('#inputEmail').val(response['email']);
+                            $('#inputTelefono').val(data.tel_contacto);
+                            $('#selectEps').val(data.id_eps);
+                            $('#selectArl').val(data.id_arl);
+
+                            if (response['phone2'].includes('Aviomar')) {
+                                $('#selectEmpresa').val(1);
+                            } else if (response['phone2'].includes('Snider')) {
+                                $('#selectEmpresa').val(2);
+                            } else if (response['phone2'].includes('Colvan')) {
+                                $('#selectEmpresa').val(3);
+                            }               
                         }         
                     },
                     error: function() {
                         console.log('Error obteniendo los datos de GLPI');
                     }
                 });
-
-                // console.log(data);
-                //http://app-seguridad.test/colaboradores/editar/   
-                // $('#form_EditarColaborador').attr('action','http://127.0.0.1:8000/colaboradores/editar/' + data.id_personas); 
-                // $('#inputId').val(data.id_personas); 
-                // $('#inputNombre').val(data.nombre);
-                // $('#inputApellido').val(data.apellido);
-                // $('#inputIdentificacion').val(data.identificacion);
-                // $('#inputTelefono').val(data.tel_contacto);
-                // $('#selectEps').val(data.id_eps);
-                // $('#selectArl').val(data.id_arl);
-                // $('#selectEmpresa').val(data.id_empresa);
-                // $('#inputEmail').val(data.email);
-                // $('#inputCodigo').val(data.codigo);
-                // activarSelect2();
             });
 
             //Permite que a los select de selección de EPS Y ARL del formulario de actualizar colaborador se les asigne una barra de búsqueda haciendolos más dinámicos

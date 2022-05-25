@@ -374,27 +374,43 @@ class ColaboradorController extends Controller
             ])->get(env('API_URL', 'No hay URL').'user/'.$id, [
                 'get_hateoas' => false
             ]);
-            $colaborador = $consulta->json();
-    
-            $consulta2 = Http::withHeaders([
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error al traer la información del colaborador seleccionado desde GLPI'], 500);
+        }
+        $colaborador = $consulta->json();
+        $this->colaboradores->killSesionGlpi($sesionToken);
+
+        $colaborador['email'] = $this->getEmail($colaborador['id']);
+        return $colaborador;
+    }
+
+
+    /**
+     * Función que permite buscar y retornar el Email de un colaborador desde la API de GLPI por medio de su id.
+     */
+    public function getEmail($idColaborador)
+    {
+        $sesionToken = $this->colaboradores->initSesionGlpi();
+        try {     
+            $consulta = Http::withHeaders([
                 'Session-Token' => $sesionToken
             ])->get(env('API_URL', 'No hay URL').'userEmail/', [
                 'range' => '0-1000',
                 'get_hateoas' => false
-            ]);
-            $correos = $consulta2->json(); 
+            ]); 
         } catch (\Throwable $th) {
-            return response()->json(['message' => 'Error al traer la información del colaborador seleccionado desde GLPI'], 500);
+            return response()->json(['message' => 'Error al traer la información del Email del colaborador desde GLPI'], 500);
         }
+        $correos = $consulta->json();
         $this->colaboradores->killSesionGlpi($sesionToken);
 
         foreach ($correos as $correo) {
-            if ($correo['users_id'] == $colaborador['id']) {
-                $colaborador['email'] = $correo['email'];
+            if ($correo['users_id'] == $idColaborador) {
+                $email = $correo['email'];
             }
         }
-        
-        return $colaborador;
+
+        return $email;
     }
 
     /**
@@ -455,7 +471,6 @@ class ColaboradorController extends Controller
                 $computador = $computadores[$i];
             }
         }
-
         if(!isset($computador)){
             $computador['error'] = 'Sin activo asignado para este ususario';
         }    
@@ -463,49 +478,26 @@ class ColaboradorController extends Controller
         return $computador;
     }
 
-
-
-
-
-
-    public function prueba(Request $request)
+    /**
+     * Función que recibe una petición de Ajax para obtener a un colaborador propietario de un computador en específico desde la API de GLPI por medio de su identificación
+     */
+    public function getColaboradorIdentificacion(Request $request)
     {
-        // $identificacion = $request->input('colaborador');
-        // $colaboradores = $this->getColaboradores();
-        // $numColaboradores = count($colaboradores);
-
-        // // for ($i=0; $i < $numColaboradores; $i++) { 
-        // //     if($colaboradores[$i]['registration_number'] ==  $identificacion){
-        // //         $colaborador = $colaboradores[$i];
-        // //     }
-        // // }
-        // return $colaboradores;
-
-
-        $sesionToken = $this->colaboradores->initSesionGlpi();
-        try {
-            $consulta = Http::withHeaders([
-                'Session-Token' => $sesionToken
-            ])->get(env('API_URL', 'No hay URL').'user/', [
-                'range' => '0-1000',
-                'get_hateoas' => false
-            ]);
-        } catch (\Throwable $th) {
-            return response()->json(['message' => 'Error al traer la información de los activos desde GLPI'], 500);
-        }      
-        $listaColaboradores = $consulta->json();
-        $this->colaboradores->killSesionGlpi($sesionToken);
-
-        $numColaboradores=count($listaColaboradores);
-        
-        for ($i=0; $i < $numColaboradores; $i++) { 
-            if(!isset($listaColaboradores[$i]['realname']) || $listaColaboradores[$i]['registration_number'] == ''){
-                unset($listaColaboradores[$i]);
+        $identificacion = $request->input('colaborador');
+        $colaboradores = $this->getColaboradores();
+        foreach ($colaboradores as $colaborador) {
+            if($colaborador['registration_number'] == $identificacion){
+                $response = $colaborador;
             }
         }
-        $numColaboradores2=count($listaColaboradores);
-        
-        return $listaColaboradores[278];
+
+        if(!isset($response)){
+            $response =  ['error' => 'El colaborador buscado no se encuentra registrado en el sistema GLPI'];
+        } else {
+            $response['email'] = $this->getEmail($response['id']);
+        } 
+
+        return $response;
     }
 
 }

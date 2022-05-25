@@ -54,6 +54,7 @@ Route::get('/colaboradores/persona', [ColaboradorController::class, 'getColabora
 Route::get('/colaboradores/computadores', [ColaboradorController::class, 'getComputadores'])->name('computadores')->middleware('auth');
 Route::get('/colaboradores/computador', [ColaboradorController::class, 'getComputador'])->name('computador')->middleware('auth');
 Route::get('/colaboradores/personacreada', [ColaboradorController::class, 'getPersona'])->name('persona')->middleware('auth');
+Route::get('/colaboradores/colaboradoridentificado', [ColaboradorController::class, 'getColaboradorIdentificacion'])->name('colaboradoridentificado')->middleware('auth');
 
 /**
  * Rutas del modulo de conductores
@@ -81,4 +82,4 @@ Route::get('/registros', [RegistroController::class, 'index'])->name('mostrarReg
 Route::get('/registros/informacion', [RegistroController::class, 'informacionRegistros'])->name('mostrarInfoRegistros')->middleware('auth');
 
 
-Route::get('/prueba', [ColaboradorController::class, 'prueba'])->name('prueba');
+// Route::get('/prueba', [ColaboradorController::class, 'prueba'])->name('prueba');

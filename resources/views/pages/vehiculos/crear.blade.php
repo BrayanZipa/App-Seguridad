@@ -154,7 +154,7 @@
                 // $('#selectPersona').append("<option value=''>Seleccione al propietario</option>");        
                 
                 $.ajax({
-                    url: '/vehiculos/personas',
+                    url: "{{ route('personas') }}",
                     type: 'GET',
                     data: {
                         tipoPersona: $('#selectTipoPersona option:selected').val(),

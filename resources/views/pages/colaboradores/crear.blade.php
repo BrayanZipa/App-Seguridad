@@ -107,7 +107,7 @@
                 var idColaborador = $('#selectIdentificacion option:selected').val();
 
                 $.ajax({
-                    url: '/colaboradores/computador',
+                    url: "{{ route('computador') }}",
                     type: 'GET',
                     data: {
                         colaborador: idColaborador,
@@ -119,7 +119,7 @@
                             $('#inputCodigo').val(response['name']);
 
                             $.ajax({
-                                url: '/colaboradores/persona',
+                                url: "{{ route('colaborador') }}",
                                 type: 'GET',
                                 data: {
                                     colaborador: idColaborador,
@@ -164,14 +164,13 @@
             //Función que permite trae los datos de una persona de la base de datos cuando se selecciona una identificación en el formulario de la vista de colaborador sin activo, una vez traidos se colocan automáticamente en su respectivo input
             $('#selectPersona').change(function() {
                 $.ajax({
-                    url: '/colaboradores/personacreada',
+                    url: "{{ route('persona') }}",
                     type: 'GET',
                     data: {
                         persona: $('#selectPersona option:selected').val()
                     },
                     dataType: 'json',
                     success: function(response) {
-                        console.log(response);
                         $('#inputNombre2').val(response['nombre']);
                         $('#inputApellido2').val(response['apellido']);
                         $('#inputIdentificacion2').val(response['identificacion']);

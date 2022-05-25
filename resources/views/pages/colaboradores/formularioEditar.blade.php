@@ -40,7 +40,7 @@
                     <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label for="inputCodigo">Ingrese el activo</label>
+                                <label for="inputCodigo">Activo</label>
                                 <input type="text" class="colaborador form-control {{ $errors->has('codigo') ? 'is-invalid' : '' }}" id="inputCodigo" name="codigo" value="{{ old('codigo') }}" placeholder="Activo" autocomplete="off" readonly required>
                                     @if ($errors->has('codigo')) 
                                         <div class="invalid-feedback">
@@ -88,7 +88,7 @@
                         </div>         
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label for="inputEmail">Actualizar correo empresarial</label>
+                                <label for="inputEmail">Correo empresarial</label>
                                 <input type="text" class="colaborador form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" id="inputEmail" name="email" value="{{ old('email') }}"
                                     placeholder="Correo empresarial" autocomplete="off">
                                     @if ($errors->has('email')) 
@@ -116,7 +116,7 @@
                             <div class="form-group">
                                 <label for="selectEps">Actualizar EPS</label>
                                 <select id="selectEps" class="select2bs4 colaborador form-control {{ $errors->has('id_eps') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_eps" required>
-                                    <option selected="selected" value="" disabled></option>
+                                    <option selected="selected" value="" disabled>Seleccione EPS</option>
                                     @foreach ($eps as $ep)
                                         <option value="{{ $ep->id_eps }}"
                                             {{ $ep->id_eps == old('id_eps') ? 'selected' : '' }}>{{ $ep->eps }}
@@ -134,7 +134,7 @@
                             <div class="form-group">
                                 <label for="selectArl">Actualizar ARL</label>
                                 <select id="selectArl" class="select2bs4 colaborador form-control {{ $errors->has('id_arl') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_arl" required>
-                                    <option selected="selected" value="" disabled></option>
+                                    <option selected="selected" value="" disabled>Seleccione ARL</option>
                                     @foreach ($arl as $ar)
                                         <option value="{{ $ar->id_arl }}"
                                             {{ $ar->id_arl == old('id_arl') ? 'selected' : '' }}>{{ $ar->arl }}
