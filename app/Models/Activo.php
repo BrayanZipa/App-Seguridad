@@ -38,4 +38,16 @@ class Activo extends Model
             return response()->json(['message' => 'Error al consultar la información de la base de datos'], 500);
         }
     }
+
+    /**
+     * Función que permite saber si existe un activo en la base de datos con un determinado código y asigando a un determinado colaborador, retorna true o false.
+     */
+    public function existeActivo($codigo, $idColaborador){
+        try {
+            $response = Activo::where('codigo', $codigo)->where('id_persona', $idColaborador)->exists();
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error al consultar la información de la base de datos'], 500);
+        }
+        return $response;
+    }
 }

@@ -47,9 +47,8 @@ class ColaboradorController extends Controller
     public function index()
     {
         $exitCode = Artisan::call('cache:clear');
-        $listaColaboradores = $this->getColaboradores();
         [$eps, $arl, $empresas] = $this->obtenerModelos();
-        return view('pages.colaboradores.mostrar', compact('eps', 'arl', 'empresas', 'listaColaboradores'));
+        return view('pages.colaboradores.mostrar', compact('eps', 'arl', 'empresas'));
     }
 
     public function index2()
@@ -89,9 +88,9 @@ class ColaboradorController extends Controller
         $nuevoColaborador['descripcion'] = ucfirst(mb_strtolower($nuevoColaborador['descripcion']));
         $nuevoColaborador['id_usuario'] = auth()->user()->id_usuarios;
         if(array_key_exists('casoIngreso', $nuevoColaborador)){
-            $nuevoColaborador['id_tipo_persona'] = $nuevoColaborador['id_tipo_persona'] = 3;
+            $nuevoColaborador['id_tipo_persona'] = 3;
         } else{
-            $nuevoColaborador['id_tipo_persona'] = $nuevoColaborador['id_tipo_persona'] = 2;
+            $nuevoColaborador['id_tipo_persona'] = 2;
         }
 
         $colaborador = Persona::updateOrCreate(
@@ -212,14 +211,6 @@ class ColaboradorController extends Controller
                 'id_persona' => $id_persona,
             ]
         );
-
-        // $activo = Activo::create([
-        //     'activo' => 'Computador',
-        //     'codigo' => $datos['codigo'],
-        //     'id_usuario' => $datos['id_usuario'],
-        //     'id_persona' => $id_persona,
-        // ]);
-        // $activo->save();
         return $activo->codigo;
     }
 
@@ -281,12 +272,22 @@ class ColaboradorController extends Controller
     public function update(RequestColaborador $request, $id)
     {
         $colaborador = $request->all();
-        return $colaborador;
         $colaborador['nombre'] = ucwords(mb_strtolower($colaborador['nombre']));
         $colaborador['apellido'] = ucwords(mb_strtolower($colaborador['apellido']));
-
         Persona::findOrFail($id)->update($colaborador);
-        return redirect()->action([ColaboradorController::class, 'index'])->with('editar_colaborador2', $colaborador['nombre']." ".$colaborador['apellido']);
+
+        if(isset($colaborador['codigo'])){ //saber si no es null
+            $colaborador['codigo'] = ucfirst($colaborador['codigo']);
+            if($this->activos->existeActivo($colaborador['codigo'], $colaborador['id_personas'])){  
+                return redirect()->action([ColaboradorController::class, 'index'])->with('editar_colaborador2', $colaborador['nombre']." ".$colaborador['apellido']);
+            } else {
+                $this->activos->existeActivoEliminar($colaborador['codigo']);   
+                Activo::where('id_persona', $colaborador['id_personas'])->update(['codigo' => $colaborador['codigo']]);
+                $modal = [$colaborador['nombre']." ".$colaborador['apellido'], $colaborador['codigo']];
+                return redirect()->action([ColaboradorController::class, 'index'])->with('editar_colaborador_activo2', $modal);
+            }    
+        } 
+        return redirect()->action([ColaboradorController::class, 'index2'])->with('editar_colaborador2', $colaborador['nombre']." ".$colaborador['apellido']); 
     }
 
     /**
@@ -304,13 +305,11 @@ class ColaboradorController extends Controller
     /**
      * Función que permite traer la información de los modelos de la Eps, Arl, TipoVehiculo, MarcaVehiculo y Empresa
      */
-    public function obtenerModelos2()
+    public function obtenerModelos2() 
     {
-        $eps = $this->eps->obtenerEps();
-        $arl = $this->arl->obtenerArl();
+        [$eps, $arl, $empresas] = $this->obtenerModelos();
         $tipoVehiculos = $this->tipoVehiculos->obtenerTipoVehiculos();
         $marcaVehiculos = $this->marcaVehiculos->obtenerMarcaVehiculos();
-        $empresas = $this->empresas->obtenerEmpresas();
 
         return [$eps, $arl, $tipoVehiculos, $marcaVehiculos, $empresas];
     }

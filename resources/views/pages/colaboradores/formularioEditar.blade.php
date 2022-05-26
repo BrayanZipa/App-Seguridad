@@ -20,28 +20,11 @@
 
                 <div class="card-body mb-n4">
                     <input type="hidden" id="inputId" name="id_personas" value="{{ old('id_personas') }}">
-
-                    <div class="row justify-content-center">
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                {{-- <label for="selectPersona">Buscar persona</label> --}}
-                                <select id="selectPersona" class="colaborador form-control" style="width: 100%;" name="persona">
-                                    <option selected="selected" value="" disabled></option>
-                                    @foreach ($listaColaboradores as $colaborador)
-                                        <option value="{{ $colaborador['id'] }}"
-                                            {{ $colaborador['id'] == old('persona') ? 'selected' : '' }}>C.C. {{ $colaborador['registration_number']  }} - {{ $colaborador['firstname'] }} {{ $colaborador['realname'] }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label for="inputCodigo">Activo</label>
-                                <input type="text" class="colaborador form-control {{ $errors->has('codigo') ? 'is-invalid' : '' }}" id="inputCodigo" name="codigo" value="{{ old('codigo') }}" placeholder="Activo" autocomplete="off" readonly required>
+                                <input type="text" class="colaborador form-control {{ $errors->has('codigo') ? 'is-invalid' : '' }}" id="inputCodigo" name="codigo" value="{{ old('codigo') }}" placeholder="Activo" autocomplete="off" required>
                                     @if ($errors->has('codigo')) 
                                         <div class="invalid-feedback">
                                             {{ $errors->first('codigo') }}

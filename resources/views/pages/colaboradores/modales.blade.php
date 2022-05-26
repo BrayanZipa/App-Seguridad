@@ -199,7 +199,7 @@
     </div>
 
 @elseif (session('editar_colaborador2'))
-    <div class="modal fade" id="modal-editar-colaborador">
+    <div class="modal fade" id="modal-editar-colaborador2">
         <div class="modal-dialog ">
             <div class="modal-content">
                 <div class="modal-header bg-primary">
@@ -219,8 +219,8 @@
         <!-- /.modal-dialog -->
     </div>
 
-@elseif (session('editar_colaborador_activo'))
-    <div class="modal fade" id="modal-editar-colaboradorActivo">
+@elseif (session('editar_colaborador_activo2'))
+    <div class="modal fade" id="modal-editar-colaboradorActivo2">
         <div class="modal-dialog ">
             <div class="modal-content">
                 <div class="modal-header bg-primary">
@@ -232,7 +232,8 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Se ha actualizado al colaborador <b>{{ session('editar_colaborador_activo') }}</b> exitosamente.</p>
+                    <p>Se ha actualizado al colaborador <b>{{ session('editar_colaborador_activo2')[0] }}</b> exitosamente.</p>
+                    <p>Se ha asigando el computador con código <b>{{ session('editar_colaborador_activo2')[1] }}</b> exitosamente.</p>
                 </div>
             </div>
             <!-- /.modal-content -->

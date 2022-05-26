@@ -47,7 +47,12 @@ class RequestColaborador extends FormRequest
         } else if($this->method() == 'PUT'){
             $validacion =  $this->validacionGeneral();
             $validacion['identificacion'] = $validacion['identificacion'].'|unique:se_personas,identificacion,'.$this->id.',id_personas';
-            return $validacion;
+            if(isset($datos['codigo'])){
+                $validacion['codigo'] = 'required|string|alpha_num|max:5|min:4';
+                return $validacion;
+            } else {
+                return $validacion;
+            }  
         }
     }
 

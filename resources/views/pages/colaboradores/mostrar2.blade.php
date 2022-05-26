@@ -203,9 +203,9 @@
             });
 
             //Muestra el modal indicado al usuario que la actualización se ha realizado correctamente
-            $('#modal-editar-colaborador').modal("show");
+            $('#modal-editar-colaborador2').modal("show");
             setTimeout(function(){
-                $('#modal-editar-colaborador').modal('hide');
+                $('#modal-editar-colaborador2').modal('hide');
             }, 2000);
 
         });

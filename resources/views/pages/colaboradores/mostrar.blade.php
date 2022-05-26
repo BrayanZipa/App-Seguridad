@@ -152,6 +152,15 @@
             //     activarSelect2();
             // });
 
+            // $('#tabla_colaboradores tbody').on('click', 'span.dtr-data', function () { 
+            //     // var tr = $(this).closest('tr');
+            //     // var row = $('#tabla_colaboradores').DataTable().row(tr);
+            //     // var data = row.data();  
+            //     // console.log(data);
+            //     $('#formEditarColaborador').css("display", "block");  
+            //     console.log( $('#tabla_colaboradores').DataTable().row( this ).data() );
+            // });
+
             //Se elije una fila de la tabla y se toma la información de la persona para mostrarla en un formulario y permitir actualizarla
             $('#tabla_colaboradores tbody').on('click', 'td.editar_colaborador', function () {  
                 var tr = $(this).closest('tr');
@@ -288,10 +297,16 @@
             });
 
             //Muestra el modal indicado al usuario que la actualización se ha realizado correctamente
-            $('#modal-editar-colaborador').modal("show");
+            $('#modal-editar-colaborador2').modal("show");
+            $('#modal-editar-colaboradorActivo2').modal("show");
+
             setTimeout(function(){
-                $('#modal-editar-colaborador').modal('hide');
+                $('#modal-editar-colaborador2').modal('hide');
             }, 2000);
+            setTimeout(function(){
+                $('#modal-editar-colaboradorActivo2').modal('hide');
+            }, 3000);
+
 
         });
 
