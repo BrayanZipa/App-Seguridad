@@ -41,7 +41,7 @@
             $('#tabla_registros').DataTable({
                 "destroy": true,
                 "processing": true,
-                "serverSide": true,
+                // "serverSide": true,
                 "responsive": true,
                 "autoWidth": false,
                 // "scrollY": '300px',
@@ -54,10 +54,11 @@
                         "name": 'id_registros'
                     },
                     {
-                        data: null, 
+                        "data": null, 
+                        "name": 'nombre',
                         render: function ( data, type, row ) {
                             return data.nombre+' '+data.apellido;
-                        },
+                        }
                     },
                     {
                         "data": 'identificacion',
@@ -129,7 +130,8 @@
                         "next": "Siguiente",
                         "previous": "Anterior"
                     }
-                }       
+                },
+                // "order ": [[1, 'desc']]     
             });
 
         });

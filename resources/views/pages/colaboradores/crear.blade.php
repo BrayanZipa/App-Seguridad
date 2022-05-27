@@ -126,6 +126,7 @@
                                 },
                                 dataType: 'json',
                                 success: function(response) {
+                                    // $('#botonLimpiar').trigger("click");
                                     $('#inputIdentificacion').val(response['registration_number']);
                                     $('#inputNombre').val(response['firstname']);
                                     $('#inputApellido').val(response['realname']);
@@ -152,7 +153,8 @@
 
                         } else {
                             $('#botonLimpiar').trigger("click");
-                            $('#inputCodigo').val('Sin activo');                    
+                            $('#inputCodigo').addClass('is-invalid');
+                            $('#inputCodigo').val('*Sin activo');                    
                         }         
                     },
                     error: function() {

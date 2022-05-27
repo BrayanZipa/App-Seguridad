@@ -152,31 +152,17 @@
             //     activarSelect2();
             // });
 
-            // $('#tabla_colaboradores tbody').on('click', 'span.dtr-data', function () { 
-            //     // var tr = $(this).closest('tr');
-            //     // var row = $('#tabla_colaboradores').DataTable().row(tr);
-            //     // var data = row.data();  
-            //     // console.log(data);
-            //     $('#formEditarColaborador').css("display", "block");  
-            //     console.log( $('#tabla_colaboradores').DataTable().row( this ).data() );
-            // });
+            // Se elije una fila de la tabla y se toma la información del colaborador para mostrarla en un formulario y permitir actualizarla
+            $('#tabla_colaboradores tbody').on('click', '.editar_colaborador', function () { 
+                var data = $('#tabla_colaboradores').DataTable().row(this).data();  
 
-            //Se elije una fila de la tabla y se toma la información de la persona para mostrarla en un formulario y permitir actualizarla
-            $('#tabla_colaboradores tbody').on('click', 'td.editar_colaborador', function () {  
-                var tr = $(this).closest('tr');
-                var row = $('#tabla_colaboradores').DataTable().row(tr);
-                var data = row.data();  
-
-                if($('.colaborador').hasClass('is-invalid')){
-                    $('.colaborador').removeClass("is-invalid");
-                }
-                if($('#mensajeError').length){
-                    $('#mensajeError').remove();
-                }  
+                if($('.colaborador').hasClass('is-invalid')){ $('.colaborador').removeClass("is-invalid"); }
+                if($('#mensajeError').length){ $('#mensajeError').remove(); }  
 
                 $('#formEditarColaborador').css("display", "block");  
                 $('#form_EditarColaborador').attr('action','http://127.0.0.1:8000/colaboradores/editar/' + data.id_personas); 
                 $('#inputId').val(data.id_personas); 
+                activarSelect2();
 
                 $.ajax({
                     url: "{{ route('colaboradoridentificado') }}" ,
@@ -185,15 +171,15 @@
                         colaborador: data.identificacion
                     },
                     dataType: 'json',
-                    success: function(response) {;
+                    success: function(response) {
                         if ('error' in response) {
                             $('.colaborador').each(function(index) {
                                 $(this).val('');
                             });
                             $('#inputNombre').addClass('is-invalid');
                             $('#inputCodigo').addClass('is-invalid');
-                            $('#inputNombre').val('El colaborador no esta registrado en el sistema GLPI');
-                            $('#inputCodigo').val('Sin activo');
+                            $('#inputNombre').val('*El colaborador no esta registrado en el sistema GLPI');
+                            $('#inputCodigo').val('*Sin activo');
 
                         } else {                  
                             $.ajax({
@@ -204,11 +190,19 @@
                                 },
                                 dataType: 'json',
                                 success: function(activo) {
-                                    $('#inputCodigo').val(activo['name']); 
-                                    if(data.codigo != activo['name']){
+                                    console.log(activo);
+                                    if ('error' in activo) {
                                         $('#inputCodigo').addClass('is-invalid');
-                                        $('#inputCodigo').after($('<div id="mensajeError" class="invalid-feedback">El colaborador tiene asignado un nuevo activo, debe actualizar</div>'));
+                                        $('#inputCodigo').val('*Colaborador registrado en GLPI pero sin activo asignado');
+                                        // $('#inputCodigo').after($('<div id="mensajeError" class="invalid-feedback">El colaborador tiene asignado un nuevo activo, debe actualizar</div>'));
+                                    } else {
+                                        $('#inputCodigo').val(activo['name']); 
+                                        if(data.codigo != activo['name']){
+                                            $('#inputCodigo').addClass('is-invalid');
+                                            $('#inputCodigo').after($('<div id="mensajeError" class="invalid-feedback">El colaborador tiene asignado un nuevo activo, debe actualizar</div>'));
+                                        }
                                     }
+                                    
                                 },
                                 error: function() {
                                     console.log('Error obteniendo los datos de GLPI');
@@ -229,7 +223,8 @@
                                 $('#selectEmpresa').val(2);
                             } else if (response['phone2'].includes('Colvan')) {
                                 $('#selectEmpresa').val(3);
-                            }               
+                            }      
+                            activarSelect2();         
                         }         
                     },
                     error: function() {
@@ -306,7 +301,6 @@
             setTimeout(function(){
                 $('#modal-editar-colaboradorActivo2').modal('hide');
             }, 3000);
-
 
         });
 

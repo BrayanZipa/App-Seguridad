@@ -471,7 +471,7 @@ class ColaboradorController extends Controller
             }
         }
         if(!isset($computador)){
-            $computador['error'] = 'Sin activo asignado para este ususario';
+            $computador = ['error' =>  'Sin activo asignado para este ususario'];
         }    
 
         return $computador;
