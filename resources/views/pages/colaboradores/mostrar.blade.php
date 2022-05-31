@@ -156,8 +156,9 @@
             $('#tabla_colaboradores tbody').on('click', '.editar_colaborador', function () { 
                 var data = $('#tabla_colaboradores').DataTable().row(this).data();  
 
-                if($('.colaborador').hasClass('is-invalid')){ $('.colaborador').removeClass("is-invalid"); }
+                if($('.colaborador').hasClass('is-invalid')){ $('.colaborador').removeClass("is-invalid"); }           
                 if($('#mensajeError').length){ $('#mensajeError').remove(); }  
+                if($('#mensajeCodigo').length){ $('#mensajeCodigo').remove(); } 
 
                 $('#formEditarColaborador').css("display", "block");  
                 $('#form_EditarColaborador').attr('action','http://127.0.0.1:8000/colaboradores/editar/' + data.id_personas); 
@@ -190,16 +191,18 @@
                                 },
                                 dataType: 'json',
                                 success: function(activo) {
-                                    console.log(activo);
                                     if ('error' in activo) {
                                         $('#inputCodigo').addClass('is-invalid');
                                         $('#inputCodigo').val('*Colaborador registrado en GLPI pero sin activo asignado');
-                                        // $('#inputCodigo').after($('<div id="mensajeError" class="invalid-feedback">El colaborador tiene asignado un nuevo activo, debe actualizar</div>'));
                                     } else {
                                         $('#inputCodigo').val(activo['name']); 
                                         if(data.codigo != activo['name']){
                                             $('#inputCodigo').addClass('is-invalid');
-                                            $('#inputCodigo').after($('<div id="mensajeError" class="invalid-feedback">El colaborador tiene asignado un nuevo activo, debe actualizar</div>'));
+                                            if($('#mensajeCodigo').length){ 
+                                                $('#mensajeCodigo').text('El colaborador tiene asignado un nuevo activo, debe actualizar');
+                                            } else {
+                                                $('#inputCodigo').after($('<div id="mensajeError" class="invalid-feedback">El colaborador tiene asignado un nuevo activo, debe actualizar</div>'));
+                                            }     
                                         }
                                     }
                                     
@@ -278,7 +281,7 @@
     
             //Función anónima que permite devolver el formulario de actualización de colaboradores con los datos ingresados por el usuario con anterioridad en caso de que se cometa un error y se dispare una validación
             (function () {
-                if(!!document.getElementById('botonRetorno')){
+                if((!!document.getElementById('botonRetorno')) || (!!document.getElementById('botonRetorno3'))){
                     var id_colaborador = document.getElementById('inputId').value;
                     document.getElementById('formEditarColaborador').style.display = 'block';
                     document.getElementById('form_EditarColaborador').setAttribute('action', 'http://127.0.0.1:8000/colaboradores/editar/' + id_colaborador);

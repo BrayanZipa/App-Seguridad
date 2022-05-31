@@ -13,7 +13,7 @@
     <!-- /.card-header -->
 
     <div class="card-body mb-n4">
-        <div class="row justify-content-center">
+        <div class="row">
             <div class="col-sm-12">
                 <div class="form-group">
                     {{-- <label for="selectPersona">Buscar persona</label> --}}

@@ -41,7 +41,7 @@
             function activarSelect2Colaborador() {
                 $('#selectIdentificacion').select2({
                     theme: 'bootstrap4',
-                    placeholder: 'Seleccione la identificación',
+                    placeholder: 'Buscar colaborador si esta creado en el sistema GLPI',
                     language: {
                         noResults: function() {
                             return 'No hay resultado';
@@ -113,10 +113,14 @@
                         colaborador: idColaborador,
                     },
                     dataType: 'json',
-                    success: function(response) {
-
+                    success: function(response) {     
                         if ('name' in response) {
+                            $('#inputTelefono').val('');
+                            $('#selectEps').val([]);
+                            $('#selectArl').val([]);
+                            $('#selectEmpresa').val('');
                             $('#inputCodigo').val(response['name']);
+                            activarSelect2Colaborador();
 
                             $.ajax({
                                 url: "{{ route('colaborador') }}",
@@ -126,7 +130,6 @@
                                 },
                                 dataType: 'json',
                                 success: function(response) {
-                                    // $('#botonLimpiar').trigger("click");
                                     $('#inputIdentificacion').val(response['registration_number']);
                                     $('#inputNombre').val(response['firstname']);
                                     $('#inputApellido').val(response['realname']);
@@ -138,7 +141,7 @@
                                         $('#selectEmpresa').val(2);
                                     } else if (response['phone2'].includes('Colvan')) {
                                         $('#selectEmpresa').val(3);
-                                    }
+                                    } 
 
                                     $('.colaborador').each(function(index) {
                                         if ((!$(this).val() == '') && ($(this).hasClass('is-invalid'))) {
