@@ -155,7 +155,7 @@ class ColaboradorController extends Controller
     }
 
     /**
-     * Función que permite registrar un nuevo vehículo creado desde el modulo de colaboradores
+     * Función que permite registrar un nuevo vehículo creado desde el módulo de colaboradores
      */
     public function store2($datos, $id_persona)
     {
@@ -195,23 +195,25 @@ class ColaboradorController extends Controller
     }
 
     /**
-     * Función que permite registrar un nuevo activo creado desde el modulo de colaboradores
+     * Función que permite registrar un nuevo activo creado desde el módulo de colaboradores
      */
     public function store3($datos, $id_persona)
     {
         $datos['codigo'] = ucfirst($datos['codigo']);
-        $this->activos->existeActivoEliminar($datos['codigo']);
-
-        $activo = Activo::updateOrCreate(
-            ['id_persona' => $id_persona],
-            [
-                'activo' => 'Computador', 
-                'codigo' => $datos['codigo'],
-                'id_usuario' => $datos['id_usuario'],
-                'id_persona' => $id_persona,
-            ]
-        );
-        return $activo->codigo;
+        if($this->activos->existeActivo($datos['codigo'], $id_persona)){  
+            return $datos['codigo'];
+        } else {
+            $this->activos->existeActivoEliminar($datos['codigo']);
+            $activo = Activo::updateOrCreate(
+                ['id_persona' => $id_persona],
+                [
+                    'activo' => 'Computador', 
+                    'codigo' => $datos['codigo'],
+                    'id_usuario' => $datos['id_usuario'],
+                ]
+            );
+            return $activo->codigo;
+        }
     }
 
     /**
@@ -282,7 +284,17 @@ class ColaboradorController extends Controller
                 return redirect()->action([ColaboradorController::class, 'index'])->with('editar_colaborador2', $colaborador['nombre']." ".$colaborador['apellido']);
             } else {
                 $this->activos->existeActivoEliminar($colaborador['codigo']);   
-                Activo::where('id_persona', $colaborador['id_personas'])->update(['codigo' => $colaborador['codigo']]);
+
+                Activo::updateOrCreate(
+                    ['id_persona' => $colaborador['id_personas']], 
+                    [
+                        'activo' => 'Computador', 
+                        'codigo' => $colaborador['codigo'],
+                        'id_usuario' => auth()->user()->id_usuarios,
+                    ]
+                );
+
+                // Activo::where('id_persona', $colaborador['id_personas'])->update(['codigo' => $colaborador['codigo']]);
                 $modal = [$colaborador['nombre']." ".$colaborador['apellido'], $colaborador['codigo']];
                 return redirect()->action([ColaboradorController::class, 'index'])->with('editar_colaborador_activo2', $modal);
             }    
