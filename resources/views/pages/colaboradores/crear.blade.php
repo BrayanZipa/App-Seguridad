@@ -157,7 +157,7 @@
                         } else {
                             $('#botonLimpiar').trigger("click");
                             $('#inputCodigo').addClass('is-invalid');
-                            $('#inputCodigo').val('*Sin activo');                    
+                            $('#inputCodigo').val('*Colaborador sin activo asignado');                    
                         }         
                     },
                     error: function() {

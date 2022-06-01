@@ -16,10 +16,10 @@ class SeActivos extends Migration
         Schema::create('se_activos', function (Blueprint $table) {
             $table->increments('id_activos');
             $table->string('activo', 20);
-            $table->string('codigo', 5)->unique();
+            $table->string('codigo', 5)->unique()->nullable();
             $table->unsignedInteger('id_persona')->unique();
             $table->foreign('id_persona')->references('id_personas')->on('se_personas'); 
-            $table->unsignedInteger('id_usuario')->nullable();
+            $table->unsignedInteger('id_usuario');
             $table->foreign('id_usuario')->references('id_usuarios')->on('se_usuarios');   
             $table->timestamps();
         });

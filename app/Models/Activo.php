@@ -40,6 +40,19 @@ class Activo extends Model
     }
 
     /**
+     * Función que permite saber si ya existe un activo con un código en específico, si es el caso el campo del código del activo quedará nulo en la base de datos
+     */
+    public function verificarActivo($codigo){
+        try {
+            if (Activo::where('codigo', $codigo)->exists()){
+                Activo::where('codigo', $codigo)->update(['codigo' => null]);
+            } 
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error al consultar la información de la base de datos'], 500);
+        }
+    }
+
+    /**
      * Función que permite saber si existe un activo en la base de datos con un determinado código y asigando a un determinado colaborador, retorna true o false.
      */
     public function existeActivo($codigo, $idColaborador){

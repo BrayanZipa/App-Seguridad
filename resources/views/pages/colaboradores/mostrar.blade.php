@@ -177,10 +177,11 @@
                             $('.colaborador').each(function(index) {
                                 $(this).val('');
                             });
-                            $('#inputNombre').addClass('is-invalid');
+                            activarSelect2();
+                            // $('#inputNombre').addClass('is-invalid');
                             $('#inputCodigo').addClass('is-invalid');
-                            $('#inputNombre').val('*El colaborador no esta registrado en el sistema GLPI');
-                            $('#inputCodigo').val('*Sin activo');
+                            // $('#inputNombre').val('*El colaborador no esta registrado en el sistema GLPI');
+                            $('#inputCodigo').val('*El colaborador no esta registrado en el sistema GLPI');
 
                         } else {                  
                             $.ajax({

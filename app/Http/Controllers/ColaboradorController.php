@@ -66,8 +66,19 @@ class ColaboradorController extends Controller
     public function create()
     {
         $exitCode = Artisan::call('cache:clear');
-        $listaColaboradores = $this->getColaboradores();
         $personas = $this->colaboradores->obtenerPersonas(1);
+        $colaboradoresActivo = $this->colaboradores->obtenerPersonas(3);
+        $listaColaboradores = $this->getColaboradores();
+
+        foreach ($colaboradoresActivo as $colaboradorActivo) {
+            foreach ($listaColaboradores as $indice => $colaborador) {
+                if($colaborador['registration_number'] == $colaboradorActivo->identificacion){
+                    unset($listaColaboradores[$indice]);
+                }     
+            }
+        }
+        // return count($listaColaboradores);
+        
         [$eps, $arl, $tipoVehiculos, $marcaVehiculos, $empresas] = $this->obtenerModelos2();
 
         return view('pages.colaboradores.crear', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos', 'empresas', 'listaColaboradores', 'personas'));
@@ -200,20 +211,15 @@ class ColaboradorController extends Controller
     public function store3($datos, $id_persona)
     {
         $datos['codigo'] = ucfirst($datos['codigo']);
-        if($this->activos->existeActivo($datos['codigo'], $id_persona)){  
-            return $datos['codigo'];
-        } else {
-            $this->activos->existeActivoEliminar($datos['codigo']);
-            $activo = Activo::updateOrCreate(
-                ['id_persona' => $id_persona],
-                [
-                    'activo' => 'Computador', 
-                    'codigo' => $datos['codigo'],
-                    'id_usuario' => $datos['id_usuario'],
-                ]
-            );
-            return $activo->codigo;
-        }
+        $this->activos->verificarActivo($datos['codigo']); 
+        $activo = Activo::create([
+            'activo' => 'Computador',
+            'codigo' => $datos['codigo'],
+            'id_persona' => $id_persona,
+            'id_usuario' => $datos['id_usuario'],
+        ]);
+        $activo->save();
+        return $activo->codigo;
     }
 
     /**
@@ -273,6 +279,7 @@ class ColaboradorController extends Controller
      */
     public function update(RequestColaborador $request, $id)
     {
+
         $colaborador = $request->all();
         $colaborador['nombre'] = ucwords(mb_strtolower($colaborador['nombre']));
         $colaborador['apellido'] = ucwords(mb_strtolower($colaborador['apellido']));
@@ -283,18 +290,8 @@ class ColaboradorController extends Controller
             if($this->activos->existeActivo($colaborador['codigo'], $colaborador['id_personas'])){  
                 return redirect()->action([ColaboradorController::class, 'index'])->with('editar_colaborador2', $colaborador['nombre']." ".$colaborador['apellido']);
             } else {
-                $this->activos->existeActivoEliminar($colaborador['codigo']);   
-
-                Activo::updateOrCreate(
-                    ['id_persona' => $colaborador['id_personas']], 
-                    [
-                        'activo' => 'Computador', 
-                        'codigo' => $colaborador['codigo'],
-                        'id_usuario' => auth()->user()->id_usuarios,
-                    ]
-                );
-
-                // Activo::where('id_persona', $colaborador['id_personas'])->update(['codigo' => $colaborador['codigo']]);
+                $this->activos->verificarActivo($colaborador['codigo']);   
+                Activo::where('id_persona', $colaborador['id_personas'])->update(['codigo' => $colaborador['codigo']]);
                 $modal = [$colaborador['nombre']." ".$colaborador['apellido'], $colaborador['codigo']];
                 return redirect()->action([ColaboradorController::class, 'index'])->with('editar_colaborador_activo2', $modal);
             }    
