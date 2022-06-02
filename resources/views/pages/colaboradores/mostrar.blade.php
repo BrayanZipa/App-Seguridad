@@ -5,6 +5,8 @@
 @endsection
 
 @section('css')
+    <!-- Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- DataTables -->
     <link rel="stylesheet" href="{{ asset('assets/lte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/lte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
@@ -34,6 +36,12 @@
     <!-- JavaScript propio-->
     <script>
         $(function() {
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
 
             //Uso de DataTables para mostrar la información de todos los colaboradores creados
             $('#tabla_colaboradores').DataTable({
@@ -162,8 +170,9 @@
 
                 $('#formEditarColaborador').css("display", "block");  
                 $('#form_EditarColaborador').attr('action','http://127.0.0.1:8000/colaboradores/editar/' + data.id_personas); 
+                $('#metodoForm').attr('value', 'PUT'); 
+                
                 $('#inputId').val(data.id_personas); 
-                activarSelect2();
 
                 $.ajax({
                     url: "{{ route('colaboradoridentificado') }}" ,
@@ -173,15 +182,24 @@
                     },
                     dataType: 'json',
                     success: function(response) {
-                        if ('error' in response) {
+                        if ('error' in response) { 
                             $('.colaborador').each(function(index) {
                                 $(this).val('');
-                            });
-                            activarSelect2();
-                            // $('#inputNombre').addClass('is-invalid');
-                            $('#inputCodigo').addClass('is-invalid');
-                            // $('#inputNombre').val('*El colaborador no esta registrado en el sistema GLPI');
+                            });     
+                            $('#inputCodigo').addClass('is-invalid');                
                             $('#inputCodigo').val('*El colaborador no esta registrado en el sistema GLPI');
+                            $('#inputIdentificacion').val(response['registration_number']);
+                            $('#inputNombre').val(data.nombre);
+                            $('#inputApellido').val(data.apellido);
+                            $('#inputIdentificacion').val(data.identificacion);
+                            $('#inputEmail').val(data.email);
+                            $('#inputTelefono').val(data.tel_contacto);
+                            $('#selectEps').val(data.id_eps);
+                            $('#selectArl').val(data.id_arl);
+                            $('#selectEmpresa').val(data.id_empresa);
+                            activarSelect2();
+                            $('#botonActualizar').css('display', 'none');
+                            $('#botonCambiarRol').css('display', '');
 
                         } else {                  
                             $.ajax({
@@ -205,8 +223,7 @@
                                                 $('#inputCodigo').after($('<div id="mensajeError" class="invalid-feedback">El colaborador tiene asignado un nuevo activo, debe actualizar</div>'));
                                             }     
                                         }
-                                    }
-                                    
+                                    }  
                                 },
                                 error: function() {
                                     console.log('Error obteniendo los datos de GLPI');
@@ -228,7 +245,9 @@
                             } else if (response['phone2'].includes('Colvan')) {
                                 $('#selectEmpresa').val(3);
                             }      
-                            activarSelect2();         
+                            activarSelect2(); 
+                            $('#botonActualizar').css('display', '');
+                            $('#botonCambiarRol').css('display', 'none');        
                         }         
                     },
                     error: function() {
@@ -289,6 +308,25 @@
                     activarSelect2();
                 }
             })();
+
+            //Botón que permite desplegar un modal de confirmación cuando el usuario quiera cambiar el rol de un colaborador con activo a visitante
+            $('#botonCambiarRol').click(function(){
+                $('#modalCambioRol').modal("show");
+            });
+
+            //Botón que hace una petición Ajax hacia el servidor para cambiar el rol de un colaborador con activo a visitante y eliminar su registro de la tabla de se_activos
+            $('#botonConfirmar').click(function(){
+                $.ajax({
+                    url: "/colaboradores/cambiar_rol/" + $('#inputId').val(),
+                    type: 'DELETE',
+                    success: function(res) {
+                        window.location.reload();
+                    },
+                    error: function() {
+                        console.log('Error tratando de cambiar el rol del colaborador');
+                    }
+                });
+            });
 
             //Boton que permite ocultar el formulario de editar
             $('#botonCerrar').click(function(){

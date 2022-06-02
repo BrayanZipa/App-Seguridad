@@ -49,6 +49,7 @@ Route::get('/colaboradores/crear', [ColaboradorController::class, 'create'])->na
 Route::post('/colaboradores/crear', [ColaboradorController::class, 'store'])->name('crearColaborador')->middleware('auth');
 Route::get('/colaboradores/informacion', [ColaboradorController::class, 'informacionColaboradores'])->name('mostrarInfoColaboradores')->middleware('auth'); 
 Route::put('/colaboradores/editar/{id}', [ColaboradorController::class, 'update'])->name('editarColaborador')->middleware('auth');
+Route::delete('/colaboradores/cambiar_rol/{id}', [ColaboradorController::class, 'destroy'])->name('cambiarRol')->middleware('auth');
 
 Route::get('/colaboradores/persona', [ColaboradorController::class, 'getColaborador'])->name('colaborador')->middleware('auth');
 Route::get('/colaboradores/computadores', [ColaboradorController::class, 'getComputadores'])->name('computadores')->middleware('auth');

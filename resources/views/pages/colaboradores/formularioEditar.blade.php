@@ -1,7 +1,7 @@
 <div class="row mb-n2">
     <div class="col-md-12">
         <form id="form_EditarColaborador" action="" method="POST" novalidate>
-            @csrf
+            @csrf  
             @method('PUT')
             <div class="card card-primary">
                 <div class="card-header">
@@ -151,17 +151,11 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
-                    <button met type='submit' class="btn btn-primary">Actualizar</button>
-                    <form method="POST" action="{{ route('nombre', ['id' => 'id']) }}">
-                        @csrf
-                        @method('DELETE')
-                        <button type='submit' class="btn btn-danger">Cambiar a visitante</button>
-                    </form>
-                    
+                    <button id="botonActualizar" type='submit' class="btn btn-primary">Actualizar</button>
+                    <button id="botonCambiarRol" type='button' class="btn btn-danger" style="display: none">Cambiar a visitante</button>
                 </div>
                 <!-- /.card-footer-->
             </div>

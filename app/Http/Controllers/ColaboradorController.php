@@ -300,6 +300,19 @@ class ColaboradorController extends Controller
     }
 
     /**
+     * Remove the specified resource from storage.
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    { 
+        $this->activos->existeActivoEliminar($id);
+        $colaborador = $this->colaboradores->obtenerPersona($id);
+        $colaborador->id_tipo_persona = 1;
+        $colaborador->save();
+    }
+
+    /**
      * Función que permite traer la información de los modelos de la Eps, Arl y Empresa
      */
     public function obtenerModelos()
@@ -417,7 +430,6 @@ class ColaboradorController extends Controller
                 $email = $correo['email'];
             }
         }
-
         return $email;
     }
 
@@ -449,7 +461,6 @@ class ColaboradorController extends Controller
         }
 
         [$eps, $arl, $tipoVehiculos, $marcaVehiculos, $empresas] = $this->obtenerModelos2();
-
         return view('pages.colaboradores.prueba', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos', 'empresas', 'computadores'));
     }
 
@@ -507,5 +518,4 @@ class ColaboradorController extends Controller
 
         return $response;
     }
-
 }

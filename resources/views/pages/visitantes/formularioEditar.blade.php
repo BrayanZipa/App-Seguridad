@@ -3,6 +3,7 @@
         <form id="form_editar" action="" method="POST" novalidate>
             @csrf
             @method('PUT')
+            {{-- <input id="metodoForm" type="hidden" name="_method" value=""> --}}
             <div class="card card-primary">
                 <div class="card-header">
                     <h3 class="card-title">Actualizar visitante</h3>

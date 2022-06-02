@@ -27,19 +27,6 @@ class Activo extends Model
     }
 
     /**
-     * Función que permite saber si un activo existe en la base de datos por medio de su código único y si es el caso lo elimina de la misma.
-     */
-    public function existeActivoEliminar($codigo){
-        try {
-            if (Activo::where('codigo', $codigo)->exists()){
-                Activo::where('codigo', $codigo)->delete();
-            }
-        } catch (\Throwable $th) {
-            return response()->json(['message' => 'Error al consultar la información de la base de datos'], 500);
-        }
-    }
-
-    /**
      * Función que permite saber si ya existe un activo con un código en específico, si es el caso el campo del código del activo quedará nulo en la base de datos
      */
     public function verificarActivo($codigo){
@@ -62,5 +49,18 @@ class Activo extends Model
             return response()->json(['message' => 'Error al consultar la información de la base de datos'], 500);
         }
         return $response;
+    }
+
+    /**
+     * Función que permite saber si un activo existe en la base de datos por medio del id del propietario y si es el caso lo elimina de la misma.
+     */
+    public function existeActivoEliminar($idColaborador){
+        try {
+            if (Activo::where('id_persona', $idColaborador)->exists()){
+                Activo::where('id_persona', $idColaborador)->delete();
+            }
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error al eliminar el registro del activo de la base de datos'], 500);
+        }
     }
 }

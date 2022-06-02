@@ -25,7 +25,7 @@
                             <div class="form-group">
                                 <label for="inputNombre">Nombre</label>
                                 <input type="text" class="colaborador form-control {{ $errors->has('nombre') ? 'is-invalid' : '' }}" id="inputNombre" name="nombre" value="{{ old('nombre') }}"
-                                    placeholder="Nombre" autocomplete="off" required>
+                                    placeholder="Nombre" autocomplete="off" readonly required>
                                     @if ($errors->has('nombre')) 
                                         <div class="invalid-feedback">
                                             {{ $errors->first('nombre') }}
@@ -37,7 +37,7 @@
                             <div class="form-group">
                                 <label for="inputApellido">Apellido</label>
                                 <input type="text" class="colaborador form-control {{ $errors->has('apellido') ? 'is-invalid' : '' }}" id="inputApellido" name="apellido" value="{{ old('apellido') }}"
-                                    placeholder="Apellido" autocomplete="off" required>
+                                    placeholder="Apellido" autocomplete="off" readonly required>
                                     @if ($errors->has('apellido')) 
                                         <div class="invalid-feedback">
                                             {{ $errors->first('apellido') }}
@@ -48,7 +48,7 @@
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label for="inputIdentificacion">Identificación</label>
-                                <input type="text" class="colaborador form-control {{ $errors->has('identificacion') ? 'is-invalid' : '' }}" id="inputIdentificacion" name="identificacion" value="{{ old('identificacion') }}" placeholder="Identificación" autocomplete="off" required>
+                                <input type="text" class="colaborador form-control {{ $errors->has('identificacion') ? 'is-invalid' : '' }}" id="inputIdentificacion" name="identificacion" value="{{ old('identificacion') }}" placeholder="Identificación" autocomplete="off" readonly required>
                                     @if ($errors->has('identificacion')) 
                                         <div class="invalid-feedback">
                                             {{ $errors->first('identificacion') }}
