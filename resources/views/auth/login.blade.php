@@ -2,16 +2,18 @@
 
 @section('content')
 {{-- <div class="row justify-content-center"> --}}
-    <div class="login-box p-0">
+    <div class="login-box p-0" style="margin-top: -100px">
         <!-- /.login-logo -->
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
-                <div class="mb-4">
-                    <img src="../assets/imagenes/aviomar.png" height="62px" alt="">
-                    <img class="ml-4" src="../assets/imagenes/snider.png" height="62px" alt="">
-                    <img class="ml-4" src="../assets/imagenes/colvan.png" height="62px" alt="">
+                {{-- <div class="mb-4">
+                    <img src="{{ asset('assets/imagenes/aviomar.png') }}" height="62px" alt="">
+                    <img class="ml-4" src="{{ asset('assets/imagenes/snider.png') }}" height="62px" alt="">
+                    <img class="ml-4" src="{{ asset('assets/imagenes/colvan.png') }}" height="62px" alt="">
                 </div>
-                <h2><b>Seguridad</b></h2>
+                <h2><b>VISIÓN</b></h2> --}}
+                <img  src="{{ asset('assets/imagenes/logo.png') }}"  alt="">
+
             </div>
             <div class="card-body">
                 <p class="login-box-msg">Ingresa para iniciar sesión</p>

@@ -212,13 +212,15 @@ class ColaboradorController extends Controller
     {
         $datos['codigo'] = ucfirst($datos['codigo']);
         $this->activos->verificarActivo($datos['codigo']); 
-        $activo = Activo::create([
-            'activo' => 'Computador',
-            'codigo' => $datos['codigo'],
-            'id_persona' => $id_persona,
-            'id_usuario' => $datos['id_usuario'],
-        ]);
-        $activo->save();
+
+        $activo = Activo::updateOrCreate(
+            ['id_persona' => $id_persona],
+            [
+                'activo' => 'Computador',
+                'codigo' => $datos['codigo'],
+                'id_usuario' => $datos['id_usuario'],
+            ]
+        );
         return $activo->codigo;
     }
 
@@ -279,7 +281,6 @@ class ColaboradorController extends Controller
      */
     public function update(RequestColaborador $request, $id)
     {
-
         $colaborador = $request->all();
         $colaborador['nombre'] = ucwords(mb_strtolower($colaborador['nombre']));
         $colaborador['apellido'] = ucwords(mb_strtolower($colaborador['apellido']));

@@ -1,10 +1,10 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="{{ route('home') }}" class="brand-link">
-        <img src="{{asset('assets/lte/dist/img/AdminLTELogo.png')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-            style="opacity: .8">
-        <span class="brand-text font-weight-light">Control de seguridad</span>
+        <img src="{{asset('assets/imagenes/logo_sidebar.png')}}" alt="Logo" class="brand-image">
+        <span class="brand-text font-weight-light">VISIÓN - SEGURIDAD</span>
     </a>
+
 
     <!-- Sidebar -->
     <div class="sidebar">

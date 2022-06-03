@@ -5,6 +5,8 @@
 @endsection
 
 @section('css')
+    <!-- Token de Laravel -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- DataTables -->
     <link rel="stylesheet" href="{{ asset('assets/lte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/lte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
@@ -34,6 +36,13 @@
     <!-- JavaScript propio-->
     <script>
         $(function() {
+
+            //Token de Laravel
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
 
             //Uso de DataTables para mostrar la información de todos los colaboradores creados
             $('#tabla_colaboradores').DataTable({
@@ -196,6 +205,25 @@
                     activarSelect2();
                 }
             })();
+
+            //Botón que permite desplegar un modal de confirmación cuando el usuario quiera cambiar el rol de un colaborador con activo a visitante
+            $('#botonCambiarRol').click(function(){
+                $('#modalCambioRol').modal("show");
+            });
+
+            //Botón que hace una petición Ajax hacia el servidor para cambiar el rol de un colaborador sin activo a visitante
+            $('#botonConfirmar').click(function(){
+                $.ajax({
+                    url: "/colaboradores/cambiar_rol/" + $('#inputId').val(),
+                    type: 'DELETE',
+                    success: function(res) {
+                        window.location.reload();
+                    },
+                    error: function() {
+                        console.log('Error tratando de cambiar el rol del colaborador');
+                    }
+                });
+            });
 
             //Boton que permite ocultar el formulario de editar
             $('#botonCerrar').click(function(){

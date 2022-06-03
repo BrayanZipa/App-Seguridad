@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Control de seguridad'),
+    'name' => env('APP_NAME', 'Visión - Control de seguridad'),
 
     /*
     |--------------------------------------------------------------------------

@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Control de seguridad') }}</title>
+    <title>{{ config('app.name', 'Visión - Control de seguridad') }}</title>
     <link rel="shortcut icon" href="{{ asset('assets/imagenes/icono.png') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
@@ -87,7 +87,7 @@
             </div>
         </nav> --}}
         
-        <main class="py-4  hold-transition login-page">
+        <main class="py-4 hold-transition login-page">
             @yield('content')
         </main>
     </div>

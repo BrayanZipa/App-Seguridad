@@ -5,7 +5,7 @@
 @endsection
 
 @section('css')
-    <!-- Token -->
+    <!-- Token de Laravel -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- DataTables -->
     <link rel="stylesheet" href="{{ asset('assets/lte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
@@ -37,6 +37,7 @@
     <script>
         $(function() {
 
+            //Token de Laravel
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
