@@ -5,7 +5,6 @@
         <span class="brand-text font-weight-light">VISIÓN - SEGURIDAD</span>
     </a>
 
-
     <!-- Sidebar -->
     <div class="sidebar">
         <!-- Sidebar user (optional) -->
@@ -17,15 +16,34 @@
                 <a href="#" class="d-block text-wrap">{{auth()->user()->name}}</a>
             </div>
         </div>
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex">      
-            <form action="{{ route('logout') }}" method="POST">
+        <div class="user-panel mt-n2">  
+            <nav class="mb-1">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <i class="nav-icon fa fa-power-off" style="color: rgba(255, 0, 0, 0.795)"></i>  
+                            <p class="ml-1">
+                                Logout
+                            </p>
+                        </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                            @csrf
+                        </form>
+                    </li>
+                </ul>
+            </nav>
+            {{-- <form action="{{ route('logout') }}" method="POST">
                 @csrf
                 <button type="submit" class="btn btn-block btn-info">
                     <i class="nav-icon fa fa-power-off"></i>
-                    Logout                 
+                    <div id="botonOff" class="ml-1" style="display: inline">
+                        Logout 
+                    </div>                
                 </button>
-            </form>     
+            </form>   --}}
         </div>
+
+
         <!-- SidebarSearch Form -->
         {{-- <div class="form-inline">
             <div class="input-group" data-widget="sidebar-search">
@@ -41,8 +59,7 @@
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
+                <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
                 <li class="nav-item">
                     <a href="{{ route('home') }}" class="nav-link {{ Request::is('home') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>

@@ -24,7 +24,7 @@
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label for="inputCodigo">Activo</label>
-                                <input type="text" class="colaborador form-control {{ $errors->has('codigo') ? 'is-invalid' : '' }}" id="inputCodigo" name="codigo" value="{{ old('codigo') }}" placeholder="Activo" autocomplete="off" required>
+                                <input type="text" class="colaborador form-control {{ $errors->has('codigo') ? 'is-invalid' : '' }}" id="inputCodigo" name="codigo" value="{{ old('codigo') }}" placeholder="Activo" autocomplete="off" readonly required>
                                     @if ($errors->has('codigo')) 
                                         <div id="mensajeCodigo" class="invalid-feedback">
                                             {{ $errors->first('codigo') }}
