@@ -46,70 +46,70 @@
 
             //Uso de DataTables para mostrar la información de todos los colaboradores creados
             $('#tabla_colaboradores').DataTable({
-                "destroy": true,
-                "processing": true,
+                'destroy': true,
+                'processing': true,
+                'responsive': true,
+                'autoWidth': false,
                 // "serverSide": true,
-                "responsive": true,
-                "autoWidth": false,
                 // "scrollY": '300px',
-                "ajax": {
-                    "url" : "{{ route('mostrarInfoColaboradores') }}",
-                    "data" : { "tipoPersona" : 3 },
-                    "type" : 'get'
+                'ajax': {
+                    'url' : "{{ route('mostrarInfoColaboradores') }}",
+                    'data' : { 'tipoPersona' : 3 },
+                    'type' : 'get'
                 },
-                "columns": [
+                'columns': [
                     {
-                        "data": 'id_personas',
-                        "name": 'id_personas'
+                        'data': 'id_personas',
+                        'name': 'id_personas'
                     },
                     {
-                        "data": 'nombre',
-                        "name": 'nombre'
+                        'data': 'nombre',
+                        'name': 'nombre'
                     },
                     {
-                        "data": 'apellido',
-                        "name": 'apellido',
+                        'data': 'apellido',
+                        'name': 'apellido',
                     },
                     {
-                        "data": 'identificacion',
-                        "name": 'identificacion',
+                        'data': 'identificacion',
+                        'name': 'identificacion',
                     },
                     {
-                        "data": null, 
-                        "name": 'activo',
+                        'data': null, 
+                        'name': 'activo',
                         render: function ( data, type, row ) {
                             return data.activo+' '+data.codigo;
                         }
                     },
                     {
-                        "data": 'eps',
-                        "name": 'eps',
+                        'data': 'eps',
+                        'name': 'eps',
                     },
                     {
-                        "data": 'arl',
-                        "name": 'arl',
+                        'data': 'arl',
+                        'name': 'arl',
                     },
                     {
-                        "data": 'tel_contacto',
-                        "name": 'tel_contacto',
+                        'data': 'tel_contacto',
+                        'name': 'tel_contacto',
                     },      
                     {
-                        "data": 'empresa',
-                        "name": 'empresa',
+                        'data': 'empresa',
+                        'name': 'empresa',
                     },
                     {
-                        "data": 'email',
-                        "name": 'email',
+                        'data': 'email',
+                        'name': 'email',
                     },
                     {
-                        "data": 'name',
-                        "name": 'name',
+                        'data': 'name',
+                        'name': 'name',
                     },
                     {
-                        "class": 'editar_colaborador',
-                        "orderable": false,
-                        "data": null,
-                        "defaultContent": '<td>' +
+                        'class': 'editar_colaborador',
+                        'orderable': false,
+                        'data': null,
+                        'defaultContent': '<td>' +
                             '<div class="action-buttons text-center">' +
                             '<a href="#" class="btn btn-primary btn-icon btn-sm">' +
                             '<i class="fas fa-edit"></i>' +
@@ -117,21 +117,22 @@
                             '</div>' +
                             '</td>',
                     }],
-                "lengthChange": true,
-                "lengthMenu": [
-                    [5, 10, 25, 50, 75, 100, -1],
-                    [5, 10, 25, 50, 75, 100, 'ALL']
+                'order': [[0, 'desc']], 
+                'lengthChange': true,
+                'lengthMenu': [
+                    [7, 10, 25, 50, 75, 100, -1],
+                    [7, 10, 25, 50, 75, 100, 'ALL']
                 ],
-                "language": {
-                    "lengthMenu": "Mostrar _MENU_ registros por página",
-                    "zeroRecords": "No hay registros",
-                    "info": "Mostrando página _PAGE_ de _PAGES_",
-                    "infoEmpty": "No hay registros disponibles",
-                    "infoFiltered": "(filtrado de _MAX_ registros totales)",
-                    "search": "Buscar:",
-                    "paginate": {
-                        "next": "Siguiente",
-                        "previous": "Anterior"
+                'language': {
+                    'lengthMenu': 'Mostrar _MENU_ registros por página',
+                    'zeroRecords': 'No hay registros',
+                    'info': 'Mostrando página _PAGE_ de _PAGES_',
+                    'infoEmpty': 'No hay registros disponibles',
+                    'infoFiltered': '(filtrado de _MAX_ registros totales)',
+                    'search': 'Buscar:',
+                    'paginate': {
+                        'next': 'Siguiente',
+                        'previous': 'Anterior'
                     }
                 }       
             });
@@ -164,13 +165,13 @@
             // Se elije una fila de la tabla y se toma la información del colaborador para mostrarla en un formulario y permitir actualizarla
             $('#tabla_colaboradores tbody').on('click', '.editar_colaborador', function () { 
                 var data = $('#tabla_colaboradores').DataTable().row(this).data();  
-
+                
                 if($('.colaborador').hasClass('is-invalid')){ $('.colaborador').removeClass("is-invalid"); }           
                 if($('#mensajeError').length){ $('#mensajeError').remove(); }  
                 if($('#mensajeCodigo').length){ $('#mensajeCodigo').remove(); } 
 
                 $('#formEditarColaborador').css("display", "block");  
-                $('#form_EditarColaborador').attr('action','http://127.0.0.1:8000/colaboradores/editar/' + data.id_personas); 
+                $('#form_EditarColaborador').attr('action','/colaboradores/editar/' + data.id_personas); 
                 $('#metodoForm').attr('value', 'PUT'); 
                 
                 $('#inputId').val(data.id_personas); 

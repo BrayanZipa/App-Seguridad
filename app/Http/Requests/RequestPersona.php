@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use PhpParser\Node\Stmt\Else_;
 
 class RequestPersona extends FormRequest
 {
@@ -45,6 +44,8 @@ class RequestPersona extends FormRequest
             $validacion = [
                 'id_eps' => 'nullable|integer',         
                 'id_arl' => 'nullable|integer',  
+                'activo' => 'nullable|string|alpha|max:20|min:3',
+                'codigo' => 'nullable|string|alpha_num|unique:se_activos,codigo,'.$this->id.',id_persona|max:5|min:4', 
             ];
             return array_merge($this->validacionGeneral(), $validacion);
         }
@@ -94,6 +95,17 @@ class RequestPersona extends FormRequest
 
             'foto.required' => 'Se requiere que tome una foto de la persona',
             'foto.string' => 'La información de la foto debe estar en formato de texto',  
+
+            'activo.string' => 'El nombre del activo debe ser de tipo texto',
+            'activo.alpha' => 'El nombre del activo solo debe contener valores alfabéticos y sin espacios',
+            'activo.max' => 'El nombre del activo no puede tener más de 20 caracteres',
+            'activo.min' => 'El nombre del activo no puede tener menos de 3 caracteres',
+
+            'codigo.string' => 'El código del activo debe ser de tipo texto',
+            'codigo.alpha_num' => 'El código del activo solo debe contener valores alfanuméricos y sin espacios',
+            'codigo.unique' => 'No puede haber más de un activo con el mismo código',
+            'codigo.max' => 'El código del activo no puede tener más de 5 caracteres',
+            'codigo.min' => 'El código del activo no puede tener menos de 4 caracteres',
         ];
     }
 

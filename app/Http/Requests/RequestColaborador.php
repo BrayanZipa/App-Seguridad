@@ -58,7 +58,7 @@ class RequestColaborador extends FormRequest
         return [
             'codigo.required' => 'Se requiere que ingrese el código del activo',
             'codigo.string' => 'El código del activo debe ser de tipo texto',
-            'codigo.alpha_num' => 'El código del activo solo debe contener valores alfanuméricos',
+            'codigo.alpha_num' => 'El código del activo solo debe contener valores alfanuméricos y sin espacios',
             // 'codigo.unique' => 'No puede haber más de un activo con el mismo código',
             'codigo.max' => 'El código del activo no puede tener más de 5 caracteres',
             'codigo.min' => 'El código del activo no puede tener menos de 4 caracteres',
@@ -104,7 +104,7 @@ class RequestColaborador extends FormRequest
             'identificador.required' => 'Se requiere que ingrese el número identificador del vehículo',
             'identificador.string' => 'El número identificador debe ser de tipo texto',
             'identificador.unique' => 'No puede haber dos vehículos con el mismo número identificador',
-            'identificador.alpha_num' => 'El identificador solo debe contener valores alfanuméricos y no debe contener espacios',
+            'identificador.alpha_num' => 'El identificador solo debe contener valores alfanuméricos y sin espacios',
             'identificador.max' => 'El identificador del vehículo no puede tener más de 15 caracteres',
             'identificador.min' => 'El identificador del vehículo no puede tener menos de 6 caracteres',
 

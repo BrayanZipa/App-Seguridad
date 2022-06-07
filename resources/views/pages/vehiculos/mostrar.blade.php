@@ -39,9 +39,9 @@
             $('#tabla_vehiculos').DataTable({
                 "destroy": true,
                 "processing": true,
-                // "serverSide": true,
                 "responsive": true,
                 "autoWidth": false,
+                // "serverSide": true,
                 // "scrollY": '300px',
                 "ajax": "{{ route('mostrarInfoVehiculos') }}",
                 "columns": [

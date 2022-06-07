@@ -26,11 +26,12 @@ class VisitanteController extends Controller
     protected $tipoVehiculos;
     protected $marcaVehiculos;
     protected $empresas;
+    protected $activos;
 
     /**
      * Contructor que inicializa todos los modelos
      */
-    public function __construct(Persona $visitantes, Eps $eps, Arl $arl, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, Empresa $empresas)
+    public function __construct(Persona $visitantes, Eps $eps, Arl $arl, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, Empresa $empresas, Activo $activos)
     {
         $this->visitantes = $visitantes;
         $this->eps = $eps;
@@ -38,6 +39,7 @@ class VisitanteController extends Controller
         $this->tipoVehiculos = $tipoVehiculos;
         $this->marcaVehiculos = $marcaVehiculos;
         $this->empresas = $empresas;
+        $this->activos = $activos;
     }
 
     /**
@@ -282,11 +284,30 @@ class VisitanteController extends Controller
      */
     public function update(RequestPersona $request, $id)
     {
-        $visitante = $request->all();
+        $visitante = $request->all();    
         $visitante['nombre'] = ucwords(mb_strtolower($visitante['nombre']));
         $visitante['apellido'] = ucwords(mb_strtolower($visitante['apellido']));
         // $visitante = Visitante::find($id)->fill($request->all())->save();
         Persona::findOrFail($id)->update($visitante);
+        // return $visitante;
+
+        if(isset($visitante['codigo'])){ 
+            $visitante['codigo'] = ucfirst($visitante['codigo']);
+            if(isset($visitante['activo'])){
+                $visitante['activo'] = ucwords(mb_strtolower($visitante['activo']));
+            } else {
+                $visitante['activo'] = 'Computador';
+            }
+            
+            Activo::updateOrCreate(
+                ['id_persona' => $id],
+                [
+                    'activo' => $visitante['activo'],
+                    'codigo' => $visitante['codigo'],
+                    'id_usuario' => auth()->user()->id_usuarios,
+                ]
+            );
+        }
         return redirect()->action([VisitanteController::class, 'index'])->with('editar_visitante', $visitante['nombre']." ".$visitante['apellido']);
     }
 
@@ -338,7 +359,7 @@ class VisitanteController extends Controller
             'identificador.required' => 'Se requiere que ingrese el número identificador del vehículo',
             'identificador.string' => 'El número identificador debe ser de tipo texto',
             'identificador.unique' => 'No puede haber dos vehículos con el mismo número identificador',
-            'identificador.alpha_num' => 'El identificador solo debe contener valores alfanuméricos y no debe contener espacios',
+            'identificador.alpha_num' => 'El identificador solo debe contener valores alfanuméricos y sin espacios',
             'identificador.max' => 'El identificador del vehículo no puede tener más de 15 caracteres',
             'identificador.min' => 'El identificador del vehículo no puede tener menos de 6 caracteres',
 
@@ -362,13 +383,13 @@ class VisitanteController extends Controller
         ],[
             'activo.required' => 'Se requiere que ingrese el nombre del activo',
             'activo.string' => 'El nombre del activo debe ser de tipo texto',
-            'activo.alpha' => 'El nombre del activo solo debe contener valores alfabéticos',
+            'activo.alpha' => 'El nombre del activo solo debe contener valores alfabéticos y sin espacios',
             'activo.max' => 'El nombre del activo no puede tener más de 20 caracteres',
             'activo.min' => 'El nombre del activo no puede tener menos de 3 caracteres',
 
             'codigo.required' => 'Se requiere que ingrese el código del activo',
             'codigo.string' => 'El código del activo debe ser de tipo texto',
-            'codigo.alpha_num' => 'El código del activo solo debe contener valores alfanuméricos',
+            'codigo.alpha_num' => 'El código del activo solo debe contener valores alfanuméricos y sin espacios',
             'codigo.unique' => 'No puede haber más de un activo con el mismo código',
             'codigo.max' => 'El código del activo no puede tener más de 5 caracteres',
             'codigo.min' => 'El código del activo no puede tener menos de 4 caracteres',

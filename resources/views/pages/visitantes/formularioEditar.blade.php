@@ -127,6 +127,31 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="inputActivo">Ingrese el tipo de activo</label>
+                                        <input type="text" class="visitante form-control {{ $errors->has('activo') ? 'is-invalid' : '' }}" id="inputActivo" name="activo" value="{{ old('activo') }}" autocomplete="off" placeholder="Tipo de activo">
+                                            @if ($errors->has('activo')) 
+                                                <div class="invalid-feedback">
+                                                    {{ $errors->first('activo') }}
+                                                </div>          
+                                            @endif 
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="inputCodigo">Actualizar activo</label>
+                                        <input type="text" class="visitante form-control {{ $errors->has('codigo') ? 'is-invalid' : '' }}" id="inputCodigo" name="codigo"
+                                            value="{{ old('codigo') }}" autocomplete="off" placeholder="Código">
+                                            @if ($errors->has('codigo')) 
+                                                <div class="invalid-feedback">
+                                                    {{ $errors->first('codigo') }}
+                                                </div>          
+                                            @endif 
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
