@@ -14,7 +14,7 @@
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal"
                         style="width: 100px">Si</button>
-                    <button type="submit" class="botonContinuar btn btn-primary">Continuar</button>
+                    <button type="submit" class="botonContinuar2 btn btn-primary">Continuar</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -64,7 +64,7 @@
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal"
                         style="width: 100px">Si</button>
-                    <button type="submit" class="botonContinuar btn btn-primary">Continuar</button>
+                    <button type="submit" class="botonContinuar2 btn btn-primary">Continuar</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -114,7 +114,7 @@
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal"
                         style="width: 100px">Si</button>
-                    <button type="submit" class="botonContinuar btn btn-primary">Continuar</button>
+                    <button type="submit" class="botonContinuar2 btn btn-primary">Continuar</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -164,7 +164,7 @@
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal"
                         style="width: 100px">Si</button>
-                    <button type="submit" class="botonContinuar btn btn-primary">Continuar</button>
+                    <button type="submit" class="botonContinuar2 btn btn-primary">Continuar</button>
                 </div>
             </div>
             <!-- /.modal-content -->

@@ -53,7 +53,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="selectTipoVehiculo">Actualizar tipo de vehículo</label>
-                                        <select id="selectTipoVehiculo" class="vehiculo  select2bs4 form-control {{ $errors->has('id_tipo_vehiculo') ? 'is-invalid' : '' }}"
+                                        <select id="selectTipoVehiculo" class="vehiculo select2bs4 form-control {{ $errors->has('id_tipo_vehiculo') ? 'is-invalid' : '' }}"
                                             style="width: 100%;" name="id_tipo_vehiculo" required>
                                             <option selected="selected" value="" disabled></option>
                                             @foreach ($tipoVehiculos as $tipoVehiculo)

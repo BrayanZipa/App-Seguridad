@@ -14,9 +14,8 @@
 
     <div class="card-body mb-n4">
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm-8">
                 <div class="form-group">
-                    {{-- <label for="selectPersona">Buscar persona</label> --}}
                     <select id="selectPersona" class="colaborador2 form-control" style="width: 100%;" name="persona">
                         <option selected="selected" value="" disabled></option>
                         @foreach ($personas as $persona)

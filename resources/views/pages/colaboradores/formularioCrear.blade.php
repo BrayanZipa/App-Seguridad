@@ -14,7 +14,7 @@
 
     <div class="card-body mb-n4">
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm-8">
                 <div class="form-group">
                     <select id="selectIdentificacion"  name="selectIdentificacion" class="colaborador form-control" style="width: 100%;">
                         <option selected="selected" value="" disabled></option>

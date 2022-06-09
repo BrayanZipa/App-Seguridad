@@ -376,7 +376,6 @@ $(function () {
     // Función que permite mantener la fotografía tomada previamente al visitante en caso de que haya errores al enviar el formulario crear visitante
     function retornarFotoVisitante() {
         var inputFoto = document.getElementById('inputFoto').value;
-        // var video = document.getElementById("video");
         var canvas = document.getElementById('canvas');
         var contexto = canvas.getContext('2d');
 
@@ -399,7 +398,6 @@ $(function () {
     //Función que permite mantener la fotografía tomada previamente al vehículo en caso de que haya errores al enviar el formulario crear vehículo
     function retornarFotoVehiculo() {
         var inputFotoVehiculo = document.getElementById('inputFotoVehiculo').value;
-        // var video2 = document.getElementById("video2");
         var canvas2 = document.getElementById('canvas2');
         var contexto2 = canvas2.getContext('2d');
 

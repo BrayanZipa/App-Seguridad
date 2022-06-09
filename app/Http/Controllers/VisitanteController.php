@@ -256,26 +256,6 @@ class VisitanteController extends Controller
         }
     }
 
-    /*  public function show($id)
-    {
-        $visitante = $this->visitantes->obtenerVisitante($id);
-        return view('pages.visitantes.ver', ['visitante' => $visitante]);
-    } */
-
-    /**
-     * Show the form for editing the specified resource.
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    /* public function edit($id)
-    {
-        $visitante = $this->visitantes->obtenerVisitante($id);
-        [$eps, $arl] = $this->obtenerModelos();  
-        $datoIndividual = array($this->eps->obtenerEpsIndividual($visitante->id_eps), $this->arl->obtenerArlIndividual($visitante->id_arl));
-        // dd(compact('visitante', 'eps', 'arl', 'datoIndividual'));
-        return view('pages.visitantes.editar', compact('visitante', 'eps', 'arl', 'datoIndividual')); 
-    } */
-
     /**
      * Update the specified resource in storage.
      * @param  \Illuminate\Http\Request  $request
@@ -287,9 +267,7 @@ class VisitanteController extends Controller
         $visitante = $request->all();    
         $visitante['nombre'] = ucwords(mb_strtolower($visitante['nombre']));
         $visitante['apellido'] = ucwords(mb_strtolower($visitante['apellido']));
-        // $visitante = Visitante::find($id)->fill($request->all())->save();
         Persona::findOrFail($id)->update($visitante);
-        // return $visitante;
 
         if(isset($visitante['codigo'])){ 
             $visitante['codigo'] = ucfirst($visitante['codigo']);
@@ -310,19 +288,6 @@ class VisitanteController extends Controller
         }
         return redirect()->action([VisitanteController::class, 'index'])->with('editar_visitante', $visitante['nombre']." ".$visitante['apellido']);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    /* public function destroy($id)
-    {
-        $visitante = Visitante::find($id);
-        // $visitante = $this->visitantes->obtenerVisitante($id);
-        $visitante->delete();
-        return redirect()->action([VisitanteController::class, 'index']);
-    } */
 
     /**
      * Función que permite traer la información de los modelos de la Eps, Arl, TipoVehiculo y MarcaVehiculo

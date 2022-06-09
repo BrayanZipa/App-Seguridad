@@ -32,7 +32,7 @@ Auth::routes();
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 /**
- * Rutas del modulo de visitantes
+ * Rutas del módulo de visitantes
  */
 Route::get('/visitantes', [VisitanteController::class, 'index'])->name('mostrarVisitantes')->middleware('auth');
 Route::get('/visitantes/crear', [VisitanteController::class, 'create'])->name('formCrearVisitante')->middleware('auth');
@@ -41,7 +41,7 @@ Route::get('/visitantes/informacion', [VisitanteController::class, 'informacionV
 Route::put('/visitantes/editar/{id}', [VisitanteController::class, 'update'])->name('editarVisitante')->middleware('auth');
 
 /**
- * Rutas del modulo de colaboradores
+ * Rutas del módulo de colaboradores
  */
 Route::get('/colaboradores_con_activo', [ColaboradorController::class, 'index'])->name('mostrarColaboradores')->middleware('auth');
 Route::get('/colaboradores_sin_activo', [ColaboradorController::class, 'index2'])->name('mostrarColaboradores2')->middleware('auth');
@@ -58,7 +58,7 @@ Route::get('/colaboradores/personacreada', [ColaboradorController::class, 'getPe
 Route::get('/colaboradores/colaboradoridentificado', [ColaboradorController::class, 'getColaboradorIdentificacion'])->name('colaboradoridentificado')->middleware('auth');
 
 /**
- * Rutas del modulo de conductores
+ * Rutas del módulo de conductores
  */
 Route::get('/conductores', [ConductorController::class, 'index'])->name('mostrarConductores')->middleware('auth');
 Route::get('/conductores/crear', [ConductorController::class, 'create'])->name('formCrearConductor')->middleware('auth');
