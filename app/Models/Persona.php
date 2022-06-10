@@ -16,7 +16,7 @@ class Persona extends Model
     protected $primaryKey = 'id_personas';
 
     /**
-     * Función que permite retornar a un grupo de personas en específico (Visitantes, Colaboradores, Conductores).
+     * Función que permite retornar a un grupo de personas en específico (Visitantes, Colaboradores, Colaboradores con activo, Conductores).
      */
     public function obtenerPersonas($tipoPersona){
         try {
