@@ -2,8 +2,8 @@
         <div class="card-header">
             <h3 class="card-title">Crear nuevo activo</h3>
             <div class="card-tools">
-                <button id="botonComprimirActivo" type="button" class="btn btn-tool" data-card-widget="collapse"><i
-                        class="fas fa-minus"></i>
+                <button id="botonComprimirActivo" type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
                 </button>
                 <button id="botonCerrar3" type="button" class="btn btn-tool">
                     <i class="fas fa-times"></i>

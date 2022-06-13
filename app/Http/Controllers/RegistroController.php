@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Arl;
+use App\Models\Empresa;
 use App\Models\Eps;
 use App\Models\Persona;
 use App\Models\Registro;
@@ -22,12 +23,13 @@ class RegistroController extends Controller
     protected $marcaVehiculos;
     protected $empresas;
 
-    public function __construct(Registro $registros, TipoPersona $tipoPersonas, Persona $personas, Eps $eps, Arl $arl){
+    public function __construct(Registro $registros, TipoPersona $tipoPersonas, Persona $personas, Eps $eps, Arl $arl, Empresa $empresas){
         $this->registros = $registros;
         $this->tipoPersonas = $tipoPersonas;
         $this->personas = $personas;
         $this->eps = $eps;
         $this->arl = $arl;
+        $this->empresas = $empresas;
     }
 
     /**
@@ -52,7 +54,8 @@ class RegistroController extends Controller
         $eps = $this->eps->obtenerEps();
         $arl = $this->arl->obtenerArl();
         $tipoPersonas = $this->tipoPersonas->obtenerTipoPersona();
-        return view('pages.registros.crear',  compact('eps', 'arl', 'tipoPersonas'));
+        $empresas = $this->empresas->obtenerEmpresas();
+        return view('pages.registros.crear',  compact('eps', 'arl', 'tipoPersonas', 'empresas'));
     }
 
     /**
@@ -63,7 +66,7 @@ class RegistroController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return $request->all();
     }
 
     /**

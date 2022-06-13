@@ -4,8 +4,8 @@
     <div class="card-header pb-1">
         <h3 class="card-title">Crear nuevo colaborador</h3>
         <div class="card-tools">
-            <button id="botonComprimirColaborador2" type="button" class="btn btn-tool pb-3 mr-n3" data-card-widget="collapse"><i
-                    class="fas fa-minus"></i>
+            <button id="botonComprimirColaborador2" type="button" class="btn btn-tool pb-3 mr-n3" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
             </button>
         </div>
         <!-- /.card-tools -->

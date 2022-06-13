@@ -130,7 +130,7 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="inputActivo">Ingrese el tipo de activo</label>
+                                        <label for="inputActivo">Actualizar el tipo de activo</label>
                                         <input type="text" class="visitante form-control {{ $errors->has('activo') ? 'is-invalid' : '' }}" id="inputActivo" name="activo" value="{{ old('activo') }}" autocomplete="off" placeholder="Tipo de activo">
                                             @if ($errors->has('activo')) 
                                                 <div class="invalid-feedback">
