@@ -53,9 +53,6 @@
 
             //Función que permite que se despliegue otro select en el cual se puede buscar y seleccionar al propietario del vehículo
             function listarPersonas() {
-                // if($('#selectPersona').hasClass('is-invalid')){
-                //     $('#selectPersona').removeClass('is-invalid');
-                // }  
                 $('#selectPersona').empty();     
 
                 $.ajax({
@@ -84,6 +81,9 @@
             }); 
 
             $('#selectPersona').change(function() { 
+                if($('.registros').hasClass('is-invalid')){
+                    $('.registros').removeClass('is-invalid');
+                }  
                 $.ajax({
                     url: '/registros/persona',
                     type: 'GET',
@@ -94,27 +94,35 @@
                     success: function(response){
                         console.log(response);
 
+                        if($('#formVisitanteConductor').is(':visible')){
+                            $('#formVisitanteConductor').css('display', 'none');
+                        } else if ($('#formColaboradorSinActivo').is(':visible')){
+                            $('#formColaboradorSinActivo').css('display', 'none');
+                        }else if ($('#formColaboradorConActivo').is(':visible')){
+                            $('#formColaboradorConActivo').css('display', 'none');
+                        }
+
                         if(response.id_tipo_persona == 1 || response.id_tipo_persona == 4){
-                            $('#inputId').val(response.id_personas);
-                            $('#inputFoto').val(response.foto);
-                            $('#fotografia').attr('src', response.foto);  
-                            $('#inputNombre').val(response.nombre);
-                            $('#inputApellido').val(response.apellido);
-                            $('#inputIdentificacion').val(response.identificacion);
-                            $('#inputTelefono').val(response.tel_contacto);
-                            $('#selectEps').val(response.id_eps);
-                            $('#selectArl').val(response.id_arl);
+                            $('#formRegistros1 #inputId').val(response.id_personas);
+                            $('#formRegistros1 #inputFoto').val(response.foto);
+                            $('#formRegistros1 #fotografia').attr('src', response.foto);  
+                            $('#formRegistros1 #inputNombre').val(response.nombre);
+                            $('#formRegistros1 #inputApellido').val(response.apellido);
+                            $('#formRegistros1 #inputIdentificacion').val(response.identificacion);
+                            $('#formRegistros1 #inputTelefono').val(response.tel_contacto);
+                            $('#formRegistros1 #selectEps').val(response.id_eps);
+                            $('#formRegistros1 #selectArl').val(response.id_arl);
 
                             if(response.id_tipo_persona == 1){
+                                $('#formRegistros1 #inputActivo').val(response.activo);
+                                $('#formRegistros1 #inputCodigo').val(response.codigo); 
                                 if($('#checkActivo').prop('checked') == true){
                                     $('#checkActivo').trigger('click');
                                 }
+
                                 $('#titulo').text('Información visitante');
                                 $('#checkBox').css('display', ''); 
                                 $('#formVisitanteConductor').css('display', 'block'); 
-
-                                $('#inputActivo').val(response.activo);
-                                $('#inputCodigo').val(response.codigo); 
                             } else {
                                 $('#titulo').text('Información conductor');
                                 $('.visitante').css('display', 'none');   
@@ -123,10 +131,27 @@
 
                         }  else if(response.id_tipo_persona == 2){
                             $('#formColaboradorSinActivo').css('display', 'block'); 
+
+                            $('#formRegistros2 #inputNombre').val(response.nombre);
+                            $('#formRegistros2 #inputApellido').val(response.apellido);
+                            $('#formRegistros2 #inputIdentificacion').val(response.identificacion);
+                            $('#formRegistros2 #inputEmail').val(response.email);
+                            $('#formRegistros2 #inputTelefono').val(response.tel_contacto);
+                            $('#formRegistros2 #selectEps').val(response.id_eps);
+                            $('#formRegistros2 #selectArl').val(response.id_arl);
+                            $('#formRegistros2 #selectEmpresa').val(response.id_empresa);
                             
-
                         }  else if(response.id_tipo_persona == 3){
+                            $('#formColaboradorConActivo').css('display', 'block'); 
 
+                            $('#formRegistros3 #inputNombre').val(response.nombre);
+                            $('#formRegistros3 #inputApellido').val(response.apellido);
+                            $('#formRegistros3 #inputIdentificacion').val(response.identificacion);
+                            $('#formRegistros3 #inputEmail').val(response.email);
+                            $('#formRegistros3 #inputTelefono').val(response.tel_contacto);
+                            $('#formRegistros3 #selectEps').val(response.id_eps);
+                            $('#formRegistros3 #selectArl').val(response.id_arl);
+                            $('#formRegistros3 #selectEmpresa').val(response.id_empresa);
                         }                 
                     }, 
                     error: function(){
@@ -173,6 +198,27 @@
                     $('#divActivo').css('display', 'none');
                 }
             });
+
+
+            // Función anónima que genera mensajes de error cuando el usuario intenta enviar algún formulario del módulo registros sin los datos requeridos, es una primera validación del lado del cliente
+            (function () {
+                'use strict'
+                var form = document.getElemetBy
+                var form = document.getElementById('formRegistros1');
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+
+                        $('.registros').each(function (index) {
+                            if (!this.checkValidity()) {
+                                $(this).addClass('is-invalid');
+                            }
+                        });
+                    }
+                }, false);
+            })();
+
 
         });        
     </script>
@@ -222,15 +268,15 @@
                 </div>
                 
                 <div id="formVisitanteConductor" style="display: none">
-                    @include('pages.registros.formularioEditar')
+                    @include('pages.registros.formularioVisitanteConductor')
                 </div>
 
                 <div id="formColaboradorSinActivo" style="display: none">
-                    @include('pages.registros.formularioEditar2')
+                    @include('pages.registros.formularioColaboradorSinActivo')
                 </div>
 
                 <div id="formColaboradorConActivo" style="display: none">
-                    @include('pages.registros.formularioEditar')
+                    @include('pages.registros.formularioColaboradorConActivo')
                 </div>
                 
             </div>

@@ -1,6 +1,6 @@
-<div class="row mb-n2">
+<div class="row mt-n2">
     <div class="col-md-12">
-        <form action="{{ route('crearRegistro') }}" method="POST" novalidate>
+        <form id="formRegistros2" action="{{ route('crearRegistro') }}" method="POST" novalidate>
             @csrf
             <div class="card card-primary">
                 <div class="card-header">
@@ -19,6 +19,7 @@
 
                 <div class="card-body mb-n4">
                     <input type="hidden" id="inputId" name="id_personas" value="{{ old('id_personas') }}">
+                    
                     <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">
@@ -123,8 +124,7 @@
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label for="selectEmpresa">Empresa a la que pertenece</label>
-                                <select id="selectEmpresa" class="colaborador form-control {{ $errors->has('id_empresa') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_empresa"
-                                    required>
+                                <select id="selectEmpresa" class="registros form-control {{ $errors->has('id_empresa') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_empresa" required>
                                     <option selected="selected" value="" disabled>Seleccione la empresa</option>
                                     @foreach ($empresas as $empresa)
                                         <option value="{{ $empresa->id_empresas}}"
@@ -139,13 +139,39 @@
                                 @endif
                             </div>
                         </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="inputDescripcion">Ingrese una descripción</label>
+                                <textarea id="inputDescripcion" class="registros form-control {{ $errors->has('descripcion') ? ' is-invalid ' : '' }}" name="descripcion">
+                                    {{ old('descripcion') }}
+                                </textarea>
+                                @if ($errors->has('descripcion')) 
+                                    <div class="invalid-feedback">
+                                        {{ $errors->first('descripcion') }}
+                                    </div>          
+                                @endif 
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-n3">
+                        <div class="col-sm-4">
+                            <div class="form-group clearfix">
+                                <div class="icheck-primary d-inline">
+                                    <label for="checkVehiculo2">
+                                        ¿El colaborador ingresa vehículo?
+                                    </label>
+                                    <input type="checkbox" id="checkVehiculo2">
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
                 <!-- /.card-body -->
-                <div class="card-footer">
-                    <button type='submit' class="btn btn-primary">Actualizar</button>
-                    <button id="botonCambiarRol" type='button' class="btn btn-danger">Cambiar a visitante</button>
+                <div class="card-footer mt-n2">
+                    <button type='submit' class="btn btn-primary">Guardar registro</button>
+                    {{-- <button id="botonCambiarRol" type='button' class="btn btn-danger">Cambiar a visitante</button> --}}
                 </div>
                 <!-- /.card-footer-->
             </div>

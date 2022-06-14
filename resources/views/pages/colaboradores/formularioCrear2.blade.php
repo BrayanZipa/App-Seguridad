@@ -128,14 +128,6 @@
                         </div>            
                     @endif
                 </div>
-                <div class="form-group clearfix">
-                    <div class="icheck-primary d-inline">
-                        <label for="checkVehiculo2">
-                            ¿El colaborador ingresa vehículo?
-                        </label>
-                        <input type="checkbox" id="checkVehiculo2">
-                    </div>
-                </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
@@ -170,7 +162,18 @@
                 </div>
             </div>
         </div>
-
+        <div class="row mt-n3">
+            <div class="col-sm-4">
+                <div class="form-group clearfix">
+                    <div class="icheck-primary d-inline">
+                        <label for="checkVehiculo2">
+                            ¿El colaborador ingresa vehículo?
+                        </label>
+                        <input type="checkbox" id="checkVehiculo2">
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- /.card-body -->
     <div class="card-footer mt-n2">

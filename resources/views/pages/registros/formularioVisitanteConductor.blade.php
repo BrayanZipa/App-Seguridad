@@ -1,6 +1,6 @@
 <div class="row mt-n2">
     <div class="col-md-12">
-        <form action="{{ route('crearRegistro') }}" method="POST" novalidate>
+        <form id="formRegistros1" action="{{ route('crearRegistro') }}" method="POST" novalidate>
             @csrf
             <div class="card card-primary">
                 <div class="card-header">
@@ -186,7 +186,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="inputCodigo">Ingrese el código único del activo</label>
-                                        <input type="text" id="inputCodigo"  class="registros form-control {{ $errors->has('codigo') ? 'is-invalid' : '' }}" name="codigo"
+                                        <input type="text" id="inputCodigo" class="registros form-control {{ $errors->has('codigo') ? 'is-invalid' : '' }}" name="codigo"
                                             value="{{ old('codigo') }}" autocomplete="off" placeholder="Código">
                                             @if ($errors->has('codigo')) 
                                                 <div class="invalid-feedback">
@@ -221,7 +221,7 @@
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
-                    <button type='submit' class="btn btn-primary">Crear nuevo registro</button>
+                    <button type='submit' class="btn btn-primary">Guardar registro</button>
                 </div>
                 <!-- /.card-footer-->
             </div>
