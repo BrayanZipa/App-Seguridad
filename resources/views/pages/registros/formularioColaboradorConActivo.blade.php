@@ -1,6 +1,6 @@
 <div class="row mt-n2">
     <div class="col-md-12">
-        <form id="formRegistros3" id="form_EditarColaborador" action="{{ route('crearRegistro') }}" method="POST" novalidate>
+        <form id="formRegistros3" class="formularios" action="{{ route('crearRegistro') }}" method="POST" novalidate>
             @csrf  
             <div class="card card-primary">
                 <div class="card-header">
@@ -18,12 +18,12 @@
                 <!-- /.card-header -->
 
                 <div class="card-body mb-n4">
-                    <input type="hidden" id="inputId" name="id_personas" value="{{ old('id_personas') }}">
+                    <input type="hidden" id="inputId3" name="id_personas" value="{{ old('id_personas') }}">
                     <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label for="inputCodigo">Activo</label>
-                                <input type="text" id="inputCodigo" class="registros form-control {{ $errors->has('codigo') ? 'is-invalid' : '' }}" name="codigo" value="{{ old('codigo') }}" placeholder="Activo" autocomplete="off" readonly required>
+                                <label for="inputCodigo3">Activo</label>
+                                <input type="text" id="inputCodigo3" class="registros form-control {{ $errors->has('codigo') ? 'is-invalid' : '' }}" name="codigo" value="{{ old('codigo') }}" placeholder="Activo" autocomplete="off" readonly required>
                                     @if ($errors->has('codigo')) 
                                         <div id="mensajeCodigo" class="invalid-feedback">
                                             {{ $errors->first('codigo') }}
@@ -33,8 +33,8 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label for="inputNombre">Nombre</label>
-                                <input type="text" id="inputNombre" class="registros form-control {{ $errors->has('nombre') ? 'is-invalid' : '' }}" name="nombre" value="{{ old('nombre') }}"
+                                <label for="inputNombre3">Nombre</label>
+                                <input type="text" id="inputNombre3" class="registros form-control {{ $errors->has('nombre') ? 'is-invalid' : '' }}" name="nombre" value="{{ old('nombre') }}"
                                     placeholder="Nombre" autocomplete="off" readonly required>
                                     @if ($errors->has('nombre')) 
                                         <div class="invalid-feedback">
@@ -45,8 +45,8 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label for="inputApellido">Apellido</label>
-                                <input type="text" id="inputApellido" class="registros form-control {{ $errors->has('apellido') ? 'is-invalid' : '' }}" name="apellido" value="{{ old('apellido') }}"
+                                <label for="inputApellido3">Apellido</label>
+                                <input type="text" id="inputApellido3" class="registros form-control {{ $errors->has('apellido') ? 'is-invalid' : '' }}" name="apellido" value="{{ old('apellido') }}"
                                     placeholder="Apellido" autocomplete="off" readonly required>
                                     @if ($errors->has('apellido')) 
                                         <div class="invalid-feedback">
@@ -59,8 +59,8 @@
                     <div class="row">   
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label for="inputIdentificacion">Identificación</label>
-                                <input type="text" id="inputIdentificacion" class="registros form-control {{ $errors->has('identificacion') ? 'is-invalid' : '' }}" name="identificacion" value="{{ old('identificacion') }}" placeholder="Identificación" autocomplete="off" readonly required>
+                                <label for="inputIdentificacion3">Identificación</label>
+                                <input type="text" id="inputIdentificacion3" class="registros form-control {{ $errors->has('identificacion') ? 'is-invalid' : '' }}" name="identificacion" value="{{ old('identificacion') }}" placeholder="Identificación" autocomplete="off" readonly required>
                                     @if ($errors->has('identificacion')) 
                                         <div class="invalid-feedback">
                                             {{ $errors->first('identificacion') }}
@@ -70,8 +70,8 @@
                         </div>         
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label for="inputEmail">Correo empresarial</label>
-                                <input type="text" id="inputEmail" class="registros form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" name="email" value="{{ old('email') }}"
+                                <label for="inputEmail3">Correo empresarial</label>
+                                <input type="text" id="inputEmail3" class="registros form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" name="email" value="{{ old('email') }}"
                                     placeholder="Correo empresarial" autocomplete="off" readonly>
                                     @if ($errors->has('email')) 
                                         <div class="invalid-feedback">
@@ -82,8 +82,8 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label for="inputTelefono">Teléfono</label>
-                                <input type="tel" id="inputTelefono" class="registros form-control {{ $errors->has('tel_contacto') ? 'is-invalid' : '' }}" name="tel_contacto" value="{{ old('tel_contacto') }}"
+                                <label for="inputTelefono3">Teléfono</label>
+                                <input type="tel" id="inputTelefono3" class="registros form-control {{ $errors->has('tel_contacto') ? 'is-invalid' : '' }}" name="tel_contacto" value="{{ old('tel_contacto') }}"
                                     placeholder="Teléfono" autocomplete="off" required>
                                     @if ($errors->has('tel_contacto')) 
                                         <div class="invalid-feedback">
@@ -96,9 +96,9 @@
                     <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label for="selectEps">EPS</label>
-                                <select id="selectEps" class="registros select2bs4 form-control {{ $errors->has('id_eps') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_eps" required>
-                                    <option selected="selected" value="" disabled>Seleccione EPS</option>
+                                <label for="selectEps3">EPS</label>
+                                <select id="selectEps3" class="registros select2EPS form-control {{ $errors->has('id_eps') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_eps" required>
+                                    <option selected="selected" value="" disabled></option>
                                     @foreach ($eps as $ep)
                                         <option value="{{ $ep->id_eps }}"
                                             {{ $ep->id_eps == old('id_eps') ? 'selected' : '' }}>{{ $ep->eps }}
@@ -114,9 +114,9 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label for="selectArl">ARL</label>
-                                <select id="selectArl" class="registros select2bs4 form-control {{ $errors->has('id_arl') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_arl" required>
-                                    <option selected="selected" value="" disabled>Seleccione ARL</option>
+                                <label for="selectArl3">ARL</label>
+                                <select id="selectArl3" class="registros select2ARL form-control {{ $errors->has('id_arl') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_arl" required>
+                                    <option selected="selected" value="" disabled></option>
                                     @foreach ($arl as $ar)
                                         <option value="{{ $ar->id_arl }}"
                                             {{ $ar->id_arl == old('id_arl') ? 'selected' : '' }}>{{ $ar->arl }}
@@ -132,8 +132,8 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label for="selectEmpresa">Empresa a la que pertenece</label>
-                                <select id="selectEmpresa" class="registros form-control {{ $errors->has('id_empresa') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_empresa" required>
+                                <label for="selectEmpresa3">Empresa a la que pertenece</label>
+                                <select id="selectEmpresa3" class="registros form-control {{ $errors->has('id_empresa') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_empresa" required>
                                     <option selected="selected" value="" disabled>Seleccione la empresa</option>
                                     @foreach ($empresas as $empresa)
                                         <option value="{{ $empresa->id_empresas}}"
@@ -163,8 +163,8 @@
                         </div>
                         <div class="col-sm-8">
                             <div class="form-group">
-                                <label for="inputDescripcion">Ingrese una descripción</label>
-                                <textarea id="inputDescripcion" class="registros form-control {{ $errors->has('descripcion') ? 'is-invalid' : '' }}" name="descripcion">
+                                <label for="inputDescripcion3">Ingrese una descripción</label>
+                                <textarea id="inputDescripcion3" class="registros form-control {{ $errors->has('descripcion') ? 'is-invalid' : '' }}" name="descripcion">
                                     {{ old('descripcion') }}
                                 </textarea>
                                 @if ($errors->has('descripcion')) 

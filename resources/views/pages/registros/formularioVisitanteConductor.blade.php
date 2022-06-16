@@ -1,6 +1,6 @@
 <div class="row mt-n2">
     <div class="col-md-12">
-        <form id="formRegistros1" action="{{ route('crearRegistro') }}" method="POST" novalidate>
+        <form id="formRegistros1" class="formularios" action="{{ route('crearRegistro') }}" method="POST" novalidate>
             @csrf
             <div class="card card-primary">
                 <div class="card-header">
@@ -90,8 +90,8 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="selectEps">EPS</label>
-                                        <select id="selectEps" class="registros select2bs4 form-control {{ $errors->has('id_eps') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_eps">
-                                            <option selected="selected" value="" disabled>Seleccione EPS</option>
+                                        <select id="selectEps" class="registros select2EPS form-control {{ $errors->has('id_eps') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_eps" required>
+                                            <option selected="selected" value="" disabled></option>
                                             @foreach ($eps as $ep)
                                                 <option value="{{ $ep->id_eps }}"
                                                     {{ $ep->id_eps == old('id_eps') ? 'selected' : '' }}>{{ $ep->eps }}
@@ -108,8 +108,8 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="selectArl">ARL</label>
-                                        <select id="selectArl" class="registros select2bs4 form-control {{ $errors->has('id_arl') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_arl">
-                                            <option selected="selected" value="" disabled>Seleccione ARL</option>
+                                        <select id="selectArl" class="registros select2ARL form-control {{ $errors->has('id_arl') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_arl" required>
+                                            <option selected="selected" value="" disabled></option>
                                             @foreach ($arl as $ar)
                                                 <option value="{{ $ar->id_arl }}"
                                                     {{ $ar->id_arl == old('id_arl') ? 'selected' : '' }}>{{ $ar->arl }}

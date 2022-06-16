@@ -16,7 +16,7 @@ class Persona extends Model
     protected $primaryKey = 'id_personas';
 
     /**
-     * Función que permite retornar a un grupo de personas en específico (Visitantes, Colaboradores, Colaboradores con activo, Conductores).
+     * Función que permite retornar la información de un grupo de personas en específico (Visitantes, Colaboradores, Colaboradores con activo, Conductores).
      */
     public function obtenerPersonas($tipoPersona){
         try {
@@ -28,7 +28,7 @@ class Persona extends Model
     }
 
     /**
-     * Función que permite retornar a una persona es específico.
+     * Función que permite retornar la información a una persona en específico.
      */
     public function obtenerPersona($id){
         try {
@@ -40,7 +40,21 @@ class Persona extends Model
     }
 
     /**
-     * Función que permite retornar los datos de las personas unidos a su correspondiente ARL, ESP, Empresa y usuario que las crea donde tenga un id en común.
+     * Función que permite retornar la información a una persona en específico unido a la información del activo que tenga asiganado
+     */
+    public function obtenerInformacionPersona($id){
+        try {
+            $persona = Persona::select('se_personas.*', 'activos.activo', 'activos.codigo')
+            ->leftjoin('se_activos AS activos', 'se_personas.id_personas', '=', 'activos.id_persona')
+            ->where('id_personas', $id)->get();
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
+        }
+        return $persona[0]; 
+    }
+
+    /**
+     * Función que permite retornar los datos de las personas unidos a su correspondiente ARL, ESP, Empresa, Activo asignado y Usuario que las crea, esto donde tengan un id en común.
      */
     public function informacionPersonas($tipoPersona){
         try {

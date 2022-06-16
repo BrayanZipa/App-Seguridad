@@ -11,6 +11,8 @@ use App\Models\TipoPersona;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Yajra\DataTables\DataTables;
+use App\Http\Controllers\VisitanteController;
+use App\Models\PersonaVehiculo;
 
 class RegistroController extends Controller
 {
@@ -66,7 +68,12 @@ class RegistroController extends Controller
      */
     public function store(Request $request)
     {
-        return $request->all();
+        $request->setMethod('PUT');
+        // return $request->method();
+        $id = $request->id_personas;
+        // return redirect()->route('editarVisitante', ['id' => $id])->with($request->all());
+        // return redirect('/visitantes/editar/'.$id)->with($request->all());
+        // return redirect()->action([VisitanteController::class, 'update'], ['id' => $id]);
     }
 
     /**
@@ -128,22 +135,34 @@ class RegistroController extends Controller
     /**
      * Función que recibe una petición de Ajax para obtener los datos de una persona de tipo visitante que este creada en la tabla se_personas.
      */
-    public function getPersona(Request $request)
-    {
+    public function getPersona(Request $request){
         $id = $request->input('persona');
-        return $this->personas->obtenerPersona($id);
+        return $this->personas->obtenerInformacionPersona($id);
+    }
+
+    /**
+     * 
+     */
+    public function getVehiculos(Request $request){
+        $id = $request->input('persona');
+        try {       
+            $vehiculos = PersonaVehiculo::leftjoin('se_vehiculos AS vehiculos', 'se_per_vehi.id_vehiculo', '=', 'vehiculos.id_vehiculos')
+            ->leftjoin('se_tipo_vehiculos AS tipo', 'vehiculos.id_tipo_vehiculo', '=', 'tipo.id_tipo_vehiculos')
+            ->leftjoin('se_marca_vehiculos AS marca', 'vehiculos.id_marca_vehiculo', '=', 'marca.id_marca_vehiculos')
+            ->where('id_persona', $id)->get();
+        } catch (\Throwable $e) {
+            return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
+        }
+        return $vehiculos;   
     }
 
     /**
      * Función que permite retornar todos los registros de la tabla se_registros asociados a las personas, vehículos y activos donde tengan un id en común.
      */
-    public function informacionRegistros(Request $request)
-    {
+    public function informacionRegistros(Request $request){
         if($request->ajax()){
             $registros = $this->registros->informacionRegistros();
             return DataTables::of($registros)->make(true);
         }     
     }
-    
-    // Persona::where('id_tipo_persona', 1)->where('identificacion', $busqueda)->orWhere();  
 }

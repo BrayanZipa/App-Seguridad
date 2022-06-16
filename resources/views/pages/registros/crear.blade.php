@@ -5,6 +5,8 @@
 @endsection
 
 @section('css')
+    <!-- Token de Laravel -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ asset('assets/lte/plugins/select2/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/lte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
@@ -18,29 +20,16 @@
 
     <script>
         $(function () {
-            
-            //Permite que a los select de selección de EPS y ARL se les asigne una barra de búsqueda haciendolos más dinámicos
-            // function activarSelect2Visitante() {
-            //         $('#selectEps').select2({
-            //             theme: 'bootstrap4',
-            //             placeholder: 'Seleccione EPS',
-            //             language: {
-            //                 noResults: function () {
-            //                     return 'No hay resultado';
-            //                 }
-            //             }
-            //         });
-            //         $('#selectArl').select2({
-            //             theme: 'bootstrap4',
-            //             placeholder: 'Seleccione ARL',
-            //             language: {
-            //                 noResults: function () {
-            //                     return 'No hay resultado';
-            //                 }
-            //             }
-            //         });
-            // }
 
+            //Token de Laravel
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            
+            //Permite que a los select de selección de EPS y ARL de todos los formularios se les asigne una barra de búsqueda haciendolos más dinámicos, también se le asigna select de persona
+            function activarSelect2Registros() {
                 $('#selectPersona').select2({
                     theme: 'bootstrap4',
                     placeholder: 'Seleccione a la persona',
@@ -50,11 +39,31 @@
                         }
                     }
                 });
+                $('.select2EPS').select2({
+                    theme: 'bootstrap4',
+                    placeholder: 'Seleccione EPS',
+                    language: {
+                        noResults: function () {
+                            return 'No hay resultado';
+                        }
+                    }
+                });
+                $('.select2ARL').select2({
+                    theme: 'bootstrap4',
+                    placeholder: 'Seleccione ARL',
+                    language: {
+                        noResults: function () {
+                            return 'No hay resultado';
+                        }
+                    }
+                });
+            }
+            activarSelect2Registros();
 
-            //Función que permite que se despliegue otro select en el cual se puede buscar y seleccionar al propietario del vehículo
+            //Función que permite que por medio de una solicitud Ajax se listen en un select todas las personas que pertenezcan a un tipo de persona que se haya seleccionado
             function listarPersonas() {
-                $('#selectPersona').empty();     
-
+                $('#selectPersona').empty();   
+                $('#selectPersona').append("<option value=''>Seleccione a la persona</option>");
                 $.ajax({
                     url: '/registros/personas',
                     type: 'GET',
@@ -67,7 +76,7 @@
                         $.each(response.data, function(key, value){                   
                             $('#selectPersona').append("<option value='" + value.id_personas + "'> C.C. " + value.identificacion + " - " + value.nombre + " " + value.apellido + "</option>");
                         });                      
-                        $('#selectPersona').val($('#retornoPersona').val());                               
+                        // $('#selectPersona').val($('#retornoPersona').val());                               
                     }, 
                     error: function(){
                         console.log('Error obteniendo los datos de las personas');
@@ -78,8 +87,9 @@
             //Función que se activa cuando el usuario selecciona alguna opción del select tipo de persona
             $('#selectTipoPersona').change(function() { 
                 listarPersonas();
-            }); 
-
+            });
+            
+            //Función que permite que al seleccionar a una persona se traiaga su información por medio de una solicitud Ajax y dependiendo del tipo de persona esta información se muestre en los diferentes formularios
             $('#selectPersona').change(function() { 
                 if($('.registros').hasClass('is-invalid')){
                     $('.registros').removeClass('is-invalid');
@@ -103,27 +113,31 @@
                         }
 
                         if(response.id_tipo_persona == 1 || response.id_tipo_persona == 4){
-                            $('#formRegistros1 #inputId').val(response.id_personas);
-                            $('#formRegistros1 #inputFoto').val(response.foto);
-                            $('#formRegistros1 #fotografia').attr('src', response.foto);  
-                            $('#formRegistros1 #inputNombre').val(response.nombre);
-                            $('#formRegistros1 #inputApellido').val(response.apellido);
-                            $('#formRegistros1 #inputIdentificacion').val(response.identificacion);
-                            $('#formRegistros1 #inputTelefono').val(response.tel_contacto);
-                            $('#formRegistros1 #selectEps').val(response.id_eps);
-                            $('#formRegistros1 #selectArl').val(response.id_arl);
+                            $('#inputId').val(response.id_personas);
+                            $('#inputFoto').val(response.foto);
+                            $('#fotografia').attr('src', response.foto);  
+                            $('#inputNombre').val(response.nombre);
+                            $('#inputApellido').val(response.apellido);
+                            $('#inputIdentificacion').val(response.identificacion);
+                            $('#inputTelefono').val(response.tel_contacto);
+                            $('#selectEps').val(response.id_eps);
+                            $('#selectArl').val(response.id_arl);
 
                             if(response.id_tipo_persona == 1){
-                                $('#formRegistros1 #inputActivo').val(response.activo);
-                                $('#formRegistros1 #inputCodigo').val(response.codigo); 
+                                $('#inputActivo').val(response.activo);
+                                $('#inputCodigo').val(response.codigo); 
                                 if($('#checkActivo').prop('checked') == true){
                                     $('#checkActivo').trigger('click');
                                 }
 
+                                $('#selectEps').prop('required', false);
+                                $('#selectArl').prop('required', false);
                                 $('#titulo').text('Información visitante');
                                 $('#checkBox').css('display', ''); 
                                 $('#formVisitanteConductor').css('display', 'block'); 
                             } else {
+                                $('#selectEps').prop('required', true);
+                                $('#selectArl').prop('required', true);
                                 $('#titulo').text('Información conductor');
                                 $('.visitante').css('display', 'none');   
                                 $('#formVisitanteConductor').css('display', 'block'); 
@@ -132,34 +146,37 @@
                         }  else if(response.id_tipo_persona == 2){
                             $('#formColaboradorSinActivo').css('display', 'block'); 
 
-                            $('#formRegistros2 #inputNombre').val(response.nombre);
-                            $('#formRegistros2 #inputApellido').val(response.apellido);
-                            $('#formRegistros2 #inputIdentificacion').val(response.identificacion);
-                            $('#formRegistros2 #inputEmail').val(response.email);
-                            $('#formRegistros2 #inputTelefono').val(response.tel_contacto);
-                            $('#formRegistros2 #selectEps').val(response.id_eps);
-                            $('#formRegistros2 #selectArl').val(response.id_arl);
-                            $('#formRegistros2 #selectEmpresa').val(response.id_empresa);
+                            $('#inputId2').val(response.id_personas);
+                            $('#inputNombre2').val(response.nombre);
+                            $('#inputApellido2').val(response.apellido);
+                            $('#inputIdentificacion2').val(response.identificacion);
+                            $('#inputEmail2').val(response.email);
+                            $('#inputTelefono2').val(response.tel_contacto);
+                            $('#selectEps2').val(response.id_eps);
+                            $('#selectArl2').val(response.id_arl);
+                            $('#selectEmpresa2').val(response.id_empresa);
                             
                         }  else if(response.id_tipo_persona == 3){
                             $('#formColaboradorConActivo').css('display', 'block'); 
 
-                            $('#formRegistros3 #inputNombre').val(response.nombre);
-                            $('#formRegistros3 #inputApellido').val(response.apellido);
-                            $('#formRegistros3 #inputIdentificacion').val(response.identificacion);
-                            $('#formRegistros3 #inputEmail').val(response.email);
-                            $('#formRegistros3 #inputTelefono').val(response.tel_contacto);
-                            $('#formRegistros3 #selectEps').val(response.id_eps);
-                            $('#formRegistros3 #selectArl').val(response.id_arl);
-                            $('#formRegistros3 #selectEmpresa').val(response.id_empresa);
-                        }                 
+                            $('#inputId3').val(response.id_personas);
+                            $('#inputCodigo3').val(response.codigo);
+                            $('#inputNombre3').val(response.nombre);
+                            $('#inputApellido3').val(response.apellido);
+                            $('#inputIdentificacion3').val(response.identificacion);
+                            $('#inputEmail3').val(response.email);
+                            $('#inputTelefono3').val(response.tel_contacto);
+                            $('#selectEps3').val(response.id_eps);
+                            $('#selectArl3').val(response.id_arl);
+                            $('#selectEmpresa3').val(response.id_empresa);
+                        }   
+                        activarSelect2Registros();              
                     }, 
                     error: function(){
                         console.log('Error obteniendo los datos de la persona');
                     }
                 }); 
             }); 
-
 
             //Manejo de los checkbox al ser seleccionados y control de la vista de formularios   
             $('input[type=checkbox]').on('change', function () {
@@ -175,7 +192,8 @@
                     // requiredTrue('.vehiculo');
                     // requiredTrue('.activo');
 
-                } else if ($('#checkVehiculo').is(':checked') && ($('#checkActivo').prop('checked') == false)) {
+                } else if ($('#checkVehiculo3').is(':checked')) {
+                    obtenerVehiculos();
                     // $('#crearVehiculo').css('display', 'block');
                     // $('#botonCrear').css('display', 'none');
                     // $('#botonCrear2').css('display', 'inline');
@@ -199,25 +217,106 @@
                 }
             });
 
-
-            // Función anónima que genera mensajes de error cuando el usuario intenta enviar algún formulario del módulo registros sin los datos requeridos, es una primera validación del lado del cliente
+            // Funciones anónimas que generan mensajes de error cuando el usuario intenta enviar algún formulario del módulo registros sin los datos requeridos, es una primera validación del lado del cliente
             (function () {
                 'use strict'
-                var form = document.getElemetBy
                 var form = document.getElementById('formRegistros1');
                 form.addEventListener('submit', function (event) {
                     if (!form.checkValidity()) {
+                        validacion(form);
+                    } else {
                         event.preventDefault();
-                        event.stopPropagation();
-
-                        $('.registros').each(function (index) {
-                            if (!this.checkValidity()) {
-                                $(this).addClass('is-invalid');
-                            }
-                        });
+                        guardar();
+                        // event.currentTarget.submit();
                     }
                 }, false);
             })();
+
+            (function () {
+                'use strict'
+                var form = document.getElementById('formRegistros2');
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        validacion(form);
+                    }
+                }, false);
+            })();
+
+            (function () {
+                'use strict'
+                var form = document.getElementById('formRegistros3');
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        validacion(form);
+                    }
+                }, false);
+            })();
+
+            function validacion(form) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    $('.registros').each(function (index) {
+                        if (!this.checkValidity()) {
+                            $(this).addClass('is-invalid');
+                        }
+                    });
+                }
+            }
+
+
+            function guardar() {
+                datos = {};
+                datos['foto'] = $('#inputFoto').val();
+                datos['nombre'] = $('#inputNombre').val();
+                datos['apellido'] = $('#inputApellido').val();
+                datos['identificacion'] = $('#inputIdentificacion').val();
+                datos['tel_contacto'] = $('#inputTelefono').val();
+                datos['id_eps'] =  $('#selectEps').val();
+                datos['id_arl'] = $('#selectArl').val();
+
+                datos['activo'] =  $('#inputActivo').val();
+                datos['codigo'] = $('#inputCodigo').val();
+                
+                console.log(datos);
+
+                $.ajax({
+                    url: '/visitantes/editar/' + $('#inputId').val(),
+                    type: 'PUT',
+                    data: datos,
+                    // dataType: 'json',
+                    success: function(response){
+                        console.log(response);
+                    }, 
+                    error: function(errores){
+                        console.log(errores);
+                    }
+                }); 
+            }
+
+
+            function obtenerVehiculos(params) {
+                $.ajax({
+                    url: '/registros/vehiculos/',
+                    type: 'GET',
+                    data: {
+                        persona: $('#selectPersona option:selected').val()
+                    },
+                    dataType: 'json',
+                    success: function(response){
+                        console.log(response);
+                    }, 
+                    error: function(errores){
+                        console.log(errores);
+                    }
+                }); 
+            }
+
+
+            // $( "#formRegistros1" ).submit(function( event ) {
+            //     alert( "Handler for .submit() called." );
+            //     event.preventDefault();
+            // });
 
 
         });        
