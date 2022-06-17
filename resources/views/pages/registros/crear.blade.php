@@ -157,6 +157,7 @@
                             $('#selectEmpresa2').val(response.id_empresa);
                             
                         }  else if(response.id_tipo_persona == 3){
+                            // obtenerColaborador(response.identificacion);
                             $('#formColaboradorConActivo').css('display', 'block'); 
 
                             $('#inputId3').val(response.id_personas);
@@ -264,6 +265,124 @@
                 }
             }
 
+            function obtenerVehiculos() {
+                $.ajax({
+                    url: '/registros/vehiculos/',
+                    type: 'GET',
+                    data: {
+                        persona: $('#selectPersona option:selected').val()
+                    },
+                    dataType: 'json',
+                    success: function(response){
+                        console.log(response);
+                    }, 
+                    error: function(errores){
+                        console.log(errores);
+                    }
+                }); 
+            }
+
+
+            // Se elije una fila de la tabla y se toma la información del colaborador para mostrarla en un formulario y permitir actualizarla
+            function obtenerColaborador(identificacion){ 
+                
+                // if($('.colaborador').hasClass('is-invalid')){ $('.colaborador').removeClass('is-invalid'); }           
+                if($('#mensajeError').length){ $('#mensajeError').remove(); }  
+                if($('#mensajeCodigo').length){ $('#mensajeCodigo').remove(); } 
+
+                // $('#formEditarColaborador').css('display', 'block');  
+                // $('#form_EditarColaborador').attr('action','/colaboradores/editar/' + data.id_personas); 
+                // $('#inputId').val(data.id_personas); 
+
+                $.ajax({
+                    url: '/colaboradores/colaboradoridentificado',
+                    type: 'GET',
+                    data: {
+                        colaborador: identificacion
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        if ('error' in response) { 
+                            // $('.colaborador').each(function(index) {
+                            //     $(this).val('');
+                            // });     
+                            $('#inputCodigo3').addClass('is-invalid');                
+                            $('#inputCodigo3').val('*El colaborador no esta registrado en el sistema GLPI');
+                            $('#inputNombre3').val(data.nombre);
+                            $('#inputApellido3').val(data.apellido);
+                            $('#inputIdentificacion3').val(data.identificacion);
+                            $('#inputEmail3').val(data.email);
+                            $('#inputTelefono3').val(data.tel_contacto);
+                            $('#selectEps3').val(data.id_eps);
+                            $('#selectArl3').val(data.id_arl);
+                            $('#selectEmpresa3').val(data.id_empresa);
+                            // activarSelect2();
+                            // $('#botonActualizar').css('display', 'none');
+                            // $('#botonCambiarRol').css('display', '');
+
+                        } else {                  
+                            $.ajax({
+                                url: '/colaboradores/computador',
+                                type: 'GET',
+                                data: {
+                                    colaborador: response.id,
+                                },
+                                dataType: 'json',
+                                success: function(activo) {
+                                    if ('error' in activo) {
+                                        $('#inputCodigo3').addClass('is-invalid');
+                                        $('#inputCodigo3').val('*Colaborador registrado en GLPI pero sin activo asignado');
+                                    } else {
+                                        $('#inputCodigo3').val(activo['name']); 
+                                        if(data.codigo != activo['name']){
+                                            $('#inputCodigo3').addClass('is-invalid');
+                                            if($('#mensajeCodigo').length){ 
+                                                $('#mensajeCodigo').text('El colaborador tiene asignado un nuevo activo, debe actualizar');
+                                            } else {
+                                                $('#inputCodigo3').after($('<div id="mensajeError" class="invalid-feedback">El colaborador tiene asignado un nuevo activo, debe actualizar</div>'));
+                                            }     
+                                        }
+                                    }  
+                                },
+                                error: function() {
+                                    console.log('Error obteniendo los datos de GLPI');
+                                }
+                            });
+
+                            $('#inputIdentificacion3').val(response['registration_number']);
+                            $('#inputNombre3').val(response['firstname']);
+                            $('#inputApellido3').val(response['realname']);
+                            $('#inputEmail3').val(response['email']);
+                            $('#inputTelefono3').val(data.tel_contacto);
+                            $('#selectEps3').val(data.id_eps);
+                            $('#selectArl3').val(data.id_arl);
+
+                            if (response['phone2'].includes('Aviomar')) {
+                                $('#selectEmpresa3').val(1);
+                            } else if (response['phone2'].includes('Snider')) {
+                                $('#selectEmpresa3').val(2);
+                            } else if (response['phone2'].includes('Colvan')) {
+                                $('#selectEmpresa3').val(3);
+                            }      
+                            // activarSelect2(); 
+                            // $('#botonActualizar').css('display', '');
+                            // $('#botonCambiarRol').css('display', 'none');        
+                        }         
+                    },
+                    error: function() {
+                        console.log('Error obteniendo los datos de GLPI');
+                    }
+                });
+            }
+
+
+
+
+
+            // $( "#formRegistros1" ).submit(function( event ) {
+            //     alert( "Handler for .submit() called." );
+            //     event.preventDefault();
+            // });
 
             function guardar() {
                 datos = {};
@@ -293,30 +412,6 @@
                     }
                 }); 
             }
-
-
-            function obtenerVehiculos(params) {
-                $.ajax({
-                    url: '/registros/vehiculos/',
-                    type: 'GET',
-                    data: {
-                        persona: $('#selectPersona option:selected').val()
-                    },
-                    dataType: 'json',
-                    success: function(response){
-                        console.log(response);
-                    }, 
-                    error: function(errores){
-                        console.log(errores);
-                    }
-                }); 
-            }
-
-
-            // $( "#formRegistros1" ).submit(function( event ) {
-            //     alert( "Handler for .submit() called." );
-            //     event.preventDefault();
-            // });
 
 
         });        
@@ -376,6 +471,10 @@
 
                 <div id="formColaboradorConActivo" style="display: none">
                     @include('pages.registros.formularioColaboradorConActivo')
+                </div>
+
+                <div>
+                    @include('pages.registros.vehiculo')
                 </div>
                 
             </div>

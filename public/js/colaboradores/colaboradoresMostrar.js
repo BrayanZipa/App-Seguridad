@@ -110,7 +110,6 @@ $(function() {
 
         $('#formEditarColaborador').css('display', 'block');  
         $('#form_EditarColaborador').attr('action','/colaboradores/editar/' + data.id_personas); 
-        $('#metodoForm').attr('value', 'PUT'); 
         $('#inputId').val(data.id_personas); 
 
         $.ajax({
@@ -127,7 +126,6 @@ $(function() {
                     });     
                     $('#inputCodigo').addClass('is-invalid');                
                     $('#inputCodigo').val('*El colaborador no esta registrado en el sistema GLPI');
-                    $('#inputIdentificacion').val(response['registration_number']);
                     $('#inputNombre').val(data.nombre);
                     $('#inputApellido').val(data.apellido);
                     $('#inputIdentificacion').val(data.identificacion);
