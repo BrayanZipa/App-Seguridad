@@ -83,9 +83,10 @@ Route::get('/registros', [RegistroController::class, 'index'])->name('mostrarReg
 Route::get('/registros/crear', [RegistroController::class, 'create'])->name('formCrearRegistro')->middleware('auth');
 Route::post('/registros/crear', [RegistroController::class, 'store'])->name('crearRegistro')->middleware('auth');
 Route::get('/registros/informacion', [RegistroController::class, 'informacionRegistros'])->name('mostrarInfoRegistros')->middleware('auth');
-Route::get('/registros/personas', [RegistroController::class, 'getPersonas'])->name('personas2')->middleware('auth');
-Route::get('/registros/persona', [RegistroController::class, 'getPersona'])->name('persona2')->middleware('auth');
+Route::get('/registros/personas', [RegistroController::class, 'getPersonas'])->name('getPersonas')->middleware('auth');
+Route::get('/registros/persona', [RegistroController::class, 'getPersona'])->name('getPersona')->middleware('auth');
 Route::get('/registros/vehiculos', [RegistroController::class, 'getVehiculos'])->name('vehiculos')->middleware('auth');
 
+Route::put('/registros/editar_persona/{id}', [RegistroController::class, 'updatePersona'])->name('editarPersona')->middleware('auth');
 
-Route::get('/prueba', [RegistroController::class, 'prueba'])->name('prueba');
+// Route::get('/prueba', [RegistroController::class, 'prueba'])->name('prueba');

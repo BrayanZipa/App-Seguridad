@@ -75,7 +75,7 @@
                         $('#buscarPersona').css('display', 'block'); 
                         $.each(response.data, function(key, value){                   
                             $('#selectPersona').append("<option value='" + value.id_personas + "'> C.C. " + value.identificacion + " - " + value.nombre + " " + value.apellido + "</option>");
-                        });                      
+                        });                  
                         // $('#selectPersona').val($('#retornoPersona').val());                               
                     }, 
                     error: function(){
@@ -89,7 +89,7 @@
                 listarPersonas();
             });
             
-            //Función que permite que al seleccionar a una persona se traiaga su información por medio de una solicitud Ajax y dependiendo del tipo de persona esta información se muestre en los diferentes formularios
+            //Función que permite que al seleccionar a una persona se traiga su información por medio de una solicitud Ajax y dependiendo del tipo de persona esta información se muestre en los diferentes formularios
             $('#selectPersona').change(function() { 
                 if($('.registros').hasClass('is-invalid')){
                     $('.registros').removeClass('is-invalid');
@@ -102,8 +102,7 @@
                     },
                     dataType: 'json',
                     success: function(response){
-                        console.log(response);
-
+                        $('#idPersona').val(response.id_personas);
                         if($('#formVisitanteConductor').is(':visible')){
                             $('#formVisitanteConductor').css('display', 'none');
                         } else if ($('#formColaboradorSinActivo').is(':visible')){
@@ -113,6 +112,7 @@
                         }
 
                         if(response.id_tipo_persona == 1 || response.id_tipo_persona == 4){
+                            $('#formRegistros1').attr('action','/registros/editar_persona/' + response.id_personas); 
                             $('#inputId').val(response.id_personas);
                             $('#inputFoto').val(response.foto);
                             $('#fotografia').attr('src', response.foto);  
@@ -122,6 +122,9 @@
                             $('#inputTelefono').val(response.tel_contacto);
                             $('#selectEps').val(response.id_eps);
                             $('#selectArl').val(response.id_arl);
+                            $('#inputColaborador').val('');
+                            $('#selectEmpresa').val('');
+                            $('#inputDescripcion').val('');
 
                             if(response.id_tipo_persona == 1){
                                 $('#inputActivo').val(response.activo);
@@ -144,8 +147,7 @@
                             }
 
                         }  else if(response.id_tipo_persona == 2){
-                            $('#formColaboradorSinActivo').css('display', 'block'); 
-
+                            $('#formRegistros2').attr('action','/registros/editar_persona/' + response.id_personas);
                             $('#inputId2').val(response.id_personas);
                             $('#inputNombre2').val(response.nombre);
                             $('#inputApellido2').val(response.apellido);
@@ -155,21 +157,19 @@
                             $('#selectEps2').val(response.id_eps);
                             $('#selectArl2').val(response.id_arl);
                             $('#selectEmpresa2').val(response.id_empresa);
+                            $('#formColaboradorSinActivo').css('display', 'block'); 
                             
                         }  else if(response.id_tipo_persona == 3){
-                            // obtenerColaborador(response.identificacion);
-                            $('#formColaboradorConActivo').css('display', 'block'); 
-
+                            $('#formRegistros3 .registros').each(function(index) {
+                                $(this).val('');
+                            });
+                            obtenerColaborador(response);
+                            $('#formRegistros3').attr('action','/registros/editar_persona/' + response.id_personas);
                             $('#inputId3').val(response.id_personas);
-                            $('#inputCodigo3').val(response.codigo);
-                            $('#inputNombre3').val(response.nombre);
-                            $('#inputApellido3').val(response.apellido);
-                            $('#inputIdentificacion3').val(response.identificacion);
-                            $('#inputEmail3').val(response.email);
                             $('#inputTelefono3').val(response.tel_contacto);
                             $('#selectEps3').val(response.id_eps);
                             $('#selectArl3').val(response.id_arl);
-                            $('#selectEmpresa3').val(response.id_empresa);
+                            $('#formColaboradorConActivo').css('display', 'block'); 
                         }   
                         activarSelect2Registros();              
                     }, 
@@ -178,6 +178,77 @@
                     }
                 }); 
             }); 
+
+            // Se elije una fila de la tabla y se toma la información del colaborador para mostrarla en un formulario y permitir actualizarla
+            function obtenerColaborador(data){      
+                if($('#mensajeError').length){ $('#mensajeError').remove(); }  
+                if($('#mensajeCodigo').length){ $('#mensajeCodigo').remove(); } 
+                
+                $.ajax({
+                    url: '/colaboradores/colaboradoridentificado',
+                    type: 'GET',
+                    data: {
+                        colaborador: data.identificacion
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        if ('error' in response) {  
+                            $('#inputCodigo3').addClass('is-invalid');                
+                            $('#inputCodigo3').val('*El colaborador no esta registrado en el sistema GLPI');
+                            $('#inputNombre3').val(data.nombre);
+                            $('#inputApellido3').val(data.apellido);
+                            $('#inputIdentificacion3').val(data.identificacion);
+                            $('#inputEmail3').val(data.email);
+                            $('#selectEmpresa3').val(data.id_empresa);
+
+                        } else {                  
+                            $.ajax({
+                                url: '/colaboradores/computador',
+                                type: 'GET',
+                                data: {
+                                    colaborador: response.id,
+                                },
+                                dataType: 'json',
+                                success: function(activo) {
+                                    if ('error' in activo) {
+                                        $('#inputCodigo3').addClass('is-invalid');
+                                        $('#inputCodigo3').val('*Colaborador registrado en GLPI pero sin activo asignado');
+                                    } else {
+                                        $('#inputCodigo3').val(activo['name']); 
+                                        if(data.codigo != activo['name']){
+                                            $('#inputCodigo3').addClass('is-invalid');
+                                            if($('#mensajeCodigo').length){ 
+                                                $('#mensajeCodigo').text('El colaborador tiene asignado un nuevo activo, debe actualizar');
+                                            } else {
+                                                $('#inputCodigo3').after($('<div id="mensajeError" class="invalid-feedback">El colaborador tiene asignado un nuevo activo, debe actualizar</div>'));
+                                            }     
+                                        }
+                                    }  
+                                },
+                                error: function() {
+                                    console.log('Error obteniendo los datos de GLPI');
+                                }
+                            });
+
+                            $('#inputIdentificacion3').val(response['registration_number']);
+                            $('#inputNombre3').val(response['firstname']);
+                            $('#inputApellido3').val(response['realname']);
+                            $('#inputEmail3').val(response['email']);
+
+                            if (response['phone2'].includes('Aviomar')) {
+                                $('#selectEmpresa3').val(1);
+                            } else if (response['phone2'].includes('Snider')) {
+                                $('#selectEmpresa3').val(2);
+                            } else if (response['phone2'].includes('Colvan')) {
+                                $('#selectEmpresa3').val(3);
+                            }       
+                        }         
+                    },
+                    error: function() {
+                        console.log('Error obteniendo los datos de GLPI');
+                    }
+                });
+            }
 
             //Manejo de los checkbox al ser seleccionados y control de la vista de formularios   
             $('input[type=checkbox]').on('change', function () {
@@ -203,6 +274,8 @@
                     // requiredTrue('.vehiculo');
 
                 } else if ($('#checkActivo').is(':checked') && ($('#checkVehiculo').prop('checked') == false)) {
+                    $('#inputActivo').prop('required', true);
+                    $('#inputCodigo').prop('required', true);
                     if($('#inputActivo').val('')){
                         $('#inputActivo').val('Computador');
                     }
@@ -215,8 +288,37 @@
                     // requiredTrue('.activo');
                 } else if (!$('#checkActivo').is(':checked') && ($('#checkVehiculo').prop('checked') == false)) {
                     $('#divActivo').css('display', 'none');
+                    $('#inputCodigo').val('');
                 }
             });
+
+            //Función que permite que al seleccionar la opción de ingreso de vehículo en cualquiera de los formularios se haga una petención Ajax para consultar la información de los vehículos que esten asociados a la persona que este previamente seleccionada y estos se listen en un select
+            function obtenerVehiculos() {
+                $('#selectVehiculo3').empty();   
+                $('#selectVehiculo3').append("<option selected='selected' value='' disabled>Seleccione el vehículo</option>");
+
+                $.ajax({
+                    url: '/registros/vehiculos/',
+                    type: 'GET',
+                    data: {
+                        persona: $('#idPersona').val()
+                    },
+                    dataType: 'json',
+                    success: function(response){
+                        console.log(response);
+                        $.each(response, function(key, value){     
+                            if(value.marca == null){
+                                $('#selectVehiculo3').append("<option value='" + value.id_vehiculos + "'>" + value.tipo + " - " + value.identificador + "</option>");
+                            }  else {
+                                $('#selectVehiculo3').append("<option value='" + value.id_vehiculos + "'>" + value.tipo + " " + value.marca + " - " + value.identificador + "</option>");
+                            }            
+                        });   
+                    }, 
+                    error: function(errores){
+                        console.log(errores);
+                    }
+                }); 
+            }
 
             // Funciones anónimas que generan mensajes de error cuando el usuario intenta enviar algún formulario del módulo registros sin los datos requeridos, es una primera validación del lado del cliente
             (function () {
@@ -225,10 +327,6 @@
                 form.addEventListener('submit', function (event) {
                     if (!form.checkValidity()) {
                         validacion(form);
-                    } else {
-                        event.preventDefault();
-                        guardar();
-                        // event.currentTarget.submit();
                     }
                 }, false);
             })();
@@ -265,153 +363,40 @@
                 }
             }
 
-            function obtenerVehiculos() {
-                $.ajax({
-                    url: '/registros/vehiculos/',
-                    type: 'GET',
-                    data: {
-                        persona: $('#selectPersona option:selected').val()
-                    },
-                    dataType: 'json',
-                    success: function(response){
-                        console.log(response);
-                    }, 
-                    error: function(errores){
-                        console.log(errores);
-                    }
-                }); 
-            }
-
-
-            // Se elije una fila de la tabla y se toma la información del colaborador para mostrarla en un formulario y permitir actualizarla
-            function obtenerColaborador(identificacion){ 
-                
-                // if($('.colaborador').hasClass('is-invalid')){ $('.colaborador').removeClass('is-invalid'); }           
-                if($('#mensajeError').length){ $('#mensajeError').remove(); }  
-                if($('#mensajeCodigo').length){ $('#mensajeCodigo').remove(); } 
-
-                // $('#formEditarColaborador').css('display', 'block');  
-                // $('#form_EditarColaborador').attr('action','/colaboradores/editar/' + data.id_personas); 
-                // $('#inputId').val(data.id_personas); 
-
-                $.ajax({
-                    url: '/colaboradores/colaboradoridentificado',
-                    type: 'GET',
-                    data: {
-                        colaborador: identificacion
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        if ('error' in response) { 
-                            // $('.colaborador').each(function(index) {
-                            //     $(this).val('');
-                            // });     
-                            $('#inputCodigo3').addClass('is-invalid');                
-                            $('#inputCodigo3').val('*El colaborador no esta registrado en el sistema GLPI');
-                            $('#inputNombre3').val(data.nombre);
-                            $('#inputApellido3').val(data.apellido);
-                            $('#inputIdentificacion3').val(data.identificacion);
-                            $('#inputEmail3').val(data.email);
-                            $('#inputTelefono3').val(data.tel_contacto);
-                            $('#selectEps3').val(data.id_eps);
-                            $('#selectArl3').val(data.id_arl);
-                            $('#selectEmpresa3').val(data.id_empresa);
-                            // activarSelect2();
-                            // $('#botonActualizar').css('display', 'none');
-                            // $('#botonCambiarRol').css('display', '');
-
-                        } else {                  
-                            $.ajax({
-                                url: '/colaboradores/computador',
-                                type: 'GET',
-                                data: {
-                                    colaborador: response.id,
-                                },
-                                dataType: 'json',
-                                success: function(activo) {
-                                    if ('error' in activo) {
-                                        $('#inputCodigo3').addClass('is-invalid');
-                                        $('#inputCodigo3').val('*Colaborador registrado en GLPI pero sin activo asignado');
-                                    } else {
-                                        $('#inputCodigo3').val(activo['name']); 
-                                        if(data.codigo != activo['name']){
-                                            $('#inputCodigo3').addClass('is-invalid');
-                                            if($('#mensajeCodigo').length){ 
-                                                $('#mensajeCodigo').text('El colaborador tiene asignado un nuevo activo, debe actualizar');
-                                            } else {
-                                                $('#inputCodigo3').after($('<div id="mensajeError" class="invalid-feedback">El colaborador tiene asignado un nuevo activo, debe actualizar</div>'));
-                                            }     
-                                        }
-                                    }  
-                                },
-                                error: function() {
-                                    console.log('Error obteniendo los datos de GLPI');
-                                }
-                            });
-
-                            $('#inputIdentificacion3').val(response['registration_number']);
-                            $('#inputNombre3').val(response['firstname']);
-                            $('#inputApellido3').val(response['realname']);
-                            $('#inputEmail3').val(response['email']);
-                            $('#inputTelefono3').val(data.tel_contacto);
-                            $('#selectEps3').val(data.id_eps);
-                            $('#selectArl3').val(data.id_arl);
-
-                            if (response['phone2'].includes('Aviomar')) {
-                                $('#selectEmpresa3').val(1);
-                            } else if (response['phone2'].includes('Snider')) {
-                                $('#selectEmpresa3').val(2);
-                            } else if (response['phone2'].includes('Colvan')) {
-                                $('#selectEmpresa3').val(3);
-                            }      
-                            // activarSelect2(); 
-                            // $('#botonActualizar').css('display', '');
-                            // $('#botonCambiarRol').css('display', 'none');        
-                        }         
-                    },
-                    error: function() {
-                        console.log('Error obteniendo los datos de GLPI');
-                    }
-                });
-            }
-
-
-
-
 
             // $( "#formRegistros1" ).submit(function( event ) {
             //     alert( "Handler for .submit() called." );
             //     event.preventDefault();
             // });
 
-            function guardar() {
-                datos = {};
-                datos['foto'] = $('#inputFoto').val();
-                datos['nombre'] = $('#inputNombre').val();
-                datos['apellido'] = $('#inputApellido').val();
-                datos['identificacion'] = $('#inputIdentificacion').val();
-                datos['tel_contacto'] = $('#inputTelefono').val();
-                datos['id_eps'] =  $('#selectEps').val();
-                datos['id_arl'] = $('#selectArl').val();
+            // function guardar() {
+            //     datos = {};
+            //     datos['foto'] = $('#inputFoto').val();
+            //     datos['nombre'] = $('#inputNombre').val();
+            //     datos['apellido'] = $('#inputApellido').val();
+            //     datos['identificacion'] = $('#inputIdentificacion').val();
+            //     datos['tel_contacto'] = $('#inputTelefono').val();
+            //     datos['id_eps'] =  $('#selectEps').val();
+            //     datos['id_arl'] = $('#selectArl').val();
 
-                datos['activo'] =  $('#inputActivo').val();
-                datos['codigo'] = $('#inputCodigo').val();
+            //     datos['activo'] =  $('#inputActivo').val();
+            //     datos['codigo'] = $('#inputCodigo').val();
                 
-                console.log(datos);
+            //     console.log(datos);
 
-                $.ajax({
-                    url: '/visitantes/editar/' + $('#inputId').val(),
-                    type: 'PUT',
-                    data: datos,
-                    // dataType: 'json',
-                    success: function(response){
-                        console.log(response);
-                    }, 
-                    error: function(errores){
-                        console.log(errores);
-                    }
-                }); 
-            }
+            //     $.ajax({
+            //         url: '/visitantes/editar/' + $('#idPersona').val(),
+            //         type: 'PUT',
+            //         data: datos,
+            //         // dataType: 'json',
+            //         success: function(response){
+            //             console.log(response);
+            //         }, 
+            //         error: function(errores){
+            //             console.log(errores);
+            //         }
+            //     }); 
+            // }
 
 
         });        
@@ -450,6 +435,7 @@
                                 </div>
                             </div>
                             <div id="buscarPersona" class="col-sm-6" style="display: none">
+                                <input id="idPersona" type="hidden" value="">
                                 <div class="form-group">
                                     <label for="selectPersona">Seleccione a la persona</label>
                                     <select id="selectPersona" class="select2bs4 form-control" style="width: 100%;" name="id_persona">
@@ -473,9 +459,9 @@
                     @include('pages.registros.formularioColaboradorConActivo')
                 </div>
 
-                <div>
+                {{-- <div>
                     @include('pages.registros.vehiculo')
-                </div>
+                </div> --}}
                 
             </div>
         </div>

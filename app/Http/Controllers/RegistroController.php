@@ -68,9 +68,9 @@ class RegistroController extends Controller
      */
     public function store(Request $request)
     {
-        $request->setMethod('PUT');
-        // return $request->method();
-        $id = $request->id_personas;
+        // $request->setMethod('PUT');
+        return $request->all();
+        // $id = $request->id_personas;
         // return redirect()->route('editarVisitante', ['id' => $id])->with($request->all());
         // return redirect('/visitantes/editar/'.$id)->with($request->all());
         // return redirect()->action([VisitanteController::class, 'update'], ['id' => $id]);
@@ -120,6 +120,15 @@ class RegistroController extends Controller
     {
         //
     }
+    
+    /**
+     * 
+     */
+    public function updatePersona(Request $request, $id)
+    {
+        // return $id;
+        return $request->all();
+    }
 
     /**
     * Función que recibe una petición de Ajax para obtener los registros de un grupo de personas en específico (Visitantes, Colaboradores, Colaboradores con activo, Conductores) en la tabla se_personas.
@@ -153,7 +162,7 @@ class RegistroController extends Controller
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
         }
-        return $vehiculos;   
+        return response()->json($vehiculos);
     }
 
     /**

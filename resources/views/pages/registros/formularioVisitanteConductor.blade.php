@@ -2,6 +2,7 @@
     <div class="col-md-12">
         <form id="formRegistros1" class="formularios" action="{{ route('crearRegistro') }}" method="POST" novalidate>
             @csrf
+            @method('PUT')
             <div class="card card-primary">
                 <div class="card-header">
                     <h3 id="titulo" class="card-title"></h3>
@@ -193,6 +194,26 @@
                                                     {{ $errors->first('codigo') }}
                                                 </div>          
                                             @endif 
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="" class="row divVehiculo" style="display: none">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="selectVehiculo">Ingrese el vehículo</label>
+                                        <select id="selectVehiculo" class="registros form-control {{ $errors->has('id_vehiculo') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_vehiculo">
+                                            {{-- <option selected="selected" value="" disabled>Seleccione el vehículo</option>
+                                            @foreach ($empresas as $empresa)
+                                                <option value="{{ $empresa->id_empresas}}"
+                                                    {{ $empresa->id_empresas == old('id_empresa') ? 'selected' : '' }}>{{ $empresa->nombre }}
+                                                </option>
+                                            @endforeach --}}
+                                        </select>
+                                        @if ($errors->has('id_vehiculo')) 
+                                            <div class="invalid-feedback">
+                                                {{ $errors->first('id_vehiculo') }}
+                                            </div>            
+                                        @endif
                                     </div>
                                 </div>
                             </div>

@@ -1,7 +1,8 @@
 <div class="row mt-n2">
     <div class="col-md-12">
-        <form id="formRegistros2" class="formularios" action="{{ route('crearRegistro') }}" method="POST" novalidate>
+        <form id="formRegistros2" class="formularios" action="" method="POST" novalidate>
             @csrf
+            @method('PUT')
             <div class="card card-primary">
                 <div class="card-header">
                     <h3 class="card-title">Información colaborador</h3>
@@ -154,6 +155,20 @@
                         </div>
                     </div>
 
+                    <div id="" class="row divVehiculo mt-n4" style="display: none">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="selectVehiculo2">Ingrese el vehículo</label>
+                                <select id="selectVehiculo2" class="registros form-control {{ $errors->has('id_vehiculo') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_vehiculo"></select>
+                                @if ($errors->has('id_vehiculo')) 
+                                    <div class="invalid-feedback">
+                                        {{ $errors->first('id_vehiculo') }}
+                                    </div>            
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    {{-- mt-n3 --}}
                     <div class="row mt-n3">
                         <div class="col-sm-4">
                             <div class="form-group clearfix">
