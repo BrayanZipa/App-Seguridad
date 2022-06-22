@@ -22,11 +22,11 @@
         $(function () {
 
             //Token de Laravel
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
+            // $.ajaxSetup({
+            //     headers: {
+            //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            //     }
+            // });
             
             //Permite que a los select de selección de EPS y ARL de todos los formularios se les asigne una barra de búsqueda haciendolos más dinámicos, también se le asigna select de persona
             function activarSelect2Registros() {
@@ -75,8 +75,7 @@
                         $('#buscarPersona').css('display', 'block'); 
                         $.each(response.data, function(key, value){                   
                             $('#selectPersona').append("<option value='" + value.id_personas + "'> C.C. " + value.identificacion + " - " + value.nombre + " " + value.apellido + "</option>");
-                        });                  
-                        // $('#selectPersona').val($('#retornoPersona').val());                               
+                        });                                              
                     }, 
                     error: function(){
                         console.log('Error obteniendo los datos de las personas');
@@ -126,19 +125,28 @@
                             $('#selectEmpresa').val('');
                             $('#inputDescripcion').val('');
 
-                            if(response.id_tipo_persona == 1){
-                                $('#inputActivo').val(response.activo);
-                                $('#inputCodigo').val(response.codigo); 
-                                if($('#checkActivo').prop('checked') == true){
+                            if(response.id_tipo_persona == 1){ 
+                                if($('#checkActivo').prop('checked')){
                                     $('#checkActivo').trigger('click');
                                 }
+                                if($('#checkVehiculo').prop('checked')){
+                                    $('#checkVehiculo').trigger('click');
+                                } else {
+                                    $('#divVehiculo').css('display', 'none');
+                                    $('#selectVehiculo').prop('required', false);
+                                }
 
+                                $('#inputActivo').val(response.activo);
+                                $('#inputCodigo').val(response.codigo); 
                                 $('#selectEps').prop('required', false);
                                 $('#selectArl').prop('required', false);
                                 $('#titulo').text('Información visitante');
                                 $('#checkBox').css('display', ''); 
                                 $('#formVisitanteConductor').css('display', 'block'); 
                             } else {
+                                obtenerVehiculos('#selectVehiculo');
+                                $('#selectVehiculo').prop('required', true);
+                                $('#divVehiculo').css('display', 'block');
                                 $('#selectEps').prop('required', true);
                                 $('#selectArl').prop('required', true);
                                 $('#titulo').text('Información conductor');
@@ -147,6 +155,9 @@
                             }
 
                         }  else if(response.id_tipo_persona == 2){
+                            if($('#checkVehiculo2').prop('checked')){
+                                $('#checkVehiculo2').trigger('click');
+                            } 
                             $('#formRegistros2').attr('action','/registros/editar_persona/' + response.id_personas);
                             $('#inputId2').val(response.id_personas);
                             $('#inputNombre2').val(response.nombre);
@@ -160,6 +171,9 @@
                             $('#formColaboradorSinActivo').css('display', 'block'); 
                             
                         }  else if(response.id_tipo_persona == 3){
+                            if($('#checkVehiculo3').prop('checked')){
+                                $('#checkVehiculo3').trigger('click');
+                            }
                             $('#formRegistros3 .registros').each(function(index) {
                                 $(this).val('');
                             });
@@ -179,7 +193,7 @@
                 }); 
             }); 
 
-            // Se elije una fila de la tabla y se toma la información del colaborador para mostrarla en un formulario y permitir actualizarla
+            //Función que permite que al seleccionar una persona de tipo colaborador con activo se traiga su información directamente desde el API de GLPI por medio de una solicitud Ajax
             function obtenerColaborador(data){      
                 if($('#mensajeError').length){ $('#mensajeError').remove(); }  
                 if($('#mensajeCodigo').length){ $('#mensajeCodigo').remove(); } 
@@ -251,51 +265,86 @@
             }
 
             //Manejo de los checkbox al ser seleccionados y control de la vista de formularios   
-            $('input[type=checkbox]').on('change', function () {
-                if ($('#checkVehiculo').is(':checked') && $('#checkActivo').is(':checked')) {
-                    // $('#botonComprimirVisitante').trigger('click');
-                    // $('#crearVehiculo').css('display', 'block');
-                    // $('#crearActivo').css('display', 'block');
-                    // $('#inputActivo').val('Computador');
-                    // $('#botonCrear2').css('display', 'none');
-                    // $('#checkVehiculo').prop('disabled', true);
-                    // $('#checkActivo').prop('disabled', true);
-                    // $('#casoIngreso').val('casoVehiculoActivo');
-                    // requiredTrue('.vehiculo');
-                    // requiredTrue('.activo');
+            $('#checkVehiculo').on('change', function () {
+                if ($('#checkVehiculo').is(':checked')) {
+                    obtenerVehiculos('#selectVehiculo');
+                    $('#selectVehiculo').prop('required', true);
+                    $('#divVehiculo').css('display', 'block');
+                } else {
+                    if($('#selectVehiculo').hasClass('is-invalid')){
+                        $('#selectVehiculo').removeClass('is-invalid');
+                    }  
+                    $('#selectVehiculo').prop('required', false);
+                    $('#divVehiculo').css('display', 'none');
+                } 
+            });
 
-                } else if ($('#checkVehiculo3').is(':checked')) {
-                    obtenerVehiculos();
-                    // $('#crearVehiculo').css('display', 'block');
-                    // $('#botonCrear').css('display', 'none');
-                    // $('#botonCrear2').css('display', 'inline');
-                    // $('#checkVehiculo').prop('disabled', true);
-                    // $('#casoIngreso').val('casoVehiculo');
-                    // requiredTrue('.vehiculo');
+            $('#checkVehiculo2').on('change', function () {
+                if ($('#checkVehiculo2').is(':checked')) {
+                    obtenerVehiculos('#selectVehiculo2');
+                    $('#selectVehiculo2').prop('required', true);
+                    $('#divVehiculo2').css('display', 'block');
+                } else {
+                    if($('#selectVehiculo2').hasClass('is-invalid')){
+                        $('#selectVehiculo2').removeClass('is-invalid');
+                    }  
+                    $('#selectVehiculo2').prop('required', false);
+                    $('#divVehiculo2').css('display', 'none');
+                } 
+            });
 
-                } else if ($('#checkActivo').is(':checked') && ($('#checkVehiculo').prop('checked') == false)) {
+            $('#checkVehiculo3').on('change', function () {
+                if ($('#checkVehiculo3').is(':checked')) {
+                    obtenerVehiculos('#selectVehiculo3');
+                    $('#selectVehiculo3').prop('required', true);
+                    $('#divVehiculo3').css('display', '');
+                } else {
+                    if($('#selectVehiculo3').hasClass('is-invalid')){
+                        $('#selectVehiculo3').removeClass('is-invalid');
+                    }  
+                    $('#selectVehiculo3').prop('required', false);
+                    $('#divVehiculo3').css('display', 'none');
+                } 
+            });
+
+            function name(checkbox, select, contentOculto) {
+                if ($('#checkVehiculo3').is(':checked')) {
+                    obtenerVehiculos('#selectVehiculo3');
+                    $('#selectVehiculo3').prop('required', true);
+                    $('#divVehiculo3').css('display', '');
+                } else {
+                    if($('#selectVehiculo3').hasClass('is-invalid')){
+                        $('#selectVehiculo3').removeClass('is-invalid');
+                    }  
+                    $('#selectVehiculo3').prop('required', false);
+                    $('#divVehiculo3').css('display', 'none');
+                }  
+            }
+
+            $('#checkActivo').on('change', function () {
+                if ($('#checkActivo').is(':checked')) {
                     $('#inputActivo').prop('required', true);
                     $('#inputCodigo').prop('required', true);
-                    if($('#inputActivo').val('')){
+                    if($('#inputActivo').val().length <= 0){
                         $('#inputActivo').val('Computador');
                     }
-                    $('#divActivo').css('display', ''); 
-                    // $('#crearActivo').css('display', 'block');
-                    // $('#inputActivo').val('Computador');
-                    // $('#botonCrear').css('display', 'none');
-                    // $('#checkActivo').prop('disabled', true);
-                    // $('#casoIngreso').val('casoActivo');
-                    // requiredTrue('.activo');
-                } else if (!$('#checkActivo').is(':checked') && ($('#checkVehiculo').prop('checked') == false)) {
+                    $('#divActivo').css('display', '');         
+                } else {
+                    if($('#inputActivo, #inputCodigo').hasClass('is-invalid')){
+                        $('#inputActivo, #inputCodigo').removeClass('is-invalid');
+                    } 
+                    $('#inputActivo').prop('required', false);
+                    $('#inputCodigo').prop('required', false);
                     $('#divActivo').css('display', 'none');
+                    $('#inputActivo').val('');
                     $('#inputCodigo').val('');
                 }
             });
 
             //Función que permite que al seleccionar la opción de ingreso de vehículo en cualquiera de los formularios se haga una petención Ajax para consultar la información de los vehículos que esten asociados a la persona que este previamente seleccionada y estos se listen en un select
-            function obtenerVehiculos() {
-                $('#selectVehiculo3').empty();   
-                $('#selectVehiculo3').append("<option selected='selected' value='' disabled>Seleccione el vehículo</option>");
+            function obtenerVehiculos(select) {
+                $(select).empty();   
+                $(select).append("<option selected='selected' value='' disabled>Seleccione el vehículo</option>");
 
                 $.ajax({
                     url: '/registros/vehiculos/',
@@ -305,12 +354,11 @@
                     },
                     dataType: 'json',
                     success: function(response){
-                        console.log(response);
                         $.each(response, function(key, value){     
                             if(value.marca == null){
-                                $('#selectVehiculo3').append("<option value='" + value.id_vehiculos + "'>" + value.tipo + " - " + value.identificador + "</option>");
+                                $(select).append("<option value='" + value.id_vehiculos + "'>" + value.tipo + " - " + value.identificador + "</option>");
                             }  else {
-                                $('#selectVehiculo3').append("<option value='" + value.id_vehiculos + "'>" + value.tipo + " " + value.marca + " - " + value.identificador + "</option>");
+                                $(select).append("<option value='" + value.id_vehiculos + "'>" + value.tipo + " " + value.marca + " - " + value.identificador + "</option>");
                             }            
                         });   
                     }, 
@@ -362,6 +410,20 @@
                     });
                 }
             }
+
+            //Si en un input del cualquier formulario del módulo visitantes esta la clase is-invalid al escribir en el mismo input se elimina esta clase 
+            $('input.registros').keydown(function (event) {
+                if ($(this).hasClass('is-invalid')) {
+                    $(this).removeClass('is-invalid');
+                }
+            });
+
+            //Si en un select del cualquier formulario del módulo visitantes esta la clase is-invalid al seleccionar algo en el mismo select se elimina esta clase 
+            $('select.registros').change(function () {
+                if ($(this).hasClass('is-invalid')) {
+                    $(this).removeClass('is-invalid');
+                };
+            });
 
 
             // $( "#formRegistros1" ).submit(function( event ) {

@@ -176,7 +176,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="" class="row justify-content-end divVehiculo" style="">
+                    <div id="divVehiculo3" class="row justify-content-end" style="display: none">
                         <div class="col-sm-8">
                             <div class="form-group">
                                 <label for="selectVehiculo3">Ingrese el vehículo</label>

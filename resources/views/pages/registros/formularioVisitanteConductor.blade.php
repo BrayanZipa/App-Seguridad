@@ -197,17 +197,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="" class="row divVehiculo" style="display: none">
+                            <div id="divVehiculo" class="row" style="display: none">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="selectVehiculo">Ingrese el vehículo</label>
                                         <select id="selectVehiculo" class="registros form-control {{ $errors->has('id_vehiculo') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_vehiculo">
-                                            {{-- <option selected="selected" value="" disabled>Seleccione el vehículo</option>
-                                            @foreach ($empresas as $empresa)
-                                                <option value="{{ $empresa->id_empresas}}"
-                                                    {{ $empresa->id_empresas == old('id_empresa') ? 'selected' : '' }}>{{ $empresa->nombre }}
-                                                </option>
-                                            @endforeach --}}
                                         </select>
                                         @if ($errors->has('id_vehiculo')) 
                                             <div class="invalid-feedback">
@@ -217,11 +211,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="checkBox" class="row mt-2 visitante">
+                            <div id="checkBox" class="row visitante">
                                 <div class="col-12">
                                     <!-- checkbox -->
-                                    <div class="form-group clearfix mt-n2 mb-1">
-                                        <div class="icheck-primary d-inline ">
+                                    <div class="form-group clearfix mt-n1 mb-1">
+                                        <div class="icheck-primary d-inline">
                                             <label for="checkVehiculo">
                                                 ¿El visitante ingresa vehículo?
                                             </label>
@@ -238,7 +232,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
@@ -247,7 +240,6 @@
                 <!-- /.card-footer-->
             </div>
             <!-- /.card -->
-
         </form>
     </div>
 </div>

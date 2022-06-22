@@ -154,8 +154,7 @@
                             </div>
                         </div>
                     </div>
-
-                    <div id="" class="row divVehiculo mt-n4" style="display: none">
+                    <div id="divVehiculo2" class="row mt-n4 mb-4" style="display: none">
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label for="selectVehiculo2">Ingrese el vehículo</label>
@@ -168,8 +167,7 @@
                             </div>
                         </div>
                     </div>
-                    {{-- mt-n3 --}}
-                    <div class="row mt-n3">
+                    <div id="divVehiculo2" class="row mt-n3">
                         <div class="col-sm-4">
                             <div class="form-group clearfix">
                                 <div class="icheck-primary d-inline">
@@ -181,7 +179,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer mt-n2">
