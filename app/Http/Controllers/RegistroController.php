@@ -122,12 +122,21 @@ class RegistroController extends Controller
     }
     
     /**
-     * 
+     * Función que permite actualizar la infromación de una persona en caso de que se desea cambiar al momento de hacer un nuevo registro.
      */
     public function updatePersona(Request $request, $id)
     {
         // return $id;
-        return $request->all();
+        // return $request->all();
+        $persona = $request->all();
+        $persona['nombre'] = ucwords(mb_strtolower($persona['nombre']));
+        $persona['apellido'] = ucwords(mb_strtolower($persona['apellido']));
+        // $persona['colaborador'] = ucwords(mb_strtolower($persona['colaborador']));
+        // $persona['descripcion'] = ucfirst(mb_strtolower($persona['descripcion']));
+        // $persona['activo'] = ucwords(mb_strtolower($persona['activo']));
+        // $persona['codigo'] = ucfirst($persona['codigo']);
+        // $persona['id_usuario'] = auth()->user()->id_usuarios;
+        Persona::findOrFail($id)->update($persona);
     }
 
     /**
@@ -142,7 +151,7 @@ class RegistroController extends Controller
     }
 
     /**
-     * Función que recibe una petición de Ajax para obtener los datos de una persona de tipo visitante que este creada en la tabla se_personas.
+     * Función que recibe una petición Ajax con el id de una persona con el cuál se realiza una búsqueda y se retorna la información que esta persona tenga asociada.
      */
     public function getPersona(Request $request){
         $id = $request->input('persona');
@@ -150,12 +159,13 @@ class RegistroController extends Controller
     }
 
     /**
-     * 
+     * Función que recibe una petición Ajax con el id de una persona con el cuál se realiza una búsqueda y se retorna una lista con todos los vehículos que esta persona tenga asociados.
      */
     public function getVehiculos(Request $request){
         $id = $request->input('persona');
         try {       
-            $vehiculos = PersonaVehiculo::leftjoin('se_vehiculos AS vehiculos', 'se_per_vehi.id_vehiculo', '=', 'vehiculos.id_vehiculos')
+            $vehiculos = PersonaVehiculo::select('vehiculos.*', 'tipo.tipo', 'marca.marca')
+            ->leftjoin('se_vehiculos AS vehiculos', 'se_per_vehi.id_vehiculo', '=', 'vehiculos.id_vehiculos')
             ->leftjoin('se_tipo_vehiculos AS tipo', 'vehiculos.id_tipo_vehiculo', '=', 'tipo.id_tipo_vehiculos')
             ->leftjoin('se_marca_vehiculos AS marca', 'vehiculos.id_marca_vehiculo', '=', 'marca.id_marca_vehiculos')
             ->where('id_persona', $id)->get();

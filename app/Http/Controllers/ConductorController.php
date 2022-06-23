@@ -173,7 +173,6 @@ class ConductorController extends Controller
         $conductor = $request->all();
         $conductor['nombre'] = ucwords(mb_strtolower($conductor['nombre']));
         $conductor['apellido'] = ucwords(mb_strtolower($conductor['apellido']));
-        // $visitante = Visitante::find($id)->fill($request->all())->save();
         Persona::findOrFail($id)->update($conductor);
         return redirect()->action([ConductorController::class, 'index'])->with('editar_conductor', $conductor['nombre']." ".$conductor['apellido']);
     }

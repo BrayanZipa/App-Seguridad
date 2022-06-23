@@ -28,7 +28,7 @@
             //     }
             // });
             
-            //Permite que a los select de selección de EPS y ARL de todos los formularios se les asigne una barra de búsqueda haciendolos más dinámicos, también se le asigna select de persona
+            //Función que permite que a los select de selección de EPS y ARL de todos los formularios se les asigne una barra de búsqueda haciendolos más dinámicos, también se le asigna select de persona
             function activarSelect2Registros() {
                 $('#selectPersona').select2({
                     theme: 'bootstrap4',
@@ -264,63 +264,37 @@
                 });
             }
 
-            //Manejo de los checkbox al ser seleccionados y control de la vista de formularios   
-            $('#checkVehiculo').on('change', function () {
-                if ($('#checkVehiculo').is(':checked')) {
-                    obtenerVehiculos('#selectVehiculo');
-                    $('#selectVehiculo').prop('required', true);
-                    $('#divVehiculo').css('display', 'block');
+            //Función que permite que al seleccionar un checkbox de ingreso de vehículo en cualquiera de los formularios se muestre o se oculte el select que lista los vehículos pertenecientes a una persona, también permite hacer o no requerido el ingreso de esta información
+            function checkboxVehiculos(checkbox, select, div) {
+                if ($(checkbox).is(':checked')) {
+                    obtenerVehiculos(select);
+                    $(select).prop('required', true);
+                    $(div).css('display', '');
                 } else {
-                    if($('#selectVehiculo').hasClass('is-invalid')){
-                        $('#selectVehiculo').removeClass('is-invalid');
+                    if($(select).hasClass('is-invalid')){
+                        $(select).removeClass('is-invalid');
                     }  
-                    $('#selectVehiculo').prop('required', false);
-                    $('#divVehiculo').css('display', 'none');
-                } 
-            });
-
-            $('#checkVehiculo2').on('change', function () {
-                if ($('#checkVehiculo2').is(':checked')) {
-                    obtenerVehiculos('#selectVehiculo2');
-                    $('#selectVehiculo2').prop('required', true);
-                    $('#divVehiculo2').css('display', 'block');
-                } else {
-                    if($('#selectVehiculo2').hasClass('is-invalid')){
-                        $('#selectVehiculo2').removeClass('is-invalid');
-                    }  
-                    $('#selectVehiculo2').prop('required', false);
-                    $('#divVehiculo2').css('display', 'none');
-                } 
-            });
-
-            $('#checkVehiculo3').on('change', function () {
-                if ($('#checkVehiculo3').is(':checked')) {
-                    obtenerVehiculos('#selectVehiculo3');
-                    $('#selectVehiculo3').prop('required', true);
-                    $('#divVehiculo3').css('display', '');
-                } else {
-                    if($('#selectVehiculo3').hasClass('is-invalid')){
-                        $('#selectVehiculo3').removeClass('is-invalid');
-                    }  
-                    $('#selectVehiculo3').prop('required', false);
-                    $('#divVehiculo3').css('display', 'none');
-                } 
-            });
-
-            function name(checkbox, select, contentOculto) {
-                if ($('#checkVehiculo3').is(':checked')) {
-                    obtenerVehiculos('#selectVehiculo3');
-                    $('#selectVehiculo3').prop('required', true);
-                    $('#divVehiculo3').css('display', '');
-                } else {
-                    if($('#selectVehiculo3').hasClass('is-invalid')){
-                        $('#selectVehiculo3').removeClass('is-invalid');
-                    }  
-                    $('#selectVehiculo3').prop('required', false);
-                    $('#divVehiculo3').css('display', 'none');
+                    $(select).prop('required', false);
+                    $(div).css('display', 'none');
                 }  
             }
 
+            //Función que se activa cuando el usuario le da click al checkbox de ingresar vehículo en el formulario de visitanteConductor
+            $('#checkVehiculo').on('change', function () {
+                checkboxVehiculos('#checkVehiculo', '#selectVehiculo', '#divVehiculo');
+            });
+
+            //Función que se activa cuando el usuario le da click al checkbox de ingresar vehículo en el formulario de colaborador sin activo
+            $('#checkVehiculo2').on('change', function () {
+                checkboxVehiculos('#checkVehiculo2', '#selectVehiculo2', '#divVehiculo2');
+            });
+
+            //Función que se activa cuando el usuario le da click al checkbox de ingresar vehículo en el formulario de colaborador con activo
+            $('#checkVehiculo3').on('change', function () {
+                checkboxVehiculos('#checkVehiculo3', '#selectVehiculo3', '#divVehiculo3');
+            });
+
+            ////Función que se activa cuando el usuario le da click al checkbox de ingresar activo en el formulario de visitanteConductor, permitiendo ocultar o mostrar la información, así como hacerla requerida o no
             $('#checkActivo').on('change', function () {
                 if ($('#checkActivo').is(':checked')) {
                     $('#inputActivo').prop('required', true);
@@ -341,7 +315,7 @@
                 }
             });
 
-            //Función que permite que al seleccionar la opción de ingreso de vehículo en cualquiera de los formularios se haga una petención Ajax para consultar la información de los vehículos que esten asociados a la persona que este previamente seleccionada y estos se listen en un select
+            //Función que permite que al seleccionar la opción de ingreso de vehículo en cualquiera de los formularios se haga una petención Ajax para consultar la información de los vehículos que esten asociados a la persona que se haya seleccionado previamente y estos se listen en un select
             function obtenerVehiculos(select) {
                 $(select).empty();   
                 $(select).append("<option selected='selected' value='' disabled>Seleccione el vehículo</option>");
@@ -368,37 +342,7 @@
                 }); 
             }
 
-            // Funciones anónimas que generan mensajes de error cuando el usuario intenta enviar algún formulario del módulo registros sin los datos requeridos, es una primera validación del lado del cliente
-            (function () {
-                'use strict'
-                var form = document.getElementById('formRegistros1');
-                form.addEventListener('submit', function (event) {
-                    if (!form.checkValidity()) {
-                        validacion(form);
-                    }
-                }, false);
-            })();
-
-            (function () {
-                'use strict'
-                var form = document.getElementById('formRegistros2');
-                form.addEventListener('submit', function (event) {
-                    if (!form.checkValidity()) {
-                        validacion(form);
-                    }
-                }, false);
-            })();
-
-            (function () {
-                'use strict'
-                var form = document.getElementById('formRegistros3');
-                form.addEventListener('submit', function (event) {
-                    if (!form.checkValidity()) {
-                        validacion(form);
-                    }
-                }, false);
-            })();
-
+            //Función que genera mensajes de error cuando el usuario intenta enviar algún formulario del módulo registros sin los datos requeridos, es una primera validación del lado del cliente
             function validacion(form) {
                 if (!form.checkValidity()) {
                     event.preventDefault();
@@ -411,18 +355,62 @@
                 }
             }
 
-            //Si en un input del cualquier formulario del módulo visitantes esta la clase is-invalid al escribir en el mismo input se elimina esta clase 
+            //Función anónima que se activa cuando el usuario intenta enviar el formulario de visitanteConductor sin la información requerida
+            (function () {
+                'use strict'
+                var form = document.getElementById('formRegistros1');
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        validacion(form);
+                    }
+                }, false);
+            })();
+
+            //Función anónima que se activa cuando el usuario intenta enviar el formulario de colaborador sin activo sin la información requerida
+            (function () {
+                'use strict'
+                var form = document.getElementById('formRegistros2');
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        validacion(form);
+                    }
+                }, false);
+            })();
+
+            //Función anónima que se activa cuando el usuario intenta enviar el formulario de colaborador con activo sin la información requerida
+            (function () {
+                'use strict'
+                var form = document.getElementById('formRegistros3');
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        validacion(form);
+                    }
+                }, false);
+            })();
+
+            //Si en un input de cualquier formulario de la vista de ingreso de registros esta la clase is-invalid al escribir en el mismo input se elimina esta clase 
             $('input.registros').keydown(function (event) {
                 if ($(this).hasClass('is-invalid')) {
                     $(this).removeClass('is-invalid');
                 }
             });
 
-            //Si en un select del cualquier formulario del módulo visitantes esta la clase is-invalid al seleccionar algo en el mismo select se elimina esta clase 
+            //Si en un select de cualquier formulario de la vista de ingreso de registros esta la clase is-invalid al seleccionar algo en el mismo select se elimina esta clase 
             $('select.registros').change(function () {
                 if ($(this).hasClass('is-invalid')) {
                     $(this).removeClass('is-invalid');
                 };
+            });
+
+            //Función que se activa cuando el usuario hace click en el botón de cerrar en cualquiera de los formularios, esto hace que el formulario que se este mostrando en el momento se oculte
+            $('.botonCerrar').click(function () {
+                if($('#formVisitanteConductor').is(':visible')){
+                    $('#formVisitanteConductor').css('display', 'none');
+                } else if ($('#formColaboradorSinActivo').is(':visible')){
+                    $('#formColaboradorSinActivo').css('display', 'none');
+                }else if ($('#formColaboradorConActivo').is(':visible')){
+                    $('#formColaboradorConActivo').css('display', 'none');
+                }
             });
 
 
@@ -508,7 +496,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div id="formVisitanteConductor" style="display: none">
                     @include('pages.registros.formularioVisitanteConductor')
                 </div>
@@ -520,10 +508,6 @@
                 <div id="formColaboradorConActivo" style="display: none">
                     @include('pages.registros.formularioColaboradorConActivo')
                 </div>
-
-                {{-- <div>
-                    @include('pages.registros.vehiculo')
-                </div> --}}
                 
             </div>
         </div>

@@ -286,7 +286,7 @@ class ColaboradorController extends Controller
         $colaborador['apellido'] = ucwords(mb_strtolower($colaborador['apellido']));
         Persona::findOrFail($id)->update($colaborador);
 
-        if(isset($colaborador['codigo'])){ //saber si no es null
+        if(isset($colaborador['codigo'])){ //saber si existe
             $colaborador['codigo'] = ucfirst($colaborador['codigo']);
             if($this->activos->existeActivo($colaborador['codigo'], $colaborador['id_personas'])){  
                 return redirect()->action([ColaboradorController::class, 'index'])->with('editar_colaborador2', $colaborador['nombre']." ".$colaborador['apellido']);
@@ -309,6 +309,9 @@ class ColaboradorController extends Controller
     { 
         $this->activos->existeActivoEliminar($id);
         $colaborador = $this->colaboradores->obtenerPersona($id);
+        if($colaborador->foto == null){
+            $colaborador->foto = 'sinfoto';
+        } 
         $colaborador->id_tipo_persona = 1;
         $colaborador->save();
     }

@@ -10,7 +10,7 @@
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                             <i class="fas fa-minus"></i>
                         </button>
-                        <button id="botonCerrar" type="button" class="btn btn-tool">
+                        <button type="button" class="botonCerrar btn btn-tool">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
@@ -19,8 +19,8 @@
                 <!-- /.card-header -->
 
                 <div class="card-body mb-n4">
+                    <input type="hidden" id="registro2" name="casoRegistro" value="{{ old('casoRegistro') }}">
                     <input type="hidden" id="inputId2" name="id_personas" value="{{ old('id_personas') }}">
-                    
                     <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">
@@ -183,7 +183,6 @@
                 <!-- /.card-body -->
                 <div class="card-footer mt-n2">
                     <button type='submit' class="btn btn-primary">Guardar registro</button>
-                    {{-- <button id="botonCambiarRol" type='button' class="btn btn-danger">Cambiar a visitante</button> --}}
                 </div>
                 <!-- /.card-footer-->
             </div>

@@ -10,7 +10,7 @@
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                             <i class="fas fa-minus"></i>
                         </button>
-                        <button id="botonCerrar" type="button" class="btn btn-tool">
+                        <button type="button" class="botonCerrar btn btn-tool">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
@@ -22,8 +22,8 @@
                     <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">
+                                <input type="hidden" id="registro" name="casoRegistro" value="{{ old('casoRegistro') }}">
                                 <input type="hidden" id="inputId" name="id_personas" value="{{ old('id_personas') }}">
-
                                 <label for="inputFoto">Fotografía</label>
                                 <input type="hidden" id="inputFoto" class="{{ $errors->has('foto') ? 'is-invalid' : '' }}" name="foto" value="{{ old('foto') }}">
                                 <img id="fotografia" class="img-fluid rounded" style="border: 1px solid #007bff" src="" alt="Fotografía persona">

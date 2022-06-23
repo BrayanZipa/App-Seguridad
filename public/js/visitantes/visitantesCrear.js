@@ -359,14 +359,14 @@ $(function () {
         }, false);
     })();
 
-    //Si en un input del cualquier formulario del módulo visitantes esta la clase is-invalid al escribir en el mismo input se elimina esta clase 
+    //Si en un input de cualquier formulario del módulo visitantes esta la clase is-invalid al escribir en el mismo input se elimina esta clase 
     $('input.visitante, textarea.visitante, input.vehiculo, input.activo').keydown(function (event) {
         if ($(this).hasClass('is-invalid')) {
             $(this).removeClass('is-invalid');
         }
     });
 
-    //Si en un select del cualquier formulario del módulo visitantes esta la clase is-invalid al seleccionar algo en el mismo select se elimina esta clase 
+    //Si en un select de cualquier formulario del módulo visitantes esta la clase is-invalid al seleccionar algo en el mismo select se elimina esta clase 
     $('select.visitante, select.vehiculo').change(function () {
         if ($(this).hasClass('is-invalid')) {
             $(this).removeClass('is-invalid');

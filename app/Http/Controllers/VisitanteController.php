@@ -286,13 +286,7 @@ class VisitanteController extends Controller
                 ]
             );
         }
-
-        if($request->ajax()){
-            return response()->json(['nombre' => $visitante['nombre']." ".$visitante['apellido']]);
-        } else {
-            return redirect()->action([VisitanteController::class, 'index'])->with('editar_visitante', $visitante['nombre']." ".$visitante['apellido']);
-        }
-        
+        return redirect()->action([VisitanteController::class, 'index'])->with('editar_visitante', $visitante['nombre']." ".$visitante['apellido']);
     }
 
     /**
