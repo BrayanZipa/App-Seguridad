@@ -288,11 +288,11 @@ class ColaboradorController extends Controller
 
         if(isset($colaborador['codigo'])){ //saber si existe
             $colaborador['codigo'] = ucfirst($colaborador['codigo']);
-            if($this->activos->existeActivo($colaborador['codigo'], $colaborador['id_personas'])){  
+            if($this->activos->existeActivo($colaborador['codigo'], $id)){  
                 return redirect()->action([ColaboradorController::class, 'index'])->with('editar_colaborador2', $colaborador['nombre']." ".$colaborador['apellido']);
             } else {
                 $this->activos->verificarActivo($colaborador['codigo']);   
-                Activo::where('id_persona', $colaborador['id_personas'])->update(['codigo' => $colaborador['codigo']]);
+                Activo::where('id_persona', $id)->update(['codigo' => $colaborador['codigo']]);
                 $modal = [$colaborador['nombre']." ".$colaborador['apellido'], $colaborador['codigo']];
                 return redirect()->action([ColaboradorController::class, 'index'])->with('editar_colaborador_activo2', $modal);
             }    

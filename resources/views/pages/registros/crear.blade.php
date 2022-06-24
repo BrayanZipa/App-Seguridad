@@ -135,7 +135,7 @@
                                     $('#divVehiculo').css('display', 'none');
                                     $('#selectVehiculo').prop('required', false);
                                 }
-
+                                $('#registro').val('visitante');
                                 $('#inputActivo').val(response.activo);
                                 $('#inputCodigo').val(response.codigo); 
                                 $('#selectEps').prop('required', false);
@@ -144,6 +144,7 @@
                                 $('#checkBox').css('display', ''); 
                                 $('#formVisitanteConductor').css('display', 'block'); 
                             } else {
+                                $('#registro').val('conductor');
                                 obtenerVehiculos('#selectVehiculo');
                                 $('#selectVehiculo').prop('required', true);
                                 $('#divVehiculo').css('display', 'block');
@@ -159,6 +160,7 @@
                                 $('#checkVehiculo2').trigger('click');
                             } 
                             $('#formRegistros2').attr('action','/registros/editar_persona/' + response.id_personas);
+                            $('#registro2').val('colaboradorSinActivo');
                             $('#inputId2').val(response.id_personas);
                             $('#inputNombre2').val(response.nombre);
                             $('#inputApellido2').val(response.apellido);
@@ -168,6 +170,7 @@
                             $('#selectEps2').val(response.id_eps);
                             $('#selectArl2').val(response.id_arl);
                             $('#selectEmpresa2').val(response.id_empresa);
+                            $('#inputDescripcion2').val('');
                             $('#formColaboradorSinActivo').css('display', 'block'); 
                             
                         }  else if(response.id_tipo_persona == 3){
@@ -179,6 +182,7 @@
                             });
                             obtenerColaborador(response);
                             $('#formRegistros3').attr('action','/registros/editar_persona/' + response.id_personas);
+                            $('#registro3').val('colaboradorConActivo');
                             $('#inputId3').val(response.id_personas);
                             $('#inputTelefono3').val(response.tel_contacto);
                             $('#selectEps3').val(response.id_eps);

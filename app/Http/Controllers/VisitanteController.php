@@ -276,15 +276,17 @@ class VisitanteController extends Controller
             } else {
                 $visitante['activo'] = 'Computador';
             }
-            
-            Activo::updateOrCreate(
-                ['id_persona' => $id],
-                [
-                    'activo' => $visitante['activo'],
-                    'codigo' => $visitante['codigo'],
-                    'id_usuario' => auth()->user()->id_usuarios,
-                ]
-            );
+
+            if(!$this->activos->existeActivo($visitante['codigo'], $id)){    
+                Activo::updateOrCreate(
+                    ['id_persona' => $id],
+                    [
+                        'activo' => $visitante['activo'],
+                        'codigo' => $visitante['codigo'],
+                        'id_usuario' => auth()->user()->id_usuarios,
+                    ]
+                );
+            }         
         }
         return redirect()->action([VisitanteController::class, 'index'])->with('editar_visitante', $visitante['nombre']." ".$visitante['apellido']);
     }

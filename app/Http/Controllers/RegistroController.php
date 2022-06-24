@@ -11,7 +11,7 @@ use App\Models\TipoPersona;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Yajra\DataTables\DataTables;
-use App\Http\Controllers\VisitanteController;
+use App\Models\Activo;
 use App\Models\PersonaVehiculo;
 
 class RegistroController extends Controller
@@ -24,14 +24,16 @@ class RegistroController extends Controller
     protected $tipoVehiculos;
     protected $marcaVehiculos;
     protected $empresas;
-
-    public function __construct(Registro $registros, TipoPersona $tipoPersonas, Persona $personas, Eps $eps, Arl $arl, Empresa $empresas){
+    protected $activos;
+    
+    public function __construct(Registro $registros, TipoPersona $tipoPersonas, Persona $personas, Eps $eps, Arl $arl, Empresa $empresas, Activo $activos){
         $this->registros = $registros;
         $this->tipoPersonas = $tipoPersonas;
         $this->personas = $personas;
         $this->eps = $eps;
         $this->arl = $arl;
         $this->empresas = $empresas;
+        $this->activos = $activos;
     }
 
     /**
@@ -61,19 +63,131 @@ class RegistroController extends Controller
     }
 
     /**
+     * Función que permite actualizar la infromación de una persona en caso de que se desea cambiar al momento de hacer un nuevo registro.
+     */
+    public function updatePersona(Request $request, $id)
+    {
+        // return $request->all();
+        $persona = $request->all();
+        $persona['nombre'] = ucwords(mb_strtolower($persona['nombre']));
+        $persona['apellido'] = ucwords(mb_strtolower($persona['apellido']));
+        $persona['descripcion'] = ucfirst(mb_strtolower($persona['descripcion']));
+        $persona['id_usuario'] = auth()->user()->id_usuarios;
+        Persona::findOrFail($id)->update($persona);
+
+        if($persona['casoRegistro'] == 'visitante' || $persona['casoRegistro'] == 'conductor'){
+            $persona['colaborador'] = ucwords(mb_strtolower($persona['colaborador']));
+            if(isset($persona['codigo'])){ 
+                $persona['activo'] = ucwords(mb_strtolower($persona['activo']));
+                $persona['codigo'] = ucfirst($persona['codigo']);
+
+                if(!$this->activos->existeActivo($persona['codigo'], $id)){  
+                    Activo::updateOrCreate(
+                        ['id_persona' => $id],
+                        [
+                            'activo' => $persona['activo'],
+                            'codigo' => $persona['codigo'],
+                            'id_usuario' => auth()->user()->id_usuarios,
+                        ]
+                    );
+                }
+            }
+        } else if ($persona['casoRegistro'] == 'colaboradorConActivo'){
+            $persona['codigo'] = ucfirst($persona['codigo']);
+            if(!$this->activos->existeActivo($persona['codigo'], $id)){  
+                $this->activos->verificarActivo($persona['codigo']);   
+                Activo::where('id_persona', $id)->update(['codigo' => $persona['codigo']]); 
+            }    
+        }
+
+        // return redirect()->action([RegistroController::class, 'store'])->with($persona); 
+        $this->store($persona);
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($datos)
     {
+        $datos['ingreso_persona'] = date('Y-m-d H:i:s');
+        if(isset($datos['id_vehiculo'])){
+            $datos['ingreso_vehiculo'] = date('Y-m-d H:i:s');    
+        } else {
+            $datos['id_vehiculo'] = null;
+            $datos['ingreso_vehiculo'] = null;
+        }
+
+        
+        if($datos['casoRegistro'] == 'visitante'){
+            // Registro::create([
+            //     'id_persona' => $datos['id_personas'],
+            //     'ingreso_persona' => date('Y-m-d H:i:s'),
+            //     'descripcion' => $datos['descripcion'],
+            //     'id_empresa' => $datos['id_empresa'],
+            //     'colaborador' => $datos['colaborador'],
+            //     'id_usuario' => $datos['id_usuario'],
+            // ])->save(); 
+        }
+        else if($datos['casoRegistro'] == 'conductor'){
+            $datos['codigo_activo'] = null;
+            $datos['ingreso_activo'] = null;
+
+
+            // Registro::create([
+            //     'id_persona' => $datos['id_personas'],
+            //     'ingreso_persona' => date('Y-m-d H:i:s'),
+            //     'ingreso_vehiculo' => date('Y-m-d H:i:s'),
+            //     'id_vehiculo' => $datos['id_vehiculo'],
+            //     'descripcion' => $datos['descripcion'],
+            //     'id_empresa' => $datos['id_empresa'],
+            //     'colaborador' => $datos['colaborador'],
+            //     'id_usuario' => $datos['id_usuario'],
+            // ])->save(); 
+        }
+        else if($datos['casoRegistro'] == 'colaboradorSinActivo'){
+            $datos['codigo_activo'] = null;
+            $datos['ingreso_activo'] = null;
+            $datos['id_empresa'] = null;
+            $datos['colaborador'] = null;
+        }
+        else if($datos['casoRegistro'] == 'colaboradorConActivo'){
+            $datos['codigo_activo'] = 'Computador '.$datos['codigo'];
+            $datos['ingreso_activo'] = date('Y-m-d H:i:s');
+            $datos['id_empresa'] = null;
+            $datos['colaborador'] = null;
+        }
+
+        // dd ($datos);
+        Registro::create([
+            'id_persona' => $datos['id_personas'],
+            'ingreso_persona' => $datos['ingreso_persona'],
+            'ingreso_vehiculo' => $datos['ingreso_vehiculo'],
+            'id_vehiculo' => $datos['id_vehiculo'],
+            'ingreso_activo' => $datos['ingreso_activo'],
+            'codigo_activo' => $datos['codigo_activo'],
+            'descripcion' => $datos['descripcion'],
+            'id_empresa' => $datos['id_empresa'],
+            'colaborador' => $datos['colaborador'],
+            'id_usuario' => $datos['id_usuario'],
+        ])->save(); 
+
+
+
+        // return $datos;
+        // dd ($datos);
         // $request->setMethod('PUT');
-        return $request->all();
+        // return $datos->all();
         // $id = $request->id_personas;
         // return redirect()->route('editarVisitante', ['id' => $id])->with($request->all());
         // return redirect('/visitantes/editar/'.$id)->with($request->all());
         // return redirect()->action([VisitanteController::class, 'update'], ['id' => $id]);
+
+
+        // $modal = [$persona['nombre']." ".$persona['apellido'], $persona['codigo']];
+                // return redirect()->action([ColaboradorController::class, 'index'])->with('editar_colaborador_activo2', $modal);
     }
 
     /**
@@ -119,24 +233,6 @@ class RegistroController extends Controller
     public function destroy($id)
     {
         //
-    }
-    
-    /**
-     * Función que permite actualizar la infromación de una persona en caso de que se desea cambiar al momento de hacer un nuevo registro.
-     */
-    public function updatePersona(Request $request, $id)
-    {
-        // return $id;
-        // return $request->all();
-        $persona = $request->all();
-        $persona['nombre'] = ucwords(mb_strtolower($persona['nombre']));
-        $persona['apellido'] = ucwords(mb_strtolower($persona['apellido']));
-        // $persona['colaborador'] = ucwords(mb_strtolower($persona['colaborador']));
-        // $persona['descripcion'] = ucfirst(mb_strtolower($persona['descripcion']));
-        // $persona['activo'] = ucwords(mb_strtolower($persona['activo']));
-        // $persona['codigo'] = ucfirst($persona['codigo']);
-        // $persona['id_usuario'] = auth()->user()->id_usuarios;
-        Persona::findOrFail($id)->update($persona);
     }
 
     /**
