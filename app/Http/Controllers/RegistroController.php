@@ -67,7 +67,6 @@ class RegistroController extends Controller
      */
     public function updatePersona(Request $request, $id)
     {
-        // return $request->all();
         $persona = $request->all();
         $persona['nombre'] = ucwords(mb_strtolower($persona['nombre']));
         $persona['apellido'] = ucwords(mb_strtolower($persona['apellido']));
@@ -100,8 +99,9 @@ class RegistroController extends Controller
             }    
         }
 
-        // return redirect()->action([RegistroController::class, 'store'])->with($persona); 
-        $this->store($persona);
+        $datos = $this->store($persona);
+        // dd($datos);
+        return redirect()->action([RegistroController::class, 'create'])->with('crear_registro', 'visitante '.$datos['nombre'].' '.$datos['apellido']); 
     }
 
     /**
@@ -120,32 +120,13 @@ class RegistroController extends Controller
             $datos['ingreso_vehiculo'] = null;
         }
 
-        
-        if($datos['casoRegistro'] == 'visitante'){
-            // Registro::create([
-            //     'id_persona' => $datos['id_personas'],
-            //     'ingreso_persona' => date('Y-m-d H:i:s'),
-            //     'descripcion' => $datos['descripcion'],
-            //     'id_empresa' => $datos['id_empresa'],
-            //     'colaborador' => $datos['colaborador'],
-            //     'id_usuario' => $datos['id_usuario'],
-            // ])->save(); 
+        if($datos['casoRegistro'] == 'visitanteActivo'){
+            $datos['codigo_activo'] = $datos['activo'].' '.$datos['codigo'];
+            $datos['ingreso_activo'] = date('Y-m-d H:i:s');
         }
-        else if($datos['casoRegistro'] == 'conductor'){
+        else if($datos['casoRegistro'] == 'visitante' || $datos['casoRegistro'] == 'conductor'){
             $datos['codigo_activo'] = null;
             $datos['ingreso_activo'] = null;
-
-
-            // Registro::create([
-            //     'id_persona' => $datos['id_personas'],
-            //     'ingreso_persona' => date('Y-m-d H:i:s'),
-            //     'ingreso_vehiculo' => date('Y-m-d H:i:s'),
-            //     'id_vehiculo' => $datos['id_vehiculo'],
-            //     'descripcion' => $datos['descripcion'],
-            //     'id_empresa' => $datos['id_empresa'],
-            //     'colaborador' => $datos['colaborador'],
-            //     'id_usuario' => $datos['id_usuario'],
-            // ])->save(); 
         }
         else if($datos['casoRegistro'] == 'colaboradorSinActivo'){
             $datos['codigo_activo'] = null;
@@ -160,7 +141,6 @@ class RegistroController extends Controller
             $datos['colaborador'] = null;
         }
 
-        // dd ($datos);
         Registro::create([
             'id_persona' => $datos['id_personas'],
             'ingreso_persona' => $datos['ingreso_persona'],
@@ -174,20 +154,7 @@ class RegistroController extends Controller
             'id_usuario' => $datos['id_usuario'],
         ])->save(); 
 
-
-
-        // return $datos;
-        // dd ($datos);
-        // $request->setMethod('PUT');
-        // return $datos->all();
-        // $id = $request->id_personas;
-        // return redirect()->route('editarVisitante', ['id' => $id])->with($request->all());
-        // return redirect('/visitantes/editar/'.$id)->with($request->all());
-        // return redirect()->action([VisitanteController::class, 'update'], ['id' => $id]);
-
-
-        // $modal = [$persona['nombre']." ".$persona['apellido'], $persona['codigo']];
-                // return redirect()->action([ColaboradorController::class, 'index'])->with('editar_colaborador_activo2', $modal);
+        return $datos;
     }
 
     /**

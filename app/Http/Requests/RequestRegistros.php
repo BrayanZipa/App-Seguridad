@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RequestPersona extends FormRequest
+class RequestRegistros extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,31 +24,26 @@ class RequestPersona extends FormRequest
     public function rules()
     {
         $datos = $this->all();
-        
-        if($this->method() == 'POST'){
-            if($datos['tipoVisitante'] == 'entrevista'){
+
+        if($this->method() == 'PUT'){
+            if($datos['casoRegistro'] == 'visitante' || $datos['casoRegistro'] == 'visitanteActivo'){
                 $validacion = [
                     'id_eps' => 'nullable|integer',         
                     'id_arl' => 'nullable|integer',   
                 ];
-                return array_merge($this->validacionGeneral(), $this->validacionFaltante(), $validacion);
-            } else if($datos['tipoVisitante'] == 'tercero'){
-                $validacion = [
-                    'id_eps' => 'required|integer',         
-                    'id_arl' => 'required|integer',   
-                ];
-                return array_merge($this->validacionGeneral(), $this->validacionFaltante(), $validacion);
-            }
 
-        } else if($this->method() == 'PUT'){
-            $validacion = [
-                'id_eps' => 'nullable|integer',         
-                'id_arl' => 'nullable|integer',  
-                'activo' => 'nullable|string|alpha|max:20|min:3',
-                'codigo' => 'nullable|string|alpha_num|unique:se_activos,codigo,'.$this->id.',id_persona|max:5|min:4', 
-            ];
-            return array_merge($this->validacionGeneral(), $validacion);
+                if($datos['casoRegistro'] == 'visitanteActivo'){
+                    $validacion['activo'] = [
+                        'id_eps' => 'nullable|integer',         
+                        'id_arl' => 'nullable|integer',   
+                    ];
+                }
+            }
         }
+
+        return [
+            //
+        ];
     }
 
     public function messages()
@@ -110,7 +105,7 @@ class RequestPersona extends FormRequest
     }
 
     /**
-     * Función que retorna las validaciones en general para el ingreso de datos de las personas
+     * Función que retorna las validaciones en general para el ingreso de datos de todos los tipos de persona (visitante, colaborador sin activo, colaborador con activo, conductor)
      */
     public function validacionGeneral()
     {
@@ -120,19 +115,33 @@ class RequestPersona extends FormRequest
             'identificacion' => 'required|numeric|unique:se_personas,identificacion,'.$this->id.',id_personas|digits_between:4,15',
             'tel_contacto' => 'required|numeric|digits_between:7,10',
             //|unique:se_personas,tel_contacto,'.$this->id.',id_personas
-            'foto' => 'required|string',
+            
         ];
     }
-    
+
     /**
      * Función que retorna las validaciones faltantes del ingreso de datos de las personas
      */
-    public function validacionFaltante()
+    public function validacionVisitanteConductor()
     {
         return[
             'id_empresa' => 'required|integer',
             'colaborador' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:50|min:3',
+            'descripcion' => 'nullable|max:255',
+            'foto' => 'required|string',
+        ];
+    } 
+
+    /**
+     * Función que retorna las validaciones faltantes del ingreso de datos de los colaboradores
+     */
+    public function validacionFaltante()
+    {
+        return[
+            'codigo' => 'required|string|alpha_num|max:5|min:4', 
             'descripcion' => 'nullable|max:255'
         ];
+
+        // |unique:se_activos,codigo
     } 
 }

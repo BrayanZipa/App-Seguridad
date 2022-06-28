@@ -279,6 +279,7 @@
                         $(select).removeClass('is-invalid');
                     }  
                     $(select).prop('required', false);
+                    $(select).val('');
                     $(div).css('display', 'none');
                 }  
             }
@@ -301,6 +302,7 @@
             ////Función que se activa cuando el usuario le da click al checkbox de ingresar activo en el formulario de visitanteConductor, permitiendo ocultar o mostrar la información, así como hacerla requerida o no
             $('#checkActivo').on('change', function () {
                 if ($('#checkActivo').is(':checked')) {
+                    $('#registro').val('visitanteActivo');
                     $('#inputActivo').prop('required', true);
                     $('#inputCodigo').prop('required', true);
                     if($('#inputActivo').val().length <= 0){
@@ -311,6 +313,7 @@
                     if($('#inputActivo, #inputCodigo').hasClass('is-invalid')){
                         $('#inputActivo, #inputCodigo').removeClass('is-invalid');
                     } 
+                    $('#registro').val('visitante');
                     $('#inputActivo').prop('required', false);
                     $('#inputCodigo').prop('required', false);
                     $('#divActivo').css('display', 'none');
@@ -417,6 +420,16 @@
                 }
             });
 
+            //Muestra los modales de ingreso correcto dependiendo de que formularios se hayan ingresado y redirecciona en caso de que se oprima el botón continuar
+            $('#modal-crear-registro').modal('show');
+            // $('#modal-crear-visitanteVehiculo').modal('show');
+            // $('#modal-crear-visitanteActivo').modal('show');
+            // $('#modal-crear-visitanteVehiculoActivo').modal('show');
+
+            $('.botonContinuar').click(function () {
+                $(location).attr('href', '/registros');
+            });
+
 
             // $( "#formRegistros1" ).submit(function( event ) {
             //     alert( "Handler for .submit() called." );
@@ -516,7 +529,7 @@
             </div>
         </div>
 
-        {{-- @include('pages.registros.modales') --}}
+        @include('pages.registros.modales')
         @include('pages.modalError')
 
     </section>

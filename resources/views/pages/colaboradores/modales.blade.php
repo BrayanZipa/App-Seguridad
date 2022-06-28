@@ -8,7 +8,7 @@
                     </div>
                 </div>
                 <div class="modal-body">
-                    <p>El visitante <b>{{ session('editar_colaborador') }}</b> ha cambiado su rol a colaborador exitosamente.</p>
+                    <p>La persona <b>{{ session('editar_colaborador') }}</b> ha cambiado su rol a colaborador exitosamente.</p>
                     <p>¿Desea permanecer en la página?</p>
                 </div>
                 <div class="modal-footer justify-content-between">
@@ -32,7 +32,7 @@
                     </div>
                 </div>
                 <div class="modal-body">
-                    <p>El visitante <b>{{ session('editar_colaborador_activo')[0] }}</b> ha cambiado su rol a colaborador exitosamente.</p>
+                    <p>La persona <b>{{ session('editar_colaborador_activo')[0] }}</b> ha cambiado su rol a colaborador exitosamente.</p>
                     <p>Computador con código <b>{{ session('editar_colaborador_activo')[1] }}</b> actualizado exitosamente.</p>
                     <p>¿Desea permanecer en la página?</p>
                 </div>
@@ -57,7 +57,7 @@
                     </div>
                 </div>
                 <div class="modal-body">
-                    <p>El visitante <b>{{ session('editar_colaborador_vehiculo')[0] }}</b> ha cambiado su rol a colaborador exitosamente.</p>
+                    <p>La persona <b>{{ session('editar_colaborador_vehiculo')[0] }}</b> ha cambiado su rol a colaborador exitosamente.</p>
                     <p>Vehículo con identificador <b>{{ session('editar_colaborador_vehiculo')[1] }}</b> creado exitosamente.</p>
                     <p>¿Desea permanecer en la página?</p>
                 </div>
@@ -82,7 +82,7 @@
                     </div>
                 </div>
                 <div class="modal-body">
-                    <p>El visitante <b>{{ session('editar_colaborador_vehiculoActivo')[0] }}</b> ha cambiado su rol a colaborador exitosamente.</p>
+                    <p>La persona <b>{{ session('editar_colaborador_vehiculoActivo')[0] }}</b> ha cambiado su rol a colaborador exitosamente.</p>
                     <p>Vehículo con identificador <b>{{ session('editar_colaborador_vehiculoActivo')[1] }}</b> creado exitosamente.</p>
                     <p>Computador con código <b>{{ session('editar_colaborador_vehiculoActivo')[2] }}</b> creado exitosamente.</p>
                     <p>¿Desea permanecer en la página?</p>
