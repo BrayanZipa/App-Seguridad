@@ -10,7 +10,7 @@ class Registro extends Model
     use HasFactory;
     protected $table = 'se_registros';
 
-    protected $fillable = ['id_persona', 'ingreso_persona', 'salida_persona', 'ingreso_vehiculo', 'salida_vehiculo', 'id_vehiculo', 'ingreso_activo', 'salida_activo', 'codigo_activo', 'descripcion', 'id_empresa', 'colaborador', 'id_usuario'];
+    protected $fillable = ['id_persona', 'ingreso_persona', 'salida_persona', 'ingreso_vehiculo', 'salida_vehiculo', 'id_vehiculo', 'ingreso_activo', 'salida_activo', 'codigo_activo', 'descripcion', 'empresa_visitada', 'colaborador', 'id_usuario'];
 
     protected $primaryKey = 'id_registros';
 
@@ -37,7 +37,7 @@ class Registro extends Model
             ->leftjoin('se_arl AS arl', 'personas.id_arl', '=', 'arl.id_arl')
             ->leftjoin('se_activos AS activos', 'personas.id_personas', '=', 'activos.id_persona')  
             ->leftjoin('se_vehiculos AS vehiculos', 'se_registros.id_vehiculo', '=', 'vehiculos.id_vehiculos')
-            ->leftjoin('se_empresas AS empresas', 'se_registros.id_empresa', '=', 'empresas.id_empresas')
+            ->leftjoin('se_empresas AS empresas', 'se_registros.empresa_visitada', '=', 'empresas.id_empresas')
             ->leftjoin('se_usuarios AS usuarios', 'se_registros.id_usuario', '=', 'usuarios.id_usuarios')    
             ->orderBy('id_registros')->get();
             // $response = ['data' => $registros->all()];

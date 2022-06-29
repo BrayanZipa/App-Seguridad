@@ -155,7 +155,7 @@ class ConductorController extends Controller
             'ingreso_vehiculo' => date('Y-m-d H:i:s'),
             'id_vehiculo' => $id_vehiculo,
             'descripcion' => $datos['descripcion'],
-            'id_empresa' => $datos['id_empresa'],
+            'empresa_visitada' => $datos['empresa_visitada'],
             'colaborador' => $datos['colaborador'],
             'id_usuario' => $datos['id_usuario'],
         ])->save(); 

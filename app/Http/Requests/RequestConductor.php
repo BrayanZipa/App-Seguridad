@@ -31,7 +31,7 @@ class RequestConductor extends FormRequest
             //|unique:se_personas,tel_contacto,'.$this->id.',id_personas
             'id_eps' => 'required|integer',         
             'id_arl' => 'required|integer',
-            'id_empresa' => 'required|integer',
+            'empresa_visitada' => 'required|integer',
             'colaborador' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:50|min:3',
             'descripcion' => 'nullable|max:255',
             'foto' => 'required|string',
@@ -74,8 +74,8 @@ class RequestConductor extends FormRequest
             'id_arl.required' => 'Se requiere que elija una opción en la ARL',
             'id_arl.integer' => 'La ARL debe ser de tipo entero',
 
-            'id_empresa.required' => 'Se requiere que elija una opción en la empresa',
-            'id_empresa.integer' => 'La Empresa debe ser de tipo entero',
+            'empresa_visitada.required' => 'Se requiere que elija una opción en la empresa',
+            'empresa_visitada.integer' => 'La Empresa debe ser de tipo entero',
 
             'colaborador.required' => 'Se requiere que ingrese al colaborador a cargo',
             'colaborador.string' => 'El colaborador debe ser de tipo texto',

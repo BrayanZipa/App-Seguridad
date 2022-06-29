@@ -132,18 +132,18 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="selectEmpresa">Ingrese la empresa que visita</label>
-                            <select id="selectEmpresa" class="conductor form-control {{ $errors->has('id_empresa') ? 'is-invalid' : '' }}" style="width: 100%;"
-                                name="id_empresa" required>
+                            <select id="selectEmpresa" class="conductor form-control {{ $errors->has('empresa_visitada') ? 'is-invalid' : '' }}" style="width: 100%;"
+                                name="empresa_visitada" required>
                                 <option selected="selected" value="" disabled>Seleccione la empresa</option>
                                 @foreach ($empresas as $empresa)
                                     <option value="{{ $empresa->id_empresas}}"
-                                        {{ $empresa->id_empresas == old('id_empresa') ? 'selected' : '' }}>{{ $empresa->nombre }}
+                                        {{ $empresa->id_empresas == old('empresa_visitada') ? 'selected' : '' }}>{{ $empresa->nombre }}
                                     </option>
                                 @endforeach
                             </select>
-                            @if ($errors->has('id_empresa')) 
+                            @if ($errors->has('empresa_visitada')) 
                                 <div class="invalid-feedback">
-                                    {{ $errors->first('id_empresa') }}
+                                    {{ $errors->first('empresa_visitada') }}
                                 </div>            
                             @endif
                         </div>

@@ -24,6 +24,7 @@ class RequestRegistros extends FormRequest
     public function rules()
     {
         $datos = $this->all();
+        // dd($datos);
 
         if($this->method() == 'PUT'){
             if($datos['casoRegistro'] == 'visitante' || $datos['casoRegistro'] == 'visitanteActivo'){
@@ -38,12 +39,19 @@ class RequestRegistros extends FormRequest
                         'id_arl' => 'nullable|integer',   
                     ];
                 }
+            } else if($datos['casoRegistro'] == 'conductor'){
+                $validacion = [
+                    'id_eps' => 'required|integer',         
+                    'id_arl' => 'required|integer', 
+                    'id_vehiculo' => 'required|integer',
+                ];
+                return array_merge($this->validacionGeneral(), $this->validacionVisitanteConductor(), $validacion);
+            } else if($datos['casoRegistro'] == 'colaboradorSinActivo'){
+                return array_merge($this->validacionGeneral(),);
+            } else if($datos['casoRegistro'] == 'colaboradorConActivo'){
+
             }
         }
-
-        return [
-            //
-        ];
     }
 
     public function messages()
@@ -80,6 +88,9 @@ class RequestRegistros extends FormRequest
             'id_empresa.required' => 'Se requiere que elija una opción en la empresa',
             'id_empresa.integer' => 'La Empresa debe ser de tipo entero',
 
+            'id_vehiculo.required' => 'Se requiere que elija una opción en el vehículo',
+            'id_vehiculo.integer' => 'El Vehículo debe ser de tipo entero',
+
             'colaborador.required' => 'Se requiere que ingrese al colaborador a cargo',
             'colaborador.string' => 'El colaborador debe ser de tipo texto',
             'colaborador.regex' => 'El colaborador solo debe contener valores alfabéticos',
@@ -114,20 +125,19 @@ class RequestRegistros extends FormRequest
             'apellido' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:25|min:3',   
             'identificacion' => 'required|numeric|unique:se_personas,identificacion,'.$this->id.',id_personas|digits_between:4,15',
             'tel_contacto' => 'required|numeric|digits_between:7,10',
-            //|unique:se_personas,tel_contacto,'.$this->id.',id_personas
-            
+            //|unique:se_personas,tel_contacto,'.$this->id.',id_personas 
+            'descripcion' => 'nullable|max:255',  
         ];
     }
 
     /**
-     * Función que retorna las validaciones faltantes del ingreso de datos de las personas
+     * Función que retorna las validaciones faltantes que tienen en común el tipo de persona visitante y conductor
      */
     public function validacionVisitanteConductor()
     {
         return[
             'id_empresa' => 'required|integer',
             'colaborador' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:50|min:3',
-            'descripcion' => 'nullable|max:255',
             'foto' => 'required|string',
         ];
     } 

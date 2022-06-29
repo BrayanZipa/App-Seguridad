@@ -430,7 +430,7 @@
                 $(location).attr('href', '/registros');
             });
 
-
+            $('#formVisitanteConductor').css('display', 'block');
             // $( "#formRegistros1" ).submit(function( event ) {
             //     alert( "Handler for .submit() called." );
             //     event.preventDefault();

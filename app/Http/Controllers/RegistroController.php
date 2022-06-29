@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RequestRegistros;
 use App\Models\Arl;
 use App\Models\Empresa;
 use App\Models\Eps;
@@ -131,13 +132,13 @@ class RegistroController extends Controller
         else if($datos['casoRegistro'] == 'colaboradorSinActivo'){
             $datos['codigo_activo'] = null;
             $datos['ingreso_activo'] = null;
-            $datos['id_empresa'] = null;
+            $datos['empresa_visitada'] = null;
             $datos['colaborador'] = null;
         }
         else if($datos['casoRegistro'] == 'colaboradorConActivo'){
             $datos['codigo_activo'] = 'Computador '.$datos['codigo'];
             $datos['ingreso_activo'] = date('Y-m-d H:i:s');
-            $datos['id_empresa'] = null;
+            $datos['empresa_visitada'] = null;
             $datos['colaborador'] = null;
         }
 
@@ -149,7 +150,7 @@ class RegistroController extends Controller
             'ingreso_activo' => $datos['ingreso_activo'],
             'codigo_activo' => $datos['codigo_activo'],
             'descripcion' => $datos['descripcion'],
-            'id_empresa' => $datos['id_empresa'],
+            'empresa_visitada' => $datos['empresa_visitada'],
             'colaborador' => $datos['colaborador'],
             'id_usuario' => $datos['id_usuario'],
         ])->save(); 
