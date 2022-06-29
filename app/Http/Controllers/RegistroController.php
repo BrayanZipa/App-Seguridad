@@ -66,7 +66,7 @@ class RegistroController extends Controller
     /**
      * Función que permite actualizar la infromación de una persona en caso de que se desea cambiar al momento de hacer un nuevo registro.
      */
-    public function updatePersona(Request $request, $id)
+    public function updatePersona(RequestRegistros $request, $id)
     {
         $persona = $request->all();
         $persona['nombre'] = ucwords(mb_strtolower($persona['nombre']));

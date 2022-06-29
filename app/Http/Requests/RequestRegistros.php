@@ -24,32 +24,42 @@ class RequestRegistros extends FormRequest
     public function rules()
     {
         $datos = $this->all();
-        // dd($datos);
+        dd($datos);
+
+        if(isset($datos['id_vehiculo'])){
+            $validacion['id_vehiculo'] = 'required|integer';   
+        } else {
+            // $datos['id_vehiculo'] = null;
+            // $datos['ingreso_vehiculo'] = null;
+        }
 
         if($this->method() == 'PUT'){
+
+            
             if($datos['casoRegistro'] == 'visitante' || $datos['casoRegistro'] == 'visitanteActivo'){
-                $validacion = [
-                    'id_eps' => 'nullable|integer',         
-                    'id_arl' => 'nullable|integer',   
-                ];
+                $validacion = array_merge($this->validacionGeneral(), $this->validacionVisitanteConductor());
+                $validacion['id_eps'] = 'nullable|integer';
+                $validacion['id_arl'] = 'nullable|integer';
 
                 if($datos['casoRegistro'] == 'visitanteActivo'){
-                    $validacion['activo'] = [
-                        'id_eps' => 'nullable|integer',         
-                        'id_arl' => 'nullable|integer',   
-                    ];
+                    $validacion['activo'] = 'required|string|alpha|max:20|min:3';
+                    $validacion['codigo'] = 'required|string|alpha_num|unique:se_activos,codigo,'.$this->id.',id_persona|max:5|min:4';  
+                    return $validacion;
                 }
-            } else if($datos['casoRegistro'] == 'conductor'){
-                $validacion = [
-                    'id_eps' => 'required|integer',         
-                    'id_arl' => 'required|integer', 
-                    'id_vehiculo' => 'required|integer',
-                ];
-                return array_merge($this->validacionGeneral(), $this->validacionVisitanteConductor(), $validacion);
-            } else if($datos['casoRegistro'] == 'colaboradorSinActivo'){
-                return array_merge($this->validacionGeneral(),);
-            } else if($datos['casoRegistro'] == 'colaboradorConActivo'){
+                return $validacion;
 
+            } else if($datos['casoRegistro'] == 'colaboradorSinActivo' || $datos['casoRegistro'] == 'colaboradorConActivo'){
+                $validacion = array_merge($this->validacionGeneral(), $this->validacionColaborador(), $this->validacion_EPS_ARL());
+                if($datos['casoRegistro'] == 'colaboradorConActivo'){
+                    $validacion['codigo'] = 'required|string|alpha_num|max:5|min:4';
+                    return $validacion;
+                }
+                return $validacion;
+
+            } else if($datos['casoRegistro'] == 'conductor'){
+                $validacion = array_merge($this->validacionGeneral(), $this->validacionVisitanteConductor(), $this->validacion_EPS_ARL());
+                $validacion['id_vehiculo'] = 'required|integer';
+                return $validacion;
             }
         }
     }
@@ -85,6 +95,13 @@ class RequestRegistros extends FormRequest
             'id_arl.required' => 'Se requiere que elija una opción en la ARL',
             'id_arl.integer' => 'La ARL debe ser de tipo entero',
 
+            'empresa_visitada.required' => 'Se requiere que elija una opción en la empresa',
+            'empresa_visitada.integer' => 'La Empresa debe ser de tipo entero',
+
+            'email.email' => 'El correo empresarial debe tener un formato correcto',
+            // 'email.unique' => 'No puede haber dos personas con el mismo correo empresarial',
+            'email.max' => 'El correo empresarial no puede tener más de 50 caracteres',
+
             'id_empresa.required' => 'Se requiere que elija una opción en la empresa',
             'id_empresa.integer' => 'La Empresa debe ser de tipo entero',
 
@@ -102,11 +119,13 @@ class RequestRegistros extends FormRequest
             'foto.required' => 'Se requiere que tome una foto de la persona',
             'foto.string' => 'La información de la foto debe estar en formato de texto',  
 
+            'activo.required' => 'Se requiere que ingrese el nombre del activo',
             'activo.string' => 'El nombre del activo debe ser de tipo texto',
             'activo.alpha' => 'El nombre del activo solo debe contener valores alfabéticos y sin espacios',
             'activo.max' => 'El nombre del activo no puede tener más de 20 caracteres',
             'activo.min' => 'El nombre del activo no puede tener menos de 3 caracteres',
 
+            'codigo.required' => 'Se requiere que ingrese el código del activo',
             'codigo.string' => 'El código del activo debe ser de tipo texto',
             'codigo.alpha_num' => 'El código del activo solo debe contener valores alfanuméricos y sin espacios',
             'codigo.unique' => 'No puede haber más de un activo con el mismo código',
@@ -125,7 +144,6 @@ class RequestRegistros extends FormRequest
             'apellido' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:25|min:3',   
             'identificacion' => 'required|numeric|unique:se_personas,identificacion,'.$this->id.',id_personas|digits_between:4,15',
             'tel_contacto' => 'required|numeric|digits_between:7,10',
-            //|unique:se_personas,tel_contacto,'.$this->id.',id_personas 
             'descripcion' => 'nullable|max:255',  
         ];
     }
@@ -136,22 +154,31 @@ class RequestRegistros extends FormRequest
     public function validacionVisitanteConductor()
     {
         return[
-            'id_empresa' => 'required|integer',
+            'empresa_visitada' => 'required|integer',
             'colaborador' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:50|min:3',
             'foto' => 'required|string',
         ];
     } 
 
     /**
-     * Función que retorna las validaciones faltantes del ingreso de datos de los colaboradores
+     * Función que retorna las validaciones faltantes que tienen en común el tipo de persona colaborador sin activo y colaborador con activo
      */
-    public function validacionFaltante()
+    public function validacionColaborador()
     {
         return[
-            'codigo' => 'required|string|alpha_num|max:5|min:4', 
-            'descripcion' => 'nullable|max:255'
+            'id_empresa' => 'required|integer',
+            'email' => 'nullable|email:rfc,dns|max:50',
         ];
+    } 
 
-        // |unique:se_activos,codigo
+    /**
+     * Función que retorna las validaciones de la EPS y ARL requeridas
+     */
+    public function validacion_EPS_ARL()
+    {
+        return[
+            'id_eps' => 'required|integer',         
+            'id_arl' => 'required|integer', 
+        ];
     } 
 }

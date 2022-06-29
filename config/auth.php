@@ -38,7 +38,7 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'ldap',
+            'provider' => 'users',
         ],
     ],
 
@@ -60,31 +60,37 @@ return [
     */
 
     'providers' => [
-        'ldap' => [
-            'driver' => 'ldap',
-            'model' => LdapRecord\Models\OpenLDAP\User::class,
-            // 'model' => LdapRecord\Models\ActiveDirectory\User::class,
-            'rules' => [],
-            'database' => [
-                'model' => App\Models\User::class,
-                'sync_passwords' => true,
-                'sync_attributes' => [
-                    'name' => 'cn',
-                    'email' => 'mail',
-                    'username' => 'samaccountname',
-                    'identification' => 'postofficebox',
-                    'department' => 'department',
-                    'tittle' => 'tittle',
-                    'company' => 'company',
-                ],
-            ], 
+        // 'ldap' => [
+        //     'driver' => 'ldap',
+        //     'model' => LdapRecord\Models\OpenLDAP\User::class,
+        //     // 'model' => LdapRecord\Models\ActiveDirectory\User::class,
+        //     'rules' => [],
+        //     'database' => [
+        //         'model' => App\Models\User::class,
+        //         'sync_passwords' => true,
+        //         'sync_attributes' => [
+        //             'name' => 'cn',
+        //             'email' => 'mail',
+        //             'username' => 'samaccountname',
+        //             'identification' => 'postofficebox',
+        //             'department' => 'department',
+        //             'tittle' => 'tittle',
+        //             'company' => 'company',
+        //         ],
+        //     ], 
             
-            'sync_existing' => [
-                'email' => 'mail',
-            ],
+        //     'sync_existing' => [
+        //         'email' => 'mail',
+        //     ],
 
-            'password_column' => 'password',
+        //     'password_column' => 'password',
+        // ],
+
+        'users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
         ],
+
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
