@@ -37,6 +37,10 @@ $(function() {
                 'name': 'identificacion',
             },
             {
+                'data': 'tipopersona',
+                'name': 'tipopersona',
+            },
+            {
                 'data': 'name',
                 'name': 'name',
             },
@@ -75,7 +79,7 @@ $(function() {
     //Se elije una fila de la tabla y se toma la información del vehículo para mostrarla en un formulario y permitir actualizarla
     $('#tabla_vehiculos tbody').on('click', '.editar_vehiculo', function () { 
         var data = $('#tabla_vehiculos').DataTable().row(this).data(); 
-
+        
         if($('.vehiculo').hasClass('is-invalid')){
             $('.vehiculo').removeClass('is-invalid');
         }                       

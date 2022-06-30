@@ -62,6 +62,7 @@
                                     <th>Marca</th>
                                     <th>Propietario</th>
                                     <th>Identificación</th>
+                                    <th>Tipo de persona</th>
                                     <th>Ingresado por</th>
                                     <th>Editar</th>
                                 </tr>

@@ -24,20 +24,15 @@ class RequestRegistros extends FormRequest
     public function rules()
     {
         $datos = $this->all();
-        dd($datos);
-
-        if(isset($datos['id_vehiculo'])){
-            $validacion['id_vehiculo'] = 'required|integer';   
-        } else {
-            // $datos['id_vehiculo'] = null;
-            // $datos['ingreso_vehiculo'] = null;
-        }
 
         if($this->method() == 'PUT'){
-
+            $validacion =[];
+            if(isset($datos['id_vehiculo'])){
+                $validacion['id_vehiculo'] = 'required|integer';   
+            }
             
             if($datos['casoRegistro'] == 'visitante' || $datos['casoRegistro'] == 'visitanteActivo'){
-                $validacion = array_merge($this->validacionGeneral(), $this->validacionVisitanteConductor());
+                $validacion += array_merge($this->validacionGeneral(), $this->validacionVisitanteConductor());
                 $validacion['id_eps'] = 'nullable|integer';
                 $validacion['id_arl'] = 'nullable|integer';
 
@@ -47,9 +42,9 @@ class RequestRegistros extends FormRequest
                     return $validacion;
                 }
                 return $validacion;
-
+                
             } else if($datos['casoRegistro'] == 'colaboradorSinActivo' || $datos['casoRegistro'] == 'colaboradorConActivo'){
-                $validacion = array_merge($this->validacionGeneral(), $this->validacionColaborador(), $this->validacion_EPS_ARL());
+                $validacion += array_merge($this->validacionGeneral(), $this->validacionColaborador(), $this->validacion_EPS_ARL());
                 if($datos['casoRegistro'] == 'colaboradorConActivo'){
                     $validacion['codigo'] = 'required|string|alpha_num|max:5|min:4';
                     return $validacion;
@@ -57,8 +52,7 @@ class RequestRegistros extends FormRequest
                 return $validacion;
 
             } else if($datos['casoRegistro'] == 'conductor'){
-                $validacion = array_merge($this->validacionGeneral(), $this->validacionVisitanteConductor(), $this->validacion_EPS_ARL());
-                $validacion['id_vehiculo'] = 'required|integer';
+                $validacion += array_merge($this->validacionGeneral(), $this->validacionVisitanteConductor(), $this->validacion_EPS_ARL());
                 return $validacion;
             }
         }

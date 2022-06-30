@@ -25,4 +25,16 @@ class Vehiculo extends Model
         }
         return $vehiculos;
     }
+
+    /**
+     * Función que permite retornar la información de un vehículo en específico.
+     */
+    public function obtenerVehiculo($id){
+        try {
+            $vehiculo = Vehiculo::find($id);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
+        }
+        return $vehiculo; 
+    }
 }

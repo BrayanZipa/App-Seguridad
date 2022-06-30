@@ -421,10 +421,10 @@
             });
 
             //Muestra los modales de ingreso correcto dependiendo de que formularios se hayan ingresado y redirecciona en caso de que se oprima el botón continuar
-            $('#modal-crear-registro').modal('show');
-            // $('#modal-crear-visitanteVehiculo').modal('show');
-            // $('#modal-crear-visitanteActivo').modal('show');
-            // $('#modal-crear-visitanteVehiculoActivo').modal('show');
+            $('#modal-crear-persona').modal('show');
+            $('#modal-crear-personaVehiculo').modal('show');
+            $('#modal-crear-personaActivo').modal('show');
+            $('#modal-crear-personaVehiculoActivo').modal('show');
 
             $('.botonContinuar').click(function () {
                 $(location).attr('href', '/registros');

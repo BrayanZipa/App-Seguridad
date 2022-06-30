@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Artisan;
 use Yajra\DataTables\DataTables;
 use App\Models\Activo;
 use App\Models\PersonaVehiculo;
+use App\Models\Vehiculo;
 
 class RegistroController extends Controller
 {
@@ -22,12 +23,11 @@ class RegistroController extends Controller
     protected $personas;
     protected $eps;
     protected $arl;
-    protected $tipoVehiculos;
-    protected $marcaVehiculos;
     protected $empresas;
     protected $activos;
+    protected $vehiculos;
     
-    public function __construct(Registro $registros, TipoPersona $tipoPersonas, Persona $personas, Eps $eps, Arl $arl, Empresa $empresas, Activo $activos){
+    public function __construct(Registro $registros, TipoPersona $tipoPersonas, Persona $personas, Eps $eps, Arl $arl, Empresa $empresas, Activo $activos, Vehiculo $vehiculos){
         $this->registros = $registros;
         $this->tipoPersonas = $tipoPersonas;
         $this->personas = $personas;
@@ -35,6 +35,7 @@ class RegistroController extends Controller
         $this->arl = $arl;
         $this->empresas = $empresas;
         $this->activos = $activos;
+        $this->vehiculos = $vehiculos;
     }
 
     /**
@@ -72,12 +73,11 @@ class RegistroController extends Controller
         $persona['nombre'] = ucwords(mb_strtolower($persona['nombre']));
         $persona['apellido'] = ucwords(mb_strtolower($persona['apellido']));
         $persona['descripcion'] = ucfirst(mb_strtolower($persona['descripcion']));
-        $persona['id_usuario'] = auth()->user()->id_usuarios;
         Persona::findOrFail($id)->update($persona);
 
-        if($persona['casoRegistro'] == 'visitante' || $persona['casoRegistro'] == 'conductor'){
+        if($persona['casoRegistro'] == 'visitante' || $persona['casoRegistro'] == 'visitanteActivo' || $persona['casoRegistro'] == 'conductor'){
             $persona['colaborador'] = ucwords(mb_strtolower($persona['colaborador']));
-            if(isset($persona['codigo'])){ 
+            if($persona['casoRegistro'] == 'visitanteActivo'){ 
                 $persona['activo'] = ucwords(mb_strtolower($persona['activo']));
                 $persona['codigo'] = ucfirst($persona['codigo']);
 
@@ -102,7 +102,58 @@ class RegistroController extends Controller
 
         $datos = $this->store($persona);
         // dd($datos);
-        return redirect()->action([RegistroController::class, 'create'])->with('crear_registro', 'visitante '.$datos['nombre'].' '.$datos['apellido']); 
+
+        if($datos['id_vehiculo'] != null){
+            $vehiculo = $this->vehiculos->obtenerVehiculo($datos['id_vehiculo'])->identificador;
+        }
+
+
+        if($datos['casoRegistro'] == 'visitante' || $datos['casoRegistro'] == 'visitanteActivo'){ //ingresa visitante
+            $mensajes = ['visitante '.$datos['nombre'].' '.$datos['apellido']];
+            if($datos['id_vehiculo'] != null){ //ingresa vehículo
+                $mensajes[] = $vehiculo;
+                if($datos['casoRegistro'] == 'visitante'){ //visitante con vehículo
+                    $modal = ['registro_vehiculo', $mensajes];
+                } else { //visitante con activo y vehículo
+                    $mensajes[] = $datos['codigo_activo'];
+                    $modal = ['registro_vehiculoActivo', $mensajes];
+                }
+            } else if($datos['casoRegistro'] == 'visitanteActivo'){ //visitante con activo
+                $mensajes[] = $datos['codigo_activo'];
+                $modal = ['registro_activo', $mensajes];
+            } else { //visitante
+                $modal = ['registro_persona', $mensajes];
+            }
+
+        } else if ($datos['casoRegistro'] == 'colaboradorConActivo' || $datos['casoRegistro'] == 'colaboradorSinActivo'){ //ingresa colaborador
+            $mensajes = ['colaborador '.$datos['nombre'].' '.$datos['apellido']];
+            if($datos['id_vehiculo'] != null){ //ingresa vehículo
+                $mensajes[] = $vehiculo;
+                if($datos['casoRegistro'] == 'colaboradorSinActivo'){ //colaborador con vehículo
+                    $modal = ['registro_vehiculo', $mensajes];
+                    // return $modal;
+                } else { //colaborador con activo y vehículo
+                    $mensajes[] = $datos['codigo_activo'];
+                    $modal = ['registro_vehiculoActivo', $mensajes];
+                    // return $modal;
+                }
+            } else if($datos['casoRegistro'] == 'colaboradorConActivo'){ //colaborador con activo
+                $mensajes[] = $datos['codigo_activo'];
+                $modal = ['registro_activo', $mensajes];
+            } else { //colaborador
+                $modal = ['registro_persona', $mensajes];
+            }
+
+        } else if ($datos['casoRegistro'] == 'conductor'){
+            $mensajes = ['conductor '.$datos['nombre'].' '.$datos['apellido'], $vehiculo];
+            $modal = ['registro_vehiculo', $mensajes];
+            // $vehiculo = $this->vehiculos->obtenerVehiculo($datos['id_vehiculo']);
+            // return $vehiculo->identificador;
+            // $modal = ['conductor '.$datos['nombre'].' '.$datos['apellido'], $vehiculo->identificador];
+            // return redirect()->action([RegistroController::class, 'create'])->with('crear_registro', 'conductor '.$datos['nombre'].' '.$datos['apellido']); 
+        }
+
+        return redirect()->action([RegistroController::class, 'create'])->with($modal[0], $modal[1]); 
     }
 
     /**
@@ -113,7 +164,9 @@ class RegistroController extends Controller
      */
     public function store($datos)
     {
+        $datos['id_usuario'] = auth()->user()->id_usuarios;
         $datos['ingreso_persona'] = date('Y-m-d H:i:s');
+
         if(isset($datos['id_vehiculo'])){
             $datos['ingreso_vehiculo'] = date('Y-m-d H:i:s');    
         } else {
