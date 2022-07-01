@@ -65,7 +65,7 @@ class RegistroController extends Controller
     }
 
     /**
-     * Función que permite actualizar la infromación de una persona en caso de que se desea cambiar al momento de hacer un nuevo registro.
+     * Función que permite actualizar la información de una persona en caso de que se desee cambiar al momento de hacer un nuevo registro.
      */
     public function updatePersona(RequestRegistros $request, $id)
     {
@@ -101,58 +101,29 @@ class RegistroController extends Controller
         }
 
         $datos = $this->store($persona);
-        // dd($datos);
 
-        if($datos['id_vehiculo'] != null){
-            $vehiculo = $this->vehiculos->obtenerVehiculo($datos['id_vehiculo'])->identificador;
-        }
-
-
-        if($datos['casoRegistro'] == 'visitante' || $datos['casoRegistro'] == 'visitanteActivo'){ //ingresa visitante
+        if($datos['casoRegistro'] == 'visitante' || $datos['casoRegistro'] == 'visitanteActivo'){
             $mensajes = ['visitante '.$datos['nombre'].' '.$datos['apellido']];
-            if($datos['id_vehiculo'] != null){ //ingresa vehículo
-                $mensajes[] = $vehiculo;
-                if($datos['casoRegistro'] == 'visitante'){ //visitante con vehículo
-                    $modal = ['registro_vehiculo', $mensajes];
-                } else { //visitante con activo y vehículo
-                    $mensajes[] = $datos['codigo_activo'];
-                    $modal = ['registro_vehiculoActivo', $mensajes];
-                }
-            } else if($datos['casoRegistro'] == 'visitanteActivo'){ //visitante con activo
-                $mensajes[] = $datos['codigo_activo'];
-                $modal = ['registro_activo', $mensajes];
-            } else { //visitante
-                $modal = ['registro_persona', $mensajes];
-            }
-
-        } else if ($datos['casoRegistro'] == 'colaboradorConActivo' || $datos['casoRegistro'] == 'colaboradorSinActivo'){ //ingresa colaborador
+        } else if ($datos['casoRegistro'] == 'colaboradorConActivo' || $datos['casoRegistro'] == 'colaboradorSinActivo'){
             $mensajes = ['colaborador '.$datos['nombre'].' '.$datos['apellido']];
-            if($datos['id_vehiculo'] != null){ //ingresa vehículo
-                $mensajes[] = $vehiculo;
-                if($datos['casoRegistro'] == 'colaboradorSinActivo'){ //colaborador con vehículo
-                    $modal = ['registro_vehiculo', $mensajes];
-                    // return $modal;
-                } else { //colaborador con activo y vehículo
-                    $mensajes[] = $datos['codigo_activo'];
-                    $modal = ['registro_vehiculoActivo', $mensajes];
-                    // return $modal;
-                }
-            } else if($datos['casoRegistro'] == 'colaboradorConActivo'){ //colaborador con activo
-                $mensajes[] = $datos['codigo_activo'];
-                $modal = ['registro_activo', $mensajes];
-            } else { //colaborador
-                $modal = ['registro_persona', $mensajes];
-            }
-
-        } else if ($datos['casoRegistro'] == 'conductor'){
-            $mensajes = ['conductor '.$datos['nombre'].' '.$datos['apellido'], $vehiculo];
-            $modal = ['registro_vehiculo', $mensajes];
-            // $vehiculo = $this->vehiculos->obtenerVehiculo($datos['id_vehiculo']);
-            // return $vehiculo->identificador;
-            // $modal = ['conductor '.$datos['nombre'].' '.$datos['apellido'], $vehiculo->identificador];
-            // return redirect()->action([RegistroController::class, 'create'])->with('crear_registro', 'conductor '.$datos['nombre'].' '.$datos['apellido']); 
+        } else if ($datos['casoRegistro'] == 'conductor'){ 
+            $mensajes = ['conductor '.$datos['nombre'].' '.$datos['apellido']];
         }
 
+        if($datos['id_vehiculo'] != null){ //ingreso de vehículo
+            $mensajes[] = $this->vehiculos->obtenerVehiculo($datos['id_vehiculo'])->identificador;
+            if($datos['casoRegistro'] == 'visitante' || $datos['casoRegistro'] == 'colaboradorSinActivo' || $datos['casoRegistro'] == 'conductor'){ //visitante y colaborador con vehículo y conductor
+                $modal = ['registro_vehiculo', $mensajes];
+            } else { //visitante o colaborador con activo y vehículo
+                $mensajes[] = $datos['codigo_activo'];
+                $modal = ['registro_vehiculoActivo', $mensajes];
+            }
+        } else if($datos['casoRegistro'] == 'visitanteActivo' || $datos['casoRegistro'] == 'colaboradorConActivo'){ //visitante o colaborador con activo
+            $mensajes[] = $datos['codigo_activo'];
+            $modal = ['registro_activo', $mensajes];
+        } else { //visitante o colaborador
+            $modal = ['registro_persona', $mensajes];
+        }
         return redirect()->action([RegistroController::class, 'create'])->with($modal[0], $modal[1]); 
     }
 

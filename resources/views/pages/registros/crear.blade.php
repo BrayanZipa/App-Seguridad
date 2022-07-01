@@ -430,7 +430,130 @@
                 $(location).attr('href', '/registros');
             });
 
-            $('#formVisitanteConductor').css('display', 'block');
+            // $('#formVisitanteConductor').css('display', 'block');
+
+            function retornoInformacion(tipoPersona, formulario) {
+                $(formulario).attr('action','/registros/editar_persona/' + $('#inputId').val()); 
+                $('#selectTipoPersona').val(tipoPersona);
+                listarPersonas();
+            }
+
+            //Función anónima que se ejecuta si alguno de los elementos mencionados se crea en la interfaz debido a errores cometidos en el ingreso de los formularios del módulo de visitantes
+            (function () {
+                if (!!document.getElementById('botonRetorno') || !!document.getElementById('botonRetorno3')) {
+
+                    if($('#registro').val() == 'visitante' || $('#registro').val() == 'visitanteActivo'){
+                        retornoInformacion(1, '#formRegistros1');
+                        $('#inputId').val($('#idPersona').val());
+                        $('#titulo').text('Información visitante');
+                        $('#fotografia').attr('src', $('#inputFoto').val()); 
+                        $('#selectEps').prop('required', false);
+                        $('#selectArl').prop('required', false);
+
+                        if($('#registro').val() == 'visitanteActivo'){
+                            $('#checkActivo').trigger('click');
+                        } 
+                        // console.log($('#inputId').val());
+
+                        // document.getElementById('selectPersona').setAttribute('value', $('#inputId').val());
+                        // // $('#selectPersona').val($('#inputId').val());
+                        // activarSelect2Registros();
+                        // console.log($('#selectPersona').val());
+
+
+                        $('#formVisitanteConductor').css('display', 'block');
+                        // console.log($('#selectVehiculo').val());
+                        // console.log($('#selectEmpresa').val());
+                        // if($('#selectVehiculo').val().length >= 0){
+                        //     $('#checkVehiculo').prop('checked', true);
+                        //     $('#checkVehiculo').trigger('click');
+                        // }
+                    } else if($('#registro').val() == 'conductor'){
+                        retornoInformacion(4, '#formRegistros1');
+                        $('#idPersona').val($('#inputId').val());
+                        $('#titulo').text('Información conductor');
+                        $('#fotografia').attr('src', $('#inputFoto').val());  
+
+                        obtenerVehiculos('#selectVehiculo');
+                        $('#selectVehiculo').prop('required', true);
+                        $('#divVehiculo').css('display', 'block');      
+                        $('.visitante').css('display', 'none');   
+
+                        $('#formVisitanteConductor').css('display', 'block');
+
+                    } else if($('#registro2').val() == 'colaboradorSinActivo'){
+                        retornoInformacion(2, '#formRegistros2');
+                        $('#idPersona').val($('#inputId2').val());
+                        $('#formColaboradorSinActivo').css('display', 'block');
+
+                    } else if($('#registro3').val() == 'colaboradorConActivo'){
+                        retornoInformacion(3, '#formRegistros3');
+                        $('#idPersona').val($('#inputId3').val());
+                        $('#formColaboradorConActivo').css('display', 'block');
+                    }
+                }
+
+                // if (!!document.getElementById('botonRetorno')) {
+                //     retornarFotoVisitante();
+                //     tipoVisitante();
+                //     var caso = document.getElementById('casoIngreso').value;
+
+                //     if (caso == 'casoVehiculo') {
+                //         retornarFotoVehiculo();
+                //     } else if (caso == 'casoActivo') {
+                //         document.getElementById('checkActivo').click();
+                //     } else if (caso == 'casoVehiculoActivo') {
+                //         retornarFotoVehiculo();
+                //         document.getElementById('botonRetorno').click();
+                //     }
+
+                // } else if (!!document.getElementById('botonRetorno2')) {
+                //     retornarFotoVisitante();
+                //     tipoVisitante();
+                //     var caso = document.getElementById('casoIngreso').value;
+
+                //     if (caso == 'casoVehiculo') {
+                //         retornarFotoVehiculo();
+                //     } else if (caso == 'casoVehiculoActivo') {
+                //         retornarFotoVehiculo();
+                //         document.getElementById('checkActivo').click();
+                //     };
+
+                // } else if (!!document.getElementById('botonRetorno3')) {
+                //     retornarFotoVisitante();
+                //     tipoVisitante();
+                //     var caso = document.getElementById('casoIngreso').value;
+
+                //     if (caso == 'casoActivo') {
+                //         document.getElementById('checkActivo').click();
+                //     } else if (caso == 'casoVehiculoActivo') {
+                //         retornarFotoVehiculo();
+                //         document.getElementById('checkActivo').click();
+                //     }
+                // }
+            })();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             // $( "#formRegistros1" ).submit(function( event ) {
             //     alert( "Handler for .submit() called." );
             //     event.preventDefault();

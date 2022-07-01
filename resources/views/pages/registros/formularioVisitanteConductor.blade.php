@@ -26,7 +26,7 @@
                                 <input type="hidden" id="inputId" name="id_personas" value="{{ old('id_personas') }}">
                                 <label for="inputFoto">Fotografía</label>
                                 <input type="hidden" id="inputFoto" class="{{ $errors->has('foto') ? 'is-invalid' : '' }}" name="foto" value="{{ old('foto') }}">
-                                <img id="fotografia" class="img-fluid rounded" style="border: 1px solid #007bff" src="" alt="Fotografía persona">
+                                <img id="fotografia" class="img-fluid rounded" style="border: 1px solid #007bff" src="" alt="Foto persona">
                                 @if ($errors->has('foto')) 
                                     <div class="invalid-feedback">
                                         {{ $errors->first('foto') }}
@@ -200,6 +200,7 @@
                             <div id="divVehiculo" class="row" style="display: none">
                                 <div class="col-sm-6">
                                     <div class="form-group">
+                                        <input id="vehiculo" type="hidden" name="retornoVehiculo" value="{{ old('retornoVehiculo') }}">
                                         <label for="selectVehiculo">Ingrese el vehículo</label>
                                         <select id="selectVehiculo" class="registros form-control {{ $errors->has('id_vehiculo') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_vehiculo">
                                         </select>
