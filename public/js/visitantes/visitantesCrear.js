@@ -124,10 +124,10 @@ $(function () {
             $('#botonCrear').css('display', 'inline');
             $('#casoIngreso').val('');
         }
-        $('#crearVehiculo').css("display", "none");
-        $('#botonLimpiar2').trigger("click");
+        $('#crearVehiculo').css('display', 'none');
+        $('#botonLimpiar2').trigger('click');
         $('#checkVehiculo').prop('disabled', false);
-        $('#checkVehiculo').prop("checked", false);
+        $('#checkVehiculo').prop('checked', false);
         requiredFalse('.vehiculo');
     });
 

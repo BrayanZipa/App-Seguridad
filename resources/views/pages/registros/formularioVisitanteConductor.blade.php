@@ -200,7 +200,7 @@
                             <div id="divVehiculo" class="row" style="display: none">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <input id="vehiculo" type="hidden" name="retornoVehiculo" value="{{ old('retornoVehiculo') }}">
+                                        <input id="vehiculo" type="hidden" name="retornoVehiculo" value="{{ old('id_vehiculo') }}">
                                         <label for="selectVehiculo">Ingrese el vehículo</label>
                                         <select id="selectVehiculo" class="registros form-control {{ $errors->has('id_vehiculo') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_vehiculo">
                                         </select>
