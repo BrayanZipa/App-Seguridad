@@ -125,6 +125,8 @@ $(function () {
                         $('#titulo').text('Información conductor');
                         $('.visitante').css('display', 'none');   
                         $('#formVisitanteConductor').css('display', 'block'); 
+                        $('#selectVehiculo').prop('disabled', true);
+                        $('#selectVehiculo').text('sin vehículo');
                     }
 
                 }  else if(response.id_tipo_persona == 2){
@@ -368,7 +370,7 @@ $(function () {
     })();
 
     //Si en un input de cualquier formulario de la vista de ingreso de registros esta la clase is-invalid al escribir en el mismo input se elimina esta clase 
-    $('input.registros').keydown(function () {
+    $('input.registros, textarea.registros').keydown(function () {
         if ($(this).hasClass('is-invalid')) {
             $(this).removeClass('is-invalid');
         }

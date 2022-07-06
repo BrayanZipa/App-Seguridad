@@ -34,110 +34,6 @@
     <script src="{{ asset('assets/lte/plugins/moment/moment.min.js') }}"></script>
     <!-- JavaScript propio -->
     <script src="{{ asset('js/registros/registrosMostrar.js') }}"></script>
-    
-    <!-- JavaScript propio-->
-    <script>
-        // $(function() {
-
-        //     //Uso de DataTables para mostrar la información de todos los colaboradores creados
-        //     $('#tabla_registros').DataTable({
-        //         'destroy': true,
-        //         'processing': true,
-        //         'responsive': true,
-        //         'autoWidth': false,
-        //         // 'serverSide': true,
-        //         // 'scrollY': '300px',
-        //         'ajax': "{{ route('mostrarInfoRegistros') }}",
-        //         'dataType': 'json',
-        //         'type': 'POST',
-        //         'columns': [
-        //             {
-        //                 'data': 'id_registros',
-        //                 'name': 'id_registros'
-        //             },
-        //             {
-        //                 'data': null, 
-        //                 'name': 'nombre',
-        //                 render: function ( data, type, row ) {
-        //                     return data.nombre+' '+data.apellido;
-        //                 }
-        //             },
-        //             {
-        //                 'data': 'identificacion',
-        //                 'name': 'identificacion',
-        //             },
-        //             {
-        //                 'data': 'ingreso_persona',
-        //                 render: function (data) {
-        //                     return moment(data).format('DD-MM-YYYY');
-        //                 } 
-        //             },
-        //             {
-        //                 'data': 'ingreso_persona',
-        //                 render: function (data) {
-        //                     return moment(data).format('h:mm:ss a');
-        //                 } 
-        //             },
-        //             {
-        //                 'data': 'tel_contacto',
-        //                 'name': 'tel_contacto',
-        //             },
-        //             {
-        //                 'data': 'eps',
-        //                 'name': 'eps',
-        //             },
-        //             {
-        //                 'data': 'arl',
-        //                 'name': 'arl',
-        //             },      
-        //             {
-        //                 'data': 'empresa',
-        //                 'name': 'empresa',
-        //             },
-        //             {
-        //                 'data': 'colaborador',
-        //                 'name': 'colaborador',
-        //             },
-        //             {
-        //                 'data': 'name',
-        //                 'name': 'name',
-        //                 // "searchable": false,
-        //                 // "orderable": false
-        //             },
-        //             {
-        //                 'class': 'editar_registro',
-        //                 'orderable': false,
-        //                 'data': null,
-        //                 'defaultContent': '<td>' +
-        //                     '<div class="action-buttons text-center">' +
-        //                     '<a href="#" class="btn btn-primary btn-icon btn-sm">' +
-        //                     '<i class="fas fa-edit"></i>' +
-        //                     '</a>' +
-        //                     '</div>' +
-        //                     '</td>',
-        //             }],
-        //         'lengthChange': true,
-        //         'lengthMenu': [
-        //             [6, 10, 25, 50, 75, 100, -1],
-        //             [6, 10, 25, 50, 75, 100, 'ALL']
-        //         ],
-        //         'language': {
-        //             'lengthMenu': 'Mostrar _MENU_ registros por página',
-        //             'zeroRecords': 'No hay registros',
-        //             'info': 'Mostrando página _PAGE_ de _PAGES_',
-        //             'infoEmpty': 'No hay registros disponibles',
-        //             'infoFiltered': '(filtrado de _MAX_ registros totales)',
-        //             'search': 'Buscar:',
-        //             'paginate': {
-        //                 'next': 'Siguiente',
-        //                 'previous': 'Anterior'
-        //             }
-        //         },
-        //         // "order ": [[1, 'desc']]     
-        //     });
-
-        // });
-    </script>
 @endsection
 
 @section('contenido')
@@ -145,11 +41,11 @@
         @include('pages.registros.header')
     </div>
 
-    <section id="formRegistros" class="content-header" style="display: none">
-        {{-- @include('pages.registros.formularioEditar') --}}
+    <section id="formRegistros" class="content-header mb-n4" style="display: none">
+        @include('pages.registros.prueba')
     </section>
 
-    <section class="content-header">
+    <section class="content-header mb-n4">
         <div class="row">
             <div class="col-12">
                 <div class="card card-primary">
@@ -163,6 +59,7 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
+                                    <th>Tipo de persona</th>
                                     <th>Nombre</th>
                                     <th>Identificación</th>
                                     <th>Fecha ingreso</th>
@@ -170,7 +67,7 @@
                                     <th>Teléfono</th>                     
                                     <th>EPS</th>
                                     <th>ARL</th>
-                                    <th>Empresa</th>
+                                    <th>Empresa visitada</th>
                                     <th>Responsable</th>
                                     <th>Ingresado por</th>
                                     <th>Acción</th>

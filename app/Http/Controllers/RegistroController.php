@@ -230,6 +230,22 @@ class RegistroController extends Controller
     /**
     * Función que recibe una petición de Ajax para obtener los registros de un grupo de personas en específico (Visitantes, Colaboradores, Colaboradores con activo, Conductores) en la tabla se_personas.
     */
+    public function registrarSalida(Request $request, $id){
+
+        $tiempoActual = date('Y-m-d H:i:s');
+
+        $registro = $request->input('');
+
+
+        // $personas = $this->personas->obtenerPersonas($tipoPersona);
+        // $response = ['data' => $personas];
+
+        // return response()->json($response);
+    }
+
+    /**
+    * Función que recibe una petición de Ajax para obtener los registros de un grupo de personas en específico (Visitantes, Colaboradores, Colaboradores con activo, Conductores) en la tabla se_personas.
+    */
     public function getPersonas(Request $request){
         $tipoPersona = $request->input('tipoPersona');
         $personas = $this->personas->obtenerPersonas($tipoPersona);

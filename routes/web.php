@@ -87,5 +87,7 @@ Route::get('/registros/personas', [RegistroController::class, 'getPersonas'])->n
 Route::get('/registros/persona', [RegistroController::class, 'getPersona'])->name('getPersona')->middleware('auth');
 Route::get('/registros/vehiculos', [RegistroController::class, 'getVehiculos'])->name('vehiculos')->middleware('auth');
 Route::put('/registros/editar_persona/{id}', [RegistroController::class, 'updatePersona'])->name('editarPersona')->middleware('auth');
+Route::put('/registros/salida_persona/{id}', [RegistroController::class, 'registrarSalida'])->name('salidaPersona')->middleware('auth');
+
 
 // Route::get('/prueba', [RegistroController::class, 'prueba'])->name('prueba');

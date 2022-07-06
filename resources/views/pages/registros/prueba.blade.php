@@ -1,11 +1,11 @@
 <div class="row mb-n2">
     <div class="col-md-12">
-        <form id="form_EditarConductor" action="" method="POST" novalidate>
+        <form id="form_registroSalida" action="" method="POST" >
             @csrf
             @method('PUT')
             <div class="card card-primary">
                 <div class="card-header">
-                    <h3 class="card-title">Actualizar conductor</h3>
+                    <h3 class="card-title">Información</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                             <i class="fas fa-minus"></i>
@@ -21,7 +21,8 @@
                 <div class="card-body mb-n4">
 
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-sm-12">
+                        {{-- <div class="col-sm-4">
                             <div class="form-group">
                                 <input type="hidden" id="inputId" name="id_personas" value="{{ old('id_personas') }}">
 
@@ -34,8 +35,8 @@
                                     </div>            
                                 @endif
                             </div>
-                        </div>
-                        <div class="col-sm-8">
+                        </div> --}}
+                        {{-- <div class="col-sm-8">
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
@@ -128,13 +129,34 @@
                                     </div>
                                 </div>
                             </div>
+                        </div> --}}
+
+                        {{-- <div class="row mt-2">
+                            <div class="col-12"> --}}
+                                <!-- checkbox -->
+                                <div class="form-group clearfix mt-n2 mb-1">
+                                    <div class="icheck-primary d-inline">
+                                        <label for="checkVehiculo">
+                                            ¿La persona sale sin vehículo?
+                                        </label>
+                                        <input type="checkbox" id="checkVehiculo">
+                                    </div><br>
+                                    <div class="icheck-primary d-inline">
+                                        <label for="checkActivo">
+                                            ¿La persona sale sin activo?
+                                        </label>
+                                        <input type="checkbox" id="checkActivo">
+                                    </div>
+                                </div>
+                            {{-- </div>
+                        </div> --}}
                         </div>
                     </div>
 
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
-                    <button type='submit' class="btn btn-primary">Actualizar</button>
+                    <button type='submit' class="btn btn-primary">Registrar salida</button>
                 </div>
                 <!-- /.card-footer-->
             </div>

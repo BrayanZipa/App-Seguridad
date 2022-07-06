@@ -17,6 +17,10 @@ $(function() {
                 'name': 'id_registros'
             },
             {
+                'data': 'tipopersona',
+                'name': 'tipopersona'
+            },
+            {
                 'data': null, 
                 'name': 'nombre',
                 render: function ( data, type, row ) {
@@ -52,8 +56,8 @@ $(function() {
                 'name': 'arl',
             },      
             {
-                'data': 'empresa',
-                'name': 'empresa',
+                'data': 'empresavisitada',
+                'name': 'empresavisitada',
             },
             {
                 'data': 'colaborador',
@@ -72,7 +76,7 @@ $(function() {
                 'defaultContent': '<td>' +
                     '<div class="action-buttons text-center">' +
                     '<a href="#" class="btn btn-primary btn-icon btn-sm">' +
-                    '<i class="fas fa-edit"></i>' +
+                    '<i class="fa-solid fa-eye"></i>' +
                     '</a>' +
                     '</div>' +
                     '</td>',
@@ -96,5 +100,45 @@ $(function() {
             }
         },
     });
+
+    //Se elije una fila de la tabla y se toma la información del vehículo para mostrarla en un formulario y permitir actualizarla
+    $('#tabla_registros tbody').on('click', '.editar_registro', function () { 
+        var data = $('#tabla_registros').DataTable().row(this).data(); 
+
+        $('#form_editar').attr('action', '/registros/salida_persona' + data.id_registros);
+
+
+        $('#form_registroSalida').css('display', 'block');   
+        console.log(data);
+        
+        // if($('.vehiculo').hasClass('is-invalid')){
+        //     $('.vehiculo').removeClass('is-invalid');
+        // }                       
+        // $('#form_EditarVehiculo').attr('action','/vehiculos/editar/' + data.id_vehiculos); 
+        // $('#inputIdVehiculo').val(data.id_vehiculos); 
+        // $('#inputFotoVehiculo').val(data.foto_vehiculo); 
+        // $('#fotoVehiculo').attr('src', data.foto_vehiculo);  
+        // $('#inputNumeroIdentificador').val(data.identificador);
+        // $('#selectTipoVehiculo').val(data.id_tipo_vehiculo);
+        // $('#selectMarcaVehiculo').val(data.id_marca_vehiculo);
+        // $('#selectTipoPersona').val(data.id_tipo_persona);             
+        // $('#retornoPersona').val(data.id_persona);
+        // $('#personaAnterior').val(data.id_persona);
+        // selectMarcaVehiculo(); 
+        // activarSelect2();
+        // selectPropietario(data.id_persona); 
+        // $('#formEditarVehiculo').css('display', 'block');
+    });
+
+    // $.ajax({
+    //     url: '/registros/salida_persona/' + $('#inputId').val(),
+    //     type: 'PUT',
+    //     success: function(res) {
+    //         window.location.reload();
+    //     },
+    //     error: function() {
+    //         console.log('Error tratando de cambiar el rol del colaborador');
+    //     }
+    // });
 
 });
