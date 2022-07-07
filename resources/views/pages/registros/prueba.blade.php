@@ -1,8 +1,8 @@
 <div class="row mb-n2">
     <div class="col-md-12">
-        <form id="form_registroSalida" action="" method="POST" >
+        {{-- <form id="form_registroSalida" action="" method="POST" >
             @csrf
-            @method('PUT')
+            @method('PUT') --}}
             <div class="card card-primary">
                 <div class="card-header">
                     <h3 class="card-title">Información</h3>
@@ -22,6 +22,8 @@
 
                     <div class="row">
                         <div class="col-sm-12">
+                            <input type="hidden" id="idRegistro">
+                            <input type="hidden" id="idTipoPersona">
                         {{-- <div class="col-sm-4">
                             <div class="form-group">
                                 <input type="hidden" id="inputId" name="id_personas" value="{{ old('id_personas') }}">
@@ -133,8 +135,10 @@
 
                         {{-- <div class="row mt-2">
                             <div class="col-12"> --}}
+
                                 <!-- checkbox -->
                                 <div class="form-group clearfix mt-n2 mb-1">
+                                    <input type="hidden" id="inputVehiculo" name="casoRegistro">
                                     <div class="icheck-primary d-inline">
                                         <label for="checkVehiculo">
                                             ¿La persona sale sin vehículo?
@@ -148,6 +152,7 @@
                                         <input type="checkbox" id="checkActivo">
                                     </div>
                                 </div>
+
                             {{-- </div>
                         </div> --}}
                         </div>
@@ -156,13 +161,13 @@
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
-                    <button type='submit' class="btn btn-primary">Registrar salida</button>
+                    <button type='button' id="botonGuardarSalida" class="btn btn-primary">Registrar salida</button>
                 </div>
                 <!-- /.card-footer-->
             </div>
             <!-- /.card -->
 
-        </form>
+        {{-- </form> --}}
 
     </div>
 </div>

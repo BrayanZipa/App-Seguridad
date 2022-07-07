@@ -39,11 +39,11 @@ class Registro extends Model
     }
 
     /**
-     * Función que permite retornar los datos de los registros de la tabla se_registros unidos la información de las personas, vehículos y activos que se hayan registrado teniendo un id en común.
+     * Función que permite retornar los datos de los registros de la tabla se_registros unidos a la información de las personas, vehículos y activos que se hayan registrado teniendo un id en común.
      */
     public function informacionRegistros(){
         try {
-            $registros = Registro::select('se_registros.*', 'tpersona.tipo AS tipopersona', 'personas.nombre', 'personas.apellido', 'personas.identificacion', 'personas.tel_contacto', 'personas.email', 'personas.foto', 'eps.eps', 'arl.arl', 'c_empresa.nombre AS empresa', 'activos.activo', 'activos.codigo', 'vehiculos.identificador', 'vehiculos.foto_vehiculo', 'tipo.tipo', 'marca.marca', 'v_empresa.nombre AS empresavisitada', 'usuarios.name')
+            $registros = Registro::select('se_registros.*', 'personas.nombre', 'personas.apellido', 'personas.identificacion', 'personas.tel_contacto', 'personas.email', 'personas.id_tipo_persona', 'tpersona.tipo AS tipopersona', 'personas.foto', 'eps.eps', 'arl.arl', 'c_empresa.nombre AS empresa', 'activos.activo', 'activos.codigo', 'vehiculos.identificador', 'vehiculos.foto_vehiculo', 'tipo.tipo', 'marca.marca', 'v_empresa.nombre AS empresavisitada', 'usuarios.name')
             ->leftjoin('se_personas AS personas', 'se_registros.id_persona', '=', 'personas.id_personas')
             ->leftjoin('se_tipo_personas AS tpersona', 'personas.id_tipo_persona', '=', 'tpersona.id_tipo_personas')
             ->leftjoin('se_eps AS eps', 'personas.id_eps', '=', 'eps.id_eps')
@@ -54,9 +54,53 @@ class Registro extends Model
             ->leftjoin('se_tipo_vehiculos AS tipo', 'vehiculos.id_tipo_vehiculo', '=', 'tipo.id_tipo_vehiculos')
             ->leftjoin('se_marca_vehiculos AS marca', 'vehiculos.id_marca_vehiculo', '=', 'marca.id_marca_vehiculos')
             ->leftjoin('se_empresas AS v_empresa', 'se_registros.empresa_visitada', '=', 'v_empresa.id_empresas')
-            ->leftjoin('se_usuarios AS usuarios', 'se_registros.id_usuario', '=', 'usuarios.id_usuarios')    
-            ->orderBy('id_registros')->get();
+            ->leftjoin('se_usuarios AS usuarios', 'se_registros.id_usuario', '=', 'usuarios.id_usuarios');
+            // ->get();
             // $response = ['data' => $registros->all()];
+        } catch (\Throwable $e) {
+            return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
+        }
+        return $registros;  
+    }
+
+    /**
+     * Función que permite retornar los datos de los registros de la tabla se_registros unidos a la información de las personas, vehículos y activos que se hayan registrado teniendo un id en común y que tengan el dato de salida_persona como un valor nulo.
+     */
+    public function registrosNulos(){
+        try {
+            $registros = $this->informacionRegistros()->whereNull('salida_persona') ->get();
+        } catch (\Throwable $e) {
+            return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
+        }
+        return $registros;  
+    }
+
+    /**
+     * Función que permite retornar los datos de los registros de la tabla se_registros unidos a la información de las personas, vehículos y activos que se hayan registrado teniendo un id en común y que tengan el dato de salida_persona como un valor no nulo.
+     */
+    public function registrosNoNulos(){
+        try {
+            $registros = $this->informacionRegistros()->whereNotNull('salida_persona')->get();
+        } catch (\Throwable $e) {
+            return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
+        }
+        return $registros;  
+    }
+
+
+    /**
+     * Función que permite retornar los datos de los registros de la tabla se_registros unidos a la información de las personas y los vehículos donde se haya registrado el ingreso de una persona y su vehículo y se haya registrado la salida de la persona, pero no la del vehículo.
+     */
+    public function informacionRegistrosVehiculos(){
+        try {
+            $registros = Registro::select('se_registros.*', 'personas.nombre', 'personas.apellido', 'personas.identificacion', 'personas.tel_contacto', 'personas.id_tipo_persona', 'tpersona.tipo AS tipopersona', 'vehiculos.identificador', 'vehiculos.foto_vehiculo', 'tipo.tipo', 'marca.marca', 'usuarios.name')
+            ->leftjoin('se_personas AS personas', 'se_registros.id_persona', '=', 'personas.id_personas')
+            ->leftjoin('se_tipo_personas AS tpersona', 'personas.id_tipo_persona', '=', 'tpersona.id_tipo_personas')
+            ->leftjoin('se_vehiculos AS vehiculos', 'se_registros.id_vehiculo', '=', 'vehiculos.id_vehiculos')
+            ->leftjoin('se_tipo_vehiculos AS tipo', 'vehiculos.id_tipo_vehiculo', '=', 'tipo.id_tipo_vehiculos')
+            ->leftjoin('se_marca_vehiculos AS marca', 'vehiculos.id_marca_vehiculo', '=', 'marca.id_marca_vehiculos')
+            ->leftjoin('se_usuarios AS usuarios', 'se_registros.id_usuario', '=', 'usuarios.id_usuarios')
+            ->whereNotNull('salida_persona')->whereNotNull('ingreso_vehiculo')->whereNull('salida_vehiculo')->get();
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
         }

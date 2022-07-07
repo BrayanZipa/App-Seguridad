@@ -125,8 +125,9 @@ $(function () {
                         $('#titulo').text('Información conductor');
                         $('.visitante').css('display', 'none');   
                         $('#formVisitanteConductor').css('display', 'block'); 
-                        $('#selectVehiculo').prop('disabled', true);
-                        $('#selectVehiculo').text('sin vehículo');
+                        // $('#selectVehiculo').prop('disabled', true);
+                        // $('#selectVehiculo option:selected').text('hola');
+                        // console.log($('#selectVehiculo').val());
                     }
 
                 }  else if(response.id_tipo_persona == 2){

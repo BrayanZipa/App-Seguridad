@@ -228,14 +228,28 @@ class RegistroController extends Controller
     }
 
     /**
-    * Función que recibe una petición de Ajax para obtener los registros de un grupo de personas en específico (Visitantes, Colaboradores, Colaboradores con activo, Conductores) en la tabla se_personas.
+    * Función que recibe una petición de Ajax para obtener....
     */
     public function registrarSalida(Request $request, $id){
-
+        // return $request['tipoPersona'];
+        // $estadoVehiculo = $request->input('estadoVehiculo');
         $tiempoActual = date('Y-m-d H:i:s');
 
-        $registro = $request->input('');
+        // $datos = ['salida_persona' => $tiempoActual, 'salida_vehiculo' => $tiempoActual];
 
+        if($request['tipoPersona'] == 4){
+            $datos = ['salida_persona' => $tiempoActual, 'salida_vehiculo' => $tiempoActual];
+            if($request['estadoVehiculo'] == 'sinVehiculo'){
+                $datos = ['salida_persona' => $tiempoActual];
+            }
+            Registro::findOrFail($id)->update($datos);
+            return response()->json(['message' => 'Se ha registrado la salida del conductor']);
+        }
+
+        
+        // return $request;
+
+        // $tiempoActual = date('Y-m-d H:i:s');
 
         // $personas = $this->personas->obtenerPersonas($tipoPersona);
         // $response = ['data' => $personas];
@@ -280,12 +294,36 @@ class RegistroController extends Controller
     }
 
     /**
-     * Función que permite retornar todos los registros de la tabla se_registros asociados a las personas, vehículos y activos donde tengan un id en común.
+     * Función que permite retornar todos los registros de la tabla se_registros asociados a las personas, vehículos y activos donde tengan un id en común y tengan un registro de salida de la persona.
      */
     public function informacionRegistros(Request $request){
         if($request->ajax()){
-            $registros = $this->registros->informacionRegistros();
+            $registros = $this->registros->registrosNoNulos();
             return DataTables::of($registros)->make(true);
         }     
     }
+
+    /**
+     * Función que permite retornar todos los registros de la tabla se_registros asociados a las personas, vehículos y activos donde tengan un id en común y no tengan un registro de salida de la persona.
+     */
+    public function informacionRegistrosSinSalida(Request $request){
+        if($request->ajax()){
+            $registros = $this->registros->registrosNulos();
+            return DataTables::of($registros)->make(true);
+        }     
+    }
+
+    /**
+     * Función que permite retornar todos los registros de la tabla se_registros asociados a las personas, vehículos y activos donde tengan un id en común y tengan un registro de salida de la persona.
+     */
+    public function informacionRegistrosVehiculos(Request $request){
+        // if($request->ajax()){
+        //     $registros = $this->registros->informacionRegistrosVehiculos();
+        //     return DataTables::of($registros)->make(true);
+        // }   
+        
+        $registros = $this->registros->informacionRegistrosVehiculos();
+        return $registros;
+    }
+
 }

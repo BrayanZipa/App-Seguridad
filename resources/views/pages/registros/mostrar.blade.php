@@ -5,6 +5,8 @@
 @endsection
 
 @section('css')
+    <!-- Token de Laravel -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- DataTables -->
     <link rel="stylesheet" href="{{ asset('assets/lte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/lte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
@@ -50,25 +52,29 @@
             <div class="col-12">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">Registrados realizados</h3>
+                        <h3 class="card-title">Registros sin salida</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                        <!-- /.card-tools -->
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
                         <!-- /.card-body -->
-                        <table id="tabla_registros" class="table table-bordered table-striped table-hover">
+                        <table id="tabla_registros_salida" class="table table-bordered table-striped table-hover">
                             <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th>Tipo de persona</th>
                                     <th>Nombre</th>
                                     <th>Identificación</th>
+                                    <th>Teléfono</th>  
                                     <th>Fecha ingreso</th>
-                                    <th>Hora ingreso</th> 
-                                    <th>Teléfono</th>                     
-                                    <th>EPS</th>
-                                    <th>ARL</th>
-                                    <th>Empresa visitada</th>
-                                    <th>Responsable</th>
+                                    <th>Hora ingreso</th>                   
+                                    <th>Ingresa activo</th>
+                                    <th>Ingresa vehículo</th> 
                                     <th>Ingresado por</th>
                                     <th>Acción</th>
                                 </tr>
@@ -94,11 +100,49 @@
                     <!-- /.card-body -->
                 </div>
                 <!-- /.card -->
+
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Registrados realizados</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                        <!-- /.card-tools -->
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <!-- /.card-body -->
+                        <table id="tabla_registros" class="table table-bordered table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Tipo de persona</th>
+                                    <th>Nombre</th>
+                                    <th>Identificación</th>
+                                    <th>Fecha ingreso</th>
+                                    <th>Hora ingreso</th>                   
+                                    <th>Fecha salida</th>
+                                    <th>Hora salida</th> 
+                                    <th>Teléfono</th>  
+                                    <th>Empresa visitada</th>
+                                    <th>Responsable</th>
+                                    <th>Ingresado por</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody> </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
             </div>
         </div>
 
-        {{-- @include('pages.conductores.modales')
-        @include('pages.modalError') --}}
+        @include('pages.registros.modales')
+        {{-- @include('pages.modalError') --}}
 
     </section>
 @endsection
