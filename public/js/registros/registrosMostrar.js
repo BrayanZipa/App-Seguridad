@@ -18,7 +18,7 @@ $(function() {
             // 'scrollY': '300px',
             'ajax': '/registros/informacion_sin_salida',
             'dataType': 'json',
-            'type': 'POST',
+            'type': 'GET',
             'columns': [
                 {
                     'data': 'id_registros',
@@ -120,7 +120,7 @@ $(function() {
             // 'scrollY': '300px',
             'ajax': '/registros/informacion',
             'dataType': 'json',
-            'type': 'POST',
+            'type': 'GET',
             'columns': [
                 {
                     'data': 'id_registros',
@@ -217,6 +217,104 @@ $(function() {
     }
     datatableRegistros();
 
+    //Uso de DataTables para mostrar los registros realizados de las entradas y salidas de todas las personas creadas
+    function datatableRegistrosVehiculos() {
+        $('#tabla_registros_vehiculos').DataTable({
+            'destroy': true,
+            'processing': true,
+            'responsive': true,
+            'autoWidth': false,
+            // 'serverSide': true,
+            // 'scrollY': '300px',
+            'ajax': '/registros/informacion_vehiculos',
+            'dataType': 'json',
+            'type': 'GET',
+            'columns': [
+                {
+                    'data': 'id_registros',
+                    'name': 'id_registros'
+                },
+                {
+                    'data': 'tipopersona',
+                    'name': 'tipopersona'
+                },
+                {  
+                    'data': null, 
+                    'name': 'nombre',
+                    render: function ( data, type, row ) {
+                        return data.nombre+' '+data.apellido;
+                    }
+                },
+                {
+                    'data': 'identificacion',
+                    'name': 'identificacion',
+                },
+                {
+                    'data': 'tel_contacto',
+                    'name': 'tel_contacto',
+                }, 
+                {
+                    'data': 'identificador',
+                    'name': 'identificador',
+                }, 
+                {
+                    'data': 'tipo',
+                    'name': 'tipo',
+                }, 
+                {
+                    'data': 'marca',
+                    'name': 'marca',
+                },
+                {
+                    'data': 'ingreso_vehiculo',
+                    render: function (data) {
+                        return moment(data).format('DD-MM-YYYY');
+                    } 
+                },
+                {
+                    'data': 'ingreso_vehiculo',
+                    render: function (data) {
+                        return moment(data).format('h:mm:ss a');
+                    } 
+                },                     
+                {
+                    'data': 'name',
+                    'name': 'name',
+                },
+                {
+                    'class': 'editar_registro',
+                    'orderable': false,
+                    'data': null,
+                    'defaultContent': '<td>' +
+                        '<div class="action-buttons text-center">' +
+                        '<a href="#" class="btn btn-primary btn-icon btn-sm">' +
+                        '<i class="fa-solid fa-eye"></i>' +
+                        '</a>' +
+                        '</div>' +
+                        '</td>',
+                }],
+            'order': [[0, 'desc']],  
+            'lengthChange': true,
+            'lengthMenu': [
+                [6, 10, 25, 50, 75, 100, -1],
+                [6, 10, 25, 50, 75, 100, 'ALL']
+            ],
+            'language': {
+                'lengthMenu': 'Mostrar _MENU_ registros por página',
+                'zeroRecords': 'No hay registros',
+                'info': 'Mostrando página _PAGE_ de _PAGES_',
+                'infoEmpty': 'No hay registros disponibles',
+                'infoFiltered': '(filtrado de _MAX_ registros totales)',
+                'search': 'Buscar:',
+                'paginate': {
+                    'next': 'Siguiente',
+                    'previous': 'Anterior'
+                }
+            },
+        });
+    }
+    datatableRegistrosVehiculos();
+
     //Se elije una fila de la tabla y se toma la información del vehículo para mostrarla en un formulario y permitir actualizarla
     $('#tabla_registros_salida tbody').on('click', '.editar_registro', function () { 
         var data = $('#tabla_registros_salida').DataTable().row(this).data(); 
@@ -224,7 +322,22 @@ $(function() {
         $('#idRegistro').val(data.id_registros);
         $('#idTipoPersona').val(data.id_tipo_persona);
 
+        $('#spanNombre').text(data.nombre);
+        $('#spanApellido').text(data.apellido);
+        $('#spanIdentificacion').text(data.identificacion);
+        $('#spanTelefono').text(data.tel_contacto);
+        $('#spanEps').text(data.eps);
+        $('#spanArl').text(data.arl);
+        $('#spanFecha').text(moment(data.ingreso_persona).format('DD-MM-YYYY'));
+        $('#spanHora').text(moment(data.ingreso_persona).format('h:mm:ss a'));
+        $('#parrafoDescripcion').text(data.descripcion);
+
         if(data.id_tipo_persona == 1){
+            $('#fotoPersona').attr('src', data.foto);
+            $('#spanEmpresa').text(data.empresavisitada); 
+            $('#spanColaborador').text(data.colaborador);
+
+            $('#titulo').text('Información registro de visitante');
 
         } else if(data.id_tipo_persona == 2){
 
@@ -236,7 +349,7 @@ $(function() {
 
         // $('#form_registroSalida').attr('action', '/registros/salida_persona' + data.id_registros);    
 
-        $('#formRegistros').css('display', 'block');   
+        $('#informacionRegistro').css('display', 'block');   
         console.log(data);
         
         // if($('.vehiculo').hasClass('is-invalid')){
@@ -294,6 +407,11 @@ $(function() {
                 console.log('Error al registrar la salida de la persona');
             }
         });
+    });
+
+    //Botón que permite ocultar el cuadro de información de la persona si selecciono para registrar su salida
+    $('#botonCerrar').click(function(){
+        $('#informacionRegistro').css('display', 'none'); 
     });
 
 });

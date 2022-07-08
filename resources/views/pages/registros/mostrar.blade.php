@@ -43,13 +43,14 @@
         @include('pages.registros.header')
     </div>
 
-    <section id="formRegistros" class="content-header mb-n4" style="display: none">
+    <section id="informacionRegistro" class="content-header mb-n4" style="display: none">
         @include('pages.registros.prueba')
     </section>
 
     <section class="content-header mb-n4">
         <div class="row">
             <div class="col-12">
+
                 <div class="card card-primary">
                     <div class="card-header">
                         <h3 class="card-title">Registros sin salida</h3>
@@ -138,6 +139,44 @@
                     <!-- /.card-body -->
                 </div>
                 <!-- /.card -->
+
+                <div class="card card-orange">
+                    <div class="card-header">
+                        <h3 class="card-title">Vehículos sin salida</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                        <!-- /.card-tools -->
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <!-- /.card-body -->
+                        <table id="tabla_registros_vehiculos" class="table table-bordered table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Tipo de persona</th>
+                                    <th>Nombre</th>
+                                    <th>Identificación</th>
+                                    <th>Teléfono</th> 
+                                    <th>Vehículo</th> 
+                                    <th>Tipo</th> 
+                                    <th>Marca</th> 
+                                    <th>Fecha ingreso</th>
+                                    <th>Hora ingreso</th>                   
+                                    <th>Ingresado por</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody> </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+
             </div>
         </div>
 

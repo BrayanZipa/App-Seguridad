@@ -317,13 +317,13 @@ class RegistroController extends Controller
      * Función que permite retornar todos los registros de la tabla se_registros asociados a las personas, vehículos y activos donde tengan un id en común y tengan un registro de salida de la persona.
      */
     public function informacionRegistrosVehiculos(Request $request){
-        // if($request->ajax()){
-        //     $registros = $this->registros->informacionRegistrosVehiculos();
-        //     return DataTables::of($registros)->make(true);
-        // }   
+        if($request->ajax()){
+            $registros = $this->registros->informacionRegistrosVehiculos();
+            return DataTables::of($registros)->make(true);
+        }   
         
-        $registros = $this->registros->informacionRegistrosVehiculos();
-        return $registros;
+        // $registros = $this->registros->informacionRegistrosVehiculos();
+        // return $registros;
     }
 
 }
