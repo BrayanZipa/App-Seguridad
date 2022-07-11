@@ -76,7 +76,7 @@ $(function() {
                     // 'orderable': false
                 },
                 {
-                    'class': 'editar_registro',
+                    'class': 'registrar_salida',
                     'orderable': false,
                     'data': null,
                     'defaultContent': '<td>' +
@@ -316,29 +316,79 @@ $(function() {
     datatableRegistrosVehiculos();
 
     //Se elije una fila de la tabla y se toma la información del vehículo para mostrarla en un formulario y permitir actualizarla
-    $('#tabla_registros_salida tbody').on('click', '.editar_registro', function () { 
+    $('#tabla_registros_salida tbody').on('click', '.registrar_salida', function () { 
         var data = $('#tabla_registros_salida').DataTable().row(this).data(); 
+
+
+        $('#tabInfoRegistro').addClass('active');
+        $('#infoRegistro').addClass('active show');
+
 
         $('#idRegistro').val(data.id_registros);
         $('#idTipoPersona').val(data.id_tipo_persona);
 
+        $('#spanFecha').text(moment(data.ingreso_persona).format('DD-MM-YYYY'));
+        $('#spanHora').text(moment(data.ingreso_persona).format('h:mm:ss a'));
         $('#spanNombre').text(data.nombre);
         $('#spanApellido').text(data.apellido);
         $('#spanIdentificacion').text(data.identificacion);
         $('#spanTelefono').text(data.tel_contacto);
         $('#spanEps').text(data.eps);
-        $('#spanArl').text(data.arl);
-        $('#spanFecha').text(moment(data.ingreso_persona).format('DD-MM-YYYY'));
-        $('#spanHora').text(moment(data.ingreso_persona).format('h:mm:ss a'));
+        $('#spanArl').text(data.arl); 
         $('#parrafoDescripcion').text(data.descripcion);
 
-        if(data.id_tipo_persona == 1){
-            $('#fotoPersona').attr('src', data.foto);
+        if(data.ingreso_vehiculo != null){
+            $('#fotoVehiculo').attr('src', data.foto_vehiculo);
+            // .on('load', function() {
+            //     $('#cardVehiculo').css('height', this.height);
+            // });
+            $('#spanFechaVehiculo').text(moment(data.ingreso_vehiculo).format('DD-MM-YYYY'));
+            $('#spanHoraVehiculo').text(moment(data.ingreso_vehiculo).format('h:mm:ss a'));
+            $('#spanIdentificador').text(data.identificador);
+            $('#spanTipo').text(data.tipo);  
+            $('#spanMarca').text(data.marca);   
+            $('.prueba').css('display', 'block');
+        } else {
+            $('.prueba').css('display', 'none');
+        }
+
+        if(data.ingreso_activo != null){
+            $('#spanFechaActivo').text(moment(data.ingreso_activo).format('DD-MM-YYYY'));
+            $('#spanHoraActivo').text(moment(data.ingreso_activo).format('h:mm:ss a'));
+            $('#spanTipoActivo').text(data.activo);
+            $('#spanCodigoActivo').text(data.codigo);  
+            $('#tabDatosActivo').css('display', 'block');
+        } else {
+            $('#tabDatosActivo').css('display', 'none');
+        }
+
+
+
+        if(data.id_tipo_persona == 1 || data.id_tipo_persona == 4){
+            $('#fotoPersona').attr('src', data.foto).on('load', function() {
+                $('#cardPersona').css('height', this.height);
+            });
+            // $('#fotoPersona').attr('src', data.foto);
             $('#spanEmpresa').text(data.empresavisitada); 
             $('#spanColaborador').text(data.colaborador);
 
             $('#titulo').text('Información registro de visitante');
+            // console.log($('#fotoPersona').css("height"));
+            // var image = document.getElementById("fotoPersona");
+            // var image = $('#fotoPersona');
+            // console.log(image);
+            // console.log(image.naturalHeight);
 
+            
+
+            // setTimeout(() => {
+            //     console.log($('#fotoPersona')[0].height);
+            //     $('#cardPersona').css('height', $('#fotoPersona')[0].height);
+            // }, 1000);
+
+            
+
+            // $('#bodymenu').css('height', image.height);
         } else if(data.id_tipo_persona == 2){
 
         } else if(data.id_tipo_persona == 3){

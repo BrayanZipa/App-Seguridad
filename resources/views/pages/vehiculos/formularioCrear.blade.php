@@ -2,8 +2,8 @@
         <div class="card-header">
             <h3 class="card-title">Crear nuevo vehículo</h3>
             <div class="card-tools">
-                <button id="botonComprimirVehiculo" type="button" class="btn btn-tool" data-card-widget="collapse"><i
-                        class="fas fa-minus"></i>
+                <button id="botonComprimirVehiculo" type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
                 </button>
             </div>
             <!-- /.card-tools -->
