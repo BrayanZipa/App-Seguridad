@@ -231,20 +231,31 @@ class RegistroController extends Controller
     * Función que recibe una petición de Ajax para obtener....
     */
     public function registrarSalida(Request $request, $id){
-        // return $request['tipoPersona'];
+        // return $request;
         // $estadoVehiculo = $request->input('estadoVehiculo');
         $tiempoActual = date('Y-m-d H:i:s');
 
         // $datos = ['salida_persona' => $tiempoActual, 'salida_vehiculo' => $tiempoActual];
-
-        if($request['tipoPersona'] == 4){
-            $datos = ['salida_persona' => $tiempoActual, 'salida_vehiculo' => $tiempoActual];
-            if($request['estadoVehiculo'] == 'sinVehiculo'){
-                $datos = ['salida_persona' => $tiempoActual];
-            }
-            Registro::findOrFail($id)->update($datos);
-            return response()->json(['message' => 'Se ha registrado la salida del conductor']);
+        $datos = ['salida_persona' => $tiempoActual];
+        if($request['registroSalida'] == 'salidaVehiculoActivo'){
+            $datos += ['salida_vehiculo' => $tiempoActual, 'salida_activo' => $tiempoActual];
+        } else if($request['registroSalida'] == 'salidaPersonaVehiculo'){
+            $datos += ['salida_vehiculo' => $tiempoActual];
+        } else if($request['registroSalida'] == 'salidaPersonaActivo'){
+            $datos += ['salida_activo' => $tiempoActual];
         }
+
+        Registro::findOrFail($id)->update($datos);
+        return response()->json(['message' => 'Se ha registrado la salida del visitante']);
+
+        // if($request['tipoPersona'] == 1){
+        //     $datos = ['salida_persona' => $tiempoActual, 'salida_vehiculo' => $tiempoActual, 'salida_activo' => $tiempoActual];
+        //     if($request['registroSalida'] == 'sinVehiculo'){
+        //         $datos = ['salida_persona' => $tiempoActual];
+        //     }
+        //     Registro::findOrFail($id)->update($datos);
+        //     return response()->json(['message' => 'Se ha registrado la salida del visitante']);
+        // }
 
         
         // return $request;

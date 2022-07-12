@@ -63,6 +63,18 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row mt-2">
+                                <div class="col-sm-12">
+                                    <div class="form-group clearfix">
+                                        <div class="icheck-primary d-inline">
+                                            <label for="checkVehiculo">
+                                                ¿La persona sale sin vehículo?
+                                            </label>
+                                            <input type="checkbox" id="checkVehiculo">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div> 
                     </div>
                 </div>

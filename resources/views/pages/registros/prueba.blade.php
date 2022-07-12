@@ -1,7 +1,12 @@
 <div class="row mb-n2">
     <div class="col-md-12">
-        <div class="card card-primary card-tabs">
-            <div class="card-header p-0 pt-1">
+        <ul class="nav nav-tabs" >
+            <li class="nav-item">
+                <a class="nav-link"></a>
+            </li>
+        </ul>
+        <div class="card card-primary card-tabs mt-n4">
+            <div class="card-header p-0 pt-1">       
                 <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
                     <li class="nav-item">
                         <a class="nav-link active" id="tabInfoRegistro" data-toggle="pill" href="#infoRegistro" role="tab" aria-controls="infoRegistro" aria-selected="true">Registro visitante</a>
@@ -9,9 +14,20 @@
                     <li class="nav-item">
                         <a class="nav-link" id="tabInfoVehiculo" data-toggle="pill" href="#infoVehiculo" role="tab" aria-controls="infoVehiculo" aria-selected="false">Registro vehículo</a>
                     </li>
+                    <ul class="nav ml-auto" id="custom-tabs-one-tab" role="tablist">
+                        <li class="nav-item">
+                            <div class="card-tools">
+                                <button id="botonCerrar" type="button" class="btn btn-tool">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </li>
+                    </ul> 
                 </ul>
             </div>
             <div class="card-body">
+                <input type="hidden" id="idRegistro" value="">
+                <input type="hidden" id="idTipoPersona" value="">
                 <div class="tab-content" id="custom-tabs-one-tabContent">
                     <div class="tab-pane fade active show" id="infoRegistro" role="tabpanel" aria-labelledby="tabInfoRegistro">
                         @include('pages.registros.panelVisitanteConductor')
@@ -28,7 +44,8 @@
     </div>
 </div>
 
-  {{-- <div class="card card-primary card-tabs">
+
+{{-- <div class="card card-primary card-tabs">
     <div class="card-header p-0 pt-1">
         <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
             <li class="nav-item">
@@ -56,4 +73,4 @@
       </div>
     </div>
     <!-- /.card -->
-  </div> --}}
+</div> --}}

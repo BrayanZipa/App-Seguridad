@@ -1,20 +1,17 @@
 <div class="row">
     <div class="col-sm-3">
-        <input type="hidden" id="idRegistro">
-        <input type="hidden" id="idTipoPersona">
         <div class="form-group">
             <label>Fotografía</label>
             <img id="fotoPersona" class="img-fluid rounded" style="border: 1px solid #007bff" src="" alt="Foto persona">
         </div>
 
-            <div class="form-group clearfix mt-n2 mb-1">
-                <input type="hidden" id="inputVehiculo" name="casoRegistro">
-                <div class="icheck-primary d-inline">
+            <div class="form-group clearfix mt-n2 mb-1">  
+                {{-- <div class="icheck-primary d-inline">
                     <label for="checkVehiculo">
                         ¿La persona sale sin vehículo?
                     </label>
                     <input type="checkbox" id="checkVehiculo">
-                </div><br>
+                </div><br> --}}
                 <div class="icheck-primary d-inline">
                     <label for="checkActivo">
                         ¿La persona sale sin activo?

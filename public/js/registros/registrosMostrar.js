@@ -7,6 +7,9 @@ $(function() {
         }
     });
 
+    var casoSalida = '';
+    var idRegistro = '';
+
     //Uso de DataTables para mostrar los registros realizados de las entradas y salidas de todas las personas creadas
     function datatableRegistrosSalida(){
         $('#tabla_registros_salida').DataTable({
@@ -315,16 +318,41 @@ $(function() {
     }
     datatableRegistrosVehiculos();
 
-    //Se elije una fila de la tabla y se toma la información del vehículo para mostrarla en un formulario y permitir actualizarla
+    // $('#tabInfoVehiculo').on('click', function () {
+        
+    //     // var data = $('#tabla_registros_salida').DataTable().row('.registrar_salida').data();
+    //     // console.log(data);
+
+    //     var alto = $('#fotoPersona')[0].height;
+    //     $('#cardVehiculo').css('height', alto);
+        
+    // });
+
+    //Se elije una fila de la tabla de registros sin salida y se toma la información del registro para mostrarla para mostrarla en un panel de pestañas de selección
     $('#tabla_registros_salida tbody').on('click', '.registrar_salida', function () { 
         var data = $('#tabla_registros_salida').DataTable().row(this).data(); 
 
+        if($('#tabInfoVehiculo').hasClass('active')){
+            $('#tabInfoVehiculo').removeClass('active');
+            $('#infoVehiculo').removeClass('active show');
+            $('#tabInfoRegistro').addClass('active');
+            $('#infoRegistro').addClass('active show');
+        }
 
-        $('#tabInfoRegistro').addClass('active');
-        $('#infoRegistro').addClass('active show');
+        if($('#tabDatosActivo').hasClass('active') || $('#tabDatosBasicos').hasClass('active')){
+            if($('#tabDatosActivo').hasClass('active')){
+                $('#tabDatosActivo').removeClass('active');
+                $('#datosActivo').removeClass('active show');
+            } else {
+                $('#tabDatosBasicos').removeClass('active');
+                $('#datosBasicos').removeClass('active show');
+            }
+            $('#tabDatosIngreso').addClass('active');
+            $('#datosIngreso').addClass('active show');
+        }
+        
 
-
-        $('#idRegistro').val(data.id_registros);
+        idRegistro = data.id_registros;
         $('#idTipoPersona').val(data.id_tipo_persona);
 
         $('#spanFecha').text(moment(data.ingreso_persona).format('DD-MM-YYYY'));
@@ -337,9 +365,23 @@ $(function() {
         $('#spanArl').text(data.arl); 
         $('#parrafoDescripcion').text(data.descripcion);
 
+        if(data.ingreso_vehiculo != null && data.ingreso_activo != null){
+            casoSalida = 'salidaVehiculoActivo';
+        } else if(data.ingreso_vehiculo != null && data.ingreso_activo == null) {
+            casoSalida = 'salidaPersonaVehiculo';
+        } else if(data.ingreso_activo != null && data.ingreso_vehiculo == null) {
+            casoSalida = 'salidaPersonaActivo';
+        } else {
+            casoSalida = 'salidaPersona';
+        }
+
         if(data.ingreso_vehiculo != null){
-            $('#fotoVehiculo').attr('src', data.foto_vehiculo);
+            if($('#checkVehiculo').prop('checked')){
+                $('#checkVehiculo').prop('checked', false);
+            } 
+            $('#fotoVehiculo').attr('src', data.foto_vehiculo)
             // .on('load', function() {
+            //     console.log($('#fotoVehiculo').height);
             //     $('#cardVehiculo').css('height', this.height);
             // });
             $('#spanFechaVehiculo').text(moment(data.ingreso_vehiculo).format('DD-MM-YYYY'));
@@ -347,9 +389,9 @@ $(function() {
             $('#spanIdentificador').text(data.identificador);
             $('#spanTipo').text(data.tipo);  
             $('#spanMarca').text(data.marca);   
-            $('.prueba').css('display', 'block');
+            $('#tabInfoVehiculo').css('display', 'block');
         } else {
-            $('.prueba').css('display', 'none');
+            $('#tabInfoVehiculo').css('display', 'none');
         }
 
         if(data.ingreso_activo != null){
@@ -401,6 +443,7 @@ $(function() {
 
         $('#informacionRegistro').css('display', 'block');   
         console.log(data);
+        console.log(casoSalida);
         
         // if($('.vehiculo').hasClass('is-invalid')){
         //     $('.vehiculo').removeClass('is-invalid');
@@ -421,34 +464,47 @@ $(function() {
         // $('#formEditarVehiculo').css('display', 'block');
     });
 
+
     //Función que se activa cuando el usuario le da click al checkbox de verificar si una persona sale sin su vehículo, esto hace que a un input se le agregue información que será utilizada para no tener en cuenta la salida del vehículo 
     $('#checkVehiculo').on('click', function () {
         if ($('#checkVehiculo').is(':checked')) {
-            $('#inputVehiculo').val('sinVehiculo');
+            if(casoSalida == 'salidaVehiculoActivo'){
+                casoSalida = 'salidaPersonaActivo';
+            } else if(casoSalida == 'salidaPersonaVehiculo'){
+                casoSalida = 'salidaPersona';
+            }
+            // $('#inputVehiculo').val('sinVehiculo');
         } else {
-            $('#inputVehiculo').val('');
+            // $('#inputVehiculo').val('');
+            if(casoSalida == 'salidaPersonaActivo'){
+                casoSalida = 'salidaVehiculoActivo';
+            } else if(casoSalida == 'salidaPersona'){
+                casoSalida = 'salidaPersonaVehiculo';
+            }
         }
+        console.log(casoSalida);
     });
 
     //Función que se activa cuando el usuario hace click en el botón de registar salida, esto envia una petición Ajax al servidor para modificar la base de datos y registrar la salida de una persona dependiendo el caso
     $('#botonGuardarSalida').on('click', function () {
         $.ajax({
-            url: '/registros/salida_persona/' + $('#idRegistro').val(),
+            url: '/registros/salida_persona/' + idRegistro,
             type: 'PUT',
             data: {
                 tipoPersona: $('#idTipoPersona').val(),
-                estadoVehiculo: $('#inputVehiculo').val()
+                registroSalida: casoSalida
             },
             success: function(res) {
                 // console.log(res);
                 datatableRegistrosSalida();
                 datatableRegistros();
+                datatableRegistrosVehiculos();
 
-                $('#formRegistros').css('display', 'none'); 
-                if($('#checkVehiculo').prop('checked')){
-                    $('#checkVehiculo').prop('checked', false);
-                    $('#inputVehiculo').val('');
-                }
+                $('#informacionRegistro').css('display', 'none'); 
+                // if($('#checkVehiculo').prop('checked')){
+                //     $('#checkVehiculo').prop('checked', false);
+                //     $('#inputVehiculo').val('');
+                // }
                 $('#parrafo').text(res.message);
                 $('#modal-registro-salida').modal('show');
                 // window.location.reload();
@@ -459,7 +515,7 @@ $(function() {
         });
     });
 
-    //Botón que permite ocultar el cuadro de información de la persona si selecciono para registrar su salida
+    //Botón que permite ocultar el panel de información de la persona si selecciono para registrar su salida
     $('#botonCerrar').click(function(){
         $('#informacionRegistro').css('display', 'none'); 
     });
