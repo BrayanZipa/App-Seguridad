@@ -63,7 +63,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row mt-2">
+                            <div class="row mt-3">
                                 <div class="col-sm-12">
                                     <div class="form-group clearfix">
                                         <div class="icheck-primary d-inline">

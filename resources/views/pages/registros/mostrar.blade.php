@@ -47,11 +47,96 @@
         @include('pages.registros.prueba')
     </section>
 
+    <section class="content-header">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-dark card-tabs mt-n1 mb-n2">
+                    <div class="card-header p-0 pt-1">
+                        <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="tabPersonasSinSalida" data-toggle="pill" href="#personasSinSalida" role="tab" aria-controls="personasSinSalida" aria-selected="true">Personas</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="tabVehiculosSinSalida" data-toggle="pill" href="#vehiculosSinSalida" role="tab" aria-controls="vehiculosSinSalida" aria-selected="false">Vehículos</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content" id="custom-tabs-one-tabContent">
+                            <div class="tab-pane fade active show" id="personasSinSalida" role="tabpanel" aria-labelledby="tabPersonasSinSalida">
+                                <div class="card card-primary">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Registros realizados</h3>
+                                    </div>
+                                    <!-- /.card-header -->
+                                    <div class="card-body">
+                                        <table id="tabla_registros_salida" class="table table-bordered table-striped table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Tipo de persona</th>
+                                                    <th>Nombre</th>
+                                                    <th>Identificación</th>
+                                                    <th>Teléfono</th>  
+                                                    <th>Fecha ingreso</th>
+                                                    <th>Hora ingreso</th>                   
+                                                    <th>Ingresa activo</th>
+                                                    <th>Ingresa vehículo</th> 
+                                                    <th>Ingresado por</th>
+                                                    <th>Acción</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>       
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </div>
+                                <!-- /.card -->
+                            </div>
+                            <div class="tab-pane fade" id="vehiculosSinSalida" role="tabpanel" aria-labelledby="tabVehiculosSinSalida">
+                                <div class="card card-orange">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Registros realizados</h3>
+                                    </div>
+                                    <!-- /.card-header -->
+                                    <div class="card-body">
+                                        <table id="tabla_registros_vehiculos" class="table table-bordered table-striped table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Tipo de persona</th>
+                                                    <th>Nombre</th>
+                                                    <th>Identificación</th>
+                                                    <th>Teléfono</th> 
+                                                    <th>Vehículo</th> 
+                                                    <th>Tipo</th> 
+                                                    <th>Marca</th> 
+                                                    <th>Fecha ingreso</th>
+                                                    <th>Hora ingreso</th>                   
+                                                    <th>Ingresado por</th>
+                                                    <th>Acción</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody> 
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </div>
+                                <!-- /.card -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="content-header mb-n4">
         <div class="row">
             <div class="col-12">
-
-                <div class="card card-primary">
+                {{-- <div class="card card-primary">
                     <div class="card-header">
                         <h3 class="card-title">Registros sin salida</h3>
                         <div class="card-tools">
@@ -81,25 +166,11 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- @foreach($registros as $registro)
-                                    <tr>
-                                        <td>{{ $registro->id_registros }}</td>
-                                        <td>{{ $registro->persona->nombre }} {{ $registro->persona->apellido }}</td>
-                                        <td>{{ $registro->persona->identificacion }}</td>
-                                        <td>{{ $registro->ingreso_persona}}</td>  
-                                        <td></td>                                 
-                                        <td>{{ $registro->persona->id_eps}}</td>
-                                        <td>{{ $registro->persona->id_arl}}</td>
-                                        <td>{{ $registro->persona->tel_contacto}}</td>
-                                        <td>{{ $registro->colaborador}}</td>
-                                        <td>{{ $registro->persona->usuario->name}}</td>
-                                    </tr>
-                                @endforeach --}}
                             </tbody>
                         </table>
                     </div>
                     <!-- /.card-body -->
-                </div>
+                </div> --}}
                 <!-- /.card -->
 
                 <div class="card card-primary">
@@ -140,7 +211,7 @@
                 </div>
                 <!-- /.card -->
 
-                <div class="card card-orange">
+                {{-- <div class="card card-orange">
                     <div class="card-header">
                         <h3 class="card-title">Vehículos sin salida</h3>
                         <div class="card-tools">
@@ -174,9 +245,8 @@
                         </table>
                     </div>
                     <!-- /.card-body -->
-                </div>
+                </div> --}}
                 <!-- /.card -->
-
             </div>
         </div>
 
@@ -185,3 +255,18 @@
 
     </section>
 @endsection
+
+{{-- @foreach($registros as $registro)
+                                                    <tr>
+                                                        <td>{{ $registro->id_registros }}</td>
+                                                        <td>{{ $registro->persona->nombre }} {{ $registro->persona->apellido }}</td>
+                                                        <td>{{ $registro->persona->identificacion }}</td>
+                                                        <td>{{ $registro->ingreso_persona}}</td>  
+                                                        <td></td>                                 
+                                                        <td>{{ $registro->persona->id_eps}}</td>
+                                                        <td>{{ $registro->persona->id_arl}}</td>
+                                                        <td>{{ $registro->persona->tel_contacto}}</td>
+                                                        <td>{{ $registro->colaborador}}</td>
+                                                        <td>{{ $registro->persona->usuario->name}}</td>
+                                                    </tr>
+@endforeach --}}       

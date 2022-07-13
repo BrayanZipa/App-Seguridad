@@ -4,21 +4,6 @@
             <label>Fotografía</label>
             <img id="fotoPersona" class="img-fluid rounded" style="border: 1px solid #007bff" src="" alt="Foto persona">
         </div>
-
-            <div class="form-group clearfix mt-n2 mb-1">  
-                {{-- <div class="icheck-primary d-inline">
-                    <label for="checkVehiculo">
-                        ¿La persona sale sin vehículo?
-                    </label>
-                    <input type="checkbox" id="checkVehiculo">
-                </div><br> --}}
-                <div class="icheck-primary d-inline">
-                    <label for="checkActivo">
-                        ¿La persona sale sin activo?
-                    </label>
-                    <input type="checkbox" id="checkActivo">
-                </div>
-            </div>
     </div>
     <div class="col-sm-9">
         <label>Información del registro</label>
@@ -118,7 +103,7 @@
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <div class="description-block text-left">
-                                            <h5 class="description-header mb-1">Teléfono de emergencia</h5>                                         
+                                            <h5 id="tituloTelefono" class="description-header mb-1"></h5>                                         
                                             <span id="spanTelefono"></span>
                                         </div>
                                     </div>
@@ -176,6 +161,18 @@
                                         <div class="description-block text-left">
                                             <h5 class="description-header mb-1">Código del activo</h5>                                         
                                             <span id="spanCodigoActivo"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-sm-12">
+                                    <div class="form-group clearfix">  
+                                        <div class="icheck-primary d-inline">
+                                            <label for="checkActivo">
+                                                ¿La persona sale sin activo?
+                                            </label>
+                                            <input type="checkbox" id="checkActivo">
                                         </div>
                                     </div>
                                 </div>
