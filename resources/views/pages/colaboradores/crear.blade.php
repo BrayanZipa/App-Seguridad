@@ -66,7 +66,7 @@
                                             </div>
 
                                             <div id="crearVehiculo2" class="mt-4 mx-n3" style="display: none">
-                                                    @include('pages.colaboradores.formularioCrearVehiculo2')
+                                                @include('pages.colaboradores.formularioCrearVehiculo2')
                                             </div> 
                                         </form>
                                     </div>

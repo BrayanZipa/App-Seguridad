@@ -378,11 +378,7 @@ $(function() {
             if($('#checkVehiculo').prop('checked')){
                 $('#checkVehiculo').prop('checked', false);
             } 
-            $('#fotoVehiculo').attr('src', data.foto_vehiculo)
-            .on('load', function() {
-                // console.log(this.width);
-                // $('#fotoVehiculo').css('height', );
-            });
+            $('#fotoVehiculo').attr('src', data.foto_vehiculo);
             $('#spanFechaVehiculo').text(moment(data.ingreso_vehiculo).format('DD-MM-YYYY'));
             $('#spanHoraVehiculo').text(moment(data.ingreso_vehiculo).format('h:mm:ss a'));
             $('#spanIdentificador').text(data.identificador);
@@ -417,14 +413,24 @@ $(function() {
         $('#parrafoDescripcion').text(data.descripcion);
 
         if(data.id_tipo_persona == 1 || data.id_tipo_persona == 4){
-            $('#fotoPersona').attr('src', data.foto)
-            // .on('load', function() {
-            //     // $('#cardPersona').css('height', this.height);
-            //     $('#fotoPersona').css('height', $('#cardPersona')[0].clientHeight);
-            //     console.log($('#cardPersona'));
-            // });
+            if($('#columnaFoto').hasClass('col-sm-2')){
+                $('#columnaFoto').removeClass('col-sm-2');
+                $('#columnaFoto').addClass('col-sm-3');
+                $('#columnaInformacion').removeClass('col-sm-10');
+                $('#columnaInformacion').addClass('col-sm-9'); 
+            } 
+
+            $('#infoColaborador').css('display', 'none');
+            $('#divlogoEmpresa').css('display', 'none');
+            $('#fotoPersona').attr('src', data.foto).on('load', function() {
+                $('#divFotoPersona').css('display', 'block');
+            });
             $('#spanEmpresa').text(data.empresavisitada); 
             $('#spanColaborador').text(data.colaborador);
+
+            
+
+            
 
             if(data.id_tipo_persona == 1 ){
                 $('#tabInfoRegistro').text('Registro visitante');
@@ -433,30 +439,30 @@ $(function() {
                 $('#tabInfoRegistro').text('Registro conductor');
                 $('#tituloTelefono').text('Teléfono de contacto'); 
             }
-
-            // console.log($('#fotoPersona').css("height"));
-            // var image = document.getElementById("fotoPersona");
-            // var image = $('#fotoPersona');
-            // console.log(image);
-            // console.log(image.naturalHeight);
-
             
+        } else if(data.id_tipo_persona == 2 || data.id_tipo_persona == 3){
+            if($('#columnaFoto').hasClass('col-sm-3')){
+                $('#columnaFoto').removeClass('col-sm-3');
+                $('#columnaFoto').addClass('col-sm-2');
+                $('#columnaInformacion').removeClass('col-sm-9');
+                $('#columnaInformacion').addClass('col-sm-10');
+            }
 
-            // setTimeout(() => {
-            //     console.log($('#fotoPersona')[0].height);
-            //     $('#cardPersona').css('height', $('#fotoPersona')[0].height);
-            // }, 1000);
+            $('#tabInfoRegistro').text('Registro colaborador');
+            $('#tituloTelefono').text('Teléfono de contacto'); 
+            $('#spanCorreo').text(data.email); 
+            $('#spanEmpresaCol').text(data.empresa); 
+            $('#infoColaborador').css('display', '');
 
+            var urlLogo = 'assets/imagenes/' + data.empresa.toLowerCase() +'.png';
+            $('#divFotoPersona').css('display', 'none');
+            $('#logoEmpresa').attr('src', urlLogo).on('load', function() {
+                $('#divlogoEmpresa').css('display', 'block');
+            });
             
-
-            // $('#bodymenu').css('height', image.height);
-        } else if(data.id_tipo_persona == 2){
-
-        } else if(data.id_tipo_persona == 3){
-
-        } else if(data.id_tipo_persona == 4){
-
-        }
+            
+            
+        } 
 
         // $('#form_registroSalida').attr('action', '/registros/salida_persona' + data.id_registros);    
 

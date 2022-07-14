@@ -43,10 +43,6 @@
         @include('pages.registros.header')
     </div>
 
-    <section id="informacionRegistro" class="content-header mb-n4" style="display: none">
-        @include('pages.registros.prueba')
-    </section>
-
     <section class="content-header">
         <div class="row">
             <div class="col-md-12">
@@ -64,7 +60,11 @@
                     <div class="card-body">
                         <div class="tab-content" id="custom-tabs-one-tabContent">
                             <div class="tab-pane fade active show" id="personasSinSalida" role="tabpanel" aria-labelledby="tabPersonasSinSalida">
-                                <div class="card card-primary">
+                                <div id="informacionRegistro" class="mt-n3 mx-n3" style="display: none">
+                                    {{-- @include('pages.registros.prueba') --}}
+                                    @include('pages.registros.panelDatosPersona')
+                                </div>
+                                <div class="card card-primary mt-n3 mx-n3">
                                     <div class="card-header">
                                         <h3 class="card-title">Registros realizados</h3>
                                     </div>

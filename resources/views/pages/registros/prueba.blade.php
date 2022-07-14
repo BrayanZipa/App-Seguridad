@@ -1,11 +1,11 @@
-<div class="row mb-n2">
+{{-- <div class="row mb-n2">
     <div class="col-md-12">
         <ul class="nav nav-tabs">
             <li class="nav-item">
                 <a class="nav-link"></a>
             </li>
-        </ul>
-        <div class="card card-primary card-tabs mt-n4">
+        </ul> --}}
+        <div class="card card-primary card-tabs mb-n1 mx-n1">
             <div class="card-header p-0 pt-1">       
                 <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
                     <li class="nav-item">
@@ -33,17 +33,17 @@
                     <div class="tab-pane fade active show" id="infoRegistro" role="tabpanel" aria-labelledby="tabInfoRegistro">
                         @include('pages.registros.panelVisitanteConductor')
                     </div>
-                    <div class="tab-pane fade" id="infoVehiculo" role="tabpanel" aria-labelledby="tabInfoVehiculo">
+                    {{-- <div class="tab-pane fade" id="infoVehiculo" role="tabpanel" aria-labelledby="tabInfoVehiculo">
                         @include('pages.registros.panelVehiculo')
-                    </div>
+                    </div> --}}
                 </div>
             </div>
             <div class="card-footer">
                 <button type='button' id="botonGuardarSalida" class="btn btn-primary">Registrar salida</button>
             </div>
         </div>
-    </div>
-</div>
+    {{-- </div>
+</div> --}}
 
 
 {{-- <div class="card card-primary card-tabs">
