@@ -92,7 +92,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ route('mostrarRegistros') }}" class="nav-link {{ Request::is('registros*') ? 'active' : '' }}">
+                    <a href="{{ route('mostrarRegistrosSinSalida') }}" class="nav-link {{ Request::is('registros*') ? 'active' : '' }}">
                         <i class="nav-icon fa-solid fa-calendar-days"></i>
                         <p>
                             Registros

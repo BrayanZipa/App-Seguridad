@@ -5,10 +5,10 @@
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="{{ route('mostrarRegistros') }}" class="nav-link {{ Route::is('mostrarRegistros') ? 'active' : '' }}">Registros sin salida</a>
+            <a href="{{ route('mostrarRegistrosSinSalida') }}" class="nav-link {{ Route::is('mostrarRegistrosSinSalida') ? 'active' : '' }}">Registros sin salida</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="{{ route('mostrarRegistros') }}" class="nav-link {{ Route::is('mostrarRegistros') ? '' : '' }}">Registros completados</a>
+            <a href="{{ route('mostrarRegistros') }}" class="nav-link {{ Route::is('mostrarRegistros') ? 'active' : '' }}">Registros completados</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
             <a href="{{ route('formCrearRegistro') }}" class="nav-link {{ Route::is('formCrearRegistro') ? 'active' : '' }}">Nuevo registro</a>

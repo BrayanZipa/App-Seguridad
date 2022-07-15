@@ -43,8 +43,8 @@ Route::put('/visitantes/editar/{id}', [VisitanteController::class, 'update'])->n
 /**
  * Rutas del módulo de colaboradores
  */
-Route::get('/colaboradores_con_activo', [ColaboradorController::class, 'index'])->name('mostrarColaboradores')->middleware('auth');
-Route::get('/colaboradores_sin_activo', [ColaboradorController::class, 'index2'])->name('mostrarColaboradores2')->middleware('auth');
+Route::get('/colaboradores/con_activo', [ColaboradorController::class, 'index'])->name('mostrarColaboradores')->middleware('auth');
+Route::get('/colaboradores/sin_activo', [ColaboradorController::class, 'index2'])->name('mostrarColaboradores2')->middleware('auth');
 Route::get('/colaboradores/crear', [ColaboradorController::class, 'create'])->name('formCrearColaborador')->middleware('auth');
 Route::post('/colaboradores/crear', [ColaboradorController::class, 'store'])->name('crearColaborador')->middleware('auth');
 Route::get('/colaboradores/informacion', [ColaboradorController::class, 'informacionColaboradores'])->name('mostrarInfoColaboradores')->middleware('auth'); 
@@ -79,13 +79,13 @@ Route::get('/vehiculos/personas', [VehiculoController::class, 'getPersonas'])->n
 /**
  * Rutas del módulo de registros
  */
-Route::get('/registros', [RegistroController::class, 'index'])->name('mostrarRegistros')->middleware('auth');
+Route::get('/registros/completados', [RegistroController::class, 'index'])->name('mostrarRegistros')->middleware('auth');
+Route::get('/registros/sin_salida', [RegistroController::class, 'registrosSinSalida'])->name('mostrarRegistrosSinSalida')->middleware('auth');
 Route::get('/registros/crear', [RegistroController::class, 'create'])->name('formCrearRegistro')->middleware('auth');
 Route::post('/registros/crear', [RegistroController::class, 'store'])->name('crearRegistro')->middleware('auth');
 Route::get('/registros/informacion', [RegistroController::class, 'informacionRegistros'])->name('mostrarInfoRegistros')->middleware('auth');
 Route::get('/registros/informacion_sin_salida', [RegistroController::class, 'informacionRegistrosSinSalida'])->name('registrosSalidas')->middleware('auth');
 Route::get('/registros/informacion_vehiculos', [RegistroController::class, 'informacionRegistrosVehiculos'])->name('registrosVehiculos')->middleware('auth');
-
 
 Route::get('/registros/personas', [RegistroController::class, 'getPersonas'])->name('getPersonas')->middleware('auth');
 Route::get('/registros/persona', [RegistroController::class, 'getPersona'])->name('getPersona')->middleware('auth');

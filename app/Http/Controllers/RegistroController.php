@@ -45,8 +45,15 @@ class RegistroController extends Controller
      */
     public function index()
     {
-        // $exitCode = Artisan::call('cache:clear');
-        return view('pages.registros.mostrar');
+        return view('pages.registros.mostrarRegistrosCompletos');
+    }
+
+    /**
+     * Función que muestra una vista con todos los registros realizados en los cuales no se registra la salida de una persona, un vehículo o un activo.
+     */
+    public function registrosSinSalida()
+    {
+        return view('pages.registros.mostrarRegistrosIncompletos');
     }
 
     /**
