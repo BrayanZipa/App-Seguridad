@@ -1,6 +1,6 @@
 $(function() { 
 
-    //Uso de DataTables para mostrar los registros realizados de las entradas y salidas de todos los tipos de persona (visitantes, conductores, colaboradores con y sin activo)
+    //Uso de DataTables para mostrar los registros realizados en donde se completo tanto las entradas como salidas de todos los tipos de persona (visitantes, conductores, colaboradores con y sin activo)
     $('#tabla_registros').DataTable({
         'destroy': true,
         'processing': true,
@@ -129,7 +129,7 @@ $(function() {
         }
     }
 
-    //Se elije una fila de la tabla de registros completados y se toma la información del registro para mostrarla en un panel de pestañas de selección de manera organizada
+    //Se elije una fila de la tabla de registros completados y se toma la información del registro para mostrarla en un panel de pestañas de selección de manera organizada dependiendo del tipo de persona
     $('#tabla_registros tbody').on('click', '.consultar_registro', function () { 
         var data = $('#tabla_registros').DataTable().row(this).data(); 
         restablecerTabs();
@@ -181,10 +181,6 @@ $(function() {
                 $('#columnaInformacion').removeClass('col-sm-10');
                 $('#columnaInformacion').addClass('col-sm-9'); 
             }     
-            if($('#columnaDescripcion').hasClass('col-sm-6')){
-                $('#columnaDescripcion').removeClass('col-sm-6');
-                $('#columnaDescripcion').addClass('col-sm-4');
-            }
             $('#infoColaborador').css('display', 'none');            
             $('#spanEmpresa').text(data.empresavisitada); 
             $('#spanColaborador').text(data.colaborador);
@@ -210,10 +206,6 @@ $(function() {
                 $('#columnaInformacion').removeClass('col-sm-9');
                 $('#columnaInformacion').addClass('col-sm-10');
             }
-            if($('#columnaDescripcion').hasClass('col-sm-4')){
-                $('#columnaDescripcion').removeClass('col-sm-4');
-                $('#columnaDescripcion').addClass('col-sm-6');
-            }
             $('#infoVisitanteConductor').css('display', 'none'); 
             $('#tabInfoRegistro').text('Registro colaborador');
             $('#tituloTelefono').text('Teléfono de contacto'); 
@@ -232,13 +224,12 @@ $(function() {
         $('#informacionRegistro').css('display', 'block');  
     });
 
-    
     //Botón que al ser seleccionado elimina el botón registrar salida si se encuentra creado en la vista
     $('#botonCollapse').click(function(){
         if($('#footerPanel').length){ $('#footerPanel').remove(); }      
     });
 
-    //Botón que permite ocultar el panel de información de la persona si selecciono para visualizar la información
+    //Botón que permite ocultar el panel de información del registro de la persona si selecciono para visualizar la información
     $('#botonCerrar').click(function(){
         $('#informacionRegistro').css('display', 'none'); 
     });

@@ -11,7 +11,7 @@ $(function() {
     var idRegistro = '';
     var datosRegistro = {};
 
-    //Uso de DataTables para mostrar los registros realizados que no registran una salida de todos los tipos de persona (visitantes, conductores, colaboradores con y sin activo)
+    //Uso de DataTables para mostrar los registros realizados en los cuales no se registra la salida de los diferentes tipos de persona (visitantes, conductores, colaboradores con y sin activo)
     function datatableRegistrosSalida(){
         $('#tabla_registros_salida').DataTable({
             'destroy': true,
@@ -113,7 +113,7 @@ $(function() {
     }
     datatableRegistrosSalida();
 
-    //Uso de DataTables para mostrar los registros realizados donde se ingreso un vehículo y se registra la salida del propietario pero no del vehículo
+    //Uso de DataTables para mostrar los registros realizados donde se ingresa un vehículo y se registra la salida del propietario pero no del vehículo
     function datatableRegistrosVehiculos() {
         $('#tabla_registros_vehiculos').DataTable({
             'destroy': true,
@@ -233,7 +233,16 @@ $(function() {
         }
     }
 
-    //Se elije una fila de la tabla de registros sin salida y se toma la información del registro para mostrarla en un panel de pestañas de selección de manera organizada
+    //Al momento en que se carga la página se ocultan elemetos al usuario para esta vista y se cambia el tamaño de varias columnas para mostar de mejor manera la información
+    $('#infoSalidaPersona').css('display', 'none');
+    $('#infoSalidaVehiculo').css('display', 'none');
+    $('#infoSalidaActivo').css('display', 'none');
+    $('.columnaPanel').removeClass('col-sm-3');
+    $('.columnaPanel').addClass('col-sm-4');
+    $('#infoVisitanteConductor').removeClass('col-sm-6');
+    $('#infoVisitanteConductor').addClass('col-sm-8');
+
+    //Se elije una fila de la tabla de registros sin salida y se toma la información del registro para mostrarla en un panel de pestañas de selección de manera organizada dependiendo del tipo de persona
     $('#tabla_registros_salida tbody').on('click', '.registrar_salida', function () { 
         var data = $('#tabla_registros_salida').DataTable().row(this).data(); 
         restablecerTabs();
@@ -256,10 +265,10 @@ $(function() {
             activo: data.codigo_activo, 
         }
 
-        if(data.ingreso_vehiculo != null){
+        if(data.ingreso_vehiculo != null){ 
             if($('#checkVehiculo').prop('checked')){
                 $('#checkVehiculo').prop('checked', false);
-            } 
+            }     
             $('#fotoVehiculo').attr('src', data.foto_vehiculo);
             $('#spanFechaVehiculo').text(moment(data.ingreso_vehiculo).format('DD-MM-YYYY'));
             $('#spanHoraVehiculo').text(moment(data.ingreso_vehiculo).format('h:mm:ss a'));
@@ -275,6 +284,7 @@ $(function() {
             if($('#checkActivo').prop('checked')){
                 $('#checkActivo').prop('checked', false);
             } 
+            $('#divActivo').css('display', '');
             $('#spanFechaActivo').text(moment(data.ingreso_activo).format('DD-MM-YYYY'));
             $('#spanHoraActivo').text(moment(data.ingreso_activo).format('h:mm:ss a'));
             $('#spanTipoActivo').text(data.activo);
@@ -283,7 +293,7 @@ $(function() {
         } else {
             $('#tabDatosActivo').css('display', 'none');
         }
-
+    
         $('#spanFecha').text(moment(data.ingreso_persona).format('DD-MM-YYYY'));
         $('#spanHora').text(moment(data.ingreso_persona).format('h:mm:ss a'));
         $('#spanNombre').text(data.nombre);
@@ -316,6 +326,7 @@ $(function() {
             });
 
             if(data.id_tipo_persona == 1 ){
+                $('#divActivo').css('display', 'none');
                 $('#tabInfoRegistro').text('Registro visitante');
                 $('#tituloTelefono').text('Teléfono de emergencia'); 
             } else {
@@ -347,28 +358,9 @@ $(function() {
                 $('#divLogoEmpresa').css('display', 'block');
             }); 
         } 
-
-        // $('#form_registroSalida').attr('action', '/registros/salida_persona' + data.id_registros);    
-
         $('#informacionRegistro').css('display', 'block');   
         console.log(data);
         console.log(casoSalida);
-        
-        
-        // $('#form_EditarVehiculo').attr('action','/vehiculos/editar/' + data.id_vehiculos); 
-        // $('#inputIdVehiculo').val(data.id_vehiculos); 
-        // $('#inputFotoVehiculo').val(data.foto_vehiculo); 
-        // $('#fotoVehiculo').attr('src', data.foto_vehiculo);  
-        // $('#inputNumeroIdentificador').val(data.identificador);
-        // $('#selectTipoVehiculo').val(data.id_tipo_vehiculo);
-        // $('#selectMarcaVehiculo').val(data.id_marca_vehiculo);
-        // $('#selectTipoPersona').val(data.id_tipo_persona);             
-        // $('#retornoPersona').val(data.id_persona);
-        // $('#personaAnterior').val(data.id_persona);
-        // selectMarcaVehiculo(); 
-        // activarSelect2();
-        // selectPropietario(data.id_persona); 
-        // $('#formEditarVehiculo').css('display', 'block');
     });
     
     //Función que se activa cuando el usuario le da click al checkbox de verificar si una persona sale sin su vehículo, esto hace que a la variable casoSalida se le asigne información que será utilizada para no tener en cuenta la salida del vehículo 
@@ -408,8 +400,28 @@ $(function() {
         console.log(casoSalida);
     });
 
-    //Función que se activa cuando el usuario hace click en el botón de registar salida, esto envia una petición Ajax al servidor para modificar la base de datos y registrar la salida de una persona dependiendo el caso
+    //Función que permite obtener el tipo de persona y el nombre de la persona que se haya seleccionado para realizar el registro de una nueva salida
+    function obtenerNombrePersona() {
+        var nombrePersona = '';
+        if(datosRegistro.tipoPersona == 1){
+            nombrePersona = 'visitante ' + datosRegistro.nombrePersona;
+        } else if(datosRegistro.tipoPersona == 2 || datosRegistro.tipoPersona == 3){
+            nombrePersona = 'colaborador ' + datosRegistro.nombrePersona;
+        } else if(datosRegistro.tipoPersona == 4){
+            nombrePersona = 'conductor ' + datosRegistro.nombrePersona;
+        }
+        return nombrePersona;
+    }
+
+    //Botón que permite desplegar un modal de confirmación cuando el usuario quiera realizar el registro de una salida en el sistema
     $('#botonGuardarSalida').on('click', function () {
+        $('#textoSalida').text(obtenerNombrePersona());
+        $('#modal-registrarSalida').modal('show');
+    });
+    
+    //Botón que envía una petición Ajax al servidor para modificar la base de datos y registrar la salida de una persona dependiendo el caso, si el registro es exito muestra un modal con la información del registro
+    $('#botonContinuarSalida').on('click', function () {
+        $('#modal-registrarSalida').modal('hide');
         $.ajax({
             url: '/registros/salida_persona/' + idRegistro,
             type: 'PUT',
@@ -421,20 +433,8 @@ $(function() {
                 datatableRegistrosSalida();
                 datatableRegistrosVehiculos();
                 $('#informacionRegistro').css('display', 'none'); 
-                // if($('#checkVehiculo').prop('checked')){
-                //     $('#checkVehiculo').prop('checked', false);
-                //     $('#inputVehiculo').val('');
-                // }
 
-                if(datosRegistro.tipoPersona == 1){
-                    datosRegistro.nombrePersona = 'visitante ' + datosRegistro.nombrePersona;
-                } else if(datosRegistro.tipoPersona == 2 || datosRegistro.tipoPersona == 3){
-                    datosRegistro.nombrePersona = 'colaborador ' + datosRegistro.nombrePersona;
-                } else if(datosRegistro.tipoPersona == 4){
-                    datosRegistro.nombrePersona = 'conductor ' + datosRegistro.nombrePersona;
-                }
-
-                $('.textoPersona').text(datosRegistro.nombrePersona);
+                $('.textoPersona').text(obtenerNombrePersona());
                 if(casoSalida == 'salidaVehiculoActivo'){
                     $('.textoVehiculo').text(datosRegistro.vehiculo);
                     $('.textoActivo').text(datosRegistro.activo);
@@ -458,6 +458,11 @@ $(function() {
     //Botón que permite ocultar el panel de información de la persona si selecciono para registrar su salida
     $('#botonCerrar').click(function(){
         $('#informacionRegistro').css('display', 'none'); 
+    });
+
+    //Botón que redirecciona a la vista donde se muestra los registros que se han completado totalmente
+    $('.botonContinuar').click(function() {
+        $(location).attr('href', '/registros/completados');
     });
 
 });

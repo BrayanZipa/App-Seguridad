@@ -612,11 +612,11 @@ $(function() {
     $('#modal-crear-colaboradorVehiculoActivo').modal('show');
 
     $('.botonContinuar').click(function() {
-        $(location).attr('href', '/colaboradores_con_activo');
+        $(location).attr('href', '/colaboradores/con_activo');
     });
 
     $('.botonContinuar2').click(function() {
-        $(location).attr('href', '/colaboradores_sin_activo');
+        $(location).attr('href', '/colaboradores/sin_activo');
     });
 
 });

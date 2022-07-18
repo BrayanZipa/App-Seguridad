@@ -64,7 +64,7 @@
                                     aria-labelledby="tabDatosIngreso">
                                     <div class="ml-4">
                                         <div class="row">
-                                            <div class="col-sm-3">
+                                            <div class="columnaPanel col-sm-3">
                                                 <div class="form-group">
                                                     <div class="description-block text-left">
                                                         <h5 class="description-header mb-1">Fecha de ingreso</h5>
@@ -72,7 +72,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-3">
+                                            <div class="columnaPanel col-sm-3">
                                                 <div class="form-group">
                                                     <div class="description-block text-left">
                                                         <h5 class="description-header mb-1">Hora de ingreso</h5>
@@ -215,7 +215,7 @@
                                     aria-labelledby="tabDatosActivo">
                                     <div class="ml-4">
                                         <div class="row">
-                                            <div class="col-sm-3">
+                                            <div class="columnaPanel col-sm-3">
                                                 <div class="form-group">
                                                     <div class="description-block text-left">
                                                         <h5 class="description-header mb-1">Fecha de ingreso</h5>
@@ -223,7 +223,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-3">
+                                            <div class="columnaPanel col-sm-3">
                                                 <div class="form-group">
                                                     <div class="description-block text-left">
                                                         <h5 class="description-header mb-1">Hora de ingreso</h5>
@@ -253,7 +253,7 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-sm-3">
+                                            <div class="columnaPanel col-sm-3">
                                                 <div class="form-group">
                                                     <div class="description-block text-left">
                                                         <h5 class="description-header mb-1">Tipo de activo</h5>
@@ -261,7 +261,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-3">
+                                            <div class="columnaPanel col-sm-3">
                                                 <div class="form-group">
                                                     <div class="description-block text-left">
                                                         <h5 class="description-header mb-1">Código del activo</h5>
@@ -317,7 +317,7 @@
                                     aria-labelledby="tabDatosIngresoVehiculo">
                                     <div class="ml-4">
                                         <div class="row">
-                                            <div class="col-sm-3">
+                                            <div class="columnaPanel col-sm-3">
                                                 <div class="form-group">
                                                     <div class="description-block text-left">
                                                         <h5 class="description-header mb-1">Fecha de ingreso</h5>
@@ -325,7 +325,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-3">
+                                            <div class="columnaPanel col-sm-3">
                                                 <div class="form-group">
                                                     <div class="description-block text-left">
                                                         <h5 class="description-header mb-1">Hora de ingreso</h5>
@@ -355,7 +355,7 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-sm-3">
+                                            <div class="columnaPanel col-sm-3">
                                                 <div class="form-group">
                                                     <div class="description-block text-left">
                                                         <h5 class="description-header mb-1">Identificador</h5>
@@ -363,7 +363,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-3">
+                                            <div class="columnaPanel col-sm-3">
                                                 <div class="form-group">
                                                     <div class="description-block text-left">
                                                         <h5 class="description-header mb-1">Tipo de vehículo</h5>
@@ -371,7 +371,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-3">
+                                            <div class="columnaPanel col-sm-3">
                                                 <div class="form-group">
                                                     <div class="description-block text-left">
                                                         <h5 class="description-header mb-1">Marca del vehículo</h5>

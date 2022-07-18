@@ -87,7 +87,6 @@ class Registro extends Model
         return $registros;  
     }
 
-
     /**
      * Función que permite retornar los datos de los registros de la tabla se_registros unidos a la información de las personas y los vehículos donde se haya registrado el ingreso de una persona y su vehículo y se haya registrado la salida de la persona, pero no la del vehículo.
      */
