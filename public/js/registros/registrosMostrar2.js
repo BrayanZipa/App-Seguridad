@@ -9,6 +9,7 @@ $(function() {
 
     var casoSalida = '';
     var idRegistro = '';
+    var nuevoActivo = '';
     var datosRegistro = {};
 
     //Uso de DataTables para mostrar los registros realizados en los cuales no se registra la salida de los diferentes tipos de persona (visitantes, conductores, colaboradores con y sin activo)
@@ -259,6 +260,7 @@ $(function() {
 
         idRegistro = data.id_registros;
         datosRegistro = {
+            idPersona: data.id_persona,
             tipoPersona: data.id_tipo_persona,
             nombrePersona: data.nombre + ' ' + data.apellido,
             vehiculo: data.identificador,
@@ -284,6 +286,7 @@ $(function() {
             if($('#checkActivo').prop('checked')){
                 $('#checkActivo').prop('checked', false);
             } 
+            $('#columnaActivo').css('display', 'none');
             $('#divActivo').css('display', '');
             $('#spanFechaActivo').text(moment(data.ingreso_activo).format('DD-MM-YYYY'));
             $('#spanHoraActivo').text(moment(data.ingreso_activo).format('h:mm:ss a'));
@@ -325,7 +328,7 @@ $(function() {
                 $('#divFotoPersona').css('display', 'block');
             });
 
-            if(data.id_tipo_persona == 1 ){
+            if(data.id_tipo_persona == 1){
                 $('#divActivo').css('display', 'none');
                 $('#tabInfoRegistro').text('Registro visitante');
                 $('#tituloTelefono').text('Teléfono de emergencia'); 
@@ -357,11 +360,59 @@ $(function() {
             $('#logoEmpresa').attr('src', urlLogo).on('load', function() {
                 $('#divLogoEmpresa').css('display', 'block');
             }); 
+
+            if(data.id_tipo_persona == 3){
+                obtenerActivoActualizado(data.identificacion, data.codigo);
+            }
         } 
         $('#informacionRegistro').css('display', 'block');   
         console.log(data);
         console.log(casoSalida);
     });
+
+    function obtenerActivoActualizado(idColaborador, activoActual) {
+        $.ajax({
+            url: '/colaboradores/colaboradoridentificado',
+            type: 'GET',
+            data: {
+                colaborador: idColaborador,
+            },
+            dataType: 'json',
+            success: function(response) {
+                $.ajax({
+                    url: '/colaboradores/computador',
+                    type: 'GET',
+                    data: {
+                        colaborador: response.id,
+                    },
+                    dataType: 'json',
+                    success: function(activo) {
+                        $('#spanCodigoActivo2').text(activo.name); 
+                        if(activo.name != activoActual){
+                            nuevoActivo = activo.name;
+                            $('#tabDatosIngreso').removeClass('active');
+                            $('#datosIngreso').removeClass('active show');
+                            $('#tabDatosActivo').addClass('active');
+                            $('#datosActivo').addClass('active show');
+                            $('#tituloActivo').text('Cambio de activo'); 
+                            $('#spanCodigoActivo2').text(activo.name);
+                            $('#columnaActivo').css(
+                                {'display': '',
+                                'border-left': '5px solid red'
+                                }
+                            );
+                        }
+                    },
+                    error: function() {
+                        console.log('Error obteniendo los datos de GLPI');
+                    }
+                });
+            },
+            error: function() {
+                console.log('Error obteniendo los datos de GLPI');
+            }
+        });
+    }
     
     //Función que se activa cuando el usuario le da click al checkbox de verificar si una persona sale sin su vehículo, esto hace que a la variable casoSalida se le asigne información que será utilizada para no tener en cuenta la salida del vehículo 
     $('#checkVehiculo').on('click', function () {
@@ -422,11 +473,14 @@ $(function() {
     //Botón que envía una petición Ajax al servidor para modificar la base de datos y registrar la salida de una persona dependiendo el caso, si el registro es exito muestra un modal con la información del registro
     $('#botonContinuarSalida').on('click', function () {
         $('#modal-registrarSalida').modal('hide');
+        console.log(nuevoActivo);
         $.ajax({
             url: '/registros/salida_persona/' + idRegistro,
             type: 'PUT',
             data: {
-                registroSalida: casoSalida
+                idPersona: datosRegistro.idPersona,
+                registroSalida: casoSalida,
+                codigo: nuevoActivo
             },
             success: function(res) {
                 console.log(res);

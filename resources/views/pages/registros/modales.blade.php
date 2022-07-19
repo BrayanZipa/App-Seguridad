@@ -201,7 +201,7 @@
                 </div>
             </div>
             <div class="modal-body">
-                <p>¿Esta seguro que desea registrar la salida del <b id="textoSalida"></b>?</p>
+                <p class="text-center" style="font-size: 18px">¿Esta seguro que desea registrar la salida del <b id="textoSalida"></b>?</p>
             </div>
             <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-default" data-dismiss="modal" style="width: 100px">Cerrar</button>

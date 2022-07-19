@@ -269,6 +269,14 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div id="columnaActivo" class="columnaPanel col-sm-3" style="display: none">
+                                                <div class="form-group">
+                                                    <div class="description-block text-left">
+                                                        <h5 id="tituloActivo" class="description-header mb-1">Código del activo salida</h5>
+                                                        <span id="spanCodigoActivo2" style=""></span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div id="divActivo" class="row mt-3 mb-n3">
                                             <div class="col-sm-12">

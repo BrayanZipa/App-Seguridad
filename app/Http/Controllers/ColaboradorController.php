@@ -77,8 +77,6 @@ class ColaboradorController extends Controller
                 }     
             }
         }
-        // return count($listaColaboradores);
-        
         [$eps, $arl, $tipoVehiculos, $marcaVehiculos, $empresas] = $this->obtenerModelos2();
 
         return view('pages.colaboradores.crear', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos', 'empresas', 'listaColaboradores', 'personas'));
@@ -495,7 +493,7 @@ class ColaboradorController extends Controller
             }
         }
         if(!isset($computador)){
-            $computador = ['error' =>  'Sin activo asignado para este ususario'];
+            $computador = ['error' =>  'Sin activo asignado para este usuario'];
         }    
 
         return $computador;

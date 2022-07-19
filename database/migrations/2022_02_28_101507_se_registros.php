@@ -26,6 +26,7 @@ class SeRegistros extends Migration
             $table->dateTime('ingreso_activo')->nullable();
             $table->dateTime('salida_activo')->nullable();
             $table->string('codigo_activo', 26)->nullable();
+            $table->string('codigo_activo_salida', 26)->nullable();
             $table->string('descripcion', 255)->nullable();
             $table->unsignedInteger('empresa_visitada')->nullable();
             $table->foreign('empresa_visitada')->references('id_empresas')->on('se_empresas');  

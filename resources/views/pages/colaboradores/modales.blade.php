@@ -249,7 +249,7 @@
                 <h4 class="modal-title">Cambiar a rol de visitante</h4>
             </div>
             <div class="modal-body">
-                <p style="font-size: 18px; text-align: center">¿Esta seguro que desea cambiar el rol del colaborador a visitante?</p>
+                <p class="text-center" style="font-size: 18px"">¿Esta seguro que desea cambiar el rol del colaborador a visitante?</p>
             </div>
             <div class="modal-footer justify-content-between">
                 <button type="button" class="botonError btn btn-danger" data-dismiss="modal">Cerrar</button>

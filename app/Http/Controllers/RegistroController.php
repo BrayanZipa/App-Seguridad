@@ -135,6 +135,17 @@ class RegistroController extends Controller
     }
 
     /**
+     * Función que permite actualizar el código del activo de un colaborador en caso de que se cambie este código en GLPI al momento de hacer un nuevo registro.
+     */
+    public function updateActivo($idPersona, $codigoActivo)
+    {
+        if(!$this->activos->existeActivo($codigoActivo, $idPersona)){  
+            $this->activos->verificarActivo($codigoActivo);   
+            Activo::where('id_persona', $idPersona)->update(['codigo' => $codigoActivo]); 
+        }  
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -244,56 +255,29 @@ class RegistroController extends Controller
 
         $datos = ['salida_persona' => $tiempoActual];
         if($request['registroSalida'] == 'salidaVehiculoActivo'){
+
+            
+
             $datos += ['salida_vehiculo' => $tiempoActual, 'salida_activo' => $tiempoActual];
+
         } else if($request['registroSalida'] == 'salidaPersonaVehiculo'){
             $datos += ['salida_vehiculo' => $tiempoActual];
         } else if($request['registroSalida'] == 'salidaPersonaActivo'){
-            $datos += ['salida_activo' => $tiempoActual];
+
+            if($request['codigo'] != null){
+                $request['codigo'] = ucfirst($request['codigo']);
+                $this->updateActivo($request['idPersona'], $request['codigo']);
+            }
+            return $request;
+
+            // $datos += ['salida_activo' => $tiempoActual];
         }
 
-        Registro::findOrFail($id)->update($datos);
-
-
-        // if($request['tipoPersona'] == 1){
-        //     $mensajes = ['visitante '.$datos['nombre'].' '.$datos['apellido']];
-        // } else if ($request['tipoPersona'] == 2 || $request['tipoPersona'] == 3){
-        //     $mensajes = ['colaborador '.$datos['nombre'].' '.$datos['apellido']];
-        // } else if ($request['tipoPersona'] == 4){ 
-        //     $mensajes = ['conductor '.$datos['nombre'].' '.$datos['apellido']];
-        // }
-
-        // if($datos['id_vehiculo'] != null){ //ingreso de vehículo
-        //     $mensajes[] = $this->vehiculos->obtenerVehiculo($datos['id_vehiculo'])->identificador;
-        //     if($datos['casoRegistro'] == 'visitante' || $datos['casoRegistro'] == 'colaboradorSinActivo' || $datos['casoRegistro'] == 'conductor'){ //visitante y colaborador con vehículo y conductor
-        //         $modal = ['registro_vehiculo', $mensajes];
-        //     } else { //visitante o colaborador con activo y vehículo
-        //         $mensajes[] = $datos['codigo_activo'];
-        //         $modal = ['registro_vehiculoActivo', $mensajes];
-        //     }
-        // } else if($datos['casoRegistro'] == 'visitanteActivo' || $datos['casoRegistro'] == 'colaboradorConActivo'){ //visitante o colaborador con activo
-        //     $mensajes[] = $datos['codigo_activo'];
-        //     $modal = ['registro_activo', $mensajes];
-        // } else { //visitante o colaborador
-        //     $modal = ['registro_persona', $mensajes];
-        // }
-        // return redirect()->action([RegistroController::class, 'create'])->with($modal[0], $modal[1]); 
-
-
-        // return response()->json(['message' => 'Se ha registrado la salida del visitante']);
+        // Registro::findOrFail($id)->update($datos);
 
 
 
 
-
-
-        // if($request['tipoPersona'] == 1){
-        //     $datos = ['salida_persona' => $tiempoActual, 'salida_vehiculo' => $tiempoActual, 'salida_activo' => $tiempoActual];
-        //     if($request['registroSalida'] == 'sinVehiculo'){
-        //         $datos = ['salida_persona' => $tiempoActual];
-        //     }
-        //     Registro::findOrFail($id)->update($datos);
-        //     return response()->json(['message' => 'Se ha registrado la salida del visitante']);
-        // }
 
         
         // return $request;
