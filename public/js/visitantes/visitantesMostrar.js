@@ -8,7 +8,7 @@ $(function() {
         'autoWidth': false,
         // 'serverSide': true,
         // 'scrollY': '300px',
-        'ajax': '/visitantes/informacion',
+        'ajax': 'visitantes/informacion',
         'columns': [
             {
                 'data': 'id_personas',

@@ -101,10 +101,7 @@ class RegistroController extends Controller
             }
         } else if ($persona['casoRegistro'] == 'colaboradorConActivo'){
             $persona['codigo'] = ucfirst($persona['codigo']);
-            if(!$this->activos->existeActivo($persona['codigo'], $id)){  
-                $this->activos->verificarActivo($persona['codigo']);   
-                Activo::where('id_persona', $id)->update(['codigo' => $persona['codigo']]); 
-            }    
+            $this->updateActivo($id, $persona['codigo']);
         }
 
         $datos = $this->store($persona);
@@ -122,11 +119,11 @@ class RegistroController extends Controller
             if($datos['casoRegistro'] == 'visitante' || $datos['casoRegistro'] == 'colaboradorSinActivo' || $datos['casoRegistro'] == 'conductor'){ //visitante y colaborador con vehículo y conductor
                 $modal = ['registro_vehiculo', $mensajes];
             } else { //visitante o colaborador con activo y vehículo
-                $mensajes[] = $datos['codigo_activo'];
+                $mensajes[] = $datos['activo'].' '.$datos['codigo_activo'];
                 $modal = ['registro_vehiculoActivo', $mensajes];
             }
         } else if($datos['casoRegistro'] == 'visitanteActivo' || $datos['casoRegistro'] == 'colaboradorConActivo'){ //visitante o colaborador con activo
-            $mensajes[] = $datos['codigo_activo'];
+            $mensajes[] = $datos['activo'].' '.$datos['codigo_activo'];
             $modal = ['registro_activo', $mensajes];
         } else { //visitante o colaborador
             $modal = ['registro_persona', $mensajes];
@@ -164,7 +161,7 @@ class RegistroController extends Controller
         }
 
         if($datos['casoRegistro'] == 'visitanteActivo'){
-            $datos['codigo_activo'] = $datos['activo'].' '.$datos['codigo'];
+            $datos['codigo_activo'] = $datos['codigo'];
             $datos['ingreso_activo'] = date('Y-m-d H:i:s');
         }
         else if($datos['casoRegistro'] == 'visitante' || $datos['casoRegistro'] == 'conductor'){
@@ -178,7 +175,7 @@ class RegistroController extends Controller
             $datos['colaborador'] = null;
         }
         else if($datos['casoRegistro'] == 'colaboradorConActivo'){
-            $datos['codigo_activo'] = 'Computador '.$datos['codigo'];
+            $datos['codigo_activo'] = $datos['codigo'];
             $datos['ingreso_activo'] = date('Y-m-d H:i:s');
             $datos['empresa_visitada'] = null;
             $datos['colaborador'] = null;
@@ -250,42 +247,35 @@ class RegistroController extends Controller
     */
     public function registrarSalida(Request $request, $id){
         // return $request;
-        // $estadoVehiculo = $request->input('estadoVehiculo');
+
+        $registro = Registro::findOrFail($id);
         $tiempoActual = date('Y-m-d H:i:s');
 
         $datos = ['salida_persona' => $tiempoActual];
-        if($request['registroSalida'] == 'salidaVehiculoActivo'){
-
-            
-
-            $datos += ['salida_vehiculo' => $tiempoActual, 'salida_activo' => $tiempoActual];
-
-        } else if($request['registroSalida'] == 'salidaPersonaVehiculo'){
-            $datos += ['salida_vehiculo' => $tiempoActual];
-        } else if($request['registroSalida'] == 'salidaPersonaActivo'){
-
+        if($request['registroSalida'] == 'salidaVehiculoActivo' || $request['registroSalida'] == 'salidaPersonaActivo'){
+            if ($request['registroSalida'] == 'salidaVehiculoActivo') {
+                $datos += ['salida_vehiculo' => $tiempoActual, 'salida_activo' => $tiempoActual];
+            } else {
+                $datos += ['salida_activo' => $tiempoActual];
+            }      
             if($request['codigo'] != null){
                 $request['codigo'] = ucfirst($request['codigo']);
                 $this->updateActivo($request['idPersona'], $request['codigo']);
+                $descripcion = ' - Se realiza el cambio de equipo con placa'.$request['activoActual'].' y se asigna uno con placa '.$request['codigo'];
+                $registro->descripcion .= $descripcion;
+                $datos += ['codigo_activo_salida' => $request['codigo']];
             }
-            return $request;
 
-            // $datos += ['salida_activo' => $tiempoActual];
-        }
+        } else if($request['registroSalida'] == 'salidaPersonaVehiculo'){
+            $datos += ['salida_vehiculo' => $tiempoActual];
+        } 
 
-        // Registro::findOrFail($id)->update($datos);
-
-
-
-
+        $registro->update($datos);
+        return $request;
 
         
         // return $request;
 
-        // $tiempoActual = date('Y-m-d H:i:s');
-
-        // $personas = $this->personas->obtenerPersonas($tipoPersona);
-        // $response = ['data' => $personas];
 
         // return response()->json($response);
     }

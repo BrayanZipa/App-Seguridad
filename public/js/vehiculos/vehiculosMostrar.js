@@ -8,7 +8,7 @@ $(function() {
         'autoWidth': false,
         // 'serverSide': true,
         // 'scrollY': '300px',
-        'ajax': '/vehiculos/informacion',
+        'ajax': 'vehiculos/informacion',
         'columns': [
             {
                 'data': 'id_vehiculos',
@@ -155,7 +155,7 @@ $(function() {
         $('#selectPersona').empty();        
         
         $.ajax({
-            url: '/vehiculos/personas',
+            url: 'vehiculos/personas',
             type: 'GET',
             data: {
                 tipoPersona: $('#selectTipoPersona option:selected').val(),

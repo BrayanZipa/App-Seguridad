@@ -291,6 +291,7 @@ $(function() {
             $('#spanFechaActivo').text(moment(data.ingreso_activo).format('DD-MM-YYYY'));
             $('#spanHoraActivo').text(moment(data.ingreso_activo).format('h:mm:ss a'));
             $('#spanTipoActivo').text(data.activo);
+            // $('#spanCodigoActivo').text(data.codigo_activo); 
             $('#spanCodigoActivo').text(data.codigo);  
             $('#tabDatosActivo').css('display', 'block');
         } else {
@@ -370,7 +371,7 @@ $(function() {
         console.log(casoSalida);
     });
 
-    function obtenerActivoActualizado(idColaborador, activoActual) {
+    function obtenerActivoActualizado(idColaborador, codigoActual) {
         $.ajax({
             url: '/colaboradores/colaboradoridentificado',
             type: 'GET',
@@ -388,7 +389,7 @@ $(function() {
                     dataType: 'json',
                     success: function(activo) {
                         $('#spanCodigoActivo2').text(activo.name); 
-                        if(activo.name != activoActual){
+                        if(activo.name != codigoActual){
                             nuevoActivo = activo.name;
                             $('#tabDatosIngreso').removeClass('active');
                             $('#datosIngreso').removeClass('active show');
@@ -479,11 +480,13 @@ $(function() {
             type: 'PUT',
             data: {
                 idPersona: datosRegistro.idPersona,
+                activoActual: datosRegistro.activo,
                 registroSalida: casoSalida,
                 codigo: nuevoActivo
             },
             success: function(res) {
                 console.log(res);
+                nuevoActivo = '';
                 datatableRegistrosSalida();
                 datatableRegistrosVehiculos();
                 $('#informacionRegistro').css('display', 'none'); 

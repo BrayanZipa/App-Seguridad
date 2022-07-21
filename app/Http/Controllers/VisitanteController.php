@@ -200,7 +200,7 @@ class VisitanteController extends Controller
             'id_persona' => $id_persona,
         ]);
         $activo->save();
-        return $activo->activo.' '.$activo->codigo;
+        return $activo->codigo;
     }
 
     //Función que permite hacer un registro de la entrada de un visitante al momento que se crea un nuevo visitante en la base de datos

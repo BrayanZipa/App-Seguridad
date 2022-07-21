@@ -235,7 +235,7 @@ class ColaboradorController extends Controller
                     'ingreso_vehiculo' => date('Y-m-d H:i:s'),
                     'id_vehiculo' => $id_vehiculo,
                     'ingreso_activo' => date('Y-m-d H:i:s'),
-                    'codigo_activo' => 'Computador '.$activo,
+                    'codigo_activo' => $activo,
                     'descripcion' => $datos['descripcion'],
                     'id_usuario' => $datos['id_usuario'],
                     ])->save();  
@@ -244,7 +244,7 @@ class ColaboradorController extends Controller
                     'id_persona' => $id_persona,
                     'ingreso_persona' => date('Y-m-d H:i:s'),
                     'ingreso_activo' => date('Y-m-d H:i:s'),
-                    'codigo_activo' => 'Computador '.$activo,
+                    'codigo_activo' => $activo,
                     'descripcion' => $datos['descripcion'],
                     'id_usuario' => $datos['id_usuario'],
                 ])->save(); 

@@ -8,7 +8,7 @@ $(function() {
         'autoWidth': false,
         // 'serverSide': true,
         // 'scrollY': '300px',
-        'ajax': '/conductores/informacion',
+        'ajax': 'conductores/informacion',
         'columns': [
             {
                 'data': 'id_personas',
