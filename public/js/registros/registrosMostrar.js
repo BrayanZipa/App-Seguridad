@@ -109,20 +109,25 @@ $(function() {
 
     //Función que permite reestablecer las pestañas de selección (Tabs) en la vista para que sea la pestaña inicial la primera que se muestre al momento en que se seleccione un nuevo registro para ser consultado
     function restablecerTabs() {
-        if($('#tabInfoVehiculo').hasClass('active')){
-            $('#tabInfoVehiculo').removeClass('active');
-            $('#infoVehiculo').removeClass('active show');
-            $('#tabInfoRegistro').addClass('active');
-            $('#infoRegistro').addClass('active show');
-        }
+        // if($('#tabDatosVehiculo').hasClass('active')){
+        //     $('#tabDatosVehiculo').removeClass('active');
+        //     $('#datosVehiculo').removeClass('active show');
+        //     $('#tabInfoRegistro').addClass('active');
+        //     $('#infoRegistro').addClass('active show');
+        // }
 
-        if($('#tabDatosActivo').hasClass('active') || $('#tabDatosBasicos').hasClass('active')){
-            if($('#tabDatosActivo').hasClass('active')){
-                $('#tabDatosActivo').removeClass('active');
-                $('#datosActivo').removeClass('active show');
-            } else {
+        if($('#tabDatosBasicos').hasClass('active') || $('#tabDatosActivo').hasClass('active') || $('#tabDatosVehiculo').hasClass('active')){
+            if($('#tabDatosBasicos').hasClass('active')){
                 $('#tabDatosBasicos').removeClass('active');
                 $('#datosBasicos').removeClass('active show');
+
+            } else if($('#tabDatosActivo').hasClass('active')){
+                $('#tabDatosActivo').removeClass('active');
+                $('#datosActivo').removeClass('active show');
+
+            } else {
+                $('#tabDatosVehiculo').removeClass('active');
+                $('#datosVehiculo').removeClass('active show');
             }
             $('#tabDatosIngreso').addClass('active');
             $('#datosIngreso').addClass('active show');
@@ -144,9 +149,9 @@ $(function() {
             $('#spanIdentificador').text(data.identificador);
             $('#spanTipo').text(data.tipo);  
             $('#spanMarca').text(data.marca);   
-            $('#tabInfoVehiculo').css('display', 'block');
+            $('#tabDatosVehiculo').css('display', 'block');
         } else {
-            $('#tabInfoVehiculo').css('display', 'none');
+            $('#tabDatosVehiculo').css('display', 'none');
         }
 
         if(data.ingreso_activo != null){

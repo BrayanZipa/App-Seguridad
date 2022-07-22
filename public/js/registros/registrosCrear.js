@@ -466,7 +466,7 @@ $(function () {
     $('#modal-crear-personaVehiculoActivo').modal('show');
 
     $('.botonContinuar').click(function () {
-        $(location).attr('href', '/registros');
+        $(location).attr('href', '/registros/sin_salida');
     });
 
 });  

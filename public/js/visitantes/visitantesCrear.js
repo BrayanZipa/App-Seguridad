@@ -63,6 +63,7 @@ $(function () {
 
             setTimeout(() => {
                 $('#cardFormulario').css('display', '');
+                $('#inputNombre').focus();
             }, 100);
 
         } else if ($('#radioTercero').is(':checked')) {
@@ -79,7 +80,10 @@ $(function () {
 
             setTimeout(() => {
                 $('#cardFormulario').css('display', '');
+                $('#inputNombre').focus();
             }, 100);
+
+            
         }
     });
 

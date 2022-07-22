@@ -56,9 +56,7 @@
                         <div class="tab-content" id="custom-tabs-one-tabContent">
                             <div class="tab-pane fade active show" id="personasSinSalida" role="tabpanel" aria-labelledby="tabPersonasSinSalida">
                                 <div id="informacionRegistro" class="mt-n3 mx-n3" style="display: none">
-                                    <div class="card card-primary card-tabs mb-4 mx-n1">
-                                        @include('pages.registros.panelDatosPersona')
-                                    </div>
+                                    @include('pages.registros.panelDatosPersona')
                                     {{-- @include('pages.registros.panelDatosPersona2') --}}
                                 </div>
                                 <div class="mt-n3 mx-n3">

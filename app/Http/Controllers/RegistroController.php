@@ -261,7 +261,7 @@ class RegistroController extends Controller
             if($request['codigo'] != null){
                 $request['codigo'] = ucfirst($request['codigo']);
                 $this->updateActivo($request['idPersona'], $request['codigo']);
-                $descripcion = ' - Se realiza el cambio de equipo con placa'.$request['activoActual'].' y se asigna uno con placa '.$request['codigo'];
+                $descripcion = ' - Se realiza el cambio del activo'.$request['activoActual'].' y se asigna el'.$request['codigo'];
                 $registro->descripcion .= $descripcion;
                 $datos += ['codigo_activo_salida' => $request['codigo']];
             }
@@ -272,11 +272,7 @@ class RegistroController extends Controller
 
         $registro->update($datos);
         return $request;
-
         
-        // return $request;
-
-
         // return response()->json($response);
     }
 

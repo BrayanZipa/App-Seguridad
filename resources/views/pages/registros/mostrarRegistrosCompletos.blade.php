@@ -42,9 +42,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div id="informacionRegistro" class="mb-n2" style="display: none">
-                    <div class="card card-primary card-tabs">
-                        @include('pages.registros.panelDatosPersona')
-                    </div>
+                    @include('pages.registros.panelDatosPersona')
                     {{-- @include('pages.registros.panelDatosPersona2') --}}
                 </div>
 

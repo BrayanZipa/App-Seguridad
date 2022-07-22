@@ -214,20 +214,25 @@ $(function() {
 
     //Función que permite reestablecer las pestañas de selección (Tabs) en la vista para que sea la pestaña inicial la primera que se muestre al momento en que se seleccione un nuevo registro para darle salida 
     function restablecerTabs() {
-        if($('#tabInfoVehiculo').hasClass('active')){
-            $('#tabInfoVehiculo').removeClass('active');
-            $('#infoVehiculo').removeClass('active show');
-            $('#tabInfoRegistro').addClass('active');
-            $('#infoRegistro').addClass('active show');
-        }
+        // if($('#tabDatosVehiculo').hasClass('active')){
+        //     $('#tabDatosVehiculo').removeClass('active');
+        //     $('#datosVehiculo').removeClass('active show');
+        //     $('#tabInfoRegistro').addClass('active');
+        //     $('#infoRegistro').addClass('active show');
+        // }
 
-        if($('#tabDatosActivo').hasClass('active') || $('#tabDatosBasicos').hasClass('active')){
-            if($('#tabDatosActivo').hasClass('active')){
-                $('#tabDatosActivo').removeClass('active');
-                $('#datosActivo').removeClass('active show');
-            } else {
+        if($('#tabDatosBasicos').hasClass('active') || $('#tabDatosActivo').hasClass('active') || $('#tabDatosVehiculo').hasClass('active')){
+            if($('#tabDatosBasicos').hasClass('active')){
                 $('#tabDatosBasicos').removeClass('active');
                 $('#datosBasicos').removeClass('active show');
+
+            } else if($('#tabDatosActivo').hasClass('active')){
+                $('#tabDatosActivo').removeClass('active');
+                $('#datosActivo').removeClass('active show');
+
+            } else {
+                $('#tabDatosVehiculo').removeClass('active');
+                $('#datosVehiculo').removeClass('active show');
             }
             $('#tabDatosIngreso').addClass('active');
             $('#datosIngreso').addClass('active show');
@@ -242,6 +247,11 @@ $(function() {
     $('.columnaPanel').addClass('col-sm-4');
     $('#infoVisitanteConductor').removeClass('col-sm-6');
     $('#infoVisitanteConductor').addClass('col-sm-8');
+
+    $('#panel').addClass('mb-4 mx-n1');
+    $('#cardHeader').addClass('pb-1');
+    $('#botonCollapse').addClass('pb-3 mr-n1');
+    $('#botonCerrar').addClass('pb-3 mr-n3');
 
     //Se elije una fila de la tabla de registros sin salida y se toma la información del registro para mostrarla en un panel de pestañas de selección de manera organizada dependiendo del tipo de persona
     $('#tabla_registros_salida tbody').on('click', '.registrar_salida', function () { 
@@ -277,9 +287,9 @@ $(function() {
             $('#spanIdentificador').text(data.identificador);
             $('#spanTipo').text(data.tipo);  
             $('#spanMarca').text(data.marca);   
-            $('#tabInfoVehiculo').css('display', 'block');
+            $('#tabDatosVehiculo').css('display', 'block');
         } else {
-            $('#tabInfoVehiculo').css('display', 'none');
+            $('#tabDatosVehiculo').css('display', 'none');
         }
 
         if(data.ingreso_activo != null){
@@ -363,7 +373,7 @@ $(function() {
             }); 
 
             if(data.id_tipo_persona == 3){
-                obtenerActivoActualizado(data.identificacion, data.codigo);
+                obtenerActivoActualizado(data.identificacion, data.codigo_activo);
             }
         } 
         $('#informacionRegistro').css('display', 'block');   
@@ -486,25 +496,44 @@ $(function() {
             },
             success: function(res) {
                 console.log(res);
-                nuevoActivo = '';
                 datatableRegistrosSalida();
                 datatableRegistrosVehiculos();
                 $('#informacionRegistro').css('display', 'none'); 
 
                 $('.textoPersona').text(obtenerNombrePersona());
-                if(casoSalida == 'salidaVehiculoActivo'){
-                    $('.textoVehiculo').text(datosRegistro.vehiculo);
-                    $('.textoActivo').text(datosRegistro.activo);
-                    $('#modal-salida-personaVehiculoActivo').modal('show');                 
+                if(casoSalida == 'salidaVehiculoActivo' || casoSalida == 'salidaPersonaActivo'){
+                    if(nuevoActivo != ''){
+                        $('.textoActivo').text(nuevoActivo);
+                    } else {
+                        $('.textoActivo').text(datosRegistro.activo); 
+                    }
+                    if(casoSalida == 'salidaVehiculoActivo'){
+                        $('.textoVehiculo').text(datosRegistro.vehiculo);
+                        $('#modal-salida-personaVehiculoActivo').modal('show');  
+                    } else if(casoSalida == 'salidaPersonaActivo'){
+                        $('#modal-salida-personaActivo').modal('show');
+                    }
                 } else if(casoSalida == 'salidaPersonaVehiculo'){
                     $('.textoVehiculo').text(datosRegistro.vehiculo);
                     $('#modal-salida-personaVehiculo').modal('show');
-                } else if(casoSalida == 'salidaPersonaActivo'){
-                    $('.textoActivo').text(datosRegistro.activo);
-                    $('#modal-salida-personaActivo').modal('show');
                 } else if(casoSalida == 'salidaPersona'){
                     $('#modal-salida-persona').modal('show');
                 }
+
+                // if(casoSalida == 'salidaVehiculoActivo'){
+                //     $('.textoVehiculo').text(datosRegistro.vehiculo);
+                //     $('.textoActivo').text(datosRegistro.activo);
+                //     $('#modal-salida-personaVehiculoActivo').modal('show');                 
+                // } else if(casoSalida == 'salidaPersonaVehiculo'){
+                //     $('.textoVehiculo').text(datosRegistro.vehiculo);
+                //     $('#modal-salida-personaVehiculo').modal('show');
+                // } else if(casoSalida == 'salidaPersonaActivo'){
+                //     $('.textoActivo').text(datosRegistro.activo);
+                //     $('#modal-salida-personaActivo').modal('show');
+                // } else if(casoSalida == 'salidaPersona'){
+                //     $('#modal-salida-persona').modal('show');
+                // }
+                nuevoActivo = '';
             },
             error: function() {
                 console.log('Error al registrar la salida de la persona');

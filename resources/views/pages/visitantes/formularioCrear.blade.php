@@ -63,7 +63,7 @@
                             <div class="form-group">
                                 <label for="inputNombre">Ingrese el nombre</label>
                                 <input type="text" class="visitante form-control {{ $errors->has('nombre') ? 'is-invalid' : '' }}" id="inputNombre" name="nombre"
-                                    value="{{ old('nombre') }}" autocomplete="off" placeholder="Nombre" autofocus required>
+                                    value="{{ old('nombre') }}" autocomplete="off" placeholder="Nombre" required>
                                     @if ($errors->has('nombre')) 
                                         <div class="invalid-feedback">
                                             {{ $errors->first('nombre') }}

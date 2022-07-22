@@ -43,7 +43,7 @@
                                 <label for="inputNumeroIdentificador">Ingrese el número identificador del vehículo</label>
                                 <input type="text" class="vehiculo form-control {{ $errors->has('identificador') ? 'is-invalid' : '' }}" id="inputNumeroIdentificador"
                                     name="identificador" value="{{ old('identificador') }}" autocomplete="off"
-                                    placeholder="Número identificador" required>
+                                    placeholder="Número identificador" autofocus required>
                                     @if ($errors->has('identificador')) 
                                         <div class="invalid-feedback">
                                             {{ $errors->first('identificador') }}
