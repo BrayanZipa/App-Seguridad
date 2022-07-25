@@ -243,11 +243,9 @@ class RegistroController extends Controller
     }
 
     /**
-    * Función que recibe una petición de Ajax para obtener....
+    * Función que recibe una petición de Ajax para registrar la salida de un tipo de persona en la base de datos teniendo en cuenta si se registra la salida de un vehículo, un activo o solo la persona
     */
     public function registrarSalida(Request $request, $id){
-        // return $request;
-
         $registro = Registro::findOrFail($id);
         $tiempoActual = date('Y-m-d H:i:s');
 
@@ -261,7 +259,7 @@ class RegistroController extends Controller
             if($request['codigo'] != null){
                 $request['codigo'] = ucfirst($request['codigo']);
                 $this->updateActivo($request['idPersona'], $request['codigo']);
-                $descripcion = ' - Se realiza el cambio del activo'.$request['activoActual'].' y se asigna el'.$request['codigo'];
+                $descripcion = ' - Se realiza el cambio del activo '.$request['activoActual'].' y se asigna el '.$request['codigo'];
                 $registro->descripcion .= $descripcion;
                 $datos += ['codigo_activo_salida' => $request['codigo']];
             }
@@ -272,8 +270,6 @@ class RegistroController extends Controller
 
         $registro->update($datos);
         return $request;
-        
-        // return response()->json($response);
     }
 
     /**

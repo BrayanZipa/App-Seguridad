@@ -212,3 +212,24 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
+
+<div class="modal fade" id="modal-registrarSalidaVehiculo">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-orange">
+                <div class="d-flex justify-content-center">
+                    <h4 class="modal-title">REGISTRAR SALIDA</h4>
+                </div>
+            </div>
+            <div class="modal-body">
+                <p class="text-center" style="font-size: 18px">¿Esta seguro que desea registrar la salida del <b id="textoSalida2"></b>?</p>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal" style="width: 100px">Cerrar</button>
+                <button type="submit" id="botonContinuarSalida2" class="btn" style="background-color: rgb(255, 115, 0)">Continuar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

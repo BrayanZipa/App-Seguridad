@@ -62,15 +62,15 @@ $(function() {
                 },
                 {
                     'data': 'ingreso_activo',
-                    render: function (data) {
-                        if(data != null){ return 'Si'; }
+                    render: function (data, type, row) {
+                        if(data != null){ return row.codigo_activo; }
                         return 'No';
                     } 
                 },
                 {
                     'data': 'ingreso_vehiculo',
-                    render: function (data) {
-                        if(data != null){ return 'Si'; }
+                    render: function (data, type, row ) {
+                        if(data != null){ return row.identificador; }
                         return 'No';
                     }
                 },     
@@ -185,7 +185,7 @@ $(function() {
                     'defaultContent': '<td>' +
                         '<div class="action-buttons text-center">' +
                         '<a href="#" class="btn btn-primary btn-icon btn-sm">' +
-                        '<i class="fa-solid fa-eye"></i>' +
+                        '<i class="fa-solid fa-arrow-right-from-bracket"></i>' +
                         '</a>' +
                         '</div>' +
                         '</td>',
@@ -212,7 +212,7 @@ $(function() {
     }
     datatableRegistrosVehiculos();
 
-    //Función que permite reestablecer las pestañas de selección (Tabs) en la vista para que sea la pestaña inicial la primera que se muestre al momento en que se seleccione un nuevo registro para darle salida 
+    //Función que permite reestablecer las pestañas de selección (Tabs) en la vista de personas sin salida para que sea la pestaña de Datos de ingreso la primera que se muestre al momento en que se seleccione un nuevo registro para darle salida 
     function restablecerTabs() {
         // if($('#tabDatosVehiculo').hasClass('active')){
         //     $('#tabDatosVehiculo').removeClass('active');
@@ -239,6 +239,70 @@ $(function() {
         }
     }
 
+    //Función que permite reestablecer las pestañas de selección (Tabs) en la vista de vehículos sin salida para que sea la pestaña de Vehículo la primera que se muestre al momento en que se seleccione un nuevo registro para darle salida 
+    function restablecerTabsVehiculo() {
+        if($('#tabDatosIngreso2').hasClass('active') || $('#tabDatosBasicos2').hasClass('active')){
+            if($('#tabDatosIngreso2').hasClass('active')){
+                $('#tabDatosIngreso2').removeClass('active');
+                $('#datosIngreso2').removeClass('active show');
+
+            } else {
+                $('#tabDatosBasicos2').removeClass('active');
+                $('#datosBasicos2').removeClass('active show');
+            } 
+        }
+        $('#tabDatosVehiculo2').addClass('active');
+        $('#datosVehiculo2').addClass('active show');
+    }
+
+    //Función que permite cambiar el tamaño del espacio que va a ocupar las imagenes en los registros, para los visitantes y conductores la fotografía ocupa más espacio y para los colaboradores la imagen del logo ocupa menos espacio
+    function establecerImagen(tipoPersona, columnaFoto, columnaInformacion, columnaDescripcion) {
+        if(tipoPersona == 1 || tipoPersona == 4){
+            if($(columnaFoto).hasClass('col-sm-2')){
+                $(columnaFoto).removeClass('col-sm-2');
+                $(columnaFoto).addClass('col-sm-3');
+                $(columnaInformacion).removeClass('col-sm-10');
+                $(columnaInformacion).addClass('col-sm-9'); 
+            }
+            if($(columnaDescripcion).hasClass('col-sm-6')){
+                $(columnaDescripcion).removeClass('col-sm-6');
+                $(columnaDescripcion).addClass('col-sm-4');
+            }
+
+        } else {
+            if($(columnaFoto).hasClass('col-sm-3')){
+                $(columnaFoto).removeClass('col-sm-3');
+                $(columnaFoto).addClass('col-sm-2');
+                $(columnaInformacion).removeClass('col-sm-9');
+                $(columnaInformacion).addClass('col-sm-10');
+            }
+            if($(columnaDescripcion).hasClass('col-sm-4')){
+                $(columnaDescripcion).removeClass('col-sm-4');
+                $(columnaDescripcion).addClass('col-sm-6');
+            }
+        } 
+    }
+
+    //Función que permite establecer ciertos parámetros en el panel que se despliega dependiendo del tipo de persona cuando se selecciona un registro, se ocultan o se muestran elementos y se estabalcen títulos 
+    function parametrosPanel(tipoPersona, infoColaborador, infoVisiCon, infoRegistro, tituloTelefono) {
+        if(tipoPersona == 1 || tipoPersona == 4){
+            $(infoColaborador).css('display', 'none');  
+            $(infoVisiCon).css('display', '');  
+            if(tipoPersona == 1){
+                $(infoRegistro).text('Registro visitante');
+                $(tituloTelefono).text('Teléfono de emergencia'); 
+            } else {
+                $(infoRegistro).text('Registro conductor');
+                $(tituloTelefono).text('Teléfono de contacto'); 
+            }
+        } else {
+            $(infoVisiCon).css('display', 'none'); 
+            $(infoColaborador).css('display', '');
+            $(infoRegistro).text('Registro colaborador');
+            $(tituloTelefono).text('Teléfono de contacto'); 
+        }
+    }
+
     //Al momento en que se carga la página se ocultan elemetos al usuario para esta vista y se cambia el tamaño de varias columnas para mostar de mejor manera la información
     $('#infoSalidaPersona').css('display', 'none');
     $('#infoSalidaVehiculo').css('display', 'none');
@@ -253,7 +317,7 @@ $(function() {
     $('#botonCollapse').addClass('pb-3 mr-n1');
     $('#botonCerrar').addClass('pb-3 mr-n3');
 
-    //Se elije una fila de la tabla de registros sin salida y se toma la información del registro para mostrarla en un panel de pestañas de selección de manera organizada dependiendo del tipo de persona
+    //Se elije una fila de la tabla de registros sin salida de Personas y se toma la información del registro para mostrarla en un panel de pestañas de selección de manera organizada dependiendo del tipo de persona
     $('#tabla_registros_salida tbody').on('click', '.registrar_salida', function () { 
         var data = $('#tabla_registros_salida').DataTable().row(this).data(); 
         restablecerTabs();
@@ -301,8 +365,8 @@ $(function() {
             $('#spanFechaActivo').text(moment(data.ingreso_activo).format('DD-MM-YYYY'));
             $('#spanHoraActivo').text(moment(data.ingreso_activo).format('h:mm:ss a'));
             $('#spanTipoActivo').text(data.activo);
-            // $('#spanCodigoActivo').text(data.codigo_activo); 
-            $('#spanCodigoActivo').text(data.codigo);  
+            $('#spanCodigoActivo').text(data.codigo_activo); 
+            // $('#spanCodigoActivo').text(data.codigo);  
             $('#tabDatosActivo').css('display', 'block');
         } else {
             $('#tabDatosActivo').css('display', 'none');
@@ -319,59 +383,60 @@ $(function() {
         $('#parrafoDescripcion').text(data.descripcion);
 
         if(data.id_tipo_persona == 1 || data.id_tipo_persona == 4){
-            if($('#columnaFoto').hasClass('col-sm-2')){
-                $('#columnaFoto').removeClass('col-sm-2');
-                $('#columnaFoto').addClass('col-sm-3');
-                $('#columnaInformacion').removeClass('col-sm-10');
-                $('#columnaInformacion').addClass('col-sm-9'); 
-            }  
-            if($('#columnaDescripcion').hasClass('col-sm-6')){
-                $('#columnaDescripcion').removeClass('col-sm-6');
-                $('#columnaDescripcion').addClass('col-sm-4');
-            }
-            $('#infoColaborador').css('display', 'none');            
-            $('#spanEmpresa').text(data.empresavisitada); 
-            $('#spanColaborador').text(data.colaborador);
-            $('#infoVisitanteConductor').css('display', '');  
-            
+            // if($('#columnaFoto').hasClass('col-sm-2')){
+            //     $('#columnaFoto').removeClass('col-sm-2');
+            //     $('#columnaFoto').addClass('col-sm-3');
+            //     $('#columnaInformacion').removeClass('col-sm-10');
+            //     $('#columnaInformacion').addClass('col-sm-9'); 
+            // }  
+            // if($('#columnaDescripcion').hasClass('col-sm-6')){
+            //     $('#columnaDescripcion').removeClass('col-sm-6');
+            //     $('#columnaDescripcion').addClass('col-sm-4');
+            // }
+            establecerImagen(data.id_tipo_persona, '#columnaFoto', '#columnaInformacion', '#columnaDescripcion');
             $('#divLogoEmpresa').css('display', 'none');
             $('#fotoPersona').attr('src', data.foto).on('load', function() {
                 $('#divFotoPersona').css('display', 'block');
-            });
+            });       
+            $('#spanEmpresa').text(data.empresavisitada); 
+            $('#spanColaborador').text(data.colaborador);
+            // $('#infoColaborador').css('display', 'none');  
+            // $('#infoVisitanteConductor').css('display', '');  
 
+            parametrosPanel(data.id_tipo_persona, '#infoColaborador', '#infoVisitanteConductor', '#tabInfoRegistro', '#tituloTelefono');
             if(data.id_tipo_persona == 1){
                 $('#divActivo').css('display', 'none');
-                $('#tabInfoRegistro').text('Registro visitante');
-                $('#tituloTelefono').text('Teléfono de emergencia'); 
+                // $('#tabInfoRegistro').text('Registro visitante');
+                // $('#tituloTelefono').text('Teléfono de emergencia'); 
             } else {
-                $('#tabInfoRegistro').text('Registro conductor');
-                $('#tituloTelefono').text('Teléfono de contacto'); 
-            }
-            
-        } else if(data.id_tipo_persona == 2 || data.id_tipo_persona == 3){
-            if($('#columnaFoto').hasClass('col-sm-3')){
-                $('#columnaFoto').removeClass('col-sm-3');
-                $('#columnaFoto').addClass('col-sm-2');
-                $('#columnaInformacion').removeClass('col-sm-9');
-                $('#columnaInformacion').addClass('col-sm-10');
-            }
-            if($('#columnaDescripcion').hasClass('col-sm-4')){
-                $('#columnaDescripcion').removeClass('col-sm-4');
-                $('#columnaDescripcion').addClass('col-sm-6');
-            }
-            $('#infoVisitanteConductor').css('display', 'none'); 
-            $('#tabInfoRegistro').text('Registro colaborador');
-            $('#tituloTelefono').text('Teléfono de contacto'); 
-            $('#spanCorreo').text(data.email); 
-            $('#spanEmpresaCol').text(data.empresa);
-            $('#infoColaborador').css('display', '');
+                // $('#tabInfoRegistro').text('Registro conductor');
+                // $('#tituloTelefono').text('Teléfono de contacto'); 
+            }        
 
+        } else if(data.id_tipo_persona == 2 || data.id_tipo_persona == 3){
+            // if($('#columnaFoto').hasClass('col-sm-3')){
+            //     $('#columnaFoto').removeClass('col-sm-3');
+            //     $('#columnaFoto').addClass('col-sm-2');
+            //     $('#columnaInformacion').removeClass('col-sm-9');
+            //     $('#columnaInformacion').addClass('col-sm-10');
+            // }
+            // if($('#columnaDescripcion').hasClass('col-sm-4')){
+            //     $('#columnaDescripcion').removeClass('col-sm-4');
+            //     $('#columnaDescripcion').addClass('col-sm-6');
+            // }
+            establecerImagen(data.id_tipo_persona, '#columnaFoto', '#columnaInformacion', '#columnaDescripcion');
             var urlLogo = '/assets/imagenes/' + data.empresa.toLowerCase() +'.png';
             $('#divFotoPersona').css('display', 'none');
             $('#logoEmpresa').attr('src', urlLogo).on('load', function() {
                 $('#divLogoEmpresa').css('display', 'block');
             }); 
-
+            // $('#tabInfoRegistro').text('Registro colaborador');
+            // $('#tituloTelefono').text('Teléfono de contacto'); 
+            $('#spanCorreo').text(data.email); 
+            $('#spanEmpresaCol').text(data.empresa);
+            // $('#infoVisitanteConductor').css('display', 'none'); 
+            // $('#infoColaborador').css('display', '');
+            parametrosPanel(data.id_tipo_persona, '#infoColaborador', '#infoVisitanteConductor', '#tabInfoRegistro', '#tituloTelefono');
             if(data.id_tipo_persona == 3){
                 obtenerActivoActualizado(data.identificacion, data.codigo_activo);
             }
@@ -381,6 +446,53 @@ $(function() {
         console.log(casoSalida);
     });
 
+    //Se elije una fila de la tabla de registros sin salida de vehículos y se toma la información del registro para mostrarla en un panel de pestañas de selección de manera organizada dependiendo del tipo de persona, se muestra primero la información del vehículo
+    $('#tabla_registros_vehiculos tbody').on('click', '.registrar_salidaVehiculo', function () { 
+        var data = $('#tabla_registros_vehiculos').DataTable().row(this).data(); 
+        restablecerTabsVehiculo();
+
+        $('#spanFecha2').text(moment(data.ingreso_persona).format('DD-MM-YYYY'));
+        $('#spanHora2').text(moment(data.ingreso_persona).format('h:mm:ss a'));
+        $('#spanNombre2').text(data.nombre);
+        $('#spanApellido2').text(data.apellido);
+        $('#spanIdentificacion2').text(data.identificacion);
+        $('#spanTelefono2').text(data.tel_contacto);
+        $('#spanEps2').text(data.eps);
+        $('#spanArl2').text(data.arl); 
+        $('#parrafoDescripcion2').text(data.descripcion);
+
+        $('#fotoVehiculo2').attr('src', data.foto_vehiculo);
+        $('#spanFechaVehiculo2').text(moment(data.ingreso_vehiculo).format('DD-MM-YYYY'));
+        $('#spanHoraVehiculo2').text(moment(data.ingreso_vehiculo).format('h:mm:ss a'));
+        $('#spanIdentificador2').text(data.identificador);
+        $('#spanTipo2').text(data.tipo);
+        $('#spanMarca2').text(data.marca);
+
+        if(data.id_tipo_persona == 1 || data.id_tipo_persona == 4){
+            establecerImagen(data.id_tipo_persona, '#columnaFoto2', '#columnaInformacion2', '#columnaDescripcion2');
+            $('#divLogoEmpresa2').css('display', 'none');
+            $('#fotoPersona2').attr('src', data.foto).on('load', function() {
+                $('#divFotoPersona2').css('display', 'block');
+            });       
+            $('#spanEmpresa2').text(data.empresavisitada); 
+            $('#spanColaborador2').text(data.colaborador);
+            parametrosPanel(data.id_tipo_persona, '#infoColaborador2', '#infoVisitanteConductor2', '#tabInfoRegistro2', '#tituloTelefono2');
+
+        } else if(data.id_tipo_persona == 2 || data.id_tipo_persona == 3){
+            establecerImagen(data.id_tipo_persona, '#columnaFoto2', '#columnaInformacion2', '#columnaDescripcion2');
+            var urlLogo = '/assets/imagenes/' + data.empresa.toLowerCase() +'.png';
+            $('#divFotoPersona2').css('display', 'none');
+            $('#logoEmpresa2').attr('src', urlLogo).on('load', function() {
+                $('#divLogoEmpresa2').css('display', 'block');
+            }); 
+            $('#spanCorreo2').text(data.email); 
+            $('#spanEmpresaCol2').text(data.empresa);
+            parametrosPanel(data.id_tipo_persona, '#infoColaborador2', '#infoVisitanteConductor2', '#tabInfoRegistro2', '#tituloTelefono2');
+        }        
+        $('#infoRegistroVehiculo').css('display', 'block'); 
+    });
+
+    //Función que envía una petición Ajax al servidor para consultar en el sistema GLPI si a un colaborador en específico se le ha cambiado el código del activo asignado, si esto sucede el sistema ubica al usuario en la pestaña de Activo y muestra cual es el nuevo código que tiene asignado el colaborador
     function obtenerActivoActualizado(idColaborador, codigoActual) {
         $.ajax({
             url: '/colaboradores/colaboradoridentificado',
@@ -484,7 +596,6 @@ $(function() {
     //Botón que envía una petición Ajax al servidor para modificar la base de datos y registrar la salida de una persona dependiendo el caso, si el registro es exito muestra un modal con la información del registro
     $('#botonContinuarSalida').on('click', function () {
         $('#modal-registrarSalida').modal('hide');
-        console.log(nuevoActivo);
         $.ajax({
             url: '/registros/salida_persona/' + idRegistro,
             type: 'PUT',
@@ -541,9 +652,25 @@ $(function() {
         });
     });
 
+    //Botón que permite desplegar un modal de confirmación cuando el usuario quiera realizar el registro de una salida de un vehículo al cuál no se le habia hecho el registro antes
+    $('#botonGuardarSalida2').on('click', function () {
+        // $('#textoSalida').text(obtenerNombrePersona());
+        $('#modal-registrarSalidaVehiculo').modal('show');
+    });
+    
+    //Botón que envía una petición Ajax al servidor para modificar la base de datos y registrar la salida de una persona dependiendo el caso, si el registro es exito muestra un modal con la información del registro
+    $('#botonContinuarSalida2').on('click', function () {
+        $('#modal-registrarSalidaVehiculo').modal('hide');
+    });
+
     //Botón que permite ocultar el panel de información de la persona si selecciono para registrar su salida
     $('#botonCerrar').click(function(){
         $('#informacionRegistro').css('display', 'none'); 
+    });
+
+    //Botón que permite ocultar el panel de información de los vehículos si selecciono para registrar su salida
+    $('#botonCerrar2').click(function(){
+        $('#infoRegistroVehiculo').css('display', 'none'); 
     });
 
     //Botón que redirecciona a la vista donde se muestra los registros que se han completado totalmente

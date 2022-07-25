@@ -58,7 +58,7 @@ $(function() {
             {
                 'data': 'ingreso_activo',
                 render: function (data, type, row) {
-                    if(data != null){ return row.codigo; }
+                    if(data != null){ return row.codigo_activo; }
                     return 'No';
                 } 
             },

@@ -93,7 +93,7 @@
                             </div>
                             <div class="tab-pane fade" id="vehiculosSinSalida" role="tabpanel" aria-labelledby="tabVehiculosSinSalida">
                                 <div id="infoRegistroVehiculo" class="mt-n3 mx-n3" style="display: none">
-                                    @include('pages.registros.panelDatosPersona')
+                                    @include('pages.registros.panelDatosVehiculo')
                                     {{-- @include('pages.registros.panelDatosPersona2') --}}
                                 </div>
                                 <div class="mt-n3 mx-n3">

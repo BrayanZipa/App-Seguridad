@@ -24,7 +24,7 @@
             </div>
             <div id="columnaInformacion" class="col-sm-9">
                 <label>Información del registro</label>
-                <div id="cardPersona" class="card card-primary card-tabs mx-1">
+                <div class="card card-primary card-tabs mx-1">
                     <div class="card-header p-0 pt-1">
                         <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
                             <li class="nav-item">
