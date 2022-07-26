@@ -266,10 +266,13 @@ class RegistroController extends Controller
 
         } else if($request['registroSalida'] == 'salidaPersonaVehiculo'){
             $datos += ['salida_vehiculo' => $tiempoActual];
-        } 
+
+        } else if($request['registroSalida'] == 'salidaVehiculo'){
+            $datos = ['salida_vehiculo' => $tiempoActual];
+        }
 
         $registro->update($datos);
-        return $request;
+        return $datos;
     }
 
     /**
@@ -306,6 +309,24 @@ class RegistroController extends Controller
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
         }
         return response()->json($vehiculos);
+    }
+
+    /**
+     * Función que recibe una petición Ajax con el id de una persona con el cuál se realiza una búsqueda en los registros para retornar el último registro donde esa persona haya ingresado con un vehículo y se haya registrado la salida de la persona, pero no del vehículo.
+     */
+    public function utimoRegistroVehiculo(Request $request){
+        $id = $request->input('persona');
+        try {
+            $registro = Registro::select('se_registros.ingreso_vehiculo', 'vehiculos.identificador')
+            ->leftjoin('se_vehiculos AS vehiculos', 'se_registros.id_vehiculo', '=', 'vehiculos.id_vehiculos')
+            ->where('id_persona', $id)->whereNotNull('salida_persona')->whereNotNull('ingreso_vehiculo')->whereNull('salida_vehiculo')->latest('ingreso_vehiculo')->first();
+            if($registro == null){
+                $registro = response()->json(['message' => 'La persona no tiene registros con un vehículo sin salida']);
+            }
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
+        }
+        return $registro; 
     }
 
     /**

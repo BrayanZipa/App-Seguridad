@@ -8,9 +8,9 @@ $(function() {
     });
 
     var casoSalida = '';
-    var idRegistro = '';
     var nuevoActivo = '';
     var datosRegistro = {};
+    var datosRegistroVehiculo = {};
 
     //Uso de DataTables para mostrar los registros realizados en los cuales no se registra la salida de los diferentes tipos de persona (visitantes, conductores, colaboradores con y sin activo)
     function datatableRegistrosSalida(){
@@ -332,8 +332,8 @@ $(function() {
             casoSalida = 'salidaPersona';
         }
 
-        idRegistro = data.id_registros;
         datosRegistro = {
+            idRegistro: data.id_registros,
             idPersona: data.id_persona,
             tipoPersona: data.id_tipo_persona,
             nombrePersona: data.nombre + ' ' + data.apellido,
@@ -451,6 +451,18 @@ $(function() {
         var data = $('#tabla_registros_vehiculos').DataTable().row(this).data(); 
         restablecerTabsVehiculo();
 
+        var infoVehiculo = '';
+        if(data.marca == null){
+            infoVehiculo = data.tipo + ' ' + data.identificador;
+        } else {
+            infoVehiculo = data.tipo + ' ' + data.marca + ' ' + data.identificador;
+        }
+
+        datosRegistroVehiculo = {
+            idRegistro: data.id_registros,
+            vehiculo: infoVehiculo
+        }
+
         $('#spanFecha2').text(moment(data.ingreso_persona).format('DD-MM-YYYY'));
         $('#spanHora2').text(moment(data.ingreso_persona).format('h:mm:ss a'));
         $('#spanNombre2').text(data.nombre);
@@ -490,6 +502,7 @@ $(function() {
             parametrosPanel(data.id_tipo_persona, '#infoColaborador2', '#infoVisitanteConductor2', '#tabInfoRegistro2', '#tituloTelefono2');
         }        
         $('#infoRegistroVehiculo').css('display', 'block'); 
+        console.log(data);
     });
 
     //Función que envía una petición Ajax al servidor para consultar en el sistema GLPI si a un colaborador en específico se le ha cambiado el código del activo asignado, si esto sucede el sistema ubica al usuario en la pestaña de Activo y muestra cual es el nuevo código que tiene asignado el colaborador
@@ -501,35 +514,39 @@ $(function() {
                 colaborador: idColaborador,
             },
             dataType: 'json',
-            success: function(response) {
-                $.ajax({
-                    url: '/colaboradores/computador',
-                    type: 'GET',
-                    data: {
-                        colaborador: response.id,
-                    },
-                    dataType: 'json',
-                    success: function(activo) {
-                        $('#spanCodigoActivo2').text(activo.name); 
-                        if(activo.name != codigoActual){
-                            nuevoActivo = activo.name;
-                            $('#tabDatosIngreso').removeClass('active');
-                            $('#datosIngreso').removeClass('active show');
-                            $('#tabDatosActivo').addClass('active');
-                            $('#datosActivo').addClass('active show');
-                            $('#tituloActivo').text('Cambio de activo'); 
-                            $('#spanCodigoActivo2').text(activo.name);
-                            $('#columnaActivo').css(
-                                {'display': '',
-                                'border-left': '5px solid red'
-                                }
-                            );
+            success: function(response) { 
+                if('error' in response){
+                    console.log(response.error);
+                } else {
+                    $.ajax({
+                        url: '/colaboradores/computador',
+                        type: 'GET',
+                        data: {
+                            colaborador: response.id,
+                        },
+                        dataType: 'json',
+                        success: function(activo) {
+                            $('#spanCodigoActivo2').text(activo.name); 
+                            if(activo.name != codigoActual){
+                                nuevoActivo = activo.name;
+                                $('#tabDatosIngreso').removeClass('active');
+                                $('#datosIngreso').removeClass('active show');
+                                $('#tabDatosActivo').addClass('active');
+                                $('#datosActivo').addClass('active show');
+                                $('#tituloActivo').text('Cambio de activo'); 
+                                $('#spanCodigoActivo2').text(activo.name);
+                                $('#columnaActivo').css(
+                                    {'display': '',
+                                    'border-left': '5px solid red'
+                                    }
+                                );
+                            }
+                        },
+                        error: function() {
+                            console.log('Error obteniendo los datos de GLPI');
                         }
-                    },
-                    error: function() {
-                        console.log('Error obteniendo los datos de GLPI');
-                    }
-                });
+                    });
+                }
             },
             error: function() {
                 console.log('Error obteniendo los datos de GLPI');
@@ -597,7 +614,7 @@ $(function() {
     $('#botonContinuarSalida').on('click', function () {
         $('#modal-registrarSalida').modal('hide');
         $.ajax({
-            url: '/registros/salida_persona/' + idRegistro,
+            url: '/registros/salida_persona/' + datosRegistro.idRegistro,
             type: 'PUT',
             data: {
                 idPersona: datosRegistro.idPersona,
@@ -654,13 +671,30 @@ $(function() {
 
     //Botón que permite desplegar un modal de confirmación cuando el usuario quiera realizar el registro de una salida de un vehículo al cuál no se le habia hecho el registro antes
     $('#botonGuardarSalida2').on('click', function () {
-        // $('#textoSalida').text(obtenerNombrePersona());
+        $('#textoSalida2').text(datosRegistroVehiculo.vehiculo);
         $('#modal-registrarSalidaVehiculo').modal('show');
     });
     
-    //Botón que envía una petición Ajax al servidor para modificar la base de datos y registrar la salida de una persona dependiendo el caso, si el registro es exito muestra un modal con la información del registro
+    //Botón que envía una petición Ajax al servidor para modificar la base de datos y registrar la salida de un vehículo al cual no se le haya registrado su salida el día que ingreso, si el registro es exito muestra un modal con la información del registro
     $('#botonContinuarSalida2').on('click', function () {
         $('#modal-registrarSalidaVehiculo').modal('hide');
+        $.ajax({
+            url: '/registros/salida_persona/' + datosRegistroVehiculo.idRegistro,
+            type: 'PUT',
+            data: {
+                registroSalida: 'salidaVehiculo',
+            },
+            success: function(res) {
+                console.log(res);
+                datatableRegistrosVehiculos();
+                $('#infoRegistroVehiculo').css('display', 'none'); 
+                $('#textoVehiculo').text(datosRegistroVehiculo.vehiculo);
+                $('#modal-salida-vehiculo').modal('show');
+            },
+            error: function() {
+                console.log('Error al registrar la salida del vehículo');
+            }
+        });
     });
 
     //Botón que permite ocultar el panel de información de la persona si selecciono para registrar su salida

@@ -68,7 +68,7 @@ class Registro extends Model
      */
     public function registrosNulos(){
         try {
-            $registros = $this->informacionRegistros()->whereNull('salida_persona') ->get();
+            $registros = $this->informacionRegistros()->whereNull('salida_persona')->get();
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
         }
@@ -99,12 +99,16 @@ class Registro extends Model
         return $registros;  
     }
 
-    // Función que permite una relación de uno a muchos inversa, en un registro solo puede estar una persona, se usa el modelo de Persona, la llave foránea del tabla se_registros (id_persona) y la llave primaria (id_personas) con la que tiene conexión en la tabla padre (tabla se_personas).
+    /**
+     * Función que permite una relación de uno a muchos inversa, en un registro solo puede estar una persona, se usa el modelo de Persona, la llave foránea del tabla se_registros (id_persona) y la llave primaria (id_personas) con la que tiene conexión en la tabla padre (tabla se_personas).
+     */
     public function persona(){
         return $this->belongsTo(Persona::class, 'id_persona', 'id_personas');
     }
 
-    // Función que permite una relación de uno a muchos inversa, un registro solo puede tener un usuario que lo haya creado.
+    /**
+     * Función que permite una relación de uno a muchos inversa, un registro solo puede tener un usuario que lo haya creado.
+     */
     public function usuario(){
         return $this->belongsTo(User::class, 'id_usuario', 'id_usuarios');
     }

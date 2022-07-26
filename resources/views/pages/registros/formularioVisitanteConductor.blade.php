@@ -211,6 +211,9 @@
                                         @endif
                                     </div>
                                 </div>
+                                <div class="col-sm-6"><br>
+                                    <div id="mensajeVehiculo" class="text-center"></div>
+                                </div>
                             </div>
                             <div id="checkBox" class="row visitante">
                                 <div class="col-12">

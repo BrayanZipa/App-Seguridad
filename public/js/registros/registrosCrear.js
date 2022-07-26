@@ -82,6 +82,7 @@ $(function () {
                     $('#formColaboradorConActivo').css('display', 'none');
                 }
 
+                obtenerUltimoRegistroVehiculo(response.id_personas, response.id_tipo_persona);
                 if(response.id_tipo_persona == 1 || response.id_tipo_persona == 4){
                     $('#formRegistros1').attr('action','/registros/editar_persona/' + response.id_personas); 
                     $('#inputId').val(response.id_personas);
@@ -115,19 +116,17 @@ $(function () {
                         $('#titulo').text('Información visitante');
                         $('#checkBox').css('display', ''); 
                         $('#formVisitanteConductor').css('display', 'block'); 
+                        obtenerUltimoRegistroVehiculo(response.id_personas);
                     } else {
                         $('#registro').val('conductor');
                         obtenerVehiculos('#selectVehiculo');
                         $('#selectVehiculo').prop('required', true);
-                        $('#divVehiculo').css('display', 'block');
+                        $('#divVehiculo').css('display', '');
                         $('#selectEps').prop('required', true);
                         $('#selectArl').prop('required', true);
                         $('#titulo').text('Información conductor');
                         $('.visitante').css('display', 'none');   
                         $('#formVisitanteConductor').css('display', 'block'); 
-                        // $('#selectVehiculo').prop('disabled', true);
-                        // $('#selectVehiculo option:selected').text('hola');
-                        // console.log($('#selectVehiculo').val());
                     }
 
                 }  else if(response.id_tipo_persona == 2){
@@ -239,6 +238,44 @@ $(function () {
             },
             error: function() {
                 console.log('Error obteniendo los datos de GLPI');
+            }
+        });
+    }
+
+    //
+    function obtenerUltimoRegistroVehiculo(idPersona, tipoPersona) {
+        $.ajax({
+            url: '/registros/vehiculo_sin_salida',
+            type: 'GET',
+            data: {
+                persona: idPersona
+            },
+            dataType: 'json',
+            success: function(response) {
+                console.log(response);
+                if('ingreso_vehiculo' in response){
+                    var fecha = moment(response.ingreso_vehiculo).format('DD-MM-YYYY');
+                    var mensaje = 'tiene en las intalaciones el vehículo ' + response.identificador + ' ingresado el ' + fecha;
+                    if(tipoPersona == 1 || tipoPersona == 4){
+                        $('#selectVehiculo').prop('disabled', true);
+                        if(tipoPersona == 1){
+                            $('#mensajeVehiculo').text('El visitante ' + mensaje);
+                        } else if(tipoPersona == 4){
+                            $('#mensajeVehiculo').text('El conductor ' + mensaje);
+                        }
+                    } else if(tipoPersona == 2 || tipoPersona == 3){
+                        if(tipoPersona == 2){
+                            $('#selectVehiculo2').prop('disabled', true);
+                            $('#mensajeVehiculo').text('El colaborador ' + mensaje);
+                        } else if(tipoPersona == 3){
+                            $('#selectVehiculo3').prop('disabled', true);
+                            $('#mensajeVehiculo').text('El colaborador ' + mensaje);
+                        }
+                    } 
+                }       
+            },
+            error: function() {
+                console.log('Error obteniendo los datos de la base de datos');
             }
         });
     }

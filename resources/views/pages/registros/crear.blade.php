@@ -13,6 +13,8 @@
 @section('scripts')
     <!-- Select2 -->
     <script src="{{ asset('assets/lte/plugins/select2/js/select2.full.min.js') }}"></script>
+    <!-- Moment.js -->
+    <script src="{{ asset('assets/lte/plugins/moment/moment.min.js') }}"></script>
     <!-- JavaScript propio -->
     <script src="{{ asset('js/registros/registrosCrear.js') }}"></script>
 @endsection

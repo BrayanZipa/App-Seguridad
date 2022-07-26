@@ -103,7 +103,7 @@
         <div class="modal-content">
             <div class="modal-header bg-primary">
                 <div class="d-flex justify-content-center">
-                    <h4 class="modal-title">REGISTRO DE SALIDA</h4>
+                    <h4 class="modal-title">REGISTRO CREADO</h4>
                 </div>
             </div>
             <div class="modal-body">
@@ -125,7 +125,7 @@
         <div class="modal-content">
             <div class="modal-header bg-primary">
                 <div class="justify-content-between">
-                    <h4 class="modal-title">REGISTRO DE SALIDA</h4>
+                    <h4 class="modal-title">REGISTRO CREADO</h4>
                 </div>
             </div>
             <div class="modal-body">
@@ -213,6 +213,28 @@
     <!-- /.modal-dialog -->
 </div>
 
+<div class="modal fade" id="modal-salida-vehiculo">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-orange">
+                <div class="d-flex justify-content-center">
+                    <h4 class="modal-title">REGISTRO CREADO</h4>
+                </div>
+            </div>
+            <div class="modal-body">
+                <p>Se registro la salida del vehículo <b id="textoVehiculo"></b> exitosamente.</p>
+                <p>¿Desea registrar otra salida?</p>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal" style="width: 100px">Cerrar</button>
+                <button type="submit" class="botonContinuar btn" style="background-color: rgb(255, 115, 0)">Continuar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
 <div class="modal fade" id="modal-registrarSalidaVehiculo">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -222,7 +244,7 @@
                 </div>
             </div>
             <div class="modal-body">
-                <p class="text-center" style="font-size: 18px">¿Esta seguro que desea registrar la salida del <b id="textoSalida2"></b>?</p>
+                <p class="text-center" style="font-size: 18px">¿Esta seguro que desea registrar la salida del vehículo <b id="textoSalida2"></b>?</p>
             </div>
             <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-default" data-dismiss="modal" style="width: 100px">Cerrar</button>
