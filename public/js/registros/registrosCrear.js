@@ -251,11 +251,18 @@ $(function () {
                 persona: idPersona
             },
             dataType: 'json',
-            success: function(response) {
-                console.log(response);
-                if('ingreso_vehiculo' in response){
+            success: function(response) {             
+                if('ingreso_vehiculo' in response){  
                     var fecha = moment(response.ingreso_vehiculo).format('DD-MM-YYYY');
                     var mensaje = 'tiene en las intalaciones el vehículo ' + response.identificador + ' ingresado el ' + fecha;
+
+                    $('.mensajeVehiculo').css(
+                        {
+                        'border': '1px solid red',
+                        'border-radius': '8px'
+                        }
+                    );
+
                     if(tipoPersona == 1 || tipoPersona == 4){
                         $('#selectVehiculo').prop('disabled', true);
                         if(tipoPersona == 1){
@@ -263,16 +270,39 @@ $(function () {
                         } else if(tipoPersona == 4){
                             $('#mensajeVehiculo').text('El conductor ' + mensaje);
                         }
+                        $('#colMensajeVehiculo').css('display', '');
                     } else if(tipoPersona == 2 || tipoPersona == 3){
                         if(tipoPersona == 2){
                             $('#selectVehiculo2').prop('disabled', true);
-                            $('#mensajeVehiculo').text('El colaborador ' + mensaje);
+                            $('#mensajeVehiculo2').text('El colaborador ' + mensaje);
+                            $('#colMensajeVehiculo2').css('display', '');
                         } else if(tipoPersona == 3){
+                            if($('#colInputVehiculo').hasClass('col-sm-8')){
+                                $('#colInputVehiculo').removeClass('col-sm-8');
+                                $('#colInputVehiculo').addClass('col-sm-4');
+                            }   
                             $('#selectVehiculo3').prop('disabled', true);
-                            $('#mensajeVehiculo').text('El colaborador ' + mensaje);
+                            $('#mensajeVehiculo3').text('El colaborador ' + mensaje);
+                            $('#colMensajeVehiculo3').css('display', '');
                         }
                     } 
-                }       
+                } else {
+                    if(tipoPersona == 1 || tipoPersona == 4){
+                        $('#selectVehiculo').prop('disabled', false);
+                        $('#colMensajeVehiculo').css('display', 'none'); 
+                    } else if(tipoPersona == 2){
+                        $('#selectVehiculo2').prop('disabled', false);
+                        $('#colMensajeVehiculo2').css('display', 'none'); 
+                    } else if(tipoPersona == 3){
+                        if($('#colInputVehiculo').hasClass('col-sm-4')){
+                            $('#colInputVehiculo').removeClass('col-sm-4');
+                            $('#colInputVehiculo').addClass('col-sm-8');
+                        } 
+                        $('#selectVehiculo3').prop('disabled', false);
+                        $('#colMensajeVehiculo3').css('display', 'none');
+                    } 
+                    $('.mensajeVehiculo').text('');
+                }     
             },
             error: function() {
                 console.log('Error obteniendo los datos de la base de datos');

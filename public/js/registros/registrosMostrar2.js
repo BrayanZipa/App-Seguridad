@@ -10,7 +10,7 @@ $(function() {
     var casoSalida = '';
     var nuevoActivo = '';
     var datosRegistro = {};
-    var datosRegistroVehiculo = {};
+    var datosRegistroVehiculo = {};  
 
     //Uso de DataTables para mostrar los registros realizados en los cuales no se registra la salida de los diferentes tipos de persona (visitantes, conductores, colaboradores con y sin activo)
     function datatableRegistrosSalida(){
@@ -110,7 +110,8 @@ $(function() {
                     'previous': 'Anterior'
                 }
             },
-        });
+        });  
+        $('div.dataTables_filter input', $('#tabla_registros_salida').DataTable().table().container()).focus();
     }
     datatableRegistrosSalida();
 
@@ -211,6 +212,100 @@ $(function() {
         });
     }
     datatableRegistrosVehiculos();
+
+    //Uso de DataTables para mostrar los registros realizados donde se ingresa un activo y se registra la salida del propietario pero no del activo
+    function datatableRegistrosActivos() {
+        $('#tabla_registros_activos').DataTable({
+            'destroy': true,
+            'processing': true,
+            'responsive': true,
+            'autoWidth': false,
+            // 'serverSide': true,
+            // 'scrollY': '300px',
+            'ajax': '/registros/informacion_activos',
+            'dataType': 'json',
+            'type': 'GET',
+            'columns': [
+                {
+                    'data': 'id_registros',
+                    'name': 'id_registros'
+                },
+                {
+                    'data': 'tipopersona',
+                    'name': 'tipopersona'
+                },
+                {  
+                    'data': null, 
+                    'name': 'nombre',
+                    render: function ( data, type, row ) {
+                        return data.nombre+' '+data.apellido;
+                    }
+                },
+                {
+                    'data': 'identificacion',
+                    'name': 'identificacion',
+                },
+                {
+                    'data': 'tel_contacto',
+                    'name': 'tel_contacto',
+                }, 
+                {
+                    'data': 'activo',
+                    'name': 'activo',
+                },
+                {
+                    'data': 'codigo_activo',
+                    'name': 'codigo_activo',
+                }, 
+                {
+                    'data': 'ingreso_activo',
+                    render: function (data) {
+                        return moment(data).format('DD-MM-YYYY');
+                    } 
+                },
+                {
+                    'data': 'ingreso_activo',
+                    render: function (data) {
+                        return moment(data).format('h:mm:ss a');
+                    } 
+                },                     
+                {
+                    'data': 'name',
+                    'name': 'name',
+                },
+                {
+                    'class': 'registrar_salidaActivo',
+                    'orderable': false,
+                    'data': null,
+                    'defaultContent': '<td>' +
+                        '<div class="action-buttons text-center">' +
+                        '<a href="#" class="btn btn-primary btn-icon btn-sm">' +
+                        '<i class="fa-solid fa-arrow-right-from-bracket"></i>' +
+                        '</a>' +
+                        '</div>' +
+                        '</td>',
+                }],
+            'order': [[0, 'desc']],  
+            'lengthChange': true,
+            'lengthMenu': [
+                [6, 10, 25, 50, 75, 100, -1],
+                [6, 10, 25, 50, 75, 100, 'ALL']
+            ],
+            'language': {
+                'lengthMenu': 'Mostrar _MENU_ registros por página',
+                'zeroRecords': 'No hay registros',
+                'info': 'Mostrando página _PAGE_ de _PAGES_',
+                'infoEmpty': 'No hay registros disponibles',
+                'infoFiltered': '(filtrado de _MAX_ registros totales)',
+                'search': 'Buscar:',
+                'paginate': {
+                    'next': 'Siguiente',
+                    'previous': 'Anterior'
+                }
+            },
+        });
+    }
+    datatableRegistrosActivos();
 
     //Función que permite reestablecer las pestañas de selección (Tabs) en la vista de personas sin salida para que sea la pestaña de Datos de ingreso la primera que se muestre al momento en que se seleccione un nuevo registro para darle salida 
     function restablecerTabs() {
@@ -505,6 +600,32 @@ $(function() {
         console.log(data);
     });
 
+    //Se elije una fila de la tabla de registros sin salida de vehículos y se toma la información del registro para mostrarla en un panel de pestañas de selección de manera organizada dependiendo del tipo de persona, se muestra primero la información del vehículo
+    $('#tabla_registros_activos tbody').on('click', '.registrar_salidaActivo', function () { 
+        var data = $('#tabla_registros_activos').DataTable().row(this).data(); 
+        // restablecerTabsVehiculo();
+
+        $('#spanFecha3').text(moment(data.ingreso_persona).format('DD-MM-YYYY'));
+        $('#spanHora3').text(moment(data.ingreso_persona).format('h:mm:ss a'));
+        $('#spanNombre3').text(data.nombre);
+        $('#spanApellido3').text(data.apellido);
+        $('#spanIdentificacion3').text(data.identificacion);
+        $('#spanTelefono3').text(data.tel_contacto);
+        $('#spanEps3').text(data.eps);
+        $('#spanArl3').text(data.arl); 
+        $('#parrafoDescripcion3').text(data.descripcion);
+
+        $('#spanFechaActivo').text(moment(data.ingreso_activo).format('DD-MM-YYYY'));
+        $('#spanHoraActivo').text(moment(data.ingreso_activo).format('h:mm:ss a'));
+        $('#spanTipoActivo').text(data.activo);
+        $('#spanCodigoActivo').text(data.codigo_activo); 
+
+
+
+        $('#infoRegistroActivo').css('display', 'block'); 
+        console.log(data);
+    });
+
     //Función que envía una petición Ajax al servidor para consultar en el sistema GLPI si a un colaborador en específico se le ha cambiado el código del activo asignado, si esto sucede el sistema ubica al usuario en la pestaña de Activo y muestra cual es el nuevo código que tiene asignado el colaborador
     function obtenerActivoActualizado(idColaborador, codigoActual) {
         $.ajax({
@@ -626,6 +747,7 @@ $(function() {
                 console.log(res);
                 datatableRegistrosSalida();
                 datatableRegistrosVehiculos();
+                datatableRegistrosActivos();
                 $('#informacionRegistro').css('display', 'none'); 
 
                 $('.textoPersona').text(obtenerNombrePersona());
@@ -686,6 +808,7 @@ $(function() {
             },
             success: function(res) {
                 console.log(res);
+                datatableRegistrosSalida();
                 datatableRegistrosVehiculos();
                 $('#infoRegistroVehiculo').css('display', 'none'); 
                 $('#textoVehiculo').text(datosRegistroVehiculo.vehiculo);
@@ -697,6 +820,17 @@ $(function() {
         });
     });
 
+    //Botón que permite desplegar un modal de confirmación cuando el usuario quiera realizar el registro de una salida de un activo al cuál no se le habia hecho el registro antes
+    $('#botonGuardarSalida3').on('click', function () {
+        // $('#textoSalida2').text(datosRegistroVehiculo.vehiculo);
+        $('#modal-registrarSalidaActivo').modal('show');
+    });
+
+    //Botón que envía una petición Ajax al servidor para modificar la base de datos y registrar la salida de un activo al cual no se le haya registrado su salida el día que ingreso, si el registro es exito muestra un modal con la información del registro
+    $('#botonContinuarSalida3').on('click', function () {
+        $('#modal-registrarSalidaActivo').modal('hide');
+    });
+
     //Botón que permite ocultar el panel de información de la persona si selecciono para registrar su salida
     $('#botonCerrar').click(function(){
         $('#informacionRegistro').css('display', 'none'); 
@@ -705,6 +839,11 @@ $(function() {
     //Botón que permite ocultar el panel de información de los vehículos si selecciono para registrar su salida
     $('#botonCerrar2').click(function(){
         $('#infoRegistroVehiculo').css('display', 'none'); 
+    });
+
+    //Botón que permite ocultar el panel de información de los activos si selecciono para registrar su salida
+    $('#botonCerrar3').click(function(){
+        $('#infoRegistroActivo').css('display', 'none'); 
     });
 
     //Botón que redirecciona a la vista donde se muestra los registros que se han completado totalmente

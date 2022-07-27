@@ -50,6 +50,9 @@
                             <li class="nav-item">
                                 <a class="nav-link" id="tabVehiculosSinSalida" data-toggle="pill" href="#vehiculosSinSalida" role="tab" aria-controls="vehiculosSinSalida" aria-selected="false">Vehículos</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="tabActivosSinSalida" data-toggle="pill" href="#activosSinSalida" role="tab" aria-controls="activosSinSalida" aria-selected="false">Activos</a>
+                            </li>
                         </ul>
                     </div>
                     <div class="card-body">
@@ -129,132 +132,56 @@
                                 </div>
                                 <!-- /.card -->
                             </div>
+
+
+
+                            <div class="tab-pane fade" id="activosSinSalida" role="tabpanel" aria-labelledby="tabActivosSinSalida">
+                                <div id="infoRegistroActivo" class="mt-n3 mx-n3" style="display: none">
+                                    @include('pages.registros.panelDatosActivo')
+                                    {{-- @include('pages.registros.panelDatosPersona2') --}}
+                                </div>
+                                <div class="mt-n3 mx-n3">
+                                    <div class="card card-primary mb-n4 mx-n1">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Registros realizados</h3>
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body">
+                                            <table id="tabla_registros_activos" class="table table-bordered table-striped table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Tipo de persona</th>
+                                                        <th>Nombre</th>
+                                                        <th>Identificación</th>
+                                                        <th>Teléfono</th> 
+                                                        <th>Activo</th> 
+                                                        <th>Código</th> 
+                                                        <th>Fecha ingreso</th>
+                                                        <th>Hora ingreso</th>                   
+                                                        <th>Ingresado por</th>
+                                                        <th>Dar salida</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody> 
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- /.card-body -->
+                                    </div>
+                                </div>
+                                <!-- /.card -->
+                            </div>
+
+
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-
-    <section class="content-header mb-n4">
-        <div class="row">
-            <div class="col-12">
-                {{-- <div class="card card-primary">
-                    <div class="card-header">
-                        <h3 class="card-title">Registros sin salida</h3>
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                        </div>
-                        <!-- /.card-tools -->
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <!-- /.card-body -->
-                        <table id="tabla_registros_salida" class="table table-bordered table-striped table-hover">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Tipo de persona</th>
-                                    <th>Nombre</th>
-                                    <th>Identificación</th>
-                                    <th>Teléfono</th>  
-                                    <th>Fecha ingreso</th>
-                                    <th>Hora ingreso</th>                   
-                                    <th>Ingresa activo</th>
-                                    <th>Ingresa vehículo</th> 
-                                    <th>Ingresado por</th>
-                                    <th>Acción</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- /.card-body -->
-                </div> --}}
-                <!-- /.card -->
-
-                {{-- <div class="card card-primary">
-                    <div class="card-header">
-                        <h3 class="card-title">Registrados realizados</h3>
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                        </div>
-                        <!-- /.card-tools -->
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <!-- /.card-body -->
-                        <table id="tabla_registros" class="table table-bordered table-striped table-hover">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Tipo de persona</th>
-                                    <th>Nombre</th>
-                                    <th>Identificación</th>
-                                    <th>Fecha ingreso</th>
-                                    <th>Hora ingreso</th>                   
-                                    <th>Fecha salida</th>
-                                    <th>Hora salida</th> 
-                                    <th>Teléfono</th>  
-                                    <th>Empresa visitada</th>
-                                    <th>Responsable</th>
-                                    <th>Ingresado por</th>
-                                    <th>Acción</th>
-                                </tr>
-                            </thead>
-                            <tbody> </tbody>
-                        </table>
-                    </div>
-                    <!-- /.card-body -->
-                </div> --}}
-                <!-- /.card -->
-
-                {{-- <div class="card card-orange">
-                    <div class="card-header">
-                        <h3 class="card-title">Vehículos sin salida</h3>
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                        </div>
-                        <!-- /.card-tools -->
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <!-- /.card-body -->
-                        <table id="tabla_registros_vehiculos" class="table table-bordered table-striped table-hover">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Tipo de persona</th>
-                                    <th>Nombre</th>
-                                    <th>Identificación</th>
-                                    <th>Teléfono</th> 
-                                    <th>Vehículo</th> 
-                                    <th>Tipo</th> 
-                                    <th>Marca</th> 
-                                    <th>Fecha ingreso</th>
-                                    <th>Hora ingreso</th>                   
-                                    <th>Ingresado por</th>
-                                    <th>Acción</th>
-                                </tr>
-                            </thead>
-                            <tbody> </tbody>
-                        </table>
-                    </div>
-                    <!-- /.card-body -->
-                </div> --}}
-                <!-- /.card -->
-            </div>
-        </div>
 
         @include('pages.registros.modales')
-        {{-- @include('pages.modalError') --}}
 
     </section>
 @endsection

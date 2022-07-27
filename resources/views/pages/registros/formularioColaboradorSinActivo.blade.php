@@ -167,6 +167,9 @@
                                 @endif
                             </div>
                         </div>
+                        <div id="colMensajeVehiculo2" class="col-sm-4" style="display: none"><br>
+                            <div id="mensajeVehiculo2" class="mensajeVehiculo text-center"></div>
+                        </div>
                     </div>
                     <div id="divVehiculo2" class="row mt-n3">
                         <div class="col-sm-4">

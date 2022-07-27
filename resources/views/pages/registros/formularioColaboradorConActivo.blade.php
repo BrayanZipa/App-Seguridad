@@ -178,7 +178,7 @@
                         </div>
                     </div>
                     <div id="divVehiculo3" class="row justify-content-end" style="display: none">
-                        <div class="col-sm-8">
+                        <div id="colInputVehiculo" class="col-sm-8">
                             <div class="form-group">
                                 <input id="vehiculo3" type="hidden" name="retornoVehiculo" value="{{ old('id_vehiculo') }}">
                                 <label for="selectVehiculo3">Ingrese el vehículo</label>
@@ -189,6 +189,9 @@
                                     </div>            
                                 @endif
                             </div>
+                        </div>
+                        <div id="colMensajeVehiculo3" class="col-sm-4" style="display: none"><br>
+                            <div id="mensajeVehiculo3" class="mensajeVehiculo text-center"></div>
                         </div>
                     </div>
                 </div>

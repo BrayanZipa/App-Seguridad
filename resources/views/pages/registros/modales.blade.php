@@ -255,3 +255,32 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
+
+
+
+
+
+
+
+
+<div class="modal fade" id="modal-registrarSalidaActivo">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <div class="d-flex justify-content-center">
+                    <h4 class="modal-title">REGISTRAR SALIDA</h4>
+                </div>
+            </div>
+            <div class="modal-body">
+                <p class="text-center" style="font-size: 18px">¿Esta seguro que desea registrar la salida del <b id="textoSalida3"></b>?</p>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal" style="width: 100px">Cerrar</button>
+                <button type="submit" id="botonContinuarSalida3" class="btn btn-primary">Continuar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+

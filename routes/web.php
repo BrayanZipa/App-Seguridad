@@ -86,6 +86,7 @@ Route::post('/registros/crear', [RegistroController::class, 'store'])->name('cre
 Route::get('/registros/informacion', [RegistroController::class, 'informacionRegistros'])->name('mostrarInfoRegistros')->middleware('auth');
 Route::get('/registros/informacion_sin_salida', [RegistroController::class, 'informacionRegistrosSinSalida'])->name('registrosSalidas')->middleware('auth');
 Route::get('/registros/informacion_vehiculos', [RegistroController::class, 'informacionRegistrosVehiculos'])->name('registrosVehiculos')->middleware('auth');
+Route::get('/registros/informacion_activos', [RegistroController::class, 'informacionRegistrosActivos'])->name('registrosActivos')->middleware('auth');
 
 Route::get('/registros/personas', [RegistroController::class, 'getPersonas'])->name('getPersonas')->middleware('auth');
 Route::get('/registros/persona', [RegistroController::class, 'getPersona'])->name('getPersona')->middleware('auth');

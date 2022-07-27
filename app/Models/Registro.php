@@ -100,6 +100,18 @@ class Registro extends Model
     }
 
     /**
+     * Función que permite retornar los datos de los registros de la tabla se_registros unidos a la información de las personas y los activos donde se haya registrado el ingreso de una persona y su activo y se haya registrado la salida de la persona, pero no la del activo.
+     */
+    public function informacionRegistrosActivos(){
+        try {
+            $registros = $this->informacionRegistros()->whereNotNull('salida_persona')->whereNotNull('ingreso_activo')->whereNull('salida_activo')->get();
+        } catch (\Throwable $e) {
+            return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
+        }
+        return $registros;  
+    }
+
+    /**
      * Función que permite una relación de uno a muchos inversa, en un registro solo puede estar una persona, se usa el modelo de Persona, la llave foránea del tabla se_registros (id_persona) y la llave primaria (id_personas) con la que tiene conexión en la tabla padre (tabla se_personas).
      */
     public function persona(){

@@ -119,11 +119,11 @@ class RegistroController extends Controller
             if($datos['casoRegistro'] == 'visitante' || $datos['casoRegistro'] == 'colaboradorSinActivo' || $datos['casoRegistro'] == 'conductor'){ //visitante y colaborador con vehículo y conductor
                 $modal = ['registro_vehiculo', $mensajes];
             } else { //visitante o colaborador con activo y vehículo
-                $mensajes[] = $datos['activo'].' '.$datos['codigo_activo'];
+                $mensajes[] = $datos['codigo_activo'];
                 $modal = ['registro_vehiculoActivo', $mensajes];
             }
         } else if($datos['casoRegistro'] == 'visitanteActivo' || $datos['casoRegistro'] == 'colaboradorConActivo'){ //visitante o colaborador con activo
-            $mensajes[] = $datos['activo'].' '.$datos['codigo_activo'];
+            $mensajes[] = $datos['codigo_activo'];
             $modal = ['registro_activo', $mensajes];
         } else { //visitante o colaborador
             $modal = ['registro_persona', $mensajes];
@@ -330,6 +330,24 @@ class RegistroController extends Controller
     }
 
     /**
+     * Función que recibe una petición Ajax con el id de un colaborador con el cuál se realiza una búsqueda en los registros para retornar el último registro donde esa persona haya ingresado un activo y se haya registrado la salida de la persona, pero no del activo.
+     */
+    public function utimoRegistroActivo(Request $request){
+        $id = $request->input('persona');
+        try {
+            $registro = Registro::select('se_registros.ingreso_vehiculo', 'vehiculos.identificador')
+            ->leftjoin('se_vehiculos AS vehiculos', 'se_registros.id_vehiculo', '=', 'vehiculos.id_vehiculos')
+            ->where('id_persona', $id)->whereNotNull('salida_persona')->whereNotNull('ingreso_activo')->whereNull('salida_activo')->latest('ingreso_activo')->first();
+            if($registro == null){
+                $registro = response()->json(['message' => 'La persona no tiene registros con un activo sin salida']);
+            }
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
+        }
+        return $registro; 
+    }
+
+    /**
      * Función que permite retornar todos los registros de la tabla se_registros asociados a las personas, vehículos y activos donde tengan un id en común y tengan un registro de salida de la persona.
      */
     public function informacionRegistros(Request $request){
@@ -350,16 +368,25 @@ class RegistroController extends Controller
     }
 
     /**
-     * Función que permite retornar todos los registros de la tabla se_registros asociados a las personas, vehículos y activos donde tengan un id en común y tengan un registro de salida de la persona.
+     * Función que permite retornar todos los registros de la tabla se_registros asociados a las personas y vehículos donde tengan un id en común y tengan un registro de salida de la persona, pero no de la salida del vehículo.
      */
     public function informacionRegistrosVehiculos(Request $request){
         if($request->ajax()){
             $registros = $this->registros->informacionRegistrosVehiculos();
             return DataTables::of($registros)->make(true);
-        }   
-        
-        // $registros = $this->registros->informacionRegistrosVehiculos();
-        // return $registros;
+        }
     }
 
+    /**
+     * Función que permite retornar todos los registros de la tabla se_registros asociados a las personas y activos donde tengan un id en común y tengan un registro de salida de la persona, pero no de la salida del activo.
+     */
+    public function informacionRegistrosActivos(Request $request){
+        if($request->ajax()){
+            $registros = $this->registros->informacionRegistrosActivos();
+            return DataTables::of($registros)->make(true);
+        }   
+        
+        $registros = $this->registros->informacionRegistrosActivos();
+        return $registros;
+    }
 }
