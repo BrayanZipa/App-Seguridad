@@ -249,7 +249,7 @@
                                         <div id="columnaActivo" class="columnaPanel col-sm-3" style="display: none">
                                             <div class="form-group">
                                                 <div class="description-block text-left">
-                                                    <h5 id="tituloActivo" class="description-header mb-1">Cambio de activo</h5>
+                                                    <h5 class="description-header mb-1">Cambio de activo</h5>
                                                     <span id="spanCodigoActivo2"></span>
                                                 </div>
                                             </div>

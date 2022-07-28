@@ -1,6 +1,6 @@
 <div class="card card-primary mb-4 mx-n1">
     <div class="card-header pb-1">
-        <h3 id="tabInfoRegistro3" class="card-title"></h3>
+        <h3 class="card-title">Registro colaborador</h3>
         <div class="card-tools">
             <button type="button" class="btn btn-tool pb-3 mr-n1" data-card-widget="collapse">
                 <i class="fas fa-minus"></i>
@@ -12,21 +12,17 @@
     </div>
     <div class="card-body mb-n4">
         <div class="row">
-            <div id="columnaFoto3" class="col-sm-3">
-                <div id="divFotoPersona3" class="form-group">
-                    <label>Fotografía</label><br>
-                    <img id="fotoPersona3" class="img-fluid rounded" style="border: 1px solid #007bff" src="" alt="Foto persona">
-                </div>
-                <div id="divLogoEmpresa3" class="form-group">
+            <div class="col-sm-2">
+                <div class="form-group">
                     <label>Empresa</label><br>
                     <img id="logoEmpresa3" class="img-fluid rounded" src="" alt="Logo empresa">
                 </div>
             </div>
-            <div id="columnaInformacion3" class="col-sm-9">
+            <div class="col-sm-10">
                 <label>Información del registro</label>
                 <div class="card card-primary card-tabs mx-1">
                     <div class="card-header p-0 pt-1">
-                        <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                        <ul class="nav nav-tabs" id="custom-tabs-one-tab3" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link" id="tabDatosIngreso3" data-toggle="pill" href="#datosIngreso3" role="tab" aria-controls="datosIngreso3" aria-selected="true">Datos de ingreso</a>
                             </li>
@@ -147,51 +143,50 @@
                                 </div>
                             </div>
                             <div class="tab-pane fade active show" id="datosActivo3" role="tabpanel" aria-labelledby="tabDatosActivo3">
-                                <div class="row">
-                                    <div class="col-sm-9">
-                                        <div class="ml-4">
-                                            <div class="row">
-                                                <div class="columnaPanel col-sm-3">
-                                                    <div class="form-group">
-                                                        <div class="description-block text-left">
-                                                            <h5 class="description-header mb-1">Fecha de ingreso</h5>                                         
-                                                            <span id="spanFechaActivo3"></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="columnaPanel col-sm-3">
-                                                    <div class="form-group">
-                                                        <div class="description-block text-left">
-                                                            <h5 class="description-header mb-1">Hora de ingreso</h5>                                         
-                                                            <span id="spanHoraActivo3"></span>
-                                                        </div>
-                                                    </div>
+                                <div class="ml-4">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <div class="description-block text-left">
+                                                    <h5 class="description-header mb-1">Fecha de ingreso</h5>                                         
+                                                    <span id="spanFechaActivo3"></span>
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="columnaPanel col-sm-3">
-                                                    <div class="form-group">
-                                                        <div class="description-block text-left">
-                                                            <h5 class="description-header mb-1">Tipo de activo</h5>                                         
-                                                            <span id="spanTipoActivo3"></span>
-                                                        </div>
-                                                    </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <div class="description-block text-left">
+                                                    <h5 class="description-header mb-1">Hora de ingreso</h5>                                         
+                                                    <span id="spanHoraActivo3"></span>
                                                 </div>
-                                                <div class="columnaPanel col-sm-3">
-                                                    <div class="form-group">
-                                                        <div class="description-block text-left">
-                                                            <h5 class="description-header mb-1">Activo</h5>                                         
-                                                            <span id="spanCodigoActivo3"></span>
-                                                        </div>
-                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <div class="description-block text-left">
+                                                    <h5 class="description-header mb-1">Tipo de activo</h5>                                         
+                                                    <span id="spanTipoActivo3"></span>
                                                 </div>
-                                                <div id="columnaActivo3" class="columnaPanel col-sm-3" style="display: none">
-                                                    <div class="form-group">
-                                                        <div class="description-block text-left">
-                                                            <h5 id="tituloActivo" class="description-header mb-1">Cambio de activo</h5>
-                                                            <span id="spanCodigoActivo4"></span>
-                                                        </div>
-                                                    </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <div class="description-block text-left">
+                                                    <h5 class="description-header mb-1">Activo</h5>                                         
+                                                    <span id="spanCodigoActivo3"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="columnaActivo2" class="col-sm-4" style="display: none">
+                                            <div class="form-group">
+                                                <div class="description-block text-left">
+                                                    <h5 class="description-header mb-1">Cambio de activo</h5>
+                                                    <span id="spanCodigoActivo4"></span>
+                                                    {{-- <div>
+                                                        <small>Autorizado por tecnología - Sebastám Soto</small>
+                                                    </div> --}}
                                                 </div>
                                             </div>
                                         </div>

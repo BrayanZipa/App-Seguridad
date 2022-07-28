@@ -98,6 +98,7 @@
 
 @endif
 
+<!-- Registros sin salida - Modales de la pestaña Personas-->
 <div class="modal fade" id="modal-salida-persona">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -213,6 +214,7 @@
     <!-- /.modal-dialog -->
 </div>
 
+<!-- Registros sin salida - Modales de la pestaña Vehículos-->
 <div class="modal fade" id="modal-salida-vehiculo">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -256,12 +258,28 @@
     <!-- /.modal-dialog -->
 </div>
 
-
-
-
-
-
-
+<!-- Registros sin salida - Modales de la pestaña Activos -->
+<div class="modal fade" id="modal-salida-activo">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <div class="d-flex justify-content-center">
+                    <h4 class="modal-title">REGISTRO CREADO</h4>
+                </div>
+            </div>
+            <div class="modal-body">
+                <p>Se registro la salida del activo <b id="textoActivo"></b> exitosamente.</p>
+                <p>¿Desea registrar otra salida?</p>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal" style="width: 100px">Cerrar</button>
+                <button type="submit" class="botonContinuar btn btn-primary">Continuar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
 
 <div class="modal fade" id="modal-registrarSalidaActivo">
     <div class="modal-dialog">
@@ -272,7 +290,7 @@
                 </div>
             </div>
             <div class="modal-body">
-                <p class="text-center" style="font-size: 18px">¿Esta seguro que desea registrar la salida del <b id="textoSalida3"></b>?</p>
+                <p class="text-center" style="font-size: 18px">¿Esta seguro que desea registrar la salida del activo <b id="textoSalida3"></b>?</p>
             </div>
             <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-default" data-dismiss="modal" style="width: 100px">Cerrar</button>
@@ -283,4 +301,3 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
-

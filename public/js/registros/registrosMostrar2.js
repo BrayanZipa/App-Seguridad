@@ -11,6 +11,7 @@ $(function() {
     var nuevoActivo = '';
     var datosRegistro = {};
     var datosRegistroVehiculo = {};  
+    var datosRegistroActivo = {};
 
     //Uso de DataTables para mostrar los registros realizados en los cuales no se registra la salida de los diferentes tipos de persona (visitantes, conductores, colaboradores con y sin activo)
     function datatableRegistrosSalida(){
@@ -211,7 +212,6 @@ $(function() {
             },
         });
     }
-    datatableRegistrosVehiculos();
 
     //Uso de DataTables para mostrar los registros realizados donde se ingresa un activo y se registra la salida del propietario pero no del activo
     function datatableRegistrosActivos() {
@@ -305,7 +305,21 @@ $(function() {
             },
         });
     }
-    datatableRegistrosActivos();
+
+    //Función que se activa cuando se le da click al Tab de Personas, actualiza la información de la Datatable de los registros sin salida
+    $('#tabPersonasSinSalida').click(function () {
+        datatableRegistrosSalida();
+    });
+
+    //Función que se activa cuando se le da click al Tab de Vehículos, actualiza la información de la Datatable de los registros de vehículos sin salida
+    $('#tabVehiculosSinSalida').click(function () {
+        datatableRegistrosVehiculos();
+    });
+
+    //Función que se activa cuando se le da click al Tab de Activos, actualiza la información de la Datatable de los registros de activos sin salida
+    $('#tabActivosSinSalida').click(function () {
+        datatableRegistrosActivos();
+    });
 
     //Función que permite reestablecer las pestañas de selección (Tabs) en la vista de personas sin salida para que sea la pestaña de Datos de ingreso la primera que se muestre al momento en que se seleccione un nuevo registro para darle salida 
     function restablecerTabs() {
@@ -348,6 +362,22 @@ $(function() {
         }
         $('#tabDatosVehiculo2').addClass('active');
         $('#datosVehiculo2').addClass('active show');
+    }
+
+    //Función que permite reestablecer las pestañas de selección (Tabs) en la vista de activos sin salida para que sea la pestaña de Activo la primera que se muestre al momento en que se seleccione un nuevo registro para darle salida 
+    function restablecerTabsActivo() {
+        if($('#tabDatosIngreso3').hasClass('active') || $('#tabDatosBasicos3').hasClass('active')){
+            if($('#tabDatosIngreso3').hasClass('active')){
+                $('#tabDatosIngreso3').removeClass('active');
+                $('#datosIngreso3').removeClass('active show');
+
+            } else {
+                $('#tabDatosBasicos3').removeClass('active');
+                $('#datosBasicos3').removeClass('active show');
+            } 
+        }
+        $('#tabDatosActivo3').addClass('active');
+        $('#datosActivo3').addClass('active show');
     }
 
     //Función que permite cambiar el tamaño del espacio que va a ocupar las imagenes en los registros, para los visitantes y conductores la fotografía ocupa más espacio y para los colaboradores la imagen del logo ocupa menos espacio
@@ -426,15 +456,13 @@ $(function() {
         } else {
             casoSalida = 'salidaPersona';
         }
-
-        datosRegistro = {
-            idRegistro: data.id_registros,
-            idPersona: data.id_persona,
-            tipoPersona: data.id_tipo_persona,
-            nombrePersona: data.nombre + ' ' + data.apellido,
-            vehiculo: data.identificador,
-            activo: data.codigo_activo, 
-        }
+        
+        datosRegistro.idRegistro = data.id_registros;
+        datosRegistro.idPersona = data.id_persona;
+        datosRegistro.tipoPersona = data.id_tipo_persona;
+        datosRegistro.nombrePersona = data.nombre + ' ' + data.apellido;
+        datosRegistro.vehiculo = data.identificador;
+        datosRegistro.activo = data.codigo_activo;   
 
         if(data.ingreso_vehiculo != null){ 
             if($('#checkVehiculo').prop('checked')){
@@ -533,7 +561,7 @@ $(function() {
             // $('#infoColaborador').css('display', '');
             parametrosPanel(data.id_tipo_persona, '#infoColaborador', '#infoVisitanteConductor', '#tabInfoRegistro', '#tituloTelefono');
             if(data.id_tipo_persona == 3){
-                obtenerActivoActualizado(data.identificacion, data.codigo_activo);
+                obtenerActivoActualizado(data.identificacion, data.codigo_activo, 1);
             }
         } 
         $('#informacionRegistro').css('display', 'block');   
@@ -553,10 +581,8 @@ $(function() {
             infoVehiculo = data.tipo + ' ' + data.marca + ' ' + data.identificador;
         }
 
-        datosRegistroVehiculo = {
-            idRegistro: data.id_registros,
-            vehiculo: infoVehiculo
-        }
+        datosRegistroVehiculo.idRegistro = data.id_registros;
+        datosRegistroVehiculo.vehiculo = infoVehiculo;
 
         $('#spanFecha2').text(moment(data.ingreso_persona).format('DD-MM-YYYY'));
         $('#spanHora2').text(moment(data.ingreso_persona).format('h:mm:ss a'));
@@ -603,7 +629,16 @@ $(function() {
     //Se elije una fila de la tabla de registros sin salida de vehículos y se toma la información del registro para mostrarla en un panel de pestañas de selección de manera organizada dependiendo del tipo de persona, se muestra primero la información del vehículo
     $('#tabla_registros_activos tbody').on('click', '.registrar_salidaActivo', function () { 
         var data = $('#tabla_registros_activos').DataTable().row(this).data(); 
-        // restablecerTabsVehiculo();
+        restablecerTabsActivo();
+        $('#columnaActivo2').css('display', 'none');
+        obtenerActivoActualizado(data.identificacion, data.codigo_activo, 2);
+
+        datosRegistroActivo.idRegistro = data.id_registros;
+        datosRegistroActivo.activo = data.activo + ' ' + data.codigo_activo;
+        datosRegistroActivo.nuevoActivo = '';
+        
+        var urlLogo = '/assets/imagenes/' + data.empresa.toLowerCase() +'.png';
+        $('#logoEmpresa3').attr('src', urlLogo);
 
         $('#spanFecha3').text(moment(data.ingreso_persona).format('DD-MM-YYYY'));
         $('#spanHora3').text(moment(data.ingreso_persona).format('h:mm:ss a'));
@@ -613,21 +648,21 @@ $(function() {
         $('#spanTelefono3').text(data.tel_contacto);
         $('#spanEps3').text(data.eps);
         $('#spanArl3').text(data.arl); 
+        $('#spanCorreo3').text(data.email); 
+        $('#spanEmpresaCol3').text(data.empresa);
         $('#parrafoDescripcion3').text(data.descripcion);
 
-        $('#spanFechaActivo').text(moment(data.ingreso_activo).format('DD-MM-YYYY'));
-        $('#spanHoraActivo').text(moment(data.ingreso_activo).format('h:mm:ss a'));
-        $('#spanTipoActivo').text(data.activo);
-        $('#spanCodigoActivo').text(data.codigo_activo); 
-
-
+        $('#spanFechaActivo3').text(moment(data.ingreso_activo).format('DD-MM-YYYY'));
+        $('#spanHoraActivo3').text(moment(data.ingreso_activo).format('h:mm:ss a'));
+        $('#spanTipoActivo3').text(data.activo);
+        $('#spanCodigoActivo3').text(data.codigo_activo); 
 
         $('#infoRegistroActivo').css('display', 'block'); 
         console.log(data);
     });
 
     //Función que envía una petición Ajax al servidor para consultar en el sistema GLPI si a un colaborador en específico se le ha cambiado el código del activo asignado, si esto sucede el sistema ubica al usuario en la pestaña de Activo y muestra cual es el nuevo código que tiene asignado el colaborador
-    function obtenerActivoActualizado(idColaborador, codigoActual) {
+    function obtenerActivoActualizado(idColaborador, codigoActual, valor) {
         $.ajax({
             url: '/colaboradores/colaboradoridentificado',
             type: 'GET',
@@ -636,9 +671,7 @@ $(function() {
             },
             dataType: 'json',
             success: function(response) { 
-                if('error' in response){
-                    console.log(response.error);
-                } else {
+                if('registration_number' in response){
                     $.ajax({
                         url: '/colaboradores/computador',
                         type: 'GET',
@@ -647,20 +680,28 @@ $(function() {
                         },
                         dataType: 'json',
                         success: function(activo) {
-                            $('#spanCodigoActivo2').text(activo.name); 
                             if(activo.name != codigoActual){
-                                nuevoActivo = activo.name;
-                                $('#tabDatosIngreso').removeClass('active');
-                                $('#datosIngreso').removeClass('active show');
-                                $('#tabDatosActivo').addClass('active');
-                                $('#datosActivo').addClass('active show');
-                                $('#tituloActivo').text('Cambio de activo'); 
-                                $('#spanCodigoActivo2').text(activo.name);
-                                $('#columnaActivo').css(
-                                    {'display': '',
-                                    'border-left': '5px solid red'
-                                    }
-                                );
+                                if(valor == 1){
+                                    nuevoActivo = activo.name;
+                                    $('#tabDatosIngreso').removeClass('active');
+                                    $('#datosIngreso').removeClass('active show');
+                                    $('#tabDatosActivo').addClass('active');
+                                    $('#datosActivo').addClass('active show');
+                                    $('#spanCodigoActivo2').text(activo.name);
+                                    $('#columnaActivo').css(
+                                        {'display': '',
+                                        'border-left': '5px solid red'
+                                        }
+                                    );
+                                } else {
+                                    datosRegistroActivo.nuevoActivo = activo.name;
+                                    $('#spanCodigoActivo4').text(activo.name); 
+                                    $('#columnaActivo2').css(
+                                        {'display': '',
+                                        'border-left': '5px solid red'
+                                        }
+                                    );
+                                } 
                             }
                         },
                         error: function() {
@@ -746,8 +787,6 @@ $(function() {
             success: function(res) {
                 console.log(res);
                 datatableRegistrosSalida();
-                datatableRegistrosVehiculos();
-                datatableRegistrosActivos();
                 $('#informacionRegistro').css('display', 'none'); 
 
                 $('.textoPersona').text(obtenerNombrePersona());
@@ -769,20 +808,6 @@ $(function() {
                 } else if(casoSalida == 'salidaPersona'){
                     $('#modal-salida-persona').modal('show');
                 }
-
-                // if(casoSalida == 'salidaVehiculoActivo'){
-                //     $('.textoVehiculo').text(datosRegistro.vehiculo);
-                //     $('.textoActivo').text(datosRegistro.activo);
-                //     $('#modal-salida-personaVehiculoActivo').modal('show');                 
-                // } else if(casoSalida == 'salidaPersonaVehiculo'){
-                //     $('.textoVehiculo').text(datosRegistro.vehiculo);
-                //     $('#modal-salida-personaVehiculo').modal('show');
-                // } else if(casoSalida == 'salidaPersonaActivo'){
-                //     $('.textoActivo').text(datosRegistro.activo);
-                //     $('#modal-salida-personaActivo').modal('show');
-                // } else if(casoSalida == 'salidaPersona'){
-                //     $('#modal-salida-persona').modal('show');
-                // }
                 nuevoActivo = '';
             },
             error: function() {
@@ -808,7 +833,6 @@ $(function() {
             },
             success: function(res) {
                 console.log(res);
-                datatableRegistrosSalida();
                 datatableRegistrosVehiculos();
                 $('#infoRegistroVehiculo').css('display', 'none'); 
                 $('#textoVehiculo').text(datosRegistroVehiculo.vehiculo);
@@ -820,15 +844,42 @@ $(function() {
         });
     });
 
+    //Función que pone el texto que se va a mostrar en los modales de los activos sin registrar salida, dependiendo si el colaborador cambia o no su activo
+    function mensajeModalActivo(etiqueta) {
+        if(datosRegistroActivo.nuevoActivo  != ''){
+            $(etiqueta).text('Computador ' + datosRegistroActivo.nuevoActivo);
+        } else {
+            $(etiqueta).text(datosRegistroActivo.activo); 
+        }
+    }
+
     //Botón que permite desplegar un modal de confirmación cuando el usuario quiera realizar el registro de una salida de un activo al cuál no se le habia hecho el registro antes
     $('#botonGuardarSalida3').on('click', function () {
-        // $('#textoSalida2').text(datosRegistroVehiculo.vehiculo);
+        mensajeModalActivo('#textoSalida3');
         $('#modal-registrarSalidaActivo').modal('show');
     });
 
     //Botón que envía una petición Ajax al servidor para modificar la base de datos y registrar la salida de un activo al cual no se le haya registrado su salida el día que ingreso, si el registro es exito muestra un modal con la información del registro
     $('#botonContinuarSalida3').on('click', function () {
         $('#modal-registrarSalidaActivo').modal('hide');
+        $.ajax({
+            url: '/registros/salida_persona/' + datosRegistroActivo.idRegistro,
+            type: 'PUT',
+            data: {
+                registroSalida: 'salidaActivo',
+                codigo: datosRegistroActivo.nuevoActivo 
+            },
+            success: function(res) {
+                console.log(res);
+                datatableRegistrosActivos();
+                $('#infoRegistroActivo').css('display', 'none'); 
+                mensajeModalActivo('#textoActivo');
+                $('#modal-salida-activo').modal('show');
+            },
+            error: function() {
+                console.log('Error al registrar la salida del activo');
+            }
+        }); 
     });
 
     //Botón que permite ocultar el panel de información de la persona si selecciono para registrar su salida
