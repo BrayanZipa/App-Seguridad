@@ -8,7 +8,6 @@ $(function() {
     });
 
     var casoSalida = '';
-    var nuevoActivo = '';
     var datosRegistro = {};
     var datosRegistroVehiculo = {};  
     var datosRegistroActivo = {};
@@ -462,7 +461,9 @@ $(function() {
         datosRegistro.tipoPersona = data.id_tipo_persona;
         datosRegistro.nombrePersona = data.nombre + ' ' + data.apellido;
         datosRegistro.vehiculo = data.identificador;
-        datosRegistro.activo = data.codigo_activo;   
+        datosRegistro.tipoActivo = data.activo;
+        datosRegistro.activo = data.codigo_activo;
+        datosRegistro.nuevoActivo = '';  
 
         if(data.ingreso_vehiculo != null){ 
             if($('#checkVehiculo').prop('checked')){
@@ -561,7 +562,7 @@ $(function() {
             // $('#infoColaborador').css('display', '');
             parametrosPanel(data.id_tipo_persona, '#infoColaborador', '#infoVisitanteConductor', '#tabInfoRegistro', '#tituloTelefono');
             if(data.id_tipo_persona == 3){
-                obtenerActivoActualizado(data.identificacion, data.codigo_activo, 1);
+                obtenerActivoActualizado(data.identificacion, data.codigo_activo);
             }
         } 
         $('#informacionRegistro').css('display', 'block');   
@@ -574,15 +575,12 @@ $(function() {
         var data = $('#tabla_registros_vehiculos').DataTable().row(this).data(); 
         restablecerTabsVehiculo();
 
-        var infoVehiculo = '';
-        if(data.marca == null){
-            infoVehiculo = data.tipo + ' ' + data.identificador;
-        } else {
-            infoVehiculo = data.tipo + ' ' + data.marca + ' ' + data.identificador;
-        }
-
         datosRegistroVehiculo.idRegistro = data.id_registros;
-        datosRegistroVehiculo.vehiculo = infoVehiculo;
+        if(data.marca == null){
+            datosRegistroVehiculo.vehiculo = data.tipo + ' ' + data.identificador;
+        } else {
+            datosRegistroVehiculo.vehiculo = data.tipo + ' ' + data.marca + ' ' + data.identificador;
+        }
 
         $('#spanFecha2').text(moment(data.ingreso_persona).format('DD-MM-YYYY'));
         $('#spanHora2').text(moment(data.ingreso_persona).format('h:mm:ss a'));
@@ -630,12 +628,16 @@ $(function() {
     $('#tabla_registros_activos tbody').on('click', '.registrar_salidaActivo', function () { 
         var data = $('#tabla_registros_activos').DataTable().row(this).data(); 
         restablecerTabsActivo();
-        $('#columnaActivo2').css('display', 'none');
-        obtenerActivoActualizado(data.identificacion, data.codigo_activo, 2);
 
         datosRegistroActivo.idRegistro = data.id_registros;
-        datosRegistroActivo.activo = data.activo + ' ' + data.codigo_activo;
-        datosRegistroActivo.nuevoActivo = '';
+        if(data.codigo_activo_salida != null){
+            $('#spanCodigoActivo2').text(data.codigo_activo_salida); 
+            $('#columnaActivo2').css('display', '');
+            datosRegistroActivo.activo = data.activo + ' ' + data.codigo_activo_salida;
+        } else {
+            $('#columnaActivo2').css('display', 'none');
+            datosRegistroActivo.activo = data.activo + ' ' + data.codigo_activo;
+        }
         
         var urlLogo = '/assets/imagenes/' + data.empresa.toLowerCase() +'.png';
         $('#logoEmpresa3').attr('src', urlLogo);
@@ -656,13 +658,13 @@ $(function() {
         $('#spanHoraActivo3').text(moment(data.ingreso_activo).format('h:mm:ss a'));
         $('#spanTipoActivo3').text(data.activo);
         $('#spanCodigoActivo3').text(data.codigo_activo); 
-
+        
         $('#infoRegistroActivo').css('display', 'block'); 
         console.log(data);
     });
 
     //Función que envía una petición Ajax al servidor para consultar en el sistema GLPI si a un colaborador en específico se le ha cambiado el código del activo asignado, si esto sucede el sistema ubica al usuario en la pestaña de Activo y muestra cual es el nuevo código que tiene asignado el colaborador
-    function obtenerActivoActualizado(idColaborador, codigoActual, valor) {
+    function obtenerActivoActualizado(idColaborador, codigoActual) {
         $.ajax({
             url: '/colaboradores/colaboradoridentificado',
             type: 'GET',
@@ -681,27 +683,17 @@ $(function() {
                         dataType: 'json',
                         success: function(activo) {
                             if(activo.name != codigoActual){
-                                if(valor == 1){
-                                    nuevoActivo = activo.name;
-                                    $('#tabDatosIngreso').removeClass('active');
-                                    $('#datosIngreso').removeClass('active show');
-                                    $('#tabDatosActivo').addClass('active');
-                                    $('#datosActivo').addClass('active show');
-                                    $('#spanCodigoActivo2').text(activo.name);
-                                    $('#columnaActivo').css(
-                                        {'display': '',
+                                datosRegistro.nuevoActivo = activo.name;
+                                $('#tabDatosIngreso').removeClass('active');
+                                $('#datosIngreso').removeClass('active show');
+                                $('#tabDatosActivo').addClass('active');
+                                $('#datosActivo').addClass('active show');
+                                $('#spanCodigoActivo2').text(activo.name);
+                                $('#columnaActivo').css(
+                                    {'display': '',
                                         'border-left': '5px solid red'
-                                        }
-                                    );
-                                } else {
-                                    datosRegistroActivo.nuevoActivo = activo.name;
-                                    $('#spanCodigoActivo4').text(activo.name); 
-                                    $('#columnaActivo2').css(
-                                        {'display': '',
-                                        'border-left': '5px solid red'
-                                        }
-                                    );
-                                } 
+                                    }
+                                );
                             }
                         },
                         error: function() {
@@ -781,8 +773,8 @@ $(function() {
             data: {
                 idPersona: datosRegistro.idPersona,
                 activoActual: datosRegistro.activo,
-                registroSalida: casoSalida,
-                codigo: nuevoActivo
+                codigo: datosRegistro.nuevoActivo,
+                registroSalida: casoSalida,      
             },
             success: function(res) {
                 console.log(res);
@@ -791,10 +783,10 @@ $(function() {
 
                 $('.textoPersona').text(obtenerNombrePersona());
                 if(casoSalida == 'salidaVehiculoActivo' || casoSalida == 'salidaPersonaActivo'){
-                    if(nuevoActivo != ''){
-                        $('.textoActivo').text(nuevoActivo);
+                    if(datosRegistro.nuevoActivo != ''){
+                        $('.textoActivo').text('Computador ' + datosRegistro.nuevoActivo);
                     } else {
-                        $('.textoActivo').text(datosRegistro.activo); 
+                        $('.textoActivo').text(datosRegistro.tipoActivo + ' ' + datosRegistro.activo); 
                     }
                     if(casoSalida == 'salidaVehiculoActivo'){
                         $('.textoVehiculo').text(datosRegistro.vehiculo);
@@ -808,7 +800,6 @@ $(function() {
                 } else if(casoSalida == 'salidaPersona'){
                     $('#modal-salida-persona').modal('show');
                 }
-                nuevoActivo = '';
             },
             error: function() {
                 console.log('Error al registrar la salida de la persona');
@@ -844,18 +835,9 @@ $(function() {
         });
     });
 
-    //Función que pone el texto que se va a mostrar en los modales de los activos sin registrar salida, dependiendo si el colaborador cambia o no su activo
-    function mensajeModalActivo(etiqueta) {
-        if(datosRegistroActivo.nuevoActivo  != ''){
-            $(etiqueta).text('Computador ' + datosRegistroActivo.nuevoActivo);
-        } else {
-            $(etiqueta).text(datosRegistroActivo.activo); 
-        }
-    }
-
     //Botón que permite desplegar un modal de confirmación cuando el usuario quiera realizar el registro de una salida de un activo al cuál no se le habia hecho el registro antes
     $('#botonGuardarSalida3').on('click', function () {
-        mensajeModalActivo('#textoSalida3');
+        $('#textoSalida3').text(datosRegistroActivo.activo);
         $('#modal-registrarSalidaActivo').modal('show');
     });
 
@@ -865,15 +847,14 @@ $(function() {
         $.ajax({
             url: '/registros/salida_persona/' + datosRegistroActivo.idRegistro,
             type: 'PUT',
-            data: {
+            data: {             
                 registroSalida: 'salidaActivo',
-                codigo: datosRegistroActivo.nuevoActivo 
             },
             success: function(res) {
                 console.log(res);
                 datatableRegistrosActivos();
                 $('#infoRegistroActivo').css('display', 'none'); 
-                mensajeModalActivo('#textoActivo');
+                $('#textoActivo').text(datosRegistroActivo.activo);
                 $('#modal-salida-activo').modal('show');
             },
             error: function() {

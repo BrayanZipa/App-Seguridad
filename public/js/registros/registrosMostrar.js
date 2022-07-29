@@ -144,8 +144,12 @@ $(function() {
             $('#fotoVehiculo').attr('src', data.foto_vehiculo);
             $('#spanFechaVehiculo').text(moment(data.ingreso_vehiculo).format('DD-MM-YYYY'));
             $('#spanHoraVehiculo').text(moment(data.ingreso_vehiculo).format('h:mm:ss a'));
-            $('#spanFechaSalidaVehiculo').text(moment(data.salida_vehiculo).format('DD-MM-YYYY'));
-            $('#spanHoraSalidaVehiculo').text(moment(data.salida_vehiculo).format('h:mm:ss a'));
+
+            if(data.salida_vehiculo != null){
+                $('#spanFechaSalidaVehiculo').text(moment(data.salida_vehiculo).format('DD-MM-YYYY'));
+                $('#spanHoraSalidaVehiculo').text(moment(data.salida_vehiculo).format('h:mm:ss a'));
+            } 
+            
             $('#spanIdentificador').text(data.identificador);
             $('#spanTipo').text(data.tipo);  
             $('#spanMarca').text(data.marca);   
@@ -158,10 +162,20 @@ $(function() {
             $('#divActivo').css('display', 'none');
             $('#spanFechaActivo').text(moment(data.ingreso_activo).format('DD-MM-YYYY'));
             $('#spanHoraActivo').text(moment(data.ingreso_activo).format('h:mm:ss a'));
-            $('#spanFechaSalidaActivo').text(moment(data.salida_activo).format('DD-MM-YYYY'));
-            $('#spanHoraSalidaActivo').text(moment(data.salida_activo).format('h:mm:ss a'));
+
+            if(data.salida_activo != null){
+                $('#spanFechaSalidaActivo').text(moment(data.salida_activo).format('DD-MM-YYYY'));
+                $('#spanHoraSalidaActivo').text(moment(data.salida_activo).format('h:mm:ss a'));
+            }
+            
             $('#spanTipoActivo').text(data.activo);
-            $('#spanCodigoActivo').text(data.codigo);  
+            $('#spanCodigoActivo').text(data.codigo_activo);
+            if(data.codigo_activo_salida != null){
+                $('#spanCodigoActivo2').text(data.codigo_activo_salida); 
+                $('#columnaActivo').css('display', '');
+            }  else {
+                $('#columnaActivo').css('display', 'none');
+            }
             $('#tabDatosActivo').css('display', 'block');
         } else {
             $('#tabDatosActivo').css('display', 'none');

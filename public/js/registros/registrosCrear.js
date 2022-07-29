@@ -193,7 +193,9 @@ $(function () {
                     $('#inputEmail3').val(data.email);
                     $('#selectEmpresa3').val(data.id_empresa);
 
-                } else {                  
+                } else { 
+                    // console.log(data.id_personas);
+                    // obtenerUltimoRegistroActivo(data.id_personas);         
                     $.ajax({
                         url: '/colaboradores/computador',
                         type: 'GET',
@@ -242,7 +244,7 @@ $(function () {
         });
     }
 
-    //
+    //Función que hace una petición Ajax para traer la información del último registro que haya tenido una persona donde se haya registrado su ingreso, así como el ingreso de un vehículo, pero se haya registrado la salida de la persona y no la del vehículo. Si este registro existe se bloquea el select de ingreso de vehículo y se muestra un mensaje informativo
     function obtenerUltimoRegistroVehiculo(idPersona, tipoPersona) {
         $.ajax({
             url: '/registros/vehiculo_sin_salida',
@@ -258,8 +260,12 @@ $(function () {
 
                     $('.mensajeVehiculo').css(
                         {
-                        'border': '1px solid red',
-                        'border-radius': '8px'
+                        'margin-top': '8px',
+                        'border': '1px solid #dc3545',
+                        'border-radius': '8px',
+                        'color': '#dc3545',
+                        'font-size': '80%',
+                        'font-weight': 'bold'
                         }
                     );
 
@@ -302,6 +308,80 @@ $(function () {
                         $('#colMensajeVehiculo3').css('display', 'none');
                     } 
                     $('.mensajeVehiculo').text('');
+                }     
+            },
+            error: function() {
+                console.log('Error obteniendo los datos de la base de datos');
+            }
+        });
+    }
+
+    //Función que hace una petición Ajax para traer la información del último registro que haya tenido un colaborador donde se haya registrado su ingreso, así como el ingreso de un activo, pero se haya registrado la salida de la persona y no la del activo. Si este registro existe se bloquea         y se muestra un mensaje informativo
+    function obtenerUltimoRegistroActivo(idPersona) {
+        $.ajax({
+            url: '/registros/activo_sin_salida',
+            type: 'GET',
+            data: {
+                persona: idPersona
+            },
+            dataType: 'json',
+            success: function(response) {             
+                if('ingreso_activo' in response){  
+                    var fecha = moment(response.ingreso_activo).format('DD-MM-YYYY');
+                    if(response.codigo_activo_salida != null){
+                        var mensaje = 'tiene en las intalaciones el activo ' + response.codigo_activo_salida + ' ingresado el ' + fecha;
+                    } else {
+                        var mensaje = 'tiene en las intalaciones el activo ' + response.codigo_activo + ' ingresado el ' + fecha;
+                    }
+
+                    console.log(mensaje);
+
+                    // $('.mensajeVehiculo').css(
+                    //     {
+                    //     'border': '1px solid red',
+                    //     'border-radius': '8px'
+                    //     }
+                    // );
+
+                //     if(tipoPersona == 1 || tipoPersona == 4){
+                //         $('#selectVehiculo').prop('disabled', true);
+                //         if(tipoPersona == 1){
+                //             $('#mensajeVehiculo').text('El visitante ' + mensaje);
+                //         } else if(tipoPersona == 4){
+                //             $('#mensajeVehiculo').text('El conductor ' + mensaje);
+                //         }
+                //         $('#colMensajeVehiculo').css('display', '');
+                //     } else if(tipoPersona == 2 || tipoPersona == 3){
+                //         if(tipoPersona == 2){
+                //             $('#selectVehiculo2').prop('disabled', true);
+                //             $('#mensajeVehiculo2').text('El colaborador ' + mensaje);
+                //             $('#colMensajeVehiculo2').css('display', '');
+                //         } else if(tipoPersona == 3){
+                //             if($('#colInputVehiculo').hasClass('col-sm-8')){
+                //                 $('#colInputVehiculo').removeClass('col-sm-8');
+                //                 $('#colInputVehiculo').addClass('col-sm-4');
+                //             }   
+                //             $('#selectVehiculo3').prop('disabled', true);
+                //             $('#mensajeVehiculo3').text('El colaborador ' + mensaje);
+                //             $('#colMensajeVehiculo3').css('display', '');
+                //         }
+                //     } 
+                // } else {
+                //     if(tipoPersona == 1 || tipoPersona == 4){
+                //         $('#selectVehiculo').prop('disabled', false);
+                //         $('#colMensajeVehiculo').css('display', 'none'); 
+                //     } else if(tipoPersona == 2){
+                //         $('#selectVehiculo2').prop('disabled', false);
+                //         $('#colMensajeVehiculo2').css('display', 'none'); 
+                //     } else if(tipoPersona == 3){
+                //         if($('#colInputVehiculo').hasClass('col-sm-4')){
+                //             $('#colInputVehiculo').removeClass('col-sm-4');
+                //             $('#colInputVehiculo').addClass('col-sm-8');
+                //         } 
+                //         $('#selectVehiculo3').prop('disabled', false);
+                //         $('#colMensajeVehiculo3').css('display', 'none');
+                //     } 
+                //     $('.mensajeVehiculo').text('');
                 }     
             },
             error: function() {
@@ -467,6 +547,13 @@ $(function () {
         $(formulario).attr('action','/registros/editar_persona/' + $('#inputId').val()); 
         $('#selectTipoPersona').val(tipoPersona);
         listarPersonas();
+
+
+
+        obtenerUltimoRegistroVehiculo($(idPersona).val(), tipoPersona);
+
+
+
         $('#idPersona').val($(idPersona).val());
         setTimeout(function(){
             $('#selectPersona').val($(idPersona).val());
@@ -508,7 +595,7 @@ $(function () {
                 $('#selectVehiculo').prop('required', true);
 
                 setTimeout(function(){
-                    $('#selectPersona').val($('#inputId').val());
+                    // $('#selectPersona').val($('#inputId').val());
                     $('#selectVehiculo').val($('#vehiculo').val());
                 }, 1500);
                 $('#formVisitanteConductor').css('display', 'block');

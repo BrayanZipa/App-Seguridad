@@ -250,12 +250,12 @@ class RegistroController extends Controller
         $tiempoActual = date('Y-m-d H:i:s');
 
         $datos = ['salida_persona' => $tiempoActual];
-        if($request['registroSalida'] == 'salidaVehiculoActivo' || $request['registroSalida'] == 'salidaPersonaActivo'){
+        if($request['registroSalida'] == 'salidaPersona' || $request['registroSalida'] == 'salidaVehiculoActivo' || $request['registroSalida'] == 'salidaPersonaActivo'){
             if ($request['registroSalida'] == 'salidaVehiculoActivo') {
                 $datos += ['salida_vehiculo' => $tiempoActual, 'salida_activo' => $tiempoActual];
-            } else {
+            } else if($request['registroSalida'] == 'salidaPersonaActivo') {
                 $datos += ['salida_activo' => $tiempoActual];
-            }      
+            }
             if($request['codigo'] != null){
                 $request['codigo'] = ucfirst($request['codigo']);
                 $this->updateActivo($request['idPersona'], $request['codigo']);
@@ -271,8 +271,8 @@ class RegistroController extends Controller
             $datos = ['salida_vehiculo' => $tiempoActual];
 
         } else if($request['registroSalida'] == 'salidaActivo'){
-            return ['hola' => 'Si entro'];
-        }
+            $datos = ['salida_activo' => $tiempoActual];
+        }  
 
         $registro->update($datos);
         return $datos;
@@ -338,8 +338,8 @@ class RegistroController extends Controller
     public function utimoRegistroActivo(Request $request){
         $id = $request->input('persona');
         try {
-            $registro = Registro::select('se_registros.ingreso_vehiculo', 'vehiculos.identificador')
-            ->leftjoin('se_vehiculos AS vehiculos', 'se_registros.id_vehiculo', '=', 'vehiculos.id_vehiculos')
+            $registro = Registro::select('se_registros.*')
+            // ->leftjoin('se_vehiculos AS vehiculos', 'se_registros.id_vehiculo', '=', 'vehiculos.id_vehiculos')
             ->where('id_persona', $id)->whereNotNull('salida_persona')->whereNotNull('ingreso_activo')->whereNull('salida_activo')->latest('ingreso_activo')->first();
             if($registro == null){
                 $registro = response()->json(['message' => 'La persona no tiene registros con un activo sin salida']);
@@ -389,7 +389,7 @@ class RegistroController extends Controller
             return DataTables::of($registros)->make(true);
         }   
         
-        $registros = $this->registros->informacionRegistrosActivos();
-        return $registros;
+        // $registros = $this->registros->informacionRegistrosActivos();
+        // return $registros;
     }
 }

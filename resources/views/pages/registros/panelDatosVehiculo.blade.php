@@ -81,7 +81,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div id="columnaDescripcion2" class="col-sm-4">
+                                        <div id="columnaDescripcion2" class="col-sm-6">
                                             <div class="form-group">
                                                 <div class="description-block text-left">
                                                     <h5 class="description-header mb-1">Descripción</h5>                                         

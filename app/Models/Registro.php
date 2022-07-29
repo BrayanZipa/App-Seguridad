@@ -104,7 +104,7 @@ class Registro extends Model
      */
     public function informacionRegistrosActivos(){
         try {
-            $registros = $this->informacionRegistros()->whereNotNull('salida_persona')->whereNotNull('ingreso_activo')->whereNull('salida_activo')->get();
+            $registros = $this->informacionRegistros()->where('id_tipo_persona', 3)->whereNotNull('salida_persona')->whereNotNull('ingreso_activo')->whereNull('salida_activo')->get();
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
         }
