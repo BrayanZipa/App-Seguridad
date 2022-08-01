@@ -30,7 +30,8 @@
                                         <div id="mensajeCodigo" class="invalid-feedback">
                                             {{ $errors->first('codigo') }}
                                         </div>          
-                                    @endif  
+                                    @endif 
+                                    <div id="mensajeActivo" class="text-center mt-1" style="display: none"></div> 
                             </div>
                         </div>
                         <div class="col-sm-4">

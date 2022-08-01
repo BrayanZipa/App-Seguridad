@@ -116,7 +116,6 @@ $(function () {
                         $('#titulo').text('Información visitante');
                         $('#checkBox').css('display', ''); 
                         $('#formVisitanteConductor').css('display', 'block'); 
-                        obtenerUltimoRegistroVehiculo(response.id_personas);
                     } else {
                         $('#registro').val('conductor');
                         obtenerVehiculos('#selectVehiculo');
@@ -156,7 +155,7 @@ $(function () {
                     });
                     obtenerColaborador(response);
                     $('#formRegistros3').attr('action','/registros/editar_persona/' + response.id_personas);
-                    $('#registro3').val('colaboradorConActivo');
+                    // $('#registro3').val('colaboradorConActivo');
                     $('#inputId3').val(response.id_personas);
                     $('#inputTelefono3').val(response.tel_contacto);
                     $('#selectEps3').val(response.id_eps);
@@ -171,10 +170,11 @@ $(function () {
         }); 
     }); 
 
-    //Función que permite que al seleccionar una persona de tipo colaborador con activo se traiga su información directamente desde el API de GLPI por medio de una solicitud Ajax
+    //Función que permite que al seleccionar una persona de tipo colaborador con activo se traiga su información directamente desde el API de GLPI por medio de una solicitud Ajax, también se traer la información del último registro que haya tenido del colaborador donde se haya registrado su ingreso, así como el ingreso de un activo, pero se haya registrado la salida de la persona y no la del activo. Si este registro existe no se realiza la búsqueda del activo y se muestra un mensaje informativo
     function obtenerColaborador(data){      
         if($('#mensajeError').length){ $('#mensajeError').remove(); }  
         if($('#mensajeCodigo').length){ $('#mensajeCodigo').remove(); } 
+        if($('#mensajeActivo').css('display') != 'none'){ $('#mensajeActivo').css('display', 'none'); }
         
         $.ajax({
             url: '/colaboradores/colaboradoridentificado',
@@ -193,37 +193,7 @@ $(function () {
                     $('#inputEmail3').val(data.email);
                     $('#selectEmpresa3').val(data.id_empresa);
 
-                } else { 
-                    // console.log(data.id_personas);
-                    // obtenerUltimoRegistroActivo(data.id_personas);         
-                    $.ajax({
-                        url: '/colaboradores/computador',
-                        type: 'GET',
-                        data: {
-                            colaborador: response.id,
-                        },
-                        dataType: 'json',
-                        success: function(activo) {
-                            if ('error' in activo) {
-                                $('#inputCodigo3').addClass('is-invalid');
-                                $('#inputCodigo3').val('*Colaborador registrado en GLPI pero sin activo asignado');
-                            } else {
-                                $('#inputCodigo3').val(activo['name']); 
-                                if(data.codigo != activo['name']){
-                                    $('#inputCodigo3').addClass('is-invalid');
-                                    if($('#mensajeCodigo').length){ 
-                                        $('#mensajeCodigo').text('El colaborador tiene asignado un nuevo activo, debe actualizar');
-                                    } else {
-                                        $('#inputCodigo3').after($('<div id="mensajeError" class="invalid-feedback">El colaborador tiene asignado un nuevo activo, debe actualizar</div>'));
-                                    }     
-                                }
-                            }  
-                        },
-                        error: function() {
-                            console.log('Error obteniendo los datos de GLPI');
-                        }
-                    });
-
+                } else {  
                     $('#inputIdentificacion3').val(response['registration_number']);
                     $('#inputNombre3').val(response['firstname']);
                     $('#inputApellido3').val(response['realname']);
@@ -235,7 +205,68 @@ $(function () {
                         $('#selectEmpresa3').val(2);
                     } else if (response['phone2'].includes('Colvan')) {
                         $('#selectEmpresa3').val(3);
-                    }       
+                    }  
+                    
+                    $.ajax({
+                        url: '/registros/activo_sin_salida',
+                        type: 'GET',
+                        data: {
+                            persona: data.id_personas
+                        },
+                        dataType: 'json',
+                        success: function(activoSinSalida) {             
+                            if('ingreso_activo' in activoSinSalida){  
+                                var fecha = moment(activoSinSalida.ingreso_activo).format('DD-MM-YYYY');
+                                var mensaje = 'El colaborador tiene en las intalaciones el activo ' + activoSinSalida.codigo_activo + ' ingresado el ' + fecha;
+            
+                                $('#mensajeActivo').css(
+                                    {
+                                    'border': '1px solid #dc3545',
+                                    'border-radius': '8px',
+                                    'color': '#dc3545',
+                                    'font-size': '80%',
+                                    'font-weight': 'bold',
+                                    'display': ''
+                                    }
+                                );
+                                $('#registro3').val('colaboradorSinActivo');
+                                $('#mensajeActivo').text(mensaje);
+                                
+                            } else {
+                                $('#registro3').val('colaboradorConActivo');
+                                $.ajax({
+                                    url: '/colaboradores/computador',
+                                    type: 'GET',
+                                    data: {
+                                        colaborador: response.id,
+                                    },
+                                    dataType: 'json',
+                                    success: function(activo) {
+                                        if ('error' in activo) {
+                                            $('#inputCodigo3').addClass('is-invalid');
+                                            $('#inputCodigo3').val('*Colaborador registrado en GLPI pero sin activo asignado');
+                                        } else {
+                                            $('#inputCodigo3').val(activo['name']); 
+                                            if(data.codigo != activo['name']){
+                                                $('#inputCodigo3').addClass('is-invalid');
+                                                if($('#mensajeCodigo').length){ 
+                                                    $('#mensajeCodigo').text('El colaborador tiene asignado un nuevo activo, debe actualizar');
+                                                } else {
+                                                    $('#inputCodigo3').after($('<div id="mensajeError" class="invalid-feedback">El colaborador tiene asignado un nuevo activo, debe actualizar</div>'));
+                                                }     
+                                            }
+                                        }  
+                                    },
+                                    error: function() {
+                                        console.log('Error obteniendo los datos de GLPI');
+                                    }
+                                });   
+                            }                 
+                        },
+                        error: function() {
+                            console.log('Error obteniendo los datos de la base de datos');
+                        }
+                    });
                 }         
             },
             error: function() {
@@ -329,60 +360,29 @@ $(function () {
                 if('ingreso_activo' in response){  
                     var fecha = moment(response.ingreso_activo).format('DD-MM-YYYY');
                     if(response.codigo_activo_salida != null){
-                        var mensaje = 'tiene en las intalaciones el activo ' + response.codigo_activo_salida + ' ingresado el ' + fecha;
+                        var mensaje = 'El colaborador tiene en las intalaciones el activo ' + response.codigo_activo_salida + ' ingresado el ' + fecha;
                     } else {
-                        var mensaje = 'tiene en las intalaciones el activo ' + response.codigo_activo + ' ingresado el ' + fecha;
+                        var mensaje = 'El colaborador tiene en las intalaciones el activo ' + response.codigo_activo + ' ingresado el ' + fecha;
                     }
 
                     console.log(mensaje);
 
-                    // $('.mensajeVehiculo').css(
-                    //     {
-                    //     'border': '1px solid red',
-                    //     'border-radius': '8px'
-                    //     }
-                    // );
-
-                //     if(tipoPersona == 1 || tipoPersona == 4){
-                //         $('#selectVehiculo').prop('disabled', true);
-                //         if(tipoPersona == 1){
-                //             $('#mensajeVehiculo').text('El visitante ' + mensaje);
-                //         } else if(tipoPersona == 4){
-                //             $('#mensajeVehiculo').text('El conductor ' + mensaje);
-                //         }
-                //         $('#colMensajeVehiculo').css('display', '');
-                //     } else if(tipoPersona == 2 || tipoPersona == 3){
-                //         if(tipoPersona == 2){
-                //             $('#selectVehiculo2').prop('disabled', true);
-                //             $('#mensajeVehiculo2').text('El colaborador ' + mensaje);
-                //             $('#colMensajeVehiculo2').css('display', '');
-                //         } else if(tipoPersona == 3){
-                //             if($('#colInputVehiculo').hasClass('col-sm-8')){
-                //                 $('#colInputVehiculo').removeClass('col-sm-8');
-                //                 $('#colInputVehiculo').addClass('col-sm-4');
-                //             }   
-                //             $('#selectVehiculo3').prop('disabled', true);
-                //             $('#mensajeVehiculo3').text('El colaborador ' + mensaje);
-                //             $('#colMensajeVehiculo3').css('display', '');
-                //         }
-                //     } 
-                // } else {
-                //     if(tipoPersona == 1 || tipoPersona == 4){
-                //         $('#selectVehiculo').prop('disabled', false);
-                //         $('#colMensajeVehiculo').css('display', 'none'); 
-                //     } else if(tipoPersona == 2){
-                //         $('#selectVehiculo2').prop('disabled', false);
-                //         $('#colMensajeVehiculo2').css('display', 'none'); 
-                //     } else if(tipoPersona == 3){
-                //         if($('#colInputVehiculo').hasClass('col-sm-4')){
-                //             $('#colInputVehiculo').removeClass('col-sm-4');
-                //             $('#colInputVehiculo').addClass('col-sm-8');
-                //         } 
-                //         $('#selectVehiculo3').prop('disabled', false);
-                //         $('#colMensajeVehiculo3').css('display', 'none');
-                //     } 
-                //     $('.mensajeVehiculo').text('');
-                }     
+                    $('#mensajeActivo').css(
+                        {
+                        'border': '1px solid #dc3545',
+                        'border-radius': '8px',
+                        'color': '#dc3545',
+                        'font-size': '80%',
+                        'font-weight': 'bold',
+                        'display': ''
+                        }
+                    );
+                    $('#mensajeActivo').text(mensaje);
+                    return true;
+                } else {
+                    return false;
+                }
+                
             },
             error: function() {
                 console.log('Error obteniendo los datos de la base de datos');
@@ -547,13 +547,7 @@ $(function () {
         $(formulario).attr('action','/registros/editar_persona/' + $('#inputId').val()); 
         $('#selectTipoPersona').val(tipoPersona);
         listarPersonas();
-
-
-
         obtenerUltimoRegistroVehiculo($(idPersona).val(), tipoPersona);
-
-
-
         $('#idPersona').val($(idPersona).val());
         setTimeout(function(){
             $('#selectPersona').val($(idPersona).val());
@@ -589,13 +583,12 @@ $(function () {
                 retornoInformacion(4, '#formRegistros1', '#inputId');
                 $('#titulo').text('Información conductor');
                 $('#fotografia').attr('src', $('#inputFoto').val());  
-                $('#divVehiculo').css('display', 'block');
+                $('#divVehiculo').css('display', '');
                 $('.visitante').css('display', 'none'); 
                 obtenerVehiculos('#selectVehiculo');
                 $('#selectVehiculo').prop('required', true);
 
                 setTimeout(function(){
-                    // $('#selectPersona').val($('#inputId').val());
                     $('#selectVehiculo').val($('#vehiculo').val());
                 }, 1500);
                 $('#formVisitanteConductor').css('display', 'block');

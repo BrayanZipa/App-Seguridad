@@ -507,62 +507,30 @@ $(function() {
         $('#parrafoDescripcion').text(data.descripcion);
 
         if(data.id_tipo_persona == 1 || data.id_tipo_persona == 4){
-            // if($('#columnaFoto').hasClass('col-sm-2')){
-            //     $('#columnaFoto').removeClass('col-sm-2');
-            //     $('#columnaFoto').addClass('col-sm-3');
-            //     $('#columnaInformacion').removeClass('col-sm-10');
-            //     $('#columnaInformacion').addClass('col-sm-9'); 
-            // }  
-            // if($('#columnaDescripcion').hasClass('col-sm-6')){
-            //     $('#columnaDescripcion').removeClass('col-sm-6');
-            //     $('#columnaDescripcion').addClass('col-sm-4');
-            // }
             establecerImagen(data.id_tipo_persona, '#columnaFoto', '#columnaInformacion', '#columnaDescripcion');
             $('#divLogoEmpresa').css('display', 'none');
             $('#fotoPersona').attr('src', data.foto).on('load', function() {
                 $('#divFotoPersona').css('display', 'block');
             });       
             $('#spanEmpresa').text(data.empresavisitada); 
-            $('#spanColaborador').text(data.colaborador);
-            // $('#infoColaborador').css('display', 'none');  
-            // $('#infoVisitanteConductor').css('display', '');  
-
+            $('#spanColaborador').text(data.colaborador); 
             parametrosPanel(data.id_tipo_persona, '#infoColaborador', '#infoVisitanteConductor', '#tabInfoRegistro', '#tituloTelefono');
             if(data.id_tipo_persona == 1){
                 $('#divActivo').css('display', 'none');
-                // $('#tabInfoRegistro').text('Registro visitante');
-                // $('#tituloTelefono').text('Teléfono de emergencia'); 
-            } else {
-                // $('#tabInfoRegistro').text('Registro conductor');
-                // $('#tituloTelefono').text('Teléfono de contacto'); 
-            }        
+            }      
 
         } else if(data.id_tipo_persona == 2 || data.id_tipo_persona == 3){
-            // if($('#columnaFoto').hasClass('col-sm-3')){
-            //     $('#columnaFoto').removeClass('col-sm-3');
-            //     $('#columnaFoto').addClass('col-sm-2');
-            //     $('#columnaInformacion').removeClass('col-sm-9');
-            //     $('#columnaInformacion').addClass('col-sm-10');
-            // }
-            // if($('#columnaDescripcion').hasClass('col-sm-4')){
-            //     $('#columnaDescripcion').removeClass('col-sm-4');
-            //     $('#columnaDescripcion').addClass('col-sm-6');
-            // }
             establecerImagen(data.id_tipo_persona, '#columnaFoto', '#columnaInformacion', '#columnaDescripcion');
             var urlLogo = '/assets/imagenes/' + data.empresa.toLowerCase() +'.png';
             $('#divFotoPersona').css('display', 'none');
             $('#logoEmpresa').attr('src', urlLogo).on('load', function() {
                 $('#divLogoEmpresa').css('display', 'block');
             }); 
-            // $('#tabInfoRegistro').text('Registro colaborador');
-            // $('#tituloTelefono').text('Teléfono de contacto'); 
             $('#spanCorreo').text(data.email); 
             $('#spanEmpresaCol').text(data.empresa);
-            // $('#infoVisitanteConductor').css('display', 'none'); 
-            // $('#infoColaborador').css('display', '');
             parametrosPanel(data.id_tipo_persona, '#infoColaborador', '#infoVisitanteConductor', '#tabInfoRegistro', '#tituloTelefono');
             if(data.id_tipo_persona == 3){
-                obtenerActivoActualizado(data.identificacion, data.codigo_activo);
+                obtenerActivoActualizado(data.identificacion, data.codigo_activo, 1);
             }
         } 
         $('#informacionRegistro').css('display', 'block');   
@@ -627,17 +595,23 @@ $(function() {
     //Se elije una fila de la tabla de registros sin salida de vehículos y se toma la información del registro para mostrarla en un panel de pestañas de selección de manera organizada dependiendo del tipo de persona, se muestra primero la información del vehículo
     $('#tabla_registros_activos tbody').on('click', '.registrar_salidaActivo', function () { 
         var data = $('#tabla_registros_activos').DataTable().row(this).data(); 
+        $('#columnaActivo2').css('display', 'none');
         restablecerTabsActivo();
+        obtenerActivoActualizado(data.identificacion, data.codigo_activo, 2);
 
         datosRegistroActivo.idRegistro = data.id_registros;
-        if(data.codigo_activo_salida != null){
-            $('#spanCodigoActivo2').text(data.codigo_activo_salida); 
-            $('#columnaActivo2').css('display', '');
-            datosRegistroActivo.activo = data.activo + ' ' + data.codigo_activo_salida;
-        } else {
-            $('#columnaActivo2').css('display', 'none');
-            datosRegistroActivo.activo = data.activo + ' ' + data.codigo_activo;
-        }
+        datosRegistroActivo.idPersona = data.id_persona; 
+        datosRegistroActivo.tipoActivo = data.activo; 
+        datosRegistroActivo.activo = data.codigo_activo;
+        datosRegistroActivo.nuevoActivo = '';
+        // if(data.codigo_activo_salida != null){
+        //     $('#spanCodigoActivo4').text(data.codigo_activo_salida); 
+        //     $('#columnaActivo2').css('display', '');
+        //     datosRegistroActivo.activo = data.activo + ' ' + data.codigo_activo_salida;
+        // } else {
+        //     $('#columnaActivo2').css('display', 'none');
+        //     datosRegistroActivo.activo = data.activo + ' ' + data.codigo_activo;
+        // }
         
         var urlLogo = '/assets/imagenes/' + data.empresa.toLowerCase() +'.png';
         $('#logoEmpresa3').attr('src', urlLogo);
@@ -664,7 +638,7 @@ $(function() {
     });
 
     //Función que envía una petición Ajax al servidor para consultar en el sistema GLPI si a un colaborador en específico se le ha cambiado el código del activo asignado, si esto sucede el sistema ubica al usuario en la pestaña de Activo y muestra cual es el nuevo código que tiene asignado el colaborador
-    function obtenerActivoActualizado(idColaborador, codigoActual) {
+    function obtenerActivoActualizado(idColaborador, codigoActual, num) {
         $.ajax({
             url: '/colaboradores/colaboradoridentificado',
             type: 'GET',
@@ -683,17 +657,27 @@ $(function() {
                         dataType: 'json',
                         success: function(activo) {
                             if(activo.name != codigoActual){
-                                datosRegistro.nuevoActivo = activo.name;
-                                $('#tabDatosIngreso').removeClass('active');
-                                $('#datosIngreso').removeClass('active show');
-                                $('#tabDatosActivo').addClass('active');
-                                $('#datosActivo').addClass('active show');
-                                $('#spanCodigoActivo2').text(activo.name);
-                                $('#columnaActivo').css(
-                                    {'display': '',
-                                        'border-left': '5px solid red'
-                                    }
-                                );
+                                if(num == 1){
+                                    datosRegistro.nuevoActivo = activo.name;
+                                    $('#tabDatosIngreso').removeClass('active');
+                                    $('#datosIngreso').removeClass('active show');
+                                    $('#tabDatosActivo').addClass('active');
+                                    $('#datosActivo').addClass('active show');
+                                    $('#spanCodigoActivo2').text(activo.name);
+                                    $('#columnaActivo').css(
+                                        {'display': '',
+                                            'border-left': '5px solid red'
+                                        }
+                                    );
+                                } else {
+                                    datosRegistroActivo.nuevoActivo = activo.name;
+                                    $('#spanCodigoActivo4').text(activo.name);
+                                    $('#columnaActivo2').css(
+                                        {'display': '',
+                                            'border-left': '5px solid red'
+                                        }
+                                    );
+                                }
                             }
                         },
                         error: function() {
@@ -784,7 +768,7 @@ $(function() {
                 $('.textoPersona').text(obtenerNombrePersona());
                 if(casoSalida == 'salidaVehiculoActivo' || casoSalida == 'salidaPersonaActivo'){
                     if(datosRegistro.nuevoActivo != ''){
-                        $('.textoActivo').text('Computador ' + datosRegistro.nuevoActivo);
+                        $('.textoActivo').text(datosRegistro.tipoActivo + ' '  + datosRegistro.nuevoActivo);
                     } else {
                         $('.textoActivo').text(datosRegistro.tipoActivo + ' ' + datosRegistro.activo); 
                     }
@@ -835,9 +819,18 @@ $(function() {
         });
     });
 
+    //Función que permite asignar un mensaje en los modales de los registros de salida de activos dependiendo si se ha hecho o no algún cambio en el sistema GLPI con respecto al activo que el colaborador tenga asignado
+    function asiganarMensaje(elemento) {
+        if(datosRegistroActivo.nuevoActivo != ''){
+            $(elemento).text(datosRegistroActivo.tipoActivo + ' ' + datosRegistroActivo.nuevoActivo);
+        } else {
+            $(elemento).text(datosRegistroActivo.tipoActivo + ' ' + datosRegistroActivo.activo);
+        }
+    }
+
     //Botón que permite desplegar un modal de confirmación cuando el usuario quiera realizar el registro de una salida de un activo al cuál no se le habia hecho el registro antes
     $('#botonGuardarSalida3').on('click', function () {
-        $('#textoSalida3').text(datosRegistroActivo.activo);
+        asiganarMensaje('#textoSalida3');
         $('#modal-registrarSalidaActivo').modal('show');
     });
 
@@ -847,14 +840,17 @@ $(function() {
         $.ajax({
             url: '/registros/salida_persona/' + datosRegistroActivo.idRegistro,
             type: 'PUT',
-            data: {             
+            data: {  
+                idPersona: datosRegistroActivo.idPersona,           
+                activoActual: datosRegistroActivo.activo,
+                codigo: datosRegistroActivo.nuevoActivo,
                 registroSalida: 'salidaActivo',
             },
             success: function(res) {
                 console.log(res);
                 datatableRegistrosActivos();
                 $('#infoRegistroActivo').css('display', 'none'); 
-                $('#textoActivo').text(datosRegistroActivo.activo);
+                asiganarMensaje('#textoActivo');
                 $('#modal-salida-activo').modal('show');
             },
             error: function() {
