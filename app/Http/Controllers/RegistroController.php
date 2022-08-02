@@ -292,7 +292,6 @@ class RegistroController extends Controller
         $id = $request->input('persona');
         try {
             $registro = Registro::select('se_registros.*')
-            // ->leftjoin('se_vehiculos AS vehiculos', 'se_registros.id_vehiculo', '=', 'vehiculos.id_vehiculos')
             ->where('id_persona', $id)->whereNotNull('salida_persona')->whereNotNull('ingreso_activo')->whereNull('salida_activo')->latest('ingreso_activo')->first();
             if($registro == null){
                 $registro = response()->json(['message' => 'La persona no tiene registros con un activo sin salida']);
@@ -345,4 +344,19 @@ class RegistroController extends Controller
         // $registros = $this->registros->informacionRegistrosActivos();
         // return $registros;
     }
+
+
+    public function registrosPorPersona(Request $request)
+    {
+        $id = $request->input('persona');
+        $mes = $request->input('mes');
+        try {
+            $registros = Registro::select('se_registros.*')
+            ->where('id_persona', $id)->whereNotNull('salida_persona')->whereMonth('ingreso_persona', $mes)->latest()->get();
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
+        }
+        return $registros;
+    }
 }
+

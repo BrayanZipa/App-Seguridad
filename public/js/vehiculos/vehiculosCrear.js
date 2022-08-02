@@ -135,7 +135,7 @@ $(function() {
         $('#selectPersona').empty();     
         
         $.ajax({
-            url: '/vehiculos/personas',
+            url: 'personas',
             type: 'GET',
             data: {
                 tipoPersona: $('#selectTipoPersona option:selected').val(),

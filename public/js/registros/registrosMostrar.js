@@ -1,5 +1,7 @@
 $(function() { 
 
+    var idPersona = '';
+
     //Uso de DataTables para mostrar los registros realizados en donde se completo tanto las entradas como salidas de todos los tipos de persona (visitantes, conductores, colaboradores con y sin activo)
     $('#tabla_registros').DataTable({
         'destroy': true,
@@ -8,7 +10,7 @@ $(function() {
         'autoWidth': false,
         // 'serverSide': true,
         // 'scrollY': '300px',
-        'ajax': '/registros/informacion',
+        'ajax': 'informacion',
         'dataType': 'json',
         'type': 'GET',
         'columns': [
@@ -130,6 +132,7 @@ $(function() {
     //Se elije una fila de la tabla de registros completados y se toma la información del registro para mostrarla en un panel de pestañas de selección de manera organizada dependiendo del tipo de persona
     $('#tabla_registros tbody').on('click', '.consultar_registro', function () { 
         var data = $('#tabla_registros').DataTable().row(this).data(); 
+        idPersona = data.id_persona;
         restablecerTabs();
 
         if(data.ingreso_vehiculo != null){
@@ -235,6 +238,34 @@ $(function() {
         $('#footerPanel').css('display', 'none');  
         $('#informacionRegistro').css('display', 'block');  
     });
+
+
+    //
+    $('#selectHistorial').on('change', function () {
+        $('#listaRegistros').empty();   
+        // $(select).append("<option selected='selected' value='' disabled>Seleccione el vehículo</option>");
+        $.ajax({
+            url: 'listado_por_persona',
+            type: 'GET',
+            data: {
+                persona: idPersona,
+                mes: $('#selectHistorial option:selected').val(),
+            },
+            dataType: 'json',
+            success: function(response) {   
+                console.log(response);          
+                $.each(response, function(key, value){     
+                    $('#listaRegistros').append("<li>" + value.ingreso_persona + ' ' + value.salida_persona  + "</li>");
+                }); 
+                // "<option value='" + value.id_vehiculos + "'>" + value.tipo + " - " + value.identificador + "</option>"
+            },
+            error: function() {
+                console.log('Error obteniendo los datos de la base de datos');
+            }
+        });
+    });
+
+
 
     //Botón que al ser seleccionado elimina el botón registrar salida si se encuentra creado en la vista
     $('#botonCollapse').click(function(){

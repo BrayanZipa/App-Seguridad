@@ -37,7 +37,7 @@ $(function () {
         $('#selectPersona').empty();   
         $('#selectPersona').append("<option value=''>Seleccione a la persona</option>");
         $.ajax({
-            url: '/registros/personas',
+            url: 'personas',
             type: 'GET',
             data: {
                 tipoPersona: $('#selectTipoPersona option:selected').val(),
@@ -66,7 +66,7 @@ $(function () {
             $('.registros').removeClass('is-invalid');
         }  
         $.ajax({
-            url: '/registros/persona',
+            url: 'persona',
             type: 'GET',
             data: {
                 persona: $('#selectPersona option:selected').val(),
@@ -207,7 +207,7 @@ $(function () {
                     }  
                     
                     $.ajax({
-                        url: '/registros/activo_sin_salida',
+                        url: 'activo_sin_salida',
                         type: 'GET',
                         data: {
                             persona: data.id_personas
@@ -277,7 +277,7 @@ $(function () {
     //Función que hace una petición Ajax para traer la información del último registro que haya tenido una persona donde se haya registrado su ingreso, así como el ingreso de un vehículo, pero se haya registrado la salida de la persona y no la del vehículo. Si este registro existe se bloquea el select de ingreso de vehículo y se muestra un mensaje informativo
     function obtenerUltimoRegistroVehiculo(idPersona, tipoPersona) {
         $.ajax({
-            url: '/registros/vehiculo_sin_salida',
+            url: 'vehiculo_sin_salida',
             type: 'GET',
             data: {
                 persona: idPersona
@@ -349,7 +349,7 @@ $(function () {
     //Función que hace una petición Ajax para traer la información del último registro que haya tenido un colaborador donde se haya registrado su ingreso, así como el ingreso de un activo, pero se haya registrado la salida de la persona y no la del activo. Si este registro existe no se realiza la búsqueda del activo y se muestra un mensaje informativo
     function obtenerUltimoRegistroActivo(idPersona) {
         $.ajax({
-            url: '/registros/activo_sin_salida',
+            url: 'activo_sin_salida',
             type: 'GET',
             data: {
                 persona: idPersona
@@ -439,7 +439,7 @@ $(function () {
         $(select).append("<option selected='selected' value='' disabled>Seleccione el vehículo</option>");
 
         $.ajax({
-            url: '/registros/vehiculos/',
+            url: 'vehiculos',
             type: 'GET',
             data: {
                 persona: $('#idPersona').val()

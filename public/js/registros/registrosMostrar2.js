@@ -21,7 +21,7 @@ $(function() {
             'autoWidth': false,
             // 'serverSide': true,
             // 'scrollY': '300px',
-            'ajax': '/registros/informacion_sin_salida',
+            'ajax': 'informacion_sin_salida',
             'dataType': 'json',
             'type': 'GET',
             'columns': [
@@ -124,7 +124,7 @@ $(function() {
             'autoWidth': false,
             // 'serverSide': true,
             // 'scrollY': '300px',
-            'ajax': '/registros/informacion_vehiculos',
+            'ajax': 'informacion_vehiculos',
             'dataType': 'json',
             'type': 'GET',
             'columns': [
@@ -221,7 +221,7 @@ $(function() {
             'autoWidth': false,
             // 'serverSide': true,
             // 'scrollY': '300px',
-            'ajax': '/registros/informacion_activos',
+            'ajax': 'informacion_activos',
             'dataType': 'json',
             'type': 'GET',
             'columns': [
@@ -421,6 +421,7 @@ $(function() {
     }
 
     //Al momento en que se carga la página se ocultan elemetos al usuario para esta vista y se cambia el tamaño de varias columnas para mostar de mejor manera la información
+    $('#tabHistorial').css('display', 'none');
     $('#infoSalidaPersona').css('display', 'none');
     $('#infoSalidaVehiculo').css('display', 'none');
     $('#infoSalidaActivo').css('display', 'none');
@@ -521,7 +522,7 @@ $(function() {
             $('#spanCorreo').text(data.email); 
             $('#spanEmpresaCol').text(data.empresa);
             parametrosPanel(data.id_tipo_persona, '#infoColaborador', '#infoVisitanteConductor', '#tabInfoRegistro', '#tituloTelefono');
-            if(data.id_tipo_persona == 3){
+            if(data.id_tipo_persona == 3 && data.ingreso_activo !=  null){
                 obtenerActivoActualizado(data.identificacion, data.codigo_activo, 1);
             }
         } 
@@ -729,7 +730,7 @@ $(function() {
     $('#botonContinuarSalida').on('click', function () {
         $('#modal-registrarSalida').modal('hide');
         $.ajax({
-            url: '/registros/salida_persona/' + datosRegistro.idRegistro,
+            url: 'salida_persona/' + datosRegistro.idRegistro,
             type: 'PUT',
             data: {
                 idPersona: datosRegistro.idPersona,
@@ -777,7 +778,7 @@ $(function() {
     $('#botonContinuarSalida2').on('click', function () {
         $('#modal-registrarSalidaVehiculo').modal('hide');
         $.ajax({
-            url: '/registros/salida_persona/' + datosRegistroVehiculo.idRegistro,
+            url: 'salida_persona/' + datosRegistroVehiculo.idRegistro,
             type: 'PUT',
             data: {
                 registroSalida: 'salidaVehiculo',
@@ -813,7 +814,7 @@ $(function() {
     $('#botonContinuarSalida3').on('click', function () {
         $('#modal-registrarSalidaActivo').modal('hide');
         $.ajax({
-            url: '/registros/salida_persona/' + datosRegistroActivo.idRegistro,
+            url: 'salida_persona/' + datosRegistroActivo.idRegistro,
             type: 'PUT',
             data: {  
                 idPersona: datosRegistroActivo.idPersona,           

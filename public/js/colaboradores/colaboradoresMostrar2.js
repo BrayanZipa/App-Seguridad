@@ -16,7 +16,7 @@ $(function() {
         // 'serverSide': true,
         // 'scrollY': '300px',
         'ajax': {
-            'url' : '/colaboradores/informacion',
+            'url' : 'informacion',
             'data' : { 'tipoPersona' : 2 },
             'type' : 'get'
         },
@@ -175,7 +175,7 @@ $(function() {
     //Botón que hace una petición Ajax hacia el servidor para cambiar el rol de un colaborador sin activo a visitante
     $('#botonConfirmar').click(function(){
         $.ajax({
-            url: '/colaboradores/cambiar_rol/' + $('#inputId').val(),
+            url: 'cambiar_rol/' + $('#inputId').val(),
             type: 'DELETE',
             success: function(res) {
                 window.location.reload();

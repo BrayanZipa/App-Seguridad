@@ -16,7 +16,7 @@ $(function() {
         // 'serverSide': true,
         // 'scrollY': '300px',
         'ajax': {
-            'url' : '/colaboradores/informacion',
+            'url' : 'informacion',
             'data' : { 'tipoPersona' : 3 },
             'type' : 'get'
         },
@@ -113,7 +113,7 @@ $(function() {
         $('#inputId').val(data.id_personas); 
 
         $.ajax({
-            url: '/colaboradores/colaboradoridentificado',
+            url: 'colaboradoridentificado',
             type: 'GET',
             data: {
                 colaborador: data.identificacion
@@ -140,7 +140,7 @@ $(function() {
 
                 } else {                  
                     $.ajax({
-                        url: '/colaboradores/computador',
+                        url: 'computador',
                         type: 'GET',
                         data: {
                             colaborador: response.id,
@@ -254,7 +254,7 @@ $(function() {
     //Botón que hace una petición Ajax hacia el servidor para cambiar el rol de un colaborador con activo a visitante y eliminar su registro de la tabla de se_activos
     $('#botonConfirmar').click(function(){
         $.ajax({
-            url: '/colaboradores/cambiar_rol/' + $('#inputId').val(),
+            url: 'cambiar_rol/' + $('#inputId').val(),
             type: 'DELETE',
             success: function(res) {
                 window.location.reload();

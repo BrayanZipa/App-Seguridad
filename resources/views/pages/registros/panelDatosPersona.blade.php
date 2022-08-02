@@ -39,6 +39,9 @@
                             <li class="nav-item">
                                 <a class="nav-link" id="tabDatosVehiculo" data-toggle="pill" href="#datosVehiculo" role="tab" aria-controls="datosVehiculo" aria-selected="false">Vehículo</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="tabHistorial" data-toggle="pill" href="#historial" role="tab" aria-controls="historial" aria-selected="false">Historial</a>
+                            </li>
                         </ul>
                     </div>
                     <div class="card-body">
@@ -358,6 +361,39 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="tab-pane fade" id="historial" role="tabpanel" aria-labelledby="tabHistorial">
+                                <div class="ml-4">
+                                    <div class="row">                              
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="selectHistorial">Filtrar registros por mes</label>
+                                                <select id="selectHistorial" class="form-control" style="width: 100%;">
+                                                    <option selected="selected" value="" disabled>Seleccione el mes</option>
+                                                    <option value="1">Enero</option>
+                                                    <option value="2">Febrero</option>
+                                                    <option value="3">Marzo</option>
+                                                    <option value="4">Abril</option>
+                                                    <option value="5">Mayo</option>
+                                                    <option value="6">Junio</option>
+                                                    <option value="7">Julio</option>
+                                                    <option value="8">Agosto</option>
+                                                    <option value="9">Septiembre</option>
+                                                    <option value="10">Octubre</option>
+                                                    <option value="11">Noviembre</option>
+                                                    <option value="12">Diciembre</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">                              
+                                        <div class="col-sm-10">
+                                            <ul id="listaRegistros">
+                                                
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div> 
                             </div>
                         </div>
                     </div>
