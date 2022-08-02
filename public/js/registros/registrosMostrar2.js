@@ -322,13 +322,6 @@ $(function() {
 
     //Función que permite reestablecer las pestañas de selección (Tabs) en la vista de personas sin salida para que sea la pestaña de Datos de ingreso la primera que se muestre al momento en que se seleccione un nuevo registro para darle salida 
     function restablecerTabs() {
-        // if($('#tabDatosVehiculo').hasClass('active')){
-        //     $('#tabDatosVehiculo').removeClass('active');
-        //     $('#datosVehiculo').removeClass('active show');
-        //     $('#tabInfoRegistro').addClass('active');
-        //     $('#infoRegistro').addClass('active show');
-        // }
-
         if($('#tabDatosBasicos').hasClass('active') || $('#tabDatosActivo').hasClass('active') || $('#tabDatosVehiculo').hasClass('active')){
             if($('#tabDatosBasicos').hasClass('active')){
                 $('#tabDatosBasicos').removeClass('active');
@@ -489,8 +482,7 @@ $(function() {
             $('#spanFechaActivo').text(moment(data.ingreso_activo).format('DD-MM-YYYY'));
             $('#spanHoraActivo').text(moment(data.ingreso_activo).format('h:mm:ss a'));
             $('#spanTipoActivo').text(data.activo);
-            $('#spanCodigoActivo').text(data.codigo_activo); 
-            // $('#spanCodigoActivo').text(data.codigo);  
+            $('#spanCodigoActivo').text(data.codigo_activo);  
             $('#tabDatosActivo').css('display', 'block');
         } else {
             $('#tabDatosActivo').css('display', 'none');
@@ -534,8 +526,6 @@ $(function() {
             }
         } 
         $('#informacionRegistro').css('display', 'block');   
-        console.log(data);
-        console.log(casoSalida);
     });
 
     //Se elije una fila de la tabla de registros sin salida de vehículos y se toma la información del registro para mostrarla en un panel de pestañas de selección de manera organizada dependiendo del tipo de persona, se muestra primero la información del vehículo
@@ -589,7 +579,6 @@ $(function() {
             parametrosPanel(data.id_tipo_persona, '#infoColaborador2', '#infoVisitanteConductor2', '#tabInfoRegistro2', '#tituloTelefono2');
         }        
         $('#infoRegistroVehiculo').css('display', 'block'); 
-        console.log(data);
     });
 
     //Se elije una fila de la tabla de registros sin salida de vehículos y se toma la información del registro para mostrarla en un panel de pestañas de selección de manera organizada dependiendo del tipo de persona, se muestra primero la información del vehículo
@@ -604,14 +593,6 @@ $(function() {
         datosRegistroActivo.tipoActivo = data.activo; 
         datosRegistroActivo.activo = data.codigo_activo;
         datosRegistroActivo.nuevoActivo = '';
-        // if(data.codigo_activo_salida != null){
-        //     $('#spanCodigoActivo4').text(data.codigo_activo_salida); 
-        //     $('#columnaActivo2').css('display', '');
-        //     datosRegistroActivo.activo = data.activo + ' ' + data.codigo_activo_salida;
-        // } else {
-        //     $('#columnaActivo2').css('display', 'none');
-        //     datosRegistroActivo.activo = data.activo + ' ' + data.codigo_activo;
-        // }
         
         var urlLogo = '/assets/imagenes/' + data.empresa.toLowerCase() +'.png';
         $('#logoEmpresa3').attr('src', urlLogo);
@@ -634,7 +615,6 @@ $(function() {
         $('#spanCodigoActivo3').text(data.codigo_activo); 
         
         $('#infoRegistroActivo').css('display', 'block'); 
-        console.log(data);
     });
 
     //Función que envía una petición Ajax al servidor para consultar en el sistema GLPI si a un colaborador en específico se le ha cambiado el código del activo asignado, si esto sucede el sistema ubica al usuario en la pestaña de Activo y muestra cual es el nuevo código que tiene asignado el colaborador
@@ -707,8 +687,6 @@ $(function() {
                 casoSalida = 'salidaPersonaVehiculo';
             }
         }
-        console.log(casoSalida);
-        console.log(datosRegistro)
     });
 
     //Función que se activa cuando el usuario le da click al checkbox de verificar si una persona sale sin su activo, esto hace que a la variable casoSalida se le asigne información que será utilizada para no tener en cuenta la salida del activo
@@ -726,7 +704,6 @@ $(function() {
                 casoSalida = 'salidaPersonaActivo';
             }
         }
-        console.log(casoSalida);
     });
 
     //Función que permite obtener el tipo de persona y el nombre de la persona que se haya seleccionado para realizar el registro de una nueva salida
@@ -760,8 +737,7 @@ $(function() {
                 codigo: datosRegistro.nuevoActivo,
                 registroSalida: casoSalida,      
             },
-            success: function(res) {
-                console.log(res);
+            success: function() {
                 datatableRegistrosSalida();
                 $('#informacionRegistro').css('display', 'none'); 
 
@@ -806,8 +782,7 @@ $(function() {
             data: {
                 registroSalida: 'salidaVehiculo',
             },
-            success: function(res) {
-                console.log(res);
+            success: function() {
                 datatableRegistrosVehiculos();
                 $('#infoRegistroVehiculo').css('display', 'none'); 
                 $('#textoVehiculo').text(datosRegistroVehiculo.vehiculo);
@@ -846,8 +821,7 @@ $(function() {
                 codigo: datosRegistroActivo.nuevoActivo,
                 registroSalida: 'salidaActivo',
             },
-            success: function(res) {
-                console.log(res);
+            success: function() {
                 datatableRegistrosActivos();
                 $('#infoRegistroActivo').css('display', 'none'); 
                 asiganarMensaje('#textoActivo');

@@ -109,13 +109,6 @@ $(function() {
 
     //Función que permite reestablecer las pestañas de selección (Tabs) en la vista para que sea la pestaña inicial la primera que se muestre al momento en que se seleccione un nuevo registro para ser consultado
     function restablecerTabs() {
-        // if($('#tabDatosVehiculo').hasClass('active')){
-        //     $('#tabDatosVehiculo').removeClass('active');
-        //     $('#datosVehiculo').removeClass('active show');
-        //     $('#tabInfoRegistro').addClass('active');
-        //     $('#infoRegistro').addClass('active show');
-        // }
-
         if($('#tabDatosBasicos').hasClass('active') || $('#tabDatosActivo').hasClass('active') || $('#tabDatosVehiculo').hasClass('active')){
             if($('#tabDatosBasicos').hasClass('active')){
                 $('#tabDatosBasicos').removeClass('active');

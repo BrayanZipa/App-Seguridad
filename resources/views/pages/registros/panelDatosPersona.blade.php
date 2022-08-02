@@ -26,7 +26,7 @@
                 <label>Información del registro</label>
                 <div class="card card-primary card-tabs mx-1">
                     <div class="card-header p-0 pt-1">
-                        <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                        <ul class="nav nav-tabs" id="custom-tabs-one-tab1" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active" id="tabDatosIngreso" data-toggle="pill" href="#datosIngreso" role="tab" aria-controls="datosIngreso" aria-selected="true">Datos de ingreso</a>
                             </li>
@@ -42,7 +42,7 @@
                         </ul>
                     </div>
                     <div class="card-body">
-                        <div class="tab-content" id="custom-tabs-one-tabContent">
+                        <div class="tab-content" id="custom-tabs-one-tabContent1">
                             <div class="tab-pane fade active show" id="datosIngreso" role="tabpanel" aria-labelledby="tabDatosIngreso">
                                 <div class="ml-4">
                                     <div class="row">                              

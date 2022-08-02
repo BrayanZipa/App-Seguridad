@@ -43,7 +43,7 @@ class RequestRegistros extends FormRequest
                 }
                 return $validacion;
                 
-            } else if($datos['casoRegistro'] == 'colaboradorSinActivo' || $datos['casoRegistro'] == 'colaboradorConActivo'){
+            } else if($datos['casoRegistro'] == 'colaboradorSinActivo' || $datos['casoRegistro'] == 'colaboradorSinActivo2' || $datos['casoRegistro'] == 'colaboradorConActivo'){
                 $validacion += array_merge($this->validacionGeneral(), $this->validacionColaborador(), $this->validacion_EPS_ARL());
                 if($datos['casoRegistro'] == 'colaboradorConActivo'){
                     $validacion['codigo'] = 'required|string|alpha_num|max:5|min:4';

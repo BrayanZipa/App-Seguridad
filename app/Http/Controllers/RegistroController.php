@@ -108,7 +108,7 @@ class RegistroController extends Controller
 
         if($datos['casoRegistro'] == 'visitante' || $datos['casoRegistro'] == 'visitanteActivo'){
             $mensajes = ['visitante '.$datos['nombre'].' '.$datos['apellido']];
-        } else if ($datos['casoRegistro'] == 'colaboradorConActivo' || $datos['casoRegistro'] == 'colaboradorSinActivo'){
+        } else if ($datos['casoRegistro'] == 'colaboradorConActivo' || $datos['casoRegistro'] == 'colaboradorSinActivo' || $datos['casoRegistro'] == 'colaboradorSinActivo2'){
             $mensajes = ['colaborador '.$datos['nombre'].' '.$datos['apellido']];
         } else if ($datos['casoRegistro'] == 'conductor'){ 
             $mensajes = ['conductor '.$datos['nombre'].' '.$datos['apellido']];
@@ -116,7 +116,7 @@ class RegistroController extends Controller
 
         if($datos['id_vehiculo'] != null){ //ingreso de vehículo
             $mensajes[] = $this->vehiculos->obtenerVehiculo($datos['id_vehiculo'])->identificador;
-            if($datos['casoRegistro'] == 'visitante' || $datos['casoRegistro'] == 'colaboradorSinActivo' || $datos['casoRegistro'] == 'conductor'){ //visitante y colaborador con vehículo y conductor
+            if($datos['casoRegistro'] == 'visitante' || $datos['casoRegistro'] == 'colaboradorSinActivo' || $datos['casoRegistro'] == 'colaboradorSinActivo2' || $datos['casoRegistro'] == 'conductor'){ //visitante y colaborador con vehículo y conductor
                 $modal = ['registro_vehiculo', $mensajes];
             } else { //visitante o colaborador con activo y vehículo
                 $mensajes[] = $datos['codigo_activo'];
@@ -168,7 +168,7 @@ class RegistroController extends Controller
             $datos['codigo_activo'] = null;
             $datos['ingreso_activo'] = null;
         }
-        else if($datos['casoRegistro'] == 'colaboradorSinActivo'){
+        else if($datos['casoRegistro'] == 'colaboradorSinActivo' || $datos['casoRegistro'] == 'colaboradorSinActivo2'){
             $datos['codigo_activo'] = null;
             $datos['ingreso_activo'] = null;
             $datos['empresa_visitada'] = null;
@@ -195,51 +195,6 @@ class RegistroController extends Controller
         ])->save(); 
 
         return $datos;
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 
     /**
@@ -274,7 +229,6 @@ class RegistroController extends Controller
         }  
 
         $registro->update($datos);
-        return $datos;
     }
 
     /**

@@ -43,7 +43,6 @@
             <div class="col-md-12">
                 <div id="informacionRegistro" class="mb-n2" style="display: none">
                     @include('pages.registros.panelDatosPersona')
-                    {{-- @include('pages.registros.panelDatosPersona2') --}}
                 </div>
 
                 <div class="card card-primary mb-n2">

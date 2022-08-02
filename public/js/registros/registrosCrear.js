@@ -155,7 +155,6 @@ $(function () {
                     });
                     obtenerColaborador(response);
                     $('#formRegistros3').attr('action','/registros/editar_persona/' + response.id_personas);
-                    // $('#registro3').val('colaboradorConActivo');
                     $('#inputId3').val(response.id_personas);
                     $('#inputTelefono3').val(response.tel_contacto);
                     $('#selectEps3').val(response.id_eps);
@@ -229,7 +228,7 @@ $(function () {
                                     'display': ''
                                     }
                                 );
-                                $('#registro3').val('colaboradorSinActivo');
+                                $('#registro3').val('colaboradorSinActivo2');
                                 $('#mensajeActivo').text(mensaje);
                                 
                             } else {
@@ -347,7 +346,7 @@ $(function () {
         });
     }
 
-    //Función que hace una petición Ajax para traer la información del último registro que haya tenido un colaborador donde se haya registrado su ingreso, así como el ingreso de un activo, pero se haya registrado la salida de la persona y no la del activo. Si este registro existe se bloquea         y se muestra un mensaje informativo
+    //Función que hace una petición Ajax para traer la información del último registro que haya tenido un colaborador donde se haya registrado su ingreso, así como el ingreso de un activo, pero se haya registrado la salida de la persona y no la del activo. Si este registro existe no se realiza la búsqueda del activo y se muestra un mensaje informativo
     function obtenerUltimoRegistroActivo(idPersona) {
         $.ajax({
             url: '/registros/activo_sin_salida',
@@ -356,16 +355,10 @@ $(function () {
                 persona: idPersona
             },
             dataType: 'json',
-            success: function(response) {             
-                if('ingreso_activo' in response){  
-                    var fecha = moment(response.ingreso_activo).format('DD-MM-YYYY');
-                    if(response.codigo_activo_salida != null){
-                        var mensaje = 'El colaborador tiene en las intalaciones el activo ' + response.codigo_activo_salida + ' ingresado el ' + fecha;
-                    } else {
-                        var mensaje = 'El colaborador tiene en las intalaciones el activo ' + response.codigo_activo + ' ingresado el ' + fecha;
-                    }
-
-                    console.log(mensaje);
+            success: function(activoSinSalida) {             
+                if('ingreso_activo' in activoSinSalida){  
+                    var fecha = moment(activoSinSalida.ingreso_activo).format('DD-MM-YYYY');
+                    var mensaje = 'El colaborador tiene en las intalaciones el activo ' + activoSinSalida.codigo_activo + ' ingresado el ' + fecha;
 
                     $('#mensajeActivo').css(
                         {
@@ -377,12 +370,8 @@ $(function () {
                         'display': ''
                         }
                     );
-                    $('#mensajeActivo').text(mensaje);
-                    return true;
-                } else {
-                    return false;
+                    $('#mensajeActivo').text(mensaje);     
                 }
-                
             },
             error: function() {
                 console.log('Error obteniendo los datos de la base de datos');
@@ -421,7 +410,7 @@ $(function () {
         checkboxVehiculos('#checkVehiculo3', '#selectVehiculo3', '#divVehiculo3');
     });
 
-    ////Función que se activa cuando el usuario le da click al checkbox de ingresar activo en el formulario de visitanteConductor, permitiendo ocultar o mostrar la información, así como hacerla requerida o no
+    //Función que se activa cuando el usuario le da click al checkbox de ingresar activo en el formulario de visitanteConductor, permitiendo ocultar o mostrar la información, así como hacerla requerida o no
     $('#checkActivo').on('change', function () {
         if ($('#checkActivo').is(':checked')) {
             $('#registro').val('visitanteActivo');
@@ -598,7 +587,10 @@ $(function () {
                 if($('#vehiculo2').val().length > 0){ retornoVehiculo('#vehiculo2', '#checkVehiculo2', '#selectVehiculo2');}
                 $('#formColaboradorSinActivo').css('display', 'block');   
 
-            } else if($('#registro3').val() == 'colaboradorConActivo'){
+            } else if($('#registro3').val() == 'colaboradorConActivo' || $('#registro3').val() == 'colaboradorSinActivo2'){
+                if($('#registro3').val() == 'colaboradorSinActivo2'){
+                    obtenerUltimoRegistroActivo($('#inputId3').val());
+                }
                 retornoInformacion(3, '#formRegistros3', '#inputId3');
                 if($('#vehiculo3').val().length > 0){ retornoVehiculo('#vehiculo3', '#checkVehiculo3', '#selectVehiculo3');}
                 $('#formColaboradorConActivo').css('display', 'block');    
