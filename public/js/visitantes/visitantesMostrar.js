@@ -92,7 +92,8 @@ $(function() {
             $('.visitante').removeClass('is-invalid');
         }  
         $('#formularioEditar').css('display', 'block');  
-        $('#form_editar').attr('action','/visitantes/editar/' + data.id_personas); 
+        $('#form_editar').attr('action','/visitantes/editar/' + data.id_personas);
+        // $('#form_editar').attr('action','../public/visitantes/editar/' + data.id_personas); 
         $('#inputId').val(data.id_personas); 
         $('#inputFoto').val(data.foto);
         $('#fotoVisitante').attr('src', data.foto);  
@@ -157,6 +158,7 @@ $(function() {
             var foto = document.getElementById('inputFoto').value;
             document.getElementById('formularioEditar').style.display = 'block';
             document.getElementById('form_editar').setAttribute('action', '/visitantes/editar/' + id_visitante);
+            // document.getElementById('form_editar').setAttribute('action', '../public/visitantes/editar/' + id_visitante);
             document.getElementById('fotoVisitante').setAttribute('src', foto);
             activarSelect2();
         }

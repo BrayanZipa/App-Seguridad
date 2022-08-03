@@ -15,6 +15,7 @@ use App\Models\TipoVehiculo;
 use App\Models\Vehiculo;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 
 class ConductorController extends Controller
@@ -34,7 +35,7 @@ class ConductorController extends Controller
         $this->marcaVehiculos = $marcaVehiculos;
         $this->empresas = $empresas;
     }
-  
+
     /**
      * Display a listing of the resource.
      *
@@ -85,7 +86,7 @@ class ConductorController extends Controller
             $filename = 'conductores/'. $nuevoConductor['identificacion']. '_'. date('Y-m-d'). '.png';
             $ruta = storage_path() . '\app\public/' .  $filename;
             Image::make($foto)->resize(600, 500)->save($ruta);
-            $url = Storage::url($filename);
+            $url = Str::replaceFirst('/', '', Storage::url($filename));
         } 
 
         //Crear registro de nuevo conductor dato a dato con la información del request
@@ -109,7 +110,7 @@ class ConductorController extends Controller
         return redirect()->action([ConductorController::class, 'create'])->with('crear_conductor', $modal);
     }
 
-    //Función que permite registrar un nuevo vehículo creado desde el modulo de conductores
+    //Función que permite registrar un nuevo vehículo creado desde el módulo de conductores
     public function store2($datos, $id_persona)
     {
         if(!isset($datos['foto_vehiculo'])){ //saber si es null
@@ -122,7 +123,7 @@ class ConductorController extends Controller
             $filename = 'vehiculos/'. $id_persona. '_'. $datos['identificador']. '_'.date('Y-m-d'). '.png';
             $ruta = storage_path() . '\app\public/' .  $filename;
             Image::make($foto)->resize(600, 500)->save($ruta);
-            $url = Storage::url($filename);
+            $url = Str::replaceFirst('/', '', Storage::url($filename));
         }
 
         if(!isset($datos['id_marca_vehiculo'])){ //saber si existe

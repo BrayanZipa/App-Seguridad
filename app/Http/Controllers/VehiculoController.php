@@ -11,6 +11,7 @@ use App\Models\Vehiculo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 
 class VehiculoController extends Controller
@@ -80,7 +81,7 @@ class VehiculoController extends Controller
             $filename = 'vehiculos/'. '$id_persona'. '_'. $nuevoVehiculo['identificador']. '_'.date('Y-m-d'). '.png';
             $ruta = storage_path() . '\app\public/' .  $filename;
             Image::make($foto)->resize(600, 500)->save($ruta);
-            $url = Storage::url($filename);
+            $url = Str::replaceFirst('/', '', Storage::url($filename));
         }
 
         if(!isset($nuevoVehiculo['id_marca_vehiculo'])){ //saber si existe

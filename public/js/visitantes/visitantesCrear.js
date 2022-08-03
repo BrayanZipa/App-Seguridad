@@ -497,6 +497,7 @@ $(function () {
 
     $('.botonContinuar').click(function () {
         $(location).attr('href', '/visitantes');
+        // $(location).attr('href', '../visitantes');
     });
     
 });

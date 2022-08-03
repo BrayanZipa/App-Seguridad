@@ -365,10 +365,20 @@
                             <div class="tab-pane fade" id="historial" role="tabpanel" aria-labelledby="tabHistorial">
                                 <div class="ml-4">
                                     <div class="row">                              
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-4">
                                             <div class="form-group">
-                                                <label for="selectHistorial">Filtrar registros por mes</label>
-                                                <select id="selectHistorial" class="form-control" style="width: 100%;">
+                                                <label for="selectAnio">Filtrar registros por año</label>
+                                                <select id="selectAnio" class="form-control" style="width: 100%;">
+                                                    <option selected="selected" value="" disabled>Seleccione el año</option>
+                                                    <option value="2022">2022</option>
+                                                    <option value="2023">2023</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="selectMes">Filtrar registros por mes</label>
+                                                <select id="selectMes" class="form-control" style="width: 100%;">
                                                     <option selected="selected" value="" disabled>Seleccione el mes</option>
                                                     <option value="1">Enero</option>
                                                     <option value="2">Febrero</option>
@@ -385,12 +395,59 @@
                                                 </select>
                                             </div>
                                         </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label>Total registros</label>
+                                                <input type="text" id="totalRegistros" class="form-control" disabled>
+                                            </div>
+                                        </div>                                      
                                     </div>
                                     <div class="row">                              
-                                        <div class="col-sm-10">
-                                            <ul id="listaRegistros">
-                                                
-                                            </ul>
+                                        <div class="col-sm-12">
+                                            <ul id="listaRegistros"></ul>
+
+
+
+
+                                            <div id="tablaRegistros" class="table-responsive" style="display: none">
+                                                <table class="table m-0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Fecha de ingreso</th>
+                                                            <th>Hora de ingreso</th>
+                                                            <th>Fecha de salida</th>
+                                                            <th>Hora de salida</th>
+                                                            <th>Ingresa vehículo</th>
+                                                            <th>Ingresa activo</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="tablaRegistrosFilas">
+                                                        {{-- <tr>
+                                                            <td>OR9842</td>
+                                                            <td>Call of Duty IV</td>
+                                                            <td>Shipped</td>
+                                                            <td>palbra</td>
+                                                            <td>palbra</td>
+                                                            <td>palbra</td>
+                                                        </tr> --}}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                                         </div>
                                     </div>
                                 </div> 

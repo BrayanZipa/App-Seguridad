@@ -16,6 +16,7 @@ use App\Models\Vehiculo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 
 class VisitanteController extends Controller
@@ -110,7 +111,7 @@ class VisitanteController extends Controller
             $filename = 'visitantes/'. $nuevoVisitante['identificacion']. '_'. date('Y-m-d'). '.png';
             $ruta = storage_path() . '\app\public/' .  $filename;
             Image::make($foto)->resize(600, 500)->save($ruta);
-            $url = Storage::url($filename);
+            $url = Str::replaceFirst('/', '', Storage::url($filename));
         }      
 
         //Crear registro de nuevo visitante dato a dato con la información del request
@@ -166,7 +167,7 @@ class VisitanteController extends Controller
             $filename = 'vehiculos/'. $id_persona. '_'. $datos['identificador']. '_'.date('Y-m-d'). '.png';
             $ruta = storage_path() . '\app\public/' .  $filename;
             Image::make($foto)->resize(600, 500)->save($ruta);
-            $url = Storage::url($filename);
+            $url = Str::replaceFirst('/', '', Storage::url($filename));
         }
 
         if(!isset($datos['id_marca_vehiculo'])){ //saber si existe

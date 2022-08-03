@@ -345,18 +345,26 @@ class RegistroController extends Controller
         // return $registros;
     }
 
-
+    /**
+     * 
+     */
     public function registrosPorPersona(Request $request)
     {
         $id = $request->input('persona');
-        $mes = $request->input('mes');
+        $anio = $request->input('anio');
+        $mes = $request->input('mes');   
         try {
-            $registros = Registro::select('se_registros.*')
-            ->where('id_persona', $id)->whereNotNull('salida_persona')->whereMonth('ingreso_persona', $mes)->latest()->get();
+            $consulta = Registro::select('se_registros.ingreso_persona', 'se_registros.salida_persona', 'se_registros.codigo_activo', 'vehiculos.identificador')
+            ->leftjoin('se_vehiculos AS vehiculos', 'se_registros.id_vehiculo', '=', 'vehiculos.id_vehiculos')
+            ->where('id_persona', $id)->whereNotNull('salida_persona')->whereYear('ingreso_persona', $anio)->whereMonth('ingreso_persona', $mes)->latest('ingreso_persona');
+            
+            $registros = $consulta->get();
+            $totalRegistros = $consulta->count();
+
         } catch (\Throwable $th) {
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
         }
-        return $registros;
+        return response()->json(['registros' => $registros, 'totalRegistros' =>  $totalRegistros]);
     }
 }
 

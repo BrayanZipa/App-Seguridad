@@ -1,5 +1,6 @@
 $(function() { 
 
+    const fecha = new Date();
     var idPersona = '';
 
     //Uso de DataTables para mostrar los registros realizados en donde se completo tanto las entradas como salidas de todos los tipos de persona (visitantes, conductores, colaboradores con y sin activo)
@@ -133,6 +134,11 @@ $(function() {
     $('#tabla_registros tbody').on('click', '.consultar_registro', function () { 
         var data = $('#tabla_registros').DataTable().row(this).data(); 
         idPersona = data.id_persona;
+        $('#selectAnio').val(fecha.getFullYear());
+        $('#totalRegistros').val('');
+        $('#tablaRegistrosFilas').empty();  
+        $('#tablaRegistros').css('display', 'none');
+        $('#selectMes').val('');
         restablecerTabs();
 
         if(data.ingreso_vehiculo != null){
@@ -239,25 +245,56 @@ $(function() {
         $('#informacionRegistro').css('display', 'block');  
     });
 
-
     //
-    $('#selectHistorial').on('change', function () {
-        $('#listaRegistros').empty();   
+    $('#selectMes').on('change', function () {
+        $('#tablaRegistrosFilas').empty();   
         // $(select).append("<option selected='selected' value='' disabled>Seleccione el vehículo</option>");
         $.ajax({
             url: 'listado_por_persona',
             type: 'GET',
             data: {
                 persona: idPersona,
-                mes: $('#selectHistorial option:selected').val(),
+                anio: $('#selectAnio option:selected').val(),
+                mes: $('#selectMes option:selected').val(),
             },
             dataType: 'json',
             success: function(response) {   
-                console.log(response);          
-                $.each(response, function(key, value){     
-                    $('#listaRegistros').append("<li>" + value.ingreso_persona + ' ' + value.salida_persona  + "</li>");
-                }); 
-                // "<option value='" + value.id_vehiculos + "'>" + value.tipo + " - " + value.identificador + "</option>"
+                console.log(response); 
+                if('registros' in response){
+                    $('#totalRegistros').val(response.totalRegistros);
+                    if(response.totalRegistros != 0){
+                        $('#tablaRegistros').css('display', '');
+                        $.each(response.registros, function(key, value){   
+                            if(value.identificador == null){
+                                value.identificador = 'No';
+                            }
+                            if(value.codigo_activo == null){
+                                value.codigo_activo = 'No';
+                            }
+    
+                            $('#tablaRegistrosFilas').append(
+                                `<tr>
+                                <td>${moment(value.ingreso_persona).format('DD-MM-YYYY')}</td>
+                                <td>${moment(value.ingreso_persona).format('h:mm:ss a')}</td>
+                                <td>${moment(value.salida_persona).format('DD-MM-YYYY')}</td>
+                                <td>${moment(value.salida_persona).format('h:mm:ss a')}</td>
+                                <td>${value.identificador}</td>
+                                <td>${value.codigo_activo}</td>
+                                </tr>`
+                            );
+                        }); 
+                    } else {
+                        $('#tablaRegistros').css('display', 'none');
+                    }
+
+
+                    
+
+                    
+                    
+                    // "<option value='" + value.id_vehiculos + "'>" + value.tipo + " - " + value.identificador + "</option>"
+                    // "<li>" + value.ingreso_persona + ' ' + value.salida_persona  + "</li>"
+                }
             },
             error: function() {
                 console.log('Error obteniendo los datos de la base de datos');
