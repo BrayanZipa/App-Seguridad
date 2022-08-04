@@ -143,7 +143,7 @@ $(function() {
 
         if(data.ingreso_vehiculo != null){
             $('#divVehiculo').css('display', 'none');
-            $('#fotoVehiculo').attr('src', data.foto_vehiculo);
+            $('#fotoVehiculo').attr('src', '../' + data.foto_vehiculo);
             $('#spanFechaVehiculo').text(moment(data.ingreso_vehiculo).format('DD-MM-YYYY'));
             $('#spanHoraVehiculo').text(moment(data.ingreso_vehiculo).format('h:mm:ss a'));
 
@@ -208,7 +208,7 @@ $(function() {
             $('#infoVisitanteConductor').css('display', '');  
             
             $('#divLogoEmpresa').css('display', 'none');
-            $('#fotoPersona').attr('src', data.foto).on('load', function() {
+            $('#fotoPersona').attr('src', '../' + data.foto).on('load', function() {
                 $('#divFotoPersona').css('display', 'block');
             });
 
@@ -234,7 +234,7 @@ $(function() {
             $('#spanEmpresaCol').text(data.empresa);
             $('#infoColaborador').css('display', '');
 
-            var urlLogo = '/assets/imagenes/' + data.empresa.toLowerCase() +'.png';
+            var urlLogo = '../assets/imagenes/' + data.empresa.toLowerCase() +'.png';
             $('#divFotoPersona').css('display', 'none');
             $('#logoEmpresa').attr('src', urlLogo).on('load', function() {
                 $('#divLogoEmpresa').css('display', 'block');
@@ -245,10 +245,11 @@ $(function() {
         $('#informacionRegistro').css('display', 'block');  
     });
 
-    //
+    //Función
     $('#selectMes').on('change', function () {
+        $('#tablaRegistros').css('display', '');
         $('#tablaRegistrosFilas').empty();   
-        // $(select).append("<option selected='selected' value='' disabled>Seleccione el vehículo</option>");
+        
         $.ajax({
             url: 'listado_por_persona',
             type: 'GET',
@@ -259,11 +260,9 @@ $(function() {
             },
             dataType: 'json',
             success: function(response) {   
-                console.log(response); 
                 if('registros' in response){
                     $('#totalRegistros').val(response.totalRegistros);
                     if(response.totalRegistros != 0){
-                        $('#tablaRegistros').css('display', '');
                         $.each(response.registros, function(key, value){   
                             if(value.identificador == null){
                                 value.identificador = 'No';
@@ -283,6 +282,22 @@ $(function() {
                                 </tr>`
                             );
                         }); 
+
+                        if($('#tablaRegistros')[0].clientHeight > 300){
+                            $('thead > tr > th').css({ 
+                                'position': 'sticky',
+                                'top': '0',
+                                'z-index': '10',
+                                'background-color': '#fff'   
+                            });
+
+                            $('#tablaRegistros').css('height', '300px');
+                            $('#tablaRegistrosFilas').css('overflow-y', 'scroll');
+                        } else {
+                            $('#tablaRegistros').css('height', 'auto');
+                        }
+                        console.log($('#tablaRegistros')[0].clientHeight);
+                        
                     } else {
                         $('#tablaRegistros').css('display', 'none');
                     }

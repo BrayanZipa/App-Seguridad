@@ -101,7 +101,7 @@ $(function() {
             $('.colaborador').removeClass('is-invalid');
         }  
         $('#formEditarColaborador').css('display', 'block');  
-        $('#form_EditarColaborador').attr('action','/colaboradores/editar/' + data.id_personas); 
+        $('#form_EditarColaborador').attr('action','../colaboradores/editar/' + data.id_personas); 
         $('#inputId').val(data.id_personas); 
         $('#inputNombre').val(data.nombre);
         $('#inputApellido').val(data.apellido);
@@ -162,7 +162,7 @@ $(function() {
         if(!!document.getElementById('botonRetorno')){
             var id_colaborador = document.getElementById('inputId').value;
             document.getElementById('formEditarColaborador').style.display = 'block';
-            document.getElementById('form_EditarColaborador').setAttribute('action', '/colaboradores/editar/' + id_colaborador);
+            document.getElementById('form_EditarColaborador').setAttribute('action', '../colaboradores/editar/' + id_colaborador);
             activarSelect2();
         }
     })();

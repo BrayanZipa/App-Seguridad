@@ -404,7 +404,6 @@
                                     </div>
                                     <div class="row">                              
                                         <div class="col-sm-12">
-                                            <ul id="listaRegistros"></ul>
 
 
 
@@ -421,23 +420,9 @@
                                                             <th>Ingresa activo</th>
                                                         </tr>
                                                     </thead>
-                                                    <tbody id="tablaRegistrosFilas">
-                                                        {{-- <tr>
-                                                            <td>OR9842</td>
-                                                            <td>Call of Duty IV</td>
-                                                            <td>Shipped</td>
-                                                            <td>palbra</td>
-                                                            <td>palbra</td>
-                                                            <td>palbra</td>
-                                                        </tr> --}}
-                                                    </tbody>
+                                                    <tbody id="tablaRegistrosFilas"></tbody>
                                                 </table>
                                             </div>
-
-
-
-
-
 
 
 

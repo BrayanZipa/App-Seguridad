@@ -82,7 +82,7 @@ $(function() {
             $('.conductor').removeClass('is-invalid');
         }      
         $('#formEditarConductor').css('display', 'block');  
-        $('#form_EditarConductor').attr('action','/conductores/editar/' + data.id_personas); 
+        $('#form_EditarConductor').attr('action','conductores/editar/' + data.id_personas); 
         $('#inputId').val(data.id_personas); 
         $('#inputFoto').val(data.foto); 
         $('#fotoConductor').attr('src', data.foto);  
@@ -144,7 +144,7 @@ $(function() {
             var id_conductor = document.getElementById('inputId').value;
             var foto = document.getElementById('inputFoto').value;
             document.getElementById('formEditarConductor').style.display = 'block';
-            document.getElementById('form_EditarConductor').setAttribute('action', '/conductores/editar/' + id_conductor);
+            document.getElementById('form_EditarConductor').setAttribute('action', 'conductores/editar/' + id_conductor);
             document.getElementById('fotoConductor').setAttribute('src', foto);
             activarSelect2();
         }

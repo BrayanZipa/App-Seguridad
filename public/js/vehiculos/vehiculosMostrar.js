@@ -83,7 +83,7 @@ $(function() {
         if($('.vehiculo').hasClass('is-invalid')){
             $('.vehiculo').removeClass('is-invalid');
         }                       
-        $('#form_EditarVehiculo').attr('action','/vehiculos/editar/' + data.id_vehiculos); 
+        $('#form_EditarVehiculo').attr('action','vehiculos/editar/' + data.id_vehiculos); 
         $('#inputIdVehiculo').val(data.id_vehiculos); 
         $('#inputFotoVehiculo').val(data.foto_vehiculo); 
         $('#fotoVehiculo').attr('src', data.foto_vehiculo);  
@@ -221,7 +221,7 @@ $(function() {
         if(!!document.getElementById('botonRetorno2')){
             var id_vehiculo = document.getElementById('inputIdVehiculo').value;
             var foto = document.getElementById('inputFotoVehiculo').value;
-            document.getElementById('form_EditarVehiculo').setAttribute('action', '/vehiculos/editar/' + id_vehiculo);
+            document.getElementById('form_EditarVehiculo').setAttribute('action', 'vehiculos/editar/' + id_vehiculo);
             document.getElementById('fotoVehiculo').setAttribute('src', foto);        
             selectMarcaVehiculo();
             activarSelect2();

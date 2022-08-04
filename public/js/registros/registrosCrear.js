@@ -84,10 +84,10 @@ $(function () {
 
                 obtenerUltimoRegistroVehiculo(response.id_personas, response.id_tipo_persona);
                 if(response.id_tipo_persona == 1 || response.id_tipo_persona == 4){
-                    $('#formRegistros1').attr('action','/registros/editar_persona/' + response.id_personas); 
+                    $('#formRegistros1').attr('action','../registros/editar_persona/' + response.id_personas); 
                     $('#inputId').val(response.id_personas);
                     $('#inputFoto').val(response.foto);
-                    $('#fotografia').attr('src', response.foto);  
+                    $('#fotografia').attr('src', '../' + response.foto);  
                     $('#inputNombre').val(response.nombre);
                     $('#inputApellido').val(response.apellido);
                     $('#inputIdentificacion').val(response.identificacion);
@@ -132,7 +132,7 @@ $(function () {
                     if($('#checkVehiculo2').prop('checked')){
                         $('#checkVehiculo2').trigger('click');
                     } 
-                    $('#formRegistros2').attr('action','/registros/editar_persona/' + response.id_personas);
+                    $('#formRegistros2').attr('action','../registros/editar_persona/' + response.id_personas);
                     $('#registro2').val('colaboradorSinActivo');
                     $('#inputId2').val(response.id_personas);
                     $('#inputNombre2').val(response.nombre);
@@ -154,7 +154,7 @@ $(function () {
                         $(this).val('');
                     });
                     obtenerColaborador(response);
-                    $('#formRegistros3').attr('action','/registros/editar_persona/' + response.id_personas);
+                    $('#formRegistros3').attr('action','../registros/editar_persona/' + response.id_personas);
                     $('#inputId3').val(response.id_personas);
                     $('#inputTelefono3').val(response.tel_contacto);
                     $('#selectEps3').val(response.id_eps);
@@ -176,7 +176,7 @@ $(function () {
         if($('#mensajeActivo').css('display') != 'none'){ $('#mensajeActivo').css('display', 'none'); }
         
         $.ajax({
-            url: '/colaboradores/colaboradoridentificado',
+            url: '../colaboradores/colaboradoridentificado',
             type: 'GET',
             data: {
                 colaborador: data.identificacion
@@ -225,6 +225,7 @@ $(function () {
                                     'color': '#dc3545',
                                     'font-size': '80%',
                                     'font-weight': 'bold',
+                                    'word-wrap': 'break-word',
                                     'display': ''
                                     }
                                 );
@@ -234,7 +235,7 @@ $(function () {
                             } else {
                                 $('#registro3').val('colaboradorConActivo');
                                 $.ajax({
-                                    url: '/colaboradores/computador',
+                                    url: '../colaboradores/computador',
                                     type: 'GET',
                                     data: {
                                         colaborador: response.id,
@@ -295,7 +296,8 @@ $(function () {
                         'border-radius': '8px',
                         'color': '#dc3545',
                         'font-size': '80%',
-                        'font-weight': 'bold'
+                        'font-weight': 'bold',
+                        'word-wrap': 'break-word',
                         }
                     );
 
@@ -367,6 +369,7 @@ $(function () {
                         'color': '#dc3545',
                         'font-size': '80%',
                         'font-weight': 'bold',
+                        'word-wrap': 'break-word',
                         'display': ''
                         }
                     );
@@ -533,7 +536,7 @@ $(function () {
 
     //Función que permite retornar información en común para todos los formularios en caso de que se generen errores al momento de enviar un formulario
     function retornoInformacion(tipoPersona, formulario, idPersona) {
-        $(formulario).attr('action','/registros/editar_persona/' + $('#inputId').val()); 
+        $(formulario).attr('action','../registros/editar_persona/' + $('#inputId').val()); 
         $('#selectTipoPersona').val(tipoPersona);
         listarPersonas();
         obtenerUltimoRegistroVehiculo($(idPersona).val(), tipoPersona);
@@ -560,7 +563,7 @@ $(function () {
             if($('#registro').val() == 'visitante' || $('#registro').val() == 'visitanteActivo'){
                 retornoInformacion(1, '#formRegistros1', '#inputId');
                 $('#titulo').text('Información visitante');
-                $('#fotografia').attr('src', $('#inputFoto').val()); 
+                $('#fotografia').attr('src', '../' + $('#inputFoto').val()); 
                 $('#selectEps').prop('required', false);
                 $('#selectArl').prop('required', false);
 
@@ -571,7 +574,7 @@ $(function () {
             } else if($('#registro').val() == 'conductor'){
                 retornoInformacion(4, '#formRegistros1', '#inputId');
                 $('#titulo').text('Información conductor');
-                $('#fotografia').attr('src', $('#inputFoto').val());  
+                $('#fotografia').attr('src', '../' + $('#inputFoto').val());  
                 $('#divVehiculo').css('display', '');
                 $('.visitante').css('display', 'none'); 
                 obtenerVehiculos('#selectVehiculo');
@@ -605,7 +608,7 @@ $(function () {
     $('#modal-crear-personaVehiculoActivo').modal('show');
 
     $('.botonContinuar').click(function () {
-        $(location).attr('href', '/registros/sin_salida');
+        $(location).attr('href', '../registros/sin_salida');
     });
 
 });  

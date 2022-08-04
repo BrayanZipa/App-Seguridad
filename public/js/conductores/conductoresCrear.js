@@ -289,7 +289,7 @@ $(function() {
     $('#modal-crear-conductor').modal('show');
 
     $('.botonContinuar').click(function() {
-        $(location).attr('href', '/conductores');
+        $(location).attr('href', '../conductores');
     });
     
 });

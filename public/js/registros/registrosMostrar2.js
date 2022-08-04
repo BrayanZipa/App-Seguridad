@@ -463,7 +463,7 @@ $(function() {
             if($('#checkVehiculo').prop('checked')){
                 $('#checkVehiculo').prop('checked', false);
             }     
-            $('#fotoVehiculo').attr('src', data.foto_vehiculo);
+            $('#fotoVehiculo').attr('src', '../' + data.foto_vehiculo);
             $('#spanFechaVehiculo').text(moment(data.ingreso_vehiculo).format('DD-MM-YYYY'));
             $('#spanHoraVehiculo').text(moment(data.ingreso_vehiculo).format('h:mm:ss a'));
             $('#spanIdentificador').text(data.identificador);
@@ -502,7 +502,7 @@ $(function() {
         if(data.id_tipo_persona == 1 || data.id_tipo_persona == 4){
             establecerImagen(data.id_tipo_persona, '#columnaFoto', '#columnaInformacion', '#columnaDescripcion');
             $('#divLogoEmpresa').css('display', 'none');
-            $('#fotoPersona').attr('src', data.foto).on('load', function() {
+            $('#fotoPersona').attr('src', '../' + data.foto).on('load', function() {
                 $('#divFotoPersona').css('display', 'block');
             });       
             $('#spanEmpresa').text(data.empresavisitada); 
@@ -514,7 +514,7 @@ $(function() {
 
         } else if(data.id_tipo_persona == 2 || data.id_tipo_persona == 3){
             establecerImagen(data.id_tipo_persona, '#columnaFoto', '#columnaInformacion', '#columnaDescripcion');
-            var urlLogo = '/assets/imagenes/' + data.empresa.toLowerCase() +'.png';
+            var urlLogo = '../assets/imagenes/' + data.empresa.toLowerCase() +'.png';
             $('#divFotoPersona').css('display', 'none');
             $('#logoEmpresa').attr('src', urlLogo).on('load', function() {
                 $('#divLogoEmpresa').css('display', 'block');
@@ -526,7 +526,7 @@ $(function() {
                 obtenerActivoActualizado(data.identificacion, data.codigo_activo, 1);
             }
         } 
-        $('#informacionRegistro').css('display', 'block');   
+        $('#informacionRegistro').css('display', 'block');  
     });
 
     //Se elije una fila de la tabla de registros sin salida de vehículos y se toma la información del registro para mostrarla en un panel de pestañas de selección de manera organizada dependiendo del tipo de persona, se muestra primero la información del vehículo
@@ -551,7 +551,7 @@ $(function() {
         $('#spanArl2').text(data.arl); 
         $('#parrafoDescripcion2').text(data.descripcion);
 
-        $('#fotoVehiculo2').attr('src', data.foto_vehiculo);
+        $('#fotoVehiculo2').attr('src', '../' + data.foto_vehiculo);
         $('#spanFechaVehiculo2').text(moment(data.ingreso_vehiculo).format('DD-MM-YYYY'));
         $('#spanHoraVehiculo2').text(moment(data.ingreso_vehiculo).format('h:mm:ss a'));
         $('#spanIdentificador2').text(data.identificador);
@@ -561,7 +561,7 @@ $(function() {
         if(data.id_tipo_persona == 1 || data.id_tipo_persona == 4){
             establecerImagen(data.id_tipo_persona, '#columnaFoto2', '#columnaInformacion2', '#columnaDescripcion2');
             $('#divLogoEmpresa2').css('display', 'none');
-            $('#fotoPersona2').attr('src', data.foto).on('load', function() {
+            $('#fotoPersona2').attr('src', '../' + data.foto).on('load', function() {
                 $('#divFotoPersona2').css('display', 'block');
             });       
             $('#spanEmpresa2').text(data.empresavisitada); 
@@ -570,7 +570,7 @@ $(function() {
 
         } else if(data.id_tipo_persona == 2 || data.id_tipo_persona == 3){
             establecerImagen(data.id_tipo_persona, '#columnaFoto2', '#columnaInformacion2', '#columnaDescripcion2');
-            var urlLogo = '/assets/imagenes/' + data.empresa.toLowerCase() +'.png';
+            var urlLogo = '../assets/imagenes/' + data.empresa.toLowerCase() +'.png';
             $('#divFotoPersona2').css('display', 'none');
             $('#logoEmpresa2').attr('src', urlLogo).on('load', function() {
                 $('#divLogoEmpresa2').css('display', 'block');
@@ -595,7 +595,7 @@ $(function() {
         datosRegistroActivo.activo = data.codigo_activo;
         datosRegistroActivo.nuevoActivo = '';
         
-        var urlLogo = '/assets/imagenes/' + data.empresa.toLowerCase() +'.png';
+        var urlLogo = '../assets/imagenes/' + data.empresa.toLowerCase() +'.png';
         $('#logoEmpresa3').attr('src', urlLogo);
 
         $('#spanFecha3').text(moment(data.ingreso_persona).format('DD-MM-YYYY'));
@@ -621,7 +621,7 @@ $(function() {
     //Función que envía una petición Ajax al servidor para consultar en el sistema GLPI si a un colaborador en específico se le ha cambiado el código del activo asignado, si esto sucede el sistema ubica al usuario en la pestaña de Activo y muestra cual es el nuevo código que tiene asignado el colaborador
     function obtenerActivoActualizado(idColaborador, codigoActual, num) {
         $.ajax({
-            url: '/colaboradores/colaboradoridentificado',
+            url: '../colaboradores/colaboradoridentificado',
             type: 'GET',
             data: {
                 colaborador: idColaborador,
@@ -630,7 +630,7 @@ $(function() {
             success: function(response) { 
                 if('registration_number' in response){
                     $.ajax({
-                        url: '/colaboradores/computador',
+                        url: '../colaboradores/computador',
                         type: 'GET',
                         data: {
                             colaborador: response.id,
@@ -851,7 +851,7 @@ $(function() {
 
     //Botón que redirecciona a la vista donde se muestra los registros que se han completado totalmente
     $('.botonContinuar').click(function() {
-        $(location).attr('href', '/registros/completados');
+        $(location).attr('href', '../registros/completados');
     });
 
 });

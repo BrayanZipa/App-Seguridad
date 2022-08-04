@@ -232,7 +232,7 @@ $(function() {
     $('#modal-crear-vehiculo').modal('show');
 
     $('.botonContinuar').click(function() {
-        $(location).attr('href', '/vehiculos');
+        $(location).attr('href', '../vehiculos');
     });          
 
 });

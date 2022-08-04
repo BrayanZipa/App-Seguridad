@@ -13,8 +13,8 @@
         <li class="nav-item d-none d-sm-inline-block">
             <a href="{{ route('formCrearColaborador')}}" class="nav-link {{ Route::is('formCrearColaborador') ? 'active' : '' }}">Nuevo colaborador</a>
         </li>
-        <li class="nav-item d-none d-sm-inline-block">
+        {{-- <li class="nav-item d-none d-sm-inline-block">
             <a href="{{ route('computadores')}}" class="nav-link {{ Route::is('computadores') ? 'active' : '' }}">Nuevo colaborador por activo</a>
-        </li>
+        </li> --}}
     </ul>
 </nav>
