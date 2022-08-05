@@ -96,7 +96,7 @@ $(function() {
                 colaborador: idColaborador,
             },
             dataType: 'json',
-            success: function(response) {     
+            success: function(response) {   
                 if ('name' in response) {
                     $('#inputTelefono').val('');
                     $('#selectEps').val([]);
@@ -110,22 +110,52 @@ $(function() {
                         type: 'GET',
                         data: {
                             colaborador: idColaborador,
+                            idAutorizacion: response.networks_id,
                         },
                         dataType: 'json',
-                        success: function(response) {
-                            $('#inputIdentificacion').val(response['registration_number']);
-                            $('#inputNombre').val(response['firstname']);
-                            $('#inputApellido').val(response['realname']);
-                            $('#inputEmail').val(response['email']);
+                        success: function(colaborador) {
+                            console.log(colaborador);
+                            // if(colaborador.autorizacion != null){
+                            //     $('#autorizacion').css({
+                            //         'color': '#4ae11e', 
+                            //         'font-size': '16px', 
+                            //     });
+                            //     $('#autorizacion').text(colaborador.autorizacion);
+                            //     $('#inputIdentificacion').val(colaborador['registration_number']);
+                            //     $('#inputNombre').val(colaborador['firstname']);
+                            //     $('#inputApellido').val(colaborador['realname']);
+                            //     $('#inputEmail').val(colaborador['email']);
 
-                            if (response['phone2'].includes('Aviomar')) {
+                            //     if (colaborador['phone2'].includes('Aviomar')) {
+                            //         $('#selectEmpresa').val(1);
+                            //     } else if (colaborador['phone2'].includes('Snider')) {
+                            //         $('#selectEmpresa').val(2);
+                            //     } else if (colaborador['phone2'].includes('Colvan')) {
+                            //         $('#selectEmpresa').val(3);
+                            //     } 
+                            // } else {
+                            //     $('#autorizacion').css({
+                            //         'color': '#dc3545', 
+                            //         'font-size': '16px', 
+                            //     });
+                            //     $('#autorizacion').text('El activo ' + response['name'] + ' no tiene autorización para ser retirado de la empresa');
+                            // }
+
+                           
+                            $('#inputIdentificacion').val(colaborador['registration_number']);
+                            $('#inputNombre').val(colaborador['firstname']);
+                            $('#inputApellido').val(colaborador['realname']);
+                            $('#inputEmail').val(colaborador['email']);
+
+                            if (colaborador['phone2'].includes('Aviomar')) {
                                 $('#selectEmpresa').val(1);
-                            } else if (response['phone2'].includes('Snider')) {
+                            } else if (colaborador['phone2'].includes('Snider')) {
                                 $('#selectEmpresa').val(2);
-                            } else if (response['phone2'].includes('Colvan')) {
+                            } else if (colaborador['phone2'].includes('Colvan')) {
                                 $('#selectEmpresa').val(3);
                             } 
-
+                            
+                            // $('#inputAutorizacion').val($('#autorizacion').text());
                             $('.colaborador').each(function(index) {
                                 if ((!$(this).val() == '') && ($(this).hasClass('is-invalid'))) {
                                     $(this).removeClass('is-invalid');
@@ -565,6 +595,18 @@ $(function() {
         if (!!document.getElementById('botonRetorno')) {
             var caso = document.getElementById('casoIngreso').value;
             var caso2 = document.getElementById('casoIngreso2').value;
+            if($('#inputAutorizacion').val().includes('no')){
+                $('#autorizacion').css({
+                    'color': '#dc3545', 
+                    'font-size': '16px', 
+                });
+            } else {
+                $('#autorizacion').css({
+                    'color': '#4ae11e', 
+                    'font-size': '16px', 
+                });
+            }
+            $('#autorizacion').text($('#inputAutorizacion').val());
 
             if(caso == 'conActivoVehiculo'){
                 retornarFotoVehiculo();

@@ -245,9 +245,9 @@ $(function() {
         $('#informacionRegistro').css('display', 'block');  
     });
 
-    //Función
-    $('#selectMes').on('change', function () {
-        $('#tablaRegistros').css('display', '');
+    //Función que envía una petición Ajax al servidor para consultar todos los registros de una persona en específico filtrados por el año y el mes que el usuario haya seleccionado, estos registros se organizan del más reciente al último en la vista
+    $('#selectMes').on('change', function () { 
+        $('#tablaRegistros').css('display', 'none');     
         $('#tablaRegistrosFilas').empty();   
         
         $.ajax({
@@ -262,7 +262,8 @@ $(function() {
             success: function(response) {   
                 if('registros' in response){
                     $('#totalRegistros').val(response.totalRegistros);
-                    if(response.totalRegistros != 0){
+                    if(response.totalRegistros != 0){ 
+                        $('#tablaRegistros').css('display', '');     
                         $.each(response.registros, function(key, value){   
                             if(value.identificador == null){
                                 value.identificador = 'No';
@@ -295,20 +296,8 @@ $(function() {
                             $('#tablaRegistrosFilas').css('overflow-y', 'scroll');
                         } else {
                             $('#tablaRegistros').css('height', 'auto');
-                        }
-                        console.log($('#tablaRegistros')[0].clientHeight);
-                        
-                    } else {
-                        $('#tablaRegistros').css('display', 'none');
-                    }
-
-
-                    
-
-                    
-                    
-                    // "<option value='" + value.id_vehiculos + "'>" + value.tipo + " - " + value.identificador + "</option>"
-                    // "<li>" + value.ingreso_persona + ' ' + value.salida_persona  + "</li>"
+                        }                     
+                    } 
                 }
             },
             error: function() {
@@ -316,8 +305,6 @@ $(function() {
             }
         });
     });
-
-
 
     //Botón que al ser seleccionado elimina el botón registrar salida si se encuentra creado en la vista
     $('#botonCollapse').click(function(){

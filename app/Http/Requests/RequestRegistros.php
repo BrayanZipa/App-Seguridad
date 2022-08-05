@@ -37,7 +37,7 @@ class RequestRegistros extends FormRequest
                 $validacion['id_arl'] = 'nullable|integer';
 
                 if($datos['casoRegistro'] == 'visitanteActivo'){
-                    $validacion['activo'] = 'required|string|alpha|max:20|min:3';
+                    $validacion['activo'] = 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:20|min:3';
                     $validacion['codigo'] = 'required|string|alpha_num|unique:se_activos,codigo,'.$this->id.',id_persona|max:5|min:4';  
                     return $validacion;
                 }
@@ -115,7 +115,7 @@ class RequestRegistros extends FormRequest
 
             'activo.required' => 'Se requiere que ingrese el nombre del activo',
             'activo.string' => 'El nombre del activo debe ser de tipo texto',
-            'activo.alpha' => 'El nombre del activo solo debe contener valores alfabéticos y sin espacios',
+            'activo.regex' => 'El nombre del activo solo debe contener valores alfabéticos',
             'activo.max' => 'El nombre del activo no puede tener más de 20 caracteres',
             'activo.min' => 'El nombre del activo no puede tener menos de 3 caracteres',
 

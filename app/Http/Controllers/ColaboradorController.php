@@ -70,13 +70,13 @@ class ColaboradorController extends Controller
         $colaboradoresActivo = $this->colaboradores->obtenerPersonas(3);
         $listaColaboradores = $this->getColaboradores();
 
-        foreach ($colaboradoresActivo as $colaboradorActivo) {
-            foreach ($listaColaboradores as $indice => $colaborador) {
-                if($colaborador['registration_number'] == $colaboradorActivo->identificacion){
-                    unset($listaColaboradores[$indice]);
-                }     
-            }
-        }
+        // foreach ($colaboradoresActivo as $colaboradorActivo) {
+        //     foreach ($listaColaboradores as $indice => $colaborador) {
+        //         if($colaborador['registration_number'] == $colaboradorActivo->identificacion){
+        //             unset($listaColaboradores[$indice]);
+        //         }     
+        //     }
+        // }
         [$eps, $arl, $tipoVehiculos, $marcaVehiculos, $empresas] = $this->obtenerModelos2();
 
         return view('pages.colaboradores.crear', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos', 'empresas', 'listaColaboradores', 'personas'));
@@ -390,6 +390,7 @@ class ColaboradorController extends Controller
     public function getColaborador(Request $request)
     {
         $id = $request->input('colaborador');
+        $idAutorizacion = $request->input('idAutorizacion');
         $sesionToken = $this->colaboradores->initSesionGlpi();
         try {
             $consulta = Http::withHeaders([
@@ -401,8 +402,14 @@ class ColaboradorController extends Controller
             return response()->json(['message' => 'Error al traer la información del colaborador seleccionado desde GLPI'], 500);
         }
         $colaborador = $consulta->json();
-        $this->colaboradores->killSesionGlpi($sesionToken);
 
+        if($idAutorizacion != 0){
+            $colaborador['autorizacion'] = $this->getAutorizacion($idAutorizacion, $sesionToken);
+        } else {
+            $colaborador['autorizacion'] = null;
+        }
+
+        $this->colaboradores->killSesionGlpi($sesionToken);
         $colaborador['email'] = $this->getEmail($colaborador['id']);
         return $colaborador;
     }
@@ -433,6 +440,24 @@ class ColaboradorController extends Controller
             }
         }
         return $email;
+    }
+
+    /**
+     * Función que permite buscar y retornar la autorización de salida de una activo desde la API de GLPI.
+     */
+    public function getAutorizacion($idAutorizacion, $sesionToken)
+    {
+        try {     
+            $consulta = Http::withHeaders([
+                'Session-Token' => $sesionToken
+            ])->get(env('API_URL', 'No hay URL').'network/'.$idAutorizacion, [
+                'range' => '0-1000',
+                'get_hateoas' => false
+            ]); 
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error al traer la autorización de salida del activo desde GLPI'], 500);
+        }
+        return $consulta->json()['comment'];
     }
 
     /**

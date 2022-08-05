@@ -44,7 +44,7 @@ class RequestPersona extends FormRequest
             $validacion = [
                 'id_eps' => 'nullable|integer',         
                 'id_arl' => 'nullable|integer',  
-                'activo' => 'nullable|string|alpha|max:20|min:3',
+                'activo' => 'nullable|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:20|min:3',
                 'codigo' => 'nullable|string|alpha_num|unique:se_activos,codigo,'.$this->id.',id_persona|max:5|min:4', 
             ];
             return array_merge($this->validacionGeneral(), $validacion);
@@ -97,7 +97,7 @@ class RequestPersona extends FormRequest
             'foto.string' => 'La información de la foto debe estar en formato de texto',  
 
             'activo.string' => 'El nombre del activo debe ser de tipo texto',
-            'activo.alpha' => 'El nombre del activo solo debe contener valores alfabéticos y sin espacios',
+            'activo.regex' => 'El nombre del activo solo debe contener valores alfabéticos',
             'activo.max' => 'El nombre del activo no puede tener más de 20 caracteres',
             'activo.min' => 'El nombre del activo no puede tener menos de 3 caracteres',
 

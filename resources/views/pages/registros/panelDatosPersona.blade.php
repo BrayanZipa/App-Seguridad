@@ -404,10 +404,6 @@
                                     </div>
                                     <div class="row">                              
                                         <div class="col-sm-12">
-
-
-
-
                                             <div id="tablaRegistros" class="table-responsive" style="display: none">
                                                 <table class="table m-0">
                                                     <thead>
@@ -423,16 +419,6 @@
                                                     <tbody id="tablaRegistrosFilas"></tbody>
                                                 </table>
                                             </div>
-
-
-
-
-
-
-
-
-
-
                                         </div>
                                     </div>
                                 </div> 

@@ -1,4 +1,5 @@
 <input id="casoIngreso" type="hidden" name="casoIngreso" value="{{ old('casoIngreso') }}">
+<input id="inputAutorizacion" type="hidden" name="autorizado" value="{{ old('autorizado') }}">
 
 <div class="card card-primary mb-n1 mx-n1">
     <div class="card-header pb-1">
@@ -25,6 +26,9 @@
                         @endforeach
                     </select>
                 </div>
+            </div>
+            <div class="col-sm-4 text-center mt-1">
+                <label id="autorizacion"></label>
             </div>
         </div>
 

@@ -97,6 +97,8 @@ class RegistroController extends Controller
                             'id_usuario' => auth()->user()->id_usuarios,
                         ]
                     );
+                } else {
+                    Activo::where('id_persona', $id)->update(['activo' => $persona['activo']]);
                 }
             }
         } else if ($persona['casoRegistro'] == 'colaboradorConActivo'){
@@ -367,4 +369,3 @@ class RegistroController extends Controller
         return response()->json(['registros' => $registros, 'totalRegistros' =>  $totalRegistros]);
     }
 }
-
