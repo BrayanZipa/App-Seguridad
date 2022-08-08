@@ -16,7 +16,7 @@
         <div class="row">
             <div class="col-sm-8">
                 <div class="form-group">
-                    <select id="selectPersona" class="colaborador2 form-control" style="width: 100%;" name="persona">
+                    <select id="selectPersona" class="form-control" style="width: 100%;" name="persona">
                         <option selected="selected" value="" disabled></option>
                         @foreach ($personas as $persona)
                             <option value="{{ $persona->id_personas }}"

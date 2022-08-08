@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 
 class ColaboradorController extends Controller
@@ -178,7 +179,7 @@ class ColaboradorController extends Controller
             $filename = 'vehiculos/'. $id_persona. '_'. $datos['identificador']. '_'.date('Y-m-d'). '.png';
             $ruta = storage_path() . '\app\public/' .  $filename;
             Image::make($foto)->resize(600, 500)->save($ruta);
-            $url = Storage::url($filename);
+            $url = Str::replaceFirst('/', '', Storage::url($filename));
         }
 
         $datos['identificador'] = strtoupper($datos['identificador']);
@@ -390,7 +391,6 @@ class ColaboradorController extends Controller
     public function getColaborador(Request $request)
     {
         $id = $request->input('colaborador');
-        $idAutorizacion = $request->input('idAutorizacion');
         $sesionToken = $this->colaboradores->initSesionGlpi();
         try {
             $consulta = Http::withHeaders([
@@ -402,18 +402,11 @@ class ColaboradorController extends Controller
             return response()->json(['message' => 'Error al traer la información del colaborador seleccionado desde GLPI'], 500);
         }
         $colaborador = $consulta->json();
-
-        if($idAutorizacion != 0){
-            $colaborador['autorizacion'] = $this->getAutorizacion($idAutorizacion, $sesionToken);
-        } else {
-            $colaborador['autorizacion'] = null;
-        }
-
         $this->colaboradores->killSesionGlpi($sesionToken);
+
         $colaborador['email'] = $this->getEmail($colaborador['id']);
         return $colaborador;
     }
-
 
     /**
      * Función que permite buscar y retornar el Email de un colaborador desde la API de GLPI por medio de su id.
@@ -509,18 +502,23 @@ class ColaboradorController extends Controller
             return response()->json(['message' => 'Error al traer la información del activo desde GLPI'], 500);
         }
         $computadores = $consulta->json();
-        $this->colaboradores->killSesionGlpi($sesionToken);
-
         $numComputadores=count($computadores);
         for ($i=0; $i < $numComputadores; $i++) { 
             if($computadores[$i]['users_id'] == $id){
                 $computador = $computadores[$i];
             }
         }
+
         if(!isset($computador)){
             $computador = ['error' =>  'Sin activo asignado para este usuario'];
-        }    
-
+        } else {
+            if($computador['networks_id'] != 0){
+                $computador['autorizacion'] = $this->getAutorizacion($computador['networks_id'], $sesionToken);
+            } else {
+                $computador['autorizacion'] = null;
+            }
+        }   
+        $this->colaboradores->killSesionGlpi($sesionToken);
         return $computador;
     }
 
@@ -530,6 +528,7 @@ class ColaboradorController extends Controller
     public function getColaboradorIdentificacion(Request $request)
     {
         $identificacion = $request->input('colaborador');
+        $tipoBusqueda = $request->input('tipoBusqueda');
         $colaboradores = $this->getColaboradores();
         foreach ($colaboradores as $colaborador) {
             if($colaborador['registration_number'] == $identificacion){
@@ -540,9 +539,10 @@ class ColaboradorController extends Controller
         if(!isset($response)){
             $response =  ['error' => 'El colaborador buscado no se encuentra registrado en el sistema GLPI'];
         } else {
-            $response['email'] = $this->getEmail($response['id']);
+            if($tipoBusqueda == 1){
+                $response['email'] = $this->getEmail($response['id']);
+            }
         } 
-
         return $response;
     }
 }

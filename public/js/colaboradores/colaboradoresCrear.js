@@ -85,10 +85,10 @@ $(function() {
     activarSelect2Vehiculo();
     activarSelect2Colaborador();
 
-    //Función que permite traer los datos del propietario y el código del activo que tiene asigando desde GLPI cuando se selecciona una identificación en el formulario de la vista de colaborador con activo, una vez traidos se colocan automáticamente en su respectivo input
+    //Función que permite traer los datos de un colaborador y el código del activo que tiene asignado desde GLPI cuando se selecciona una identificación en el formulario de la vista de colaborador con activo, una vez traidos se colocan automáticamente en su respectivo input
     $('#selectIdentificacion').change(function() {
         var idColaborador = $('#selectIdentificacion option:selected').val();
-
+ 
         $.ajax({
             url: 'computador',
             type: 'GET',
@@ -98,80 +98,58 @@ $(function() {
             dataType: 'json',
             success: function(response) {   
                 if ('name' in response) {
-                    $('#inputTelefono').val('');
-                    $('#selectEps').val([]);
-                    $('#selectArl').val([]);
-                    $('#selectEmpresa').val('');
+                    $('#botonLimpiar').trigger('click');
                     $('#inputCodigo').val(response['name']);
-                    activarSelect2Colaborador();
 
-                    $.ajax({
-                        url: 'persona',
-                        type: 'GET',
-                        data: {
-                            colaborador: idColaborador,
-                            idAutorizacion: response.networks_id,
-                        },
-                        dataType: 'json',
-                        success: function(colaborador) {
-                            console.log(colaborador);
-                            // if(colaborador.autorizacion != null){
-                            //     $('#autorizacion').css({
-                            //         'color': '#4ae11e', 
-                            //         'font-size': '16px', 
-                            //     });
-                            //     $('#autorizacion').text(colaborador.autorizacion);
-                            //     $('#inputIdentificacion').val(colaborador['registration_number']);
-                            //     $('#inputNombre').val(colaborador['firstname']);
-                            //     $('#inputApellido').val(colaborador['realname']);
-                            //     $('#inputEmail').val(colaborador['email']);
+                    if(response.autorizacion != null){
+                        $('#autorizacion').css({
+                            'color': '#4ae11e', 
+                            'font-size': '16px', 
+                        });
+                        $('#autorizacion').text(response.autorizacion);
 
-                            //     if (colaborador['phone2'].includes('Aviomar')) {
-                            //         $('#selectEmpresa').val(1);
-                            //     } else if (colaborador['phone2'].includes('Snider')) {
-                            //         $('#selectEmpresa').val(2);
-                            //     } else if (colaborador['phone2'].includes('Colvan')) {
-                            //         $('#selectEmpresa').val(3);
-                            //     } 
-                            // } else {
-                            //     $('#autorizacion').css({
-                            //         'color': '#dc3545', 
-                            //         'font-size': '16px', 
-                            //     });
-                            //     $('#autorizacion').text('El activo ' + response['name'] + ' no tiene autorización para ser retirado de la empresa');
-                            // }
+                        $.ajax({
+                            url: 'persona',
+                            type: 'GET',
+                            data: {
+                                colaborador: idColaborador,
+                            },
+                            dataType: 'json',
+                            success: function(colaborador) {
+                                    $('#inputIdentificacion').val(colaborador['registration_number']);
+                                    $('#inputNombre').val(colaborador['firstname']);
+                                    $('#inputApellido').val(colaborador['realname']);
+                                    $('#inputEmail').val(colaborador['email']);
+    
+                                    if (colaborador['phone2'].includes('Aviomar')) {
+                                        $('#selectEmpresa').val(1);
+                                    } else if (colaborador['phone2'].includes('Snider')) {
+                                        $('#selectEmpresa').val(2);
+                                    } else if (colaborador['phone2'].includes('Colvan')) {
+                                        $('#selectEmpresa').val(3);
+                                    }      
+                            },
+                            error: function() {
+                                console.log('Error obteniendo los datos de GLPI');
+                            }
+                        });
 
-                           
-                            $('#inputIdentificacion').val(colaborador['registration_number']);
-                            $('#inputNombre').val(colaborador['firstname']);
-                            $('#inputApellido').val(colaborador['realname']);
-                            $('#inputEmail').val(colaborador['email']);
-
-                            if (colaborador['phone2'].includes('Aviomar')) {
-                                $('#selectEmpresa').val(1);
-                            } else if (colaborador['phone2'].includes('Snider')) {
-                                $('#selectEmpresa').val(2);
-                            } else if (colaborador['phone2'].includes('Colvan')) {
-                                $('#selectEmpresa').val(3);
-                            } 
-                            
-                            // $('#inputAutorizacion').val($('#autorizacion').text());
-                            $('.colaborador').each(function(index) {
-                                if ((!$(this).val() == '') && ($(this).hasClass('is-invalid'))) {
-                                    $(this).removeClass('is-invalid');
-                                }
-                            });
-                        },
-                        error: function() {
-                            console.log('Error obteniendo los datos de GLPI');
-                        }
-                    });
+                    } else {
+                        $('#autorizacion').css({
+                            'color': '#dc3545', 
+                            'font-size': '16px', 
+                        });
+                        $('#autorizacion').text('El activo ' + response['name'] + ' no tiene autorización para ser retirado de la empresa');
+                    }
+                    $('#inputAutorizacion').val($('#autorizacion').text());
 
                 } else {
                     $('#botonLimpiar').trigger('click');
                     $('#inputCodigo').addClass('is-invalid');
-                    $('#inputCodigo').val('*Colaborador sin activo asignado');                    
-                }         
+                    $('#inputCodigo').val('*Colaborador sin activo asignado');
+                    $('#autorizacion').text('');  
+                    $('#inputAutorizacion').val($('#autorizacion').text());                   
+                }  
             },
             error: function() {
                 console.log('Error obteniendo los datos de GLPI');
@@ -179,7 +157,7 @@ $(function() {
         });
     });
 
-    //Función que permite trae los datos de una persona de la base de datos cuando se selecciona una identificación en el formulario de la vista de colaborador sin activo, una vez traidos se colocan automáticamente en su respectivo input
+    //Función que permite trae los datos de una persona de tipo visitante de la base de datos cuando se selecciona una identificación en el formulario de la vista de colaborador sin activo, una vez traidos se colocan automáticamente en su respectivo input
     $('#selectPersona').change(function() {
         $.ajax({
             url: 'personacreada',
@@ -189,6 +167,7 @@ $(function() {
             },
             dataType: 'json',
             success: function(response) {
+                $('#botonLimpiar3').trigger('click');
                 $('#inputNombre2').val(response['nombre']);
                 $('#inputApellido2').val(response['apellido']);
                 $('#inputIdentificacion2').val(response['identificacion']);

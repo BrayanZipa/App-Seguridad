@@ -116,7 +116,8 @@ $(function() {
             url: 'colaboradoridentificado',
             type: 'GET',
             data: {
-                colaborador: data.identificacion
+                colaborador: data.identificacion,
+                tipoBusqueda: 1,
             },
             dataType: 'json',
             success: function(response) {

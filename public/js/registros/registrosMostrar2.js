@@ -619,12 +619,13 @@ $(function() {
     });
 
     //Función que envía una petición Ajax al servidor para consultar en el sistema GLPI si a un colaborador en específico se le ha cambiado el código del activo asignado, si esto sucede el sistema ubica al usuario en la pestaña de Activo y muestra cual es el nuevo código que tiene asignado el colaborador
-    function obtenerActivoActualizado(idColaborador, codigoActual, num) {
+    function obtenerActivoActualizado(identificacion, codigoActual, num) {
         $.ajax({
             url: '../colaboradores/colaboradoridentificado',
             type: 'GET',
             data: {
-                colaborador: idColaborador,
+                colaborador: identificacion,
+                tipoBusqueda: 0,
             },
             dataType: 'json',
             success: function(response) { 
@@ -637,7 +638,11 @@ $(function() {
                         },
                         dataType: 'json',
                         success: function(activo) {
+                            console.log(activo);
                             if(activo.name != codigoActual){
+
+
+
                                 if(num == 1){
                                     datosRegistro.nuevoActivo = activo.name;
                                     $('#tabDatosIngreso').removeClass('active');
@@ -645,19 +650,24 @@ $(function() {
                                     $('#tabDatosActivo').addClass('active');
                                     $('#datosActivo').addClass('active show');
                                     $('#spanCodigoActivo2').text(activo.name);
-                                    $('#columnaActivo').css(
-                                        {'display': '',
-                                            'border-left': '5px solid red'
-                                        }
-                                    );
+                                    $('#columnaActivo').css({
+                                        'display': '',
+                                        'border-left': '5px solid red'
+                                    });
                                 } else {
                                     datosRegistroActivo.nuevoActivo = activo.name;
-                                    $('#spanCodigoActivo4').text(activo.name);
-                                    $('#columnaActivo2').css(
-                                        {'display': '',
-                                            'border-left': '5px solid red'
-                                        }
-                                    );
+                                    $('#spanCodigoActivo4').text(activo.name);                        
+                                    $('#columnaActivo2').css({
+                                        'display': '',
+                                        'border-left': '5px solid red'
+                                    });
+                                    if(activo.autorizacion != null){
+                                        $('#autorizacion2').css('color', '#4ae11e');
+                                        $('#autorizacion2').text(activo.autorizacion);
+                                    } else {
+                                        $('#autorizacion2').css('color', '#dc3545');
+                                        $('#autorizacion2').text('Sin autorización para ser retirado de la empresa');
+                                    }
                                 }
                             }
                         },
