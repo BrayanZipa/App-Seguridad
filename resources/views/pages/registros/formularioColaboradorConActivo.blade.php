@@ -21,6 +21,13 @@
                 <div class="card-body mb-n4">
                     <input type="hidden" id="registro3" name="casoRegistro" value="{{ old('casoRegistro') }}">
                     <input type="hidden" id="inputId3" name="id_personas" value="{{ old('id_personas') }}">
+
+                    <div id="columnaAutorizacion" class="row" style="display: none">
+                        <div class="col-sm-8">
+                            <label id="autorizacion"></label>
+                        </div>
+                    </div>
+
                     <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">

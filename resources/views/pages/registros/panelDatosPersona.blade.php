@@ -250,10 +250,13 @@
                                             </div>
                                         </div>
                                         <div id="columnaActivo" class="columnaPanel col-sm-3" style="display: none">
-                                            <div class="form-group">
-                                                <div class="description-block text-left">
+                                            <div class="form-group mb-0">
+                                                <div class="description-block text-left mb-0">
                                                     <h5 class="description-header mb-1">Cambio de activo</h5>
                                                     <span id="spanCodigoActivo2"></span>
+                                                    <div class="mt-1">
+                                                        <label id="autorizacion"></label>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

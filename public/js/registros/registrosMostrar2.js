@@ -499,6 +499,10 @@ $(function() {
         $('#spanArl').text(data.arl); 
         $('#parrafoDescripcion').text(data.descripcion);
 
+        if($('#botonGuardarSalida').prop('disabled')){
+            $('#botonGuardarSalida').prop('disabled', false);
+        }
+
         if(data.id_tipo_persona == 1 || data.id_tipo_persona == 4){
             establecerImagen(data.id_tipo_persona, '#columnaFoto', '#columnaInformacion', '#columnaDescripcion');
             $('#divLogoEmpresa').css('display', 'none');
@@ -523,7 +527,7 @@ $(function() {
             $('#spanEmpresaCol').text(data.empresa);
             parametrosPanel(data.id_tipo_persona, '#infoColaborador', '#infoVisitanteConductor', '#tabInfoRegistro', '#tituloTelefono');
             if(data.id_tipo_persona == 3 && data.ingreso_activo !=  null){
-                obtenerActivoActualizado(data.identificacion, data.codigo_activo, 1);
+                obtenerActivoActualizado(data.identificacion, data.codigo_activo, '#botonGuardarSalida', 1);
             }
         } 
         $('#informacionRegistro').css('display', 'block');  
@@ -587,7 +591,7 @@ $(function() {
         var data = $('#tabla_registros_activos').DataTable().row(this).data(); 
         $('#columnaActivo2').css('display', 'none');
         restablecerTabsActivo();
-        obtenerActivoActualizado(data.identificacion, data.codigo_activo, 2);
+        obtenerActivoActualizado(data.identificacion, data.codigo_activo, '#botonGuardarSalida3', 2);
 
         datosRegistroActivo.idRegistro = data.id_registros;
         datosRegistroActivo.idPersona = data.id_persona; 
@@ -618,8 +622,9 @@ $(function() {
         $('#infoRegistroActivo').css('display', 'block'); 
     });
 
-    //Función que envía una petición Ajax al servidor para consultar en el sistema GLPI si a un colaborador en específico se le ha cambiado el código del activo asignado, si esto sucede el sistema ubica al usuario en la pestaña de Activo y muestra cual es el nuevo código que tiene asignado el colaborador
-    function obtenerActivoActualizado(identificacion, codigoActual, num) {
+    //Función que envía una petición Ajax al servidor para consultar en el sistema GLPI si a un colaborador en específico se le ha cambiado el código del activo asignado, si esto sucede el sistema ubica al usuario en la pestaña de Activo y muestra cual es el nuevo código que tiene asignado el colaborador, así como si esta autorizado para salir o no
+    function obtenerActivoActualizado(identificacion, codigoActual, botonSalida, num) {
+        $(botonSalida).prop('disabled', true);
         $.ajax({
             url: '../colaboradores/colaboradoridentificado',
             type: 'GET',
@@ -638,37 +643,40 @@ $(function() {
                         },
                         dataType: 'json',
                         success: function(activo) {
-                            console.log(activo);
+                            function mostrarAutorizacion(span, boton, autorizacion, columna) {
+                                $(span).text(activo.name);  
+                                if(activo.autorizacion != null){
+                                    $(boton).prop('disabled', false);
+                                    $(autorizacion).css('color', '#4ae11e');
+                                    $(autorizacion).text(activo.autorizacion);
+                                    $(columna).css({
+                                        'display': '',
+                                        'border-left': '5px solid #4ae11e'
+                                    });    
+                                } else {
+                                    $(autorizacion).css('color', '#dc3545');
+                                    $(autorizacion).text('Sin autorización para ser retirado de la empresa');
+                                    $(columna).css({
+                                        'display': '',
+                                        'border-left': '5px solid red'
+                                    });
+                                }   
+                            }
+
                             if(activo.name != codigoActual){
-
-
-
                                 if(num == 1){
                                     datosRegistro.nuevoActivo = activo.name;
                                     $('#tabDatosIngreso').removeClass('active');
                                     $('#datosIngreso').removeClass('active show');
                                     $('#tabDatosActivo').addClass('active');
                                     $('#datosActivo').addClass('active show');
-                                    $('#spanCodigoActivo2').text(activo.name);
-                                    $('#columnaActivo').css({
-                                        'display': '',
-                                        'border-left': '5px solid red'
-                                    });
+                                    mostrarAutorizacion('#spanCodigoActivo2', '#botonGuardarSalida', '#autorizacion', '#columnaActivo');
                                 } else {
                                     datosRegistroActivo.nuevoActivo = activo.name;
-                                    $('#spanCodigoActivo4').text(activo.name);                        
-                                    $('#columnaActivo2').css({
-                                        'display': '',
-                                        'border-left': '5px solid red'
-                                    });
-                                    if(activo.autorizacion != null){
-                                        $('#autorizacion2').css('color', '#4ae11e');
-                                        $('#autorizacion2').text(activo.autorizacion);
-                                    } else {
-                                        $('#autorizacion2').css('color', '#dc3545');
-                                        $('#autorizacion2').text('Sin autorización para ser retirado de la empresa');
-                                    }
+                                    mostrarAutorizacion('#spanCodigoActivo4', '#botonGuardarSalida3', '#autorizacion2', '#columnaActivo2');
                                 }
+                            } else {
+                                $(botonSalida).prop('disabled', false);
                             }
                         },
                         error: function() {
@@ -700,7 +708,7 @@ $(function() {
         }
     });
 
-    //Función que se activa cuando el usuario le da click al checkbox de verificar si una persona sale sin su activo, esto hace que a la variable casoSalida se le asigne información que será utilizada para no tener en cuenta la salida del activo
+    //Función que se activa cuando el usuario le da click al checkbox de verificar si una persona sale sin su activo, esto hace que a la variable casoSalida se le asigne información que será utilizada para no tener en cuenta la salida del activo, también si el activo ha sido actualizado en GLPI al hacer click permite habilitar o desahabilitar el botón de guardar salida dependiendo si el activo tiene o no autorización para salir
     $('#checkActivo').on('click', function () {
         if ($('#checkActivo').is(':checked')) {
             if(casoSalida == 'salidaVehiculoActivo'){
@@ -708,11 +716,21 @@ $(function() {
             } else if(casoSalida == 'salidaPersonaActivo'){
                 casoSalida = 'salidaPersona';
             }
+            if($('#columnaActivo').css('display') != 'none' && $('#columnaActivo').css('border-left-color') == 'rgb(255, 0, 0)'){
+                if($('#botonGuardarSalida').prop('disabled', true)){
+                    $('#botonGuardarSalida').prop('disabled', false);
+                }
+            }         
         } else {
             if(casoSalida == 'salidaPersonaVehiculo'){
                 casoSalida = 'salidaVehiculoActivo';
             } else if(casoSalida == 'salidaPersona'){
                 casoSalida = 'salidaPersonaActivo';
+            }
+            if($('#columnaActivo').css('display') != 'none' && $('#columnaActivo').css('border-left-color') == 'rgb(255, 0, 0)'){
+                if($('#botonGuardarSalida').prop('disabled', false)){
+                    $('#botonGuardarSalida').prop('disabled', true);
+                }
             }
         }
     });

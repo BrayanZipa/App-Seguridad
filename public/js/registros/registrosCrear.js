@@ -73,6 +73,7 @@ $(function () {
             },
             dataType: 'json',
             success: function(response){
+                if($('#columnaActivo').css('display') != 'none'){$('#columnaAutorizacion').css('display', 'none');}
                 $('#idPersona').val(response.id_personas);
                 if($('#formVisitanteConductor').is(':visible')){
                     $('#formVisitanteConductor').css('display', 'none');
@@ -179,7 +180,8 @@ $(function () {
             url: '../colaboradores/colaboradoridentificado',
             type: 'GET',
             data: {
-                colaborador: data.identificacion
+                colaborador: data.identificacion,
+                tipoBusqueda: 1,
             },
             dataType: 'json',
             success: function(response) {
@@ -254,6 +256,11 @@ $(function () {
                                                 } else {
                                                     $('#inputCodigo3').after($('<div id="mensajeError" class="invalid-feedback">El colaborador tiene asignado un nuevo activo, debe actualizar</div>'));
                                                 }     
+                                            }
+                                            if(activo['autorizacion'] == null){
+                                                $('#autorizacion').css('color', '#dc3545');
+                                                $('#autorizacion').text('El activo ' + activo['name'] + ' no tiene autorización para ser retirado de la empresa, por favor consultar con el área de Tecnología');
+                                                $('#columnaAutorizacion').css('display', '');
                                             }
                                         }  
                                     },
