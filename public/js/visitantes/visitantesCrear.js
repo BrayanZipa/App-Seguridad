@@ -498,5 +498,30 @@ $(function () {
     $('.botonContinuar').click(function () {
         $(location).attr('href', '../visitantes');
     });
+
+
+    // document.addEventListener("DOMContentLoaded", () => {
+        const $codigo = document.querySelector("#lector");
+        $codigo.addEventListener("keydown", evento => {
+            if (evento.keyCode === 13) {
+                // El lector ya terminó de leer
+                const codigoDeBarras = $codigo.value;
+                // Aquí ya podemos hacer algo con el código. Yo solo lo imprimiré
+                console.log("Tenemos un código de barras:");
+                console.log(codigoDeBarras);
+                // Limpiar el campo
+                // $codigo.value = "";
+            }
+        });
+    // });
+
+    // $('#inputNombre').focus();
+
+    // document.addEventListener("keydown", event => {
+    //     if(event.keyCode === 13){ //Tecla enter
+    //        console.log('hola ney');
+    //     }
+    //  });
+    
     
 });

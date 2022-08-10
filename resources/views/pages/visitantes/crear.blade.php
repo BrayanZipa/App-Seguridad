@@ -44,6 +44,8 @@
             </div>
         </div>
 
+        <input type="text" id="lector" placeholder="Enfoca este input y usa el lector" autofocus>
+
         @include('pages.visitantes.modales')
         @include('pages.modalError')
 

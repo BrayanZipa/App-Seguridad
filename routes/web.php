@@ -99,4 +99,4 @@ Route::get('/registros/listado_por_persona', [RegistroController::class, 'regist
 
 
 
-Route::get('/prueba', [ColaboradorController::class, 'prueba'])->name('prueba');
+Route::get('/prueba', [HomeController::class, 'prueba'])->name('prueba');

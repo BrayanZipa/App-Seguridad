@@ -341,14 +341,11 @@ class RegistroController extends Controller
         if($request->ajax()){
             $registros = $this->registros->informacionRegistrosActivos();
             return DataTables::of($registros)->make(true);
-        }   
-        
-        // $registros = $this->registros->informacionRegistrosActivos();
-        // return $registros;
+        }
     }
 
     /**
-     * 
+     * Función que permite retornar todos los registros de la tabla se_registros de una persona en especifico filtrados por año y por mes.
      */
     public function registrosPorPersona(Request $request)
     {
@@ -369,3 +366,6 @@ class RegistroController extends Controller
         return response()->json(['registros' => $registros, 'totalRegistros' =>  $totalRegistros]);
     }
 }
+
+     // $registros = $this->registros->informacionRegistrosActivos();
+    // return $registros;
