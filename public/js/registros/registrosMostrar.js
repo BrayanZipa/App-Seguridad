@@ -112,18 +112,20 @@ $(function() {
 
     //Función que permite reestablecer las pestañas de selección (Tabs) en la vista para que sea la pestaña inicial la primera que se muestre al momento en que se seleccione un nuevo registro para ser consultado
     function restablecerTabs() {
-        if($('#tabDatosBasicos').hasClass('active') || $('#tabDatosActivo').hasClass('active') || $('#tabDatosVehiculo').hasClass('active')){
+        if($('#tabDatosBasicos').hasClass('active') || $('#tabDatosActivo').hasClass('active') || $('#tabDatosVehiculo').hasClass('active') || $('#tabHistorial').hasClass('active')){
+            function removerClases(idTab, idDatos) {
+                $(idTab,).removeClass('active');
+                $(idDatos).removeClass('active show');
+            }
+            
             if($('#tabDatosBasicos').hasClass('active')){
-                $('#tabDatosBasicos').removeClass('active');
-                $('#datosBasicos').removeClass('active show');
-
+                removerClases('#tabDatosBasicos','#datosBasicos');
             } else if($('#tabDatosActivo').hasClass('active')){
-                $('#tabDatosActivo').removeClass('active');
-                $('#datosActivo').removeClass('active show');
-
+                removerClases('#tabDatosActivo','#datosActivo');
+            } else if($('#tabDatosVehiculo').hasClass('active')) {
+                removerClases('#tabDatosVehiculo','#datosVehiculo');
             } else {
-                $('#tabDatosVehiculo').removeClass('active');
-                $('#datosVehiculo').removeClass('active show');
+                removerClases('#tabHistorial', '#historial');
             }
             $('#tabDatosIngreso').addClass('active');
             $('#datosIngreso').addClass('active show');

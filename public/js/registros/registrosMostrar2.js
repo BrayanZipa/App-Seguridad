@@ -323,17 +323,16 @@ $(function() {
     //Función que permite reestablecer las pestañas de selección (Tabs) en la vista de personas sin salida para que sea la pestaña de Datos de ingreso la primera que se muestre al momento en que se seleccione un nuevo registro para darle salida 
     function restablecerTabs() {
         if($('#tabDatosBasicos').hasClass('active') || $('#tabDatosActivo').hasClass('active') || $('#tabDatosVehiculo').hasClass('active')){
+            function removerClases(idTab, idDatos) {
+                $(idTab,).removeClass('active');
+                $(idDatos).removeClass('active show');
+            }
             if($('#tabDatosBasicos').hasClass('active')){
-                $('#tabDatosBasicos').removeClass('active');
-                $('#datosBasicos').removeClass('active show');
-
+                removerClases('#tabDatosBasicos','#datosBasicos');
             } else if($('#tabDatosActivo').hasClass('active')){
-                $('#tabDatosActivo').removeClass('active');
-                $('#datosActivo').removeClass('active show');
-
+                removerClases('#tabDatosActivo','#datosActivo');
             } else {
-                $('#tabDatosVehiculo').removeClass('active');
-                $('#datosVehiculo').removeClass('active show');
+                removerClases('#tabDatosVehiculo','#datosVehiculo');
             }
             $('#tabDatosIngreso').addClass('active');
             $('#datosIngreso').addClass('active show');
