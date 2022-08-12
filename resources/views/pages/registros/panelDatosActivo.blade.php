@@ -177,15 +177,18 @@
                                                     <h5 class="description-header mb-1">Activo</h5>                                         
                                                     <span id="spanCodigoActivo3"></span>
                                                 </div>
+                                                <div class="mt-1">
+                                                    <label id="autorizacion3"></label>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div id="columnaActivo2" class="col-sm-4" style="display: none">
+                                        <div id="columnaActivo2" class="col-sm-4 mb-3" style="display: none">
                                             <div class="form-group mb-0">
                                                 <div class="description-block text-left mb-0">
                                                     <h5 class="description-header mb-1">Cambio de activo</h5>
                                                     <span id="spanCodigoActivo4"></span>
                                                     <div class="mt-1">
-                                                        <label id="autorizacion2"></label>
+                                                        <label id="autorizacion4"></label>
                                                     </div>
                                                 </div>
                                             </div>

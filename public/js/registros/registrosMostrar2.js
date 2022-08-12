@@ -320,13 +320,15 @@ $(function() {
         datatableRegistrosActivos();
     });
 
+    //Función que permite remover las clases de la pestaña (tab) que esta seleccionado para poder reestablecerla cada vez que se seleccione un registro diferente
+    function removerClases(idTab, idDatos) {
+        $(idTab,).removeClass('active');
+        $(idDatos).removeClass('active show');
+    }
+
     //Función que permite reestablecer las pestañas de selección (Tabs) en la vista de personas sin salida para que sea la pestaña de Datos de ingreso la primera que se muestre al momento en que se seleccione un nuevo registro para darle salida 
     function restablecerTabs() {
         if($('#tabDatosBasicos').hasClass('active') || $('#tabDatosActivo').hasClass('active') || $('#tabDatosVehiculo').hasClass('active')){
-            function removerClases(idTab, idDatos) {
-                $(idTab,).removeClass('active');
-                $(idDatos).removeClass('active show');
-            }
             if($('#tabDatosBasicos').hasClass('active')){
                 removerClases('#tabDatosBasicos','#datosBasicos');
             } else if($('#tabDatosActivo').hasClass('active')){
@@ -334,21 +336,18 @@ $(function() {
             } else {
                 removerClases('#tabDatosVehiculo','#datosVehiculo');
             }
-            $('#tabDatosIngreso').addClass('active');
-            $('#datosIngreso').addClass('active show');
         }
+        $('#tabDatosIngreso').addClass('active');
+        $('#datosIngreso').addClass('active show');
     }
 
     //Función que permite reestablecer las pestañas de selección (Tabs) en la vista de vehículos sin salida para que sea la pestaña de Vehículo la primera que se muestre al momento en que se seleccione un nuevo registro para darle salida 
     function restablecerTabsVehiculo() {
         if($('#tabDatosIngreso2').hasClass('active') || $('#tabDatosBasicos2').hasClass('active')){
             if($('#tabDatosIngreso2').hasClass('active')){
-                $('#tabDatosIngreso2').removeClass('active');
-                $('#datosIngreso2').removeClass('active show');
-
+                removerClases('#tabDatosIngreso2', '#datosIngreso2');
             } else {
-                $('#tabDatosBasicos2').removeClass('active');
-                $('#datosBasicos2').removeClass('active show');
+                removerClases('#tabDatosBasicos2', '#datosBasicos2');
             } 
         }
         $('#tabDatosVehiculo2').addClass('active');
@@ -359,12 +358,9 @@ $(function() {
     function restablecerTabsActivo() {
         if($('#tabDatosIngreso3').hasClass('active') || $('#tabDatosBasicos3').hasClass('active')){
             if($('#tabDatosIngreso3').hasClass('active')){
-                $('#tabDatosIngreso3').removeClass('active');
-                $('#datosIngreso3').removeClass('active show');
-
+                removerClases('#tabDatosIngreso3', '#datosIngreso3');
             } else {
-                $('#tabDatosBasicos3').removeClass('active');
-                $('#datosBasicos3').removeClass('active show');
+                removerClases('#tabDatosBasicos3', '#datosBasicos3');
             } 
         }
         $('#tabDatosActivo3').addClass('active');
@@ -526,6 +522,10 @@ $(function() {
             $('#spanEmpresaCol').text(data.empresa);
             parametrosPanel(data.id_tipo_persona, '#infoColaborador', '#infoVisitanteConductor', '#tabInfoRegistro', '#tituloTelefono');
             if(data.id_tipo_persona == 3 && data.ingreso_activo !=  null){
+                removerClases('#tabDatosIngreso', '#datosIngreso');
+                $('#tabDatosActivo').addClass('active');
+                $('#datosActivo').addClass('active show');
+                $('#autorizacion').text('');
                 obtenerActivoActualizado(data.identificacion, data.codigo_activo, '#botonGuardarSalida', 1);
             }
         } 
@@ -588,8 +588,9 @@ $(function() {
     //Se elije una fila de la tabla de registros sin salida de vehículos y se toma la información del registro para mostrarla en un panel de pestañas de selección de manera organizada dependiendo del tipo de persona, se muestra primero la información del vehículo
     $('#tabla_registros_activos tbody').on('click', '.registrar_salidaActivo', function () { 
         var data = $('#tabla_registros_activos').DataTable().row(this).data(); 
-        $('#columnaActivo2').css('display', 'none');
         restablecerTabsActivo();
+        $('#columnaActivo2').css('display', 'none');
+        $('#autorizacion3').text('');
         obtenerActivoActualizado(data.identificacion, data.codigo_activo, '#botonGuardarSalida3', 2);
 
         datosRegistroActivo.idRegistro = data.id_registros;
@@ -642,41 +643,108 @@ $(function() {
                         },
                         dataType: 'json',
                         success: function(activo) {
-                            function mostrarAutorizacion(span, boton, autorizacion, columna) {
-                                $(span).text(activo.name);  
-                                if(activo.autorizacion != null){
-                                    $(boton).prop('disabled', false);
-                                    $(autorizacion).css('color', '#4ae11e');
-                                    $(autorizacion).text(activo.autorizacion);
-                                    $(columna).css({
-                                        'display': '',
-                                        'border-left': '5px solid #4ae11e'
-                                    });    
-                                } else {
-                                    $(autorizacion).css('color', '#dc3545');
-                                    $(autorizacion).text('Sin autorización para ser retirado de la empresa');
-                                    $(columna).css({
-                                        'display': '',
-                                        'border-left': '5px solid red'
-                                    });
-                                }   
-                            }
+                            // function mostrarAutorizacion(span, boton, autorizacion, columna) {
+                            //     $(span).text(activo.name);  
+                            //     if(activo.autorizacion != null){
+                            //         $(boton).prop('disabled', false);
+                            //         $(autorizacion).css('color', '#4ae11e');
+                            //         $(autorizacion).text(activo.autorizacion);
+                            //         $(columna).css({
+                            //             'display': '',
+                            //             'border-left': '5px solid #4ae11e'
+                            //         });    
+                            //     } else {
+                            //         $(autorizacion).css('color', '#dc3545');
+                            //         $(autorizacion).text('Sin autorización para ser retirado de la empresa');
+                            //         $(columna).css({
+                            //             'display': '',
+                            //             'border-left': '5px solid red'
+                            //         });
+                            //     }   
+                            // }
 
-                            if(activo.name != codigoActual){
-                                if(num == 1){
-                                    datosRegistro.nuevoActivo = activo.name;
-                                    $('#tabDatosIngreso').removeClass('active');
-                                    $('#datosIngreso').removeClass('active show');
-                                    $('#tabDatosActivo').addClass('active');
-                                    $('#datosActivo').addClass('active show');
-                                    mostrarAutorizacion('#spanCodigoActivo2', '#botonGuardarSalida', '#autorizacion', '#columnaActivo');
+                            // if(activo.name != codigoActual){
+                            //     if(num == 1){
+                            //         datosRegistro.nuevoActivo = activo.name;
+                            //         removerClases('#tabDatosIngreso', '#datosIngreso');
+                            //         $('#tabDatosActivo').addClass('active');
+                            //         $('#datosActivo').addClass('active show');
+                            //         mostrarAutorizacion('#spanCodigoActivo2', '#botonGuardarSalida', '#autorizacion', '#columnaActivo');
+                            //     } else {
+                            //         datosRegistroActivo.nuevoActivo = activo.name;
+                            //         mostrarAutorizacion('#spanCodigoActivo4', '#botonGuardarSalida3', '#autorizacion2', '#columnaActivo2');
+                            //     }
+                            // } else {
+                            //     $(botonSalida).prop('disabled', false);
+                            // }
+
+                            
+
+                            if(num == 1){
+                                if(activo.autorizacion != null){ 
+                                    if(activo.name != codigoActual){
+                                        datosRegistro.nuevoActivo = activo.name;
+                                        $('#spanCodigoActivo2').text(activo.name);  
+                                        $('#autorizacion2').css('color', '#4ae11e');
+                                        $('#autorizacion2').text(activo.autorizacion);
+                                        $('#columnaActivo').css({
+                                            'display': '',
+                                            'border-left': '5px solid #4ae11e'
+                                        });
+
+                                    } else {
+                                        $('#autorizacion').css('color', '#4ae11e');
+                                        $('#autorizacion').text(activo.autorizacion);
+                                    }
+                                    $(botonSalida).prop('disabled', false);
                                 } else {
-                                    datosRegistroActivo.nuevoActivo = activo.name;
-                                    mostrarAutorizacion('#spanCodigoActivo4', '#botonGuardarSalida3', '#autorizacion2', '#columnaActivo2');
+                                    if(activo.name != codigoActual){
+                                        $('#spanCodigoActivo2').text(activo.name);  
+                                        $('#autorizacion2').css('color', '#dc3545');
+                                        $('#autorizacion2').text('Sin autorización para ser retirado de la empresa');
+                                        $('#columnaActivo').css({
+                                            'display': '',
+                                            'border-left': '5px solid red'
+                                        });
+  
+                                    } else {
+                                        $('#autorizacion').css('color', '#dc3545');
+                                        $('#autorizacion').text('Sin autorización para ser retirado de la empresa');
+                                    }
                                 }
                             } else {
-                                $(botonSalida).prop('disabled', false);
+                                
+                                if(activo.autorizacion != null){ 
+                                    if(activo.name != codigoActual){
+                                        datosRegistroActivo.nuevoActivo = activo.name;
+                                        $('#spanCodigoActivo4').text(activo.name);  
+                                        $('#autorizacion4').css('color', '#4ae11e');
+                                        $('#autorizacion4').text(activo.autorizacion);
+                                        $('#columnaActivo2').css({
+                                            'display': '',
+                                            'border-left': '5px solid #4ae11e'
+                                        });
+                                    } else {
+                                        $('#autorizacion3').css('color', '#4ae11e');
+                                        $('#autorizacion3').text(activo.autorizacion);
+                                    }
+                                    $(botonSalida).prop('disabled', false);
+                                } else {
+                                    if(activo.name != codigoActual){
+                                        $('#spanCodigoActivo4').text(activo.name);  
+                                        $('#autorizacion4').css('color', '#dc3545');
+                                        $('#autorizacion4').text('Sin autorización para ser retirado de la empresa');
+                                        $('#columnaActivo2').css({
+                                            'display': '',
+                                            'border-left': '5px solid red'
+                                        });
+                                    } else {
+                                        $('#autorizacion3').css('color', '#dc3545');
+                                        $('#autorizacion3').text('Sin autorización para ser retirado de la empresa');
+                                    }
+                                }
                             }
+                            
                         },
                         error: function() {
                             console.log('Error obteniendo los datos de GLPI');
