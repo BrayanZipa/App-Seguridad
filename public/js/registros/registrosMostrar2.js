@@ -643,108 +643,53 @@ $(function() {
                         },
                         dataType: 'json',
                         success: function(activo) {
-                            // function mostrarAutorizacion(span, boton, autorizacion, columna) {
-                            //     $(span).text(activo.name);  
-                            //     if(activo.autorizacion != null){
-                            //         $(boton).prop('disabled', false);
-                            //         $(autorizacion).css('color', '#4ae11e');
-                            //         $(autorizacion).text(activo.autorizacion);
-                            //         $(columna).css({
-                            //             'display': '',
-                            //             'border-left': '5px solid #4ae11e'
-                            //         });    
-                            //     } else {
-                            //         $(autorizacion).css('color', '#dc3545');
-                            //         $(autorizacion).text('Sin autorización para ser retirado de la empresa');
-                            //         $(columna).css({
-                            //             'display': '',
-                            //             'border-left': '5px solid red'
-                            //         });
-                            //     }   
-                            // }
-
-                            // if(activo.name != codigoActual){
-                            //     if(num == 1){
-                            //         datosRegistro.nuevoActivo = activo.name;
-                            //         removerClases('#tabDatosIngreso', '#datosIngreso');
-                            //         $('#tabDatosActivo').addClass('active');
-                            //         $('#datosActivo').addClass('active show');
-                            //         mostrarAutorizacion('#spanCodigoActivo2', '#botonGuardarSalida', '#autorizacion', '#columnaActivo');
-                            //     } else {
-                            //         datosRegistroActivo.nuevoActivo = activo.name;
-                            //         mostrarAutorizacion('#spanCodigoActivo4', '#botonGuardarSalida3', '#autorizacion2', '#columnaActivo2');
-                            //     }
-                            // } else {
-                            //     $(botonSalida).prop('disabled', false);
-                            // }
-
-                            
-
-                            if(num == 1){
-                                if(activo.autorizacion != null){ 
-                                    if(activo.name != codigoActual){
-                                        datosRegistro.nuevoActivo = activo.name;
-                                        $('#spanCodigoActivo2').text(activo.name);  
-                                        $('#autorizacion2').css('color', '#4ae11e');
-                                        $('#autorizacion2').text(activo.autorizacion);
-                                        $('#columnaActivo').css({
-                                            'display': '',
-                                            'border-left': '5px solid #4ae11e'
-                                        });
-
-                                    } else {
-                                        $('#autorizacion').css('color', '#4ae11e');
-                                        $('#autorizacion').text(activo.autorizacion);
-                                    }
+                            function mostrarAutorizacionConCambioActivo(spanActivo, autorizacion, columna) {
+                                if(activo.autorizacion != null){
+                                    $(spanActivo).text(activo.name);  
+                                    $(autorizacion).css('color', '#4ae11e');
+                                    $(autorizacion).text(activo.autorizacion);
+                                    $(columna).css({
+                                        'display': '',
+                                        'border-left': '5px solid #4ae11e'
+                                    });
                                     $(botonSalida).prop('disabled', false);
                                 } else {
-                                    if(activo.name != codigoActual){
-                                        $('#spanCodigoActivo2').text(activo.name);  
-                                        $('#autorizacion2').css('color', '#dc3545');
-                                        $('#autorizacion2').text('Sin autorización para ser retirado de la empresa');
-                                        $('#columnaActivo').css({
-                                            'display': '',
-                                            'border-left': '5px solid red'
-                                        });
-  
-                                    } else {
-                                        $('#autorizacion').css('color', '#dc3545');
-                                        $('#autorizacion').text('Sin autorización para ser retirado de la empresa');
-                                    }
-                                }
-                            } else {
-                                
-                                if(activo.autorizacion != null){ 
-                                    if(activo.name != codigoActual){
-                                        datosRegistroActivo.nuevoActivo = activo.name;
-                                        $('#spanCodigoActivo4').text(activo.name);  
-                                        $('#autorizacion4').css('color', '#4ae11e');
-                                        $('#autorizacion4').text(activo.autorizacion);
-                                        $('#columnaActivo2').css({
-                                            'display': '',
-                                            'border-left': '5px solid #4ae11e'
-                                        });
-                                    } else {
-                                        $('#autorizacion3').css('color', '#4ae11e');
-                                        $('#autorizacion3').text(activo.autorizacion);
-                                    }
-                                    $(botonSalida).prop('disabled', false);
-                                } else {
-                                    if(activo.name != codigoActual){
-                                        $('#spanCodigoActivo4').text(activo.name);  
-                                        $('#autorizacion4').css('color', '#dc3545');
-                                        $('#autorizacion4').text('Sin autorización para ser retirado de la empresa');
-                                        $('#columnaActivo2').css({
-                                            'display': '',
-                                            'border-left': '5px solid red'
-                                        });
-                                    } else {
-                                        $('#autorizacion3').css('color', '#dc3545');
-                                        $('#autorizacion3').text('Sin autorización para ser retirado de la empresa');
-                                    }
+                                    $(spanActivo).text(activo.name);  
+                                    $(autorizacion).css('color', '#dc3545');
+                                    $(autorizacion).text('Sin autorización para ser retirado de la empresa');
+                                    $(columna).css({
+                                        'display': '',
+                                        'border-left': '5px solid red'
+                                    });
                                 }
                             }
-                            
+
+                            function mostrarAutorizacionSinCambioActivo(autorizacion) {
+                                if(activo.autorizacion != null){
+                                    $(autorizacion).css('color', '#4ae11e');
+                                    $(autorizacion).text(activo.autorizacion);
+                                    $(botonSalida).prop('disabled', false);
+                                } else {  
+                                    $(autorizacion).css('color', '#dc3545');
+                                    $(autorizacion).text('Sin autorización para ser retirado de la empresa');
+                                }
+                            }
+
+                            if(num == 1){
+                                if(activo.name != codigoActual){
+                                    datosRegistro.nuevoActivo = activo.name;
+                                    mostrarAutorizacionConCambioActivo('#spanCodigoActivo2', '#autorizacion2', '#columnaActivo');
+                                } else {
+                                    mostrarAutorizacionSinCambioActivo('#autorizacion');
+                                }
+                            } else {
+                                if(activo.name != codigoActual){
+                                    datosRegistroActivo.nuevoActivo = activo.name;
+                                    mostrarAutorizacionConCambioActivo('#spanCodigoActivo4', '#autorizacion4', '#columnaActivo2');
+                                } else {
+                                    mostrarAutorizacionSinCambioActivo('#autorizacion3');
+                                }
+                            }                                                 
                         },
                         error: function() {
                             console.log('Error obteniendo los datos de GLPI');
@@ -783,7 +728,7 @@ $(function() {
             } else if(casoSalida == 'salidaPersonaActivo'){
                 casoSalida = 'salidaPersona';
             }
-            if($('#columnaActivo').css('display') != 'none' && $('#columnaActivo').css('border-left-color') == 'rgb(255, 0, 0)'){
+            if(($('#columnaActivo').css('display') != 'none' && $('#columnaActivo').css('border-left-color') == 'rgb(255, 0, 0)') || ($('#autorizacion').text() != '' && $('#autorizacion').css('color') == 'rgb(220, 53, 69)')){
                 if($('#botonGuardarSalida').prop('disabled', true)){
                     $('#botonGuardarSalida').prop('disabled', false);
                 }
@@ -794,7 +739,7 @@ $(function() {
             } else if(casoSalida == 'salidaPersona'){
                 casoSalida = 'salidaPersonaActivo';
             }
-            if($('#columnaActivo').css('display') != 'none' && $('#columnaActivo').css('border-left-color') == 'rgb(255, 0, 0)'){
+            if(($('#columnaActivo').css('display') != 'none' && $('#columnaActivo').css('border-left-color') == 'rgb(255, 0, 0)') || ($('#autorizacion').text() != '' && $('#autorizacion').css('color') == 'rgb(220, 53, 69)')){
                 if($('#botonGuardarSalida').prop('disabled', false)){
                     $('#botonGuardarSalida').prop('disabled', true);
                 }

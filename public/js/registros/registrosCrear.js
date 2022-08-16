@@ -45,7 +45,7 @@ $(function () {
             dataType: 'json',
             success: function(response){
                 $('#buscarPersona').css('display', 'block'); 
-                $.each(response.data, function(key, value){                   
+                $.each(response, function(key, value){                   
                     $('#selectPersona').append("<option value='" + value.id_personas + "'> C.C. " + value.identificacion + " - " + value.nombre + " " + value.apellido + "</option>");
                 });                                              
             }, 
@@ -225,7 +225,7 @@ $(function () {
                                     'border': '1px solid #dc3545',
                                     'border-radius': '8px',
                                     'color': '#dc3545',
-                                    'font-size': '80%',
+                                    'font-size': '82%',
                                     'font-weight': 'bold',
                                     'word-wrap': 'break-word',
                                     'display': ''
@@ -302,7 +302,7 @@ $(function () {
                         'border': '1px solid #dc3545',
                         'border-radius': '8px',
                         'color': '#dc3545',
-                        'font-size': '80%',
+                        'font-size': '82%',
                         'font-weight': 'bold',
                         'word-wrap': 'break-word',
                         }
@@ -374,7 +374,7 @@ $(function () {
                         'border': '1px solid #dc3545',
                         'border-radius': '8px',
                         'color': '#dc3545',
-                        'font-size': '80%',
+                        'font-size': '82%',
                         'font-weight': 'bold',
                         'word-wrap': 'break-word',
                         'display': ''

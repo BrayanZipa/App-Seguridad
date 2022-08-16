@@ -234,14 +234,21 @@ class RegistroController extends Controller
     }
 
     /**
-    * Función que recibe una petición de Ajax para obtener los registros de un grupo de personas en específico (Visitantes, Colaboradores, Colaboradores con activo, Conductores) en la tabla se_personas.
+    * Función que recibe una petición Ajax para obtener la información de un grupo de personas en específico (Visitantes, Colaboradores, Colaboradores con activo, Conductores) las cuales no tengan registros con el campo salida_persona con valor nulo en la tabla se_registros.
     */
     public function getPersonas(Request $request){
         $tipoPersona = $request->input('tipoPersona');
+        $personasRegistradas = $this->registros->registrosNulos();
         $personas = $this->personas->obtenerPersonas($tipoPersona);
-        $response = ['data' => $personas];
 
-        return response()->json($response);
+        foreach ($personasRegistradas as $personaRegistrada) {
+            foreach ($personas as $indice => $persona) {
+                if($persona->id_personas == $personaRegistrada->id_persona){
+                    unset($personas[$indice]);
+                }     
+            }
+        }
+        return response()->json($personas);
     }
 
     /**

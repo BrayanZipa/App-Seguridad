@@ -107,6 +107,8 @@ $(function() {
         if($('.colaborador').hasClass('is-invalid')){ $('.colaborador').removeClass('is-invalid'); }           
         if($('#mensajeError').length){ $('#mensajeError').remove(); }  
         if($('#mensajeCodigo').length){ $('#mensajeCodigo').remove(); } 
+        $('.colaborador').each(function(index) { $(this).val(''); }); 
+        activarSelect2(); 
 
         $('#formEditarColaborador').css('display', 'block');  
         $('#form_EditarColaborador').attr('action','../colaboradores/editar/' + data.id_personas); 
@@ -122,9 +124,6 @@ $(function() {
             dataType: 'json',
             success: function(response) {
                 if ('error' in response) { 
-                    $('.colaborador').each(function(index) {
-                        $(this).val('');
-                    });     
                     $('#inputCodigo').addClass('is-invalid');                
                     $('#inputCodigo').val('*El colaborador no esta registrado en el sistema GLPI');
                     $('#inputNombre').val(data.nombre);
