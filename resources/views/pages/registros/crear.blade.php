@@ -39,6 +39,7 @@
                     <div class="card-body mb-n4 mt-n1" >
                         <div class="row">
                             <div class="col-sm-6">
+                                <input id="idTipoPersona" type="hidden" value="{{ $tipoPersona }}">
                                 <div class="form-group">
                                     <label for="selectTipoPersona">Seleccione el tipo de persona</label>
                                         <select id="selectTipoPersona" class="select2bs4 form-control" style="width: 100%;">
@@ -76,7 +77,7 @@
                 
             </div>
         </div>
-
+        
         @include('pages.registros.modales')
         @include('pages.modalError')
 

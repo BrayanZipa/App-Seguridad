@@ -61,14 +61,14 @@ class RegistroController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($tipoPersona = null)
     {
         $exitCode = Artisan::call('cache:clear');
         $eps = $this->eps->obtenerEps();
         $arl = $this->arl->obtenerArl();
         $tipoPersonas = $this->tipoPersonas->obtenerTipoPersona();
         $empresas = $this->empresas->obtenerEmpresas();
-        return view('pages.registros.crear',  compact('eps', 'arl', 'tipoPersonas', 'empresas'));
+        return view('pages.registros.crear',  compact('eps', 'arl', 'tipoPersonas', 'empresas', 'tipoPersona'));
     }
 
     /**
@@ -374,5 +374,5 @@ class RegistroController extends Controller
     }
 }
 
-     // $registros = $this->registros->informacionRegistrosActivos();
+    // $registros = $this->registros->informacionRegistrosActivos();
     // return $registros;

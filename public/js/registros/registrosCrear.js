@@ -1,5 +1,31 @@
 $(function () {
 
+
+    if($('#idTipoPersona').val() !== ''){
+        if($('#idTipoPersona').val() == 1){
+            console.log('visitantes');
+        } else if($('#idTipoPersona').val() == 3){
+            console.log('activos');
+        } else if($('#idTipoPersona').val() == 4){
+            console.log('conductores');
+        }
+        var URLactual = window.location.pathname;
+        console.log(URLactual);
+    }
+    // var URLactual2 = window.location;
+    // console.log(URLactual2);
+
+    
+
+    // var loc = window.location;
+    // var pathName = loc.pathname.substring(0, loc.pathname.lastIndexOf('/') + 1);
+    // var ruta = loc.href.substring(0, loc.href.length - ((loc.pathname + loc.search + loc.hash).length - pathName.length))
+    // console.log(loc.href.substring(0, loc.href.length - ((loc.pathname + loc.search + loc.hash).length - pathName.length)));
+
+    var URLactual3 = window.location.origin;
+    var servidor = URLactual3
+
+
     //Función que permite que a los select de selección de EPS y ARL de todos los formularios se les asigne una barra de búsqueda haciendolos más dinámicos, también se le asigna select de persona
     function activarSelect2Registros() {
         $('#selectPersona').select2({
@@ -37,7 +63,8 @@ $(function () {
         $('#selectPersona').empty();   
         $('#selectPersona').append("<option value=''>Seleccione a la persona</option>");
         $.ajax({
-            url: 'personas',
+            // 'personas'
+            url: servidor + '/registros/personas',
             type: 'GET',
             data: {
                 tipoPersona: $('#selectTipoPersona option:selected').val(),

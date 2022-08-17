@@ -68,7 +68,6 @@ class VehiculoController extends Controller
     {
         $this->validarVehiculo($request);     
         $nuevoVehiculo = $request->all();
-
         $nuevoVehiculo['identificador'] = strtoupper($nuevoVehiculo['identificador']);
 
         if(!isset($nuevoVehiculo['foto_vehiculo'])){ //saber si es null
@@ -78,7 +77,7 @@ class VehiculoController extends Controller
             $img = str_replace('data:image/png;base64,', '', $img);
             $img = str_replace(' ', '+', $img);
             $foto = base64_decode($img);
-            $filename = 'vehiculos/'. '$id_persona'. '_'. $nuevoVehiculo['identificador']. '_'.date('Y-m-d'). '.png';
+            $filename = 'vehiculos/'. $nuevoVehiculo['id_persona']. '_'. $nuevoVehiculo['identificador']. '_'.date('Y-m-d'). '.png';
             $ruta = storage_path() . '\app\public/' .  $filename;
             Image::make($foto)->resize(600, 500)->save($ruta);
             $url = Str::replaceFirst('/', '', Storage::url($filename));

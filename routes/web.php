@@ -81,7 +81,7 @@ Route::get('/vehiculos/personas', [VehiculoController::class, 'getPersonas'])->n
  */
 Route::get('/registros/completados', [RegistroController::class, 'index'])->name('mostrarRegistros')->middleware('auth');
 Route::get('/registros/sin_salida', [RegistroController::class, 'registrosSinSalida'])->name('mostrarRegistrosSinSalida')->middleware('auth');
-Route::get('/registros/crear', [RegistroController::class, 'create'])->name('formCrearRegistro')->middleware('auth');
+Route::get('/registros/crear/{tipoPersona?}', [RegistroController::class, 'create'])->name('formCrearRegistro')->middleware('auth');
 Route::post('/registros/crear', [RegistroController::class, 'store'])->name('crearRegistro')->middleware('auth');
 Route::get('/registros/informacion', [RegistroController::class, 'informacionRegistros'])->name('mostrarInfoRegistros')->middleware('auth');
 Route::get('/registros/informacion_sin_salida', [RegistroController::class, 'informacionRegistrosSinSalida'])->name('registrosSalidas')->middleware('auth');

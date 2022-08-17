@@ -71,13 +71,13 @@ class ColaboradorController extends Controller
         $colaboradoresActivo = $this->colaboradores->obtenerPersonas(3);
         $listaColaboradores = $this->getColaboradores();
 
-        // foreach ($colaboradoresActivo as $colaboradorActivo) {
-        //     foreach ($listaColaboradores as $indice => $colaborador) {
-        //         if($colaborador['registration_number'] == $colaboradorActivo->identificacion){
-        //             unset($listaColaboradores[$indice]);
-        //         }     
-        //     }
-        // }
+        foreach ($colaboradoresActivo as $colaboradorActivo) {
+            foreach ($listaColaboradores as $indice => $colaborador) {
+                if($colaborador['registration_number'] == $colaboradorActivo->identificacion){
+                    unset($listaColaboradores[$indice]);
+                }     
+            }
+        }
         [$eps, $arl, $tipoVehiculos, $marcaVehiculos, $empresas] = $this->obtenerModelos2();
 
         return view('pages.colaboradores.crear', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos', 'empresas', 'listaColaboradores', 'personas'));
