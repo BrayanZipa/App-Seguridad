@@ -13,6 +13,8 @@
 @section('scripts')
     <!-- Select2 -->
     <script src="{{ asset('assets/lte/plugins/select2/js/select2.full.min.js') }}"></script>
+    <!-- Moment.js -->
+    <script src="{{ asset('assets/lte/plugins/moment/moment.min.js') }}"></script>
     <!-- JavaScript propio -->
     <script src="{{ asset('js/colaboradores/colaboradoresCrear.js') }}"></script>
 @endsection
@@ -45,7 +47,7 @@
                                 <div class="tab-content p-0" id="custom-tabs-one-tabContent" >
                                     <div class="tab-pane fade {{ old('casoIngreso2') == '' ? 'show active' : '' }} mb-n4" id="nuevo_colaboradorConActivo" role="tabpanel" aria-labelledby="nuevo_colaboradorConActivo-tab">
                                             
-                                        <form id="formularioColaborador" action="{{ route('crearColaborador') }}" method="POST" novalidate>
+                                        <form id="formularioColaborador" action="{{ route('comprobarIngreso') }}" method="POST" novalidate>
                                             @csrf
                                             <div class="mt-n3 mx-n3">
                                                 @include('pages.colaboradores.formularioCrear')

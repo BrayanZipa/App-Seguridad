@@ -475,21 +475,44 @@ $(function() {
         selectMarcaVehiculo2();
     });
 
+    //
+    function comprobarIngresoPersona(identificacion) {
+        $.ajax({
+            url: 'comprobar_ingreso',
+            type: 'GET',
+            data: {
+                colaborador: identificacion,
+            },
+            dataType: 'json',
+            success: function(response) {   
+                $('#fechaIngreso').text(moment(response.ingreso_persona).format('DD-MM-YYYY'));
+                $('#horaIngreso').text(moment(response.ingreso_persona).format('h:mm:ss a'));
+                $('#modalCambioRol2').modal('show');
+            },
+            error: function() {
+                console.log('Error al traer los datos de la base de datos');
+            }         
+        });
+    }
+
      // Función anónima que genera mensajes de error cuando el usuario intenta enviar algún formulario en la vista de colaborador con activo sin los datos requeridos, es una primera validación del lado del cliente
     (function() {
         'use strict'
         var form = document.getElementById('formularioColaborador');
         form.addEventListener('submit', function(event) {
-            if (!form.checkValidity()) {
+            if (!form.checkValidity()) { 
                 event.preventDefault();
-                event.stopPropagation();
+                event.stopPropagation();   
 
                 $('.colaborador, .vehiculo').each(function(index) {
                     if (!this.checkValidity()) {
                         $(this).addClass('is-invalid');
                     }
                 });
-            }
+            } 
+            // else {
+            //     comprobarIngresoPersona($('#inputIdentificacion').val());
+            // }
         }, false);
     })();
 
@@ -631,6 +654,8 @@ $(function() {
     $('#modal-crear-colaboradorActivo').modal('show');
     $('#modal-crear-colaboradorVehiculo').modal('show');
     $('#modal-crear-colaboradorVehiculoActivo').modal('show');
+
+    $('#modalCambioRol2').modal('show');
 
     $('.botonContinuar').click(function() {
         $(location).attr('href', '../colaboradores/con_activo');

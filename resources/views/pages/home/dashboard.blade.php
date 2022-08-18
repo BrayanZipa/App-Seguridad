@@ -48,12 +48,12 @@
                 <div class="small-box bg-secondary">
                     <div class="inner">
                         <h3>{{ $colaboradoresActivo }}</h3>
-                        <p>Colaboradores con activo en la empresa</p>
+                        <p>Colaboradores con activo</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-android-laptop"></i>
                     </div>
-                    <a href="{{ route('formCrearRegistro', ['tipoPersona' => 3]) }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="{{ route('formCrearRegistro', ['tipoPersona' => 3]) }}" class="small-box-footer">Registrar nuevo ingreso <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
 
@@ -67,7 +67,7 @@
                     <div class="icon">
                         <i class="ion ion-person"></i>
                     </div>
-                    <a href="{{ route('formCrearRegistro', ['tipoPersona' => 4]) }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="{{ route('formCrearRegistro', ['tipoPersona' => 4]) }}" class="small-box-footer">Registrar nuevo ingreso <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
 
@@ -82,11 +82,11 @@
                     <div class="icon">
                         <i class="ion ion-model-s"></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="{{ route('formCrearRegistro') }}" class="small-box-footer">Registrar nuevo ingreso  <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             
         </div>
     </section>
-
+    
 @endsection

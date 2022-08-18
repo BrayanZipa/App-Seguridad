@@ -1,30 +1,14 @@
 $(function () {
 
+    var servidor = window.location.origin + '/';
+    // var servidor = window.location.origin + '/app-seguridad/public/';
+    var URLactual = servidor + 'registros/';
 
+    //Al cargarse la página se comprueba si la llamada a la ruta se hizo desde el dashboard, si esto sucede automáticamentese se listan las personas dependiendo del tipo de persona que se haya seleccionado en el dashboard
     if($('#idTipoPersona').val() !== ''){
-        if($('#idTipoPersona').val() == 1){
-            console.log('visitantes');
-        } else if($('#idTipoPersona').val() == 3){
-            console.log('activos');
-        } else if($('#idTipoPersona').val() == 4){
-            console.log('conductores');
-        }
-        var URLactual = window.location.pathname;
-        console.log(URLactual);
+        $('#selectTipoPersona').val($('#idTipoPersona').val());
+        listarPersonas();
     }
-    // var URLactual2 = window.location;
-    // console.log(URLactual2);
-
-    
-
-    // var loc = window.location;
-    // var pathName = loc.pathname.substring(0, loc.pathname.lastIndexOf('/') + 1);
-    // var ruta = loc.href.substring(0, loc.href.length - ((loc.pathname + loc.search + loc.hash).length - pathName.length))
-    // console.log(loc.href.substring(0, loc.href.length - ((loc.pathname + loc.search + loc.hash).length - pathName.length)));
-
-    var URLactual3 = window.location.origin;
-    var servidor = URLactual3
-
 
     //Función que permite que a los select de selección de EPS y ARL de todos los formularios se les asigne una barra de búsqueda haciendolos más dinámicos, también se le asigna select de persona
     function activarSelect2Registros() {
@@ -63,8 +47,7 @@ $(function () {
         $('#selectPersona').empty();   
         $('#selectPersona').append("<option value=''>Seleccione a la persona</option>");
         $.ajax({
-            // 'personas'
-            url: servidor + '/registros/personas',
+            url: URLactual + 'personas',
             type: 'GET',
             data: {
                 tipoPersona: $('#selectTipoPersona option:selected').val(),
@@ -93,7 +76,7 @@ $(function () {
             $('.registros').removeClass('is-invalid');
         }  
         $.ajax({
-            url: 'persona',
+            url: URLactual + 'persona',
             type: 'GET',
             data: {
                 persona: $('#selectPersona option:selected').val(),
@@ -112,10 +95,10 @@ $(function () {
 
                 obtenerUltimoRegistroVehiculo(response.id_personas, response.id_tipo_persona);
                 if(response.id_tipo_persona == 1 || response.id_tipo_persona == 4){
-                    $('#formRegistros1').attr('action','../registros/editar_persona/' + response.id_personas); 
+                    $('#formRegistros1').attr('action', URLactual + 'editar_persona/' + response.id_personas); 
                     $('#inputId').val(response.id_personas);
                     $('#inputFoto').val(response.foto);
-                    $('#fotografia').attr('src', '../' + response.foto);  
+                    $('#fotografia').attr('src', servidor + response.foto);  
                     $('#inputNombre').val(response.nombre);
                     $('#inputApellido').val(response.apellido);
                     $('#inputIdentificacion').val(response.identificacion);
@@ -160,7 +143,7 @@ $(function () {
                     if($('#checkVehiculo2').prop('checked')){
                         $('#checkVehiculo2').trigger('click');
                     } 
-                    $('#formRegistros2').attr('action','../registros/editar_persona/' + response.id_personas);
+                    $('#formRegistros2').attr('action', URLactual + 'editar_persona/' + response.id_personas);
                     $('#registro2').val('colaboradorSinActivo');
                     $('#inputId2').val(response.id_personas);
                     $('#inputNombre2').val(response.nombre);
@@ -182,7 +165,7 @@ $(function () {
                         $(this).val('');
                     });
                     obtenerColaborador(response);
-                    $('#formRegistros3').attr('action','../registros/editar_persona/' + response.id_personas);
+                    $('#formRegistros3').attr('action', URLactual + 'editar_persona/' + response.id_personas);
                     $('#inputId3').val(response.id_personas);
                     $('#inputTelefono3').val(response.tel_contacto);
                     $('#selectEps3').val(response.id_eps);
@@ -204,7 +187,7 @@ $(function () {
         if($('#mensajeActivo').css('display') != 'none'){ $('#mensajeActivo').css('display', 'none'); }
         
         $.ajax({
-            url: '../colaboradores/colaboradoridentificado',
+            url: servidor + 'colaboradores/colaboradoridentificado',
             type: 'GET',
             data: {
                 colaborador: data.identificacion,
@@ -236,7 +219,7 @@ $(function () {
                     }  
                     
                     $.ajax({
-                        url: 'activo_sin_salida',
+                        url: URLactual + 'activo_sin_salida',
                         type: 'GET',
                         data: {
                             persona: data.id_personas
@@ -264,7 +247,7 @@ $(function () {
                             } else {
                                 $('#registro3').val('colaboradorConActivo');
                                 $.ajax({
-                                    url: '../colaboradores/computador',
+                                    url: servidor + 'colaboradores/computador',
                                     type: 'GET',
                                     data: {
                                         colaborador: response.id,
@@ -312,7 +295,7 @@ $(function () {
     //Función que hace una petición Ajax para traer la información del último registro que haya tenido una persona donde se haya registrado su ingreso, así como el ingreso de un vehículo, pero se haya registrado la salida de la persona y no la del vehículo. Si este registro existe se bloquea el select de ingreso de vehículo y se muestra un mensaje informativo
     function obtenerUltimoRegistroVehiculo(idPersona, tipoPersona) {
         $.ajax({
-            url: 'vehiculo_sin_salida',
+            url: URLactual + 'vehiculo_sin_salida',
             type: 'GET',
             data: {
                 persona: idPersona
@@ -385,7 +368,7 @@ $(function () {
     //Función que hace una petición Ajax para traer la información del último registro que haya tenido un colaborador donde se haya registrado su ingreso, así como el ingreso de un activo, pero se haya registrado la salida de la persona y no la del activo. Si este registro existe no se realiza la búsqueda del activo y se muestra un mensaje informativo
     function obtenerUltimoRegistroActivo(idPersona) {
         $.ajax({
-            url: 'activo_sin_salida',
+            url: URLactual + 'activo_sin_salida',
             type: 'GET',
             data: {
                 persona: idPersona
@@ -476,7 +459,7 @@ $(function () {
         $(select).append("<option selected='selected' value='' disabled>Seleccione el vehículo</option>");
 
         $.ajax({
-            url: 'vehiculos',
+            url: URLactual + 'vehiculos',
             type: 'GET',
             data: {
                 persona: $('#idPersona').val()
@@ -570,7 +553,7 @@ $(function () {
 
     //Función que permite retornar información en común para todos los formularios en caso de que se generen errores al momento de enviar un formulario
     function retornoInformacion(tipoPersona, formulario, idPersona) {
-        $(formulario).attr('action','../registros/editar_persona/' + $('#inputId').val()); 
+        $(formulario).attr('action', URLactual + 'editar_persona/' + $('#inputId').val()); 
         $('#selectTipoPersona').val(tipoPersona);
         listarPersonas();
         obtenerUltimoRegistroVehiculo($(idPersona).val(), tipoPersona);
@@ -597,7 +580,7 @@ $(function () {
             if($('#registro').val() == 'visitante' || $('#registro').val() == 'visitanteActivo'){
                 retornoInformacion(1, '#formRegistros1', '#inputId');
                 $('#titulo').text('Información visitante');
-                $('#fotografia').attr('src', '../' + $('#inputFoto').val()); 
+                $('#fotografia').attr('src', servidor + $('#inputFoto').val()); 
                 $('#selectEps').prop('required', false);
                 $('#selectArl').prop('required', false);
 
@@ -608,7 +591,7 @@ $(function () {
             } else if($('#registro').val() == 'conductor'){
                 retornoInformacion(4, '#formRegistros1', '#inputId');
                 $('#titulo').text('Información conductor');
-                $('#fotografia').attr('src', '../' + $('#inputFoto').val());  
+                $('#fotografia').attr('src', servidor + $('#inputFoto').val());  
                 $('#divVehiculo').css('display', '');
                 $('.visitante').css('display', 'none'); 
                 obtenerVehiculos('#selectVehiculo');
@@ -642,7 +625,7 @@ $(function () {
     $('#modal-crear-personaVehiculoActivo').modal('show');
 
     $('.botonContinuar').click(function () {
-        $(location).attr('href', '../registros/sin_salida');
+        $(location).attr('href', URLactual + 'sin_salida');
     });
 
 });  

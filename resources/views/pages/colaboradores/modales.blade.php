@@ -249,7 +249,7 @@
                 <h4 class="modal-title">Cambiar a rol de visitante</h4>
             </div>
             <div class="modal-body">
-                <p class="text-center" style="font-size: 18px"">¿Esta seguro que desea cambiar el rol del colaborador a visitante?</p>
+                <p class="text-center" style="font-size: 18px">¿Esta seguro que desea cambiar el rol del colaborador a visitante?</p>
             </div>
             <div class="modal-footer justify-content-between">
                 <button type="button" class="botonError btn btn-danger" data-dismiss="modal">Cerrar</button>
@@ -260,3 +260,27 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
+
+
+
+@if (session('registro_ingreso'))
+    <div class="modal fade" id="modalCambioRol2">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger">
+                    <h4 class="modal-title">Cambiar a rol de colaborador con activo</h4>
+                </div>
+                <div class="modal-body">
+                    <p class="text-center" style="font-size: 18px">La persona seleccionada tiene un registro de ingreso hoy <br><b id="fechaIngreso">{{ session('registro_ingreso')[0] }}</b> a las <b id="horaIngreso">{{ session('registro_ingreso')[1] }}</b> </p>
+                    <p>Si selecciona continuar se cambiará el rol y se registrará la salida de la persona</p>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="botonError btn btn-danger" data-dismiss="modal">Cerrar</button>
+                    <button id="botonConfirmar2" type="button" class="btn btn-danger">Continuar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+@endif
