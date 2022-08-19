@@ -107,7 +107,7 @@ class ColaboradorController extends Controller
         foreach ($registrosPersonas as $registroPersona) {
             if($registroPersona['identificacion'] == $nuevoColaborador['identificacion'] && ($registroPersona['id_tipo_persona'] == 1 || $registroPersona['id_tipo_persona'] == 2)){
                 $fechaIngreso = Carbon::parse($registroPersona->ingreso_persona);
-                return back()->withInput()->with('registro_ingreso', [$fechaIngreso->toDateString(), $fechaIngreso->format('d-m-Y')]);
+                return back()->withInput()->with('registro_ingreso', [$fechaIngreso->format('d-m-Y'), $fechaIngreso->format('h:i a')]);
                 // return $registroPersona;
                 // $registroPersona->salida_persona = $tiempoActual;
                 // $registroPersona->codigo_activo_salida = $nuevoColaborador['codigo'];
@@ -151,32 +151,32 @@ class ColaboradorController extends Controller
             $nuevoColaborador['id_tipo_persona'] = 2;
         }
 
-        $registrosPersonas = $this->registros->registrosNulos();
-        $tiempoActual = date('Y-m-d H:i:s');
-        foreach ($registrosPersonas as $registroPersona) {
-            if($registroPersona['identificacion'] == $nuevoColaborador['identificacion'] && ($registroPersona['id_tipo_persona'] == 1 || $registroPersona['id_tipo_persona'] == 2)){
-                return $registroPersona;
-                $registroPersona->salida_persona = $tiempoActual;
-                $registroPersona->codigo_activo_salida = $nuevoColaborador['codigo'];
-                $registroPersona->salida_activo = $tiempoActual;
-                $registroPersona->save();
-                $this->store3($nuevoColaborador, $nuevoColaborador['id_persona']);
+        // $registrosPersonas = $this->registros->registrosNulos();
+        // $tiempoActual = date('Y-m-d H:i:s');
+        // foreach ($registrosPersonas as $registroPersona) {
+        //     if($registroPersona['identificacion'] == $nuevoColaborador['identificacion'] && ($registroPersona['id_tipo_persona'] == 1 || $registroPersona['id_tipo_persona'] == 2)){
+        //         return $registroPersona;
+        //         $registroPersona->salida_persona = $tiempoActual;
+        //         $registroPersona->codigo_activo_salida = $nuevoColaborador['codigo'];
+        //         $registroPersona->salida_activo = $tiempoActual;
+        //         $registroPersona->save();
+        //         $this->store3($nuevoColaborador, $nuevoColaborador['id_persona']);
 
-                if($registroPersona->ingreso_vehiculo != null){
-                    $registroPersona->salida_vehiculo = $tiempoActual;
-                }
-                // $registro = Registro::findOrFail($registroPersona->id_registros);
-                // $registro->salida_persona = $tiempoActual;
-                // $registro->codigo_activo_salida = $nuevoColaborador['codigo'];
-                // $registro->salida_activo = $tiempoActual;
-                // $registro->salida_vehiculo = $tiempoActual;
-                // $registro->save();
-                // $this->store3($nuevoColaborador, $nuevoColaborador['id_persona']);
-            }
-        }
+        //         if($registroPersona->ingreso_vehiculo != null){
+        //             $registroPersona->salida_vehiculo = $tiempoActual;
+        //         }
+        //         // $registro = Registro::findOrFail($registroPersona->id_registros);
+        //         // $registro->salida_persona = $tiempoActual;
+        //         // $registro->codigo_activo_salida = $nuevoColaborador['codigo'];
+        //         // $registro->salida_activo = $tiempoActual;
+        //         // $registro->salida_vehiculo = $tiempoActual;
+        //         // $registro->save();
+        //         // $this->store3($nuevoColaborador, $nuevoColaborador['id_persona']);
+        //     }
+        // }
 
 
-        return 'Sin ningun ingreso';
+        // return 'Sin ningun ingreso';
 
         
 

@@ -84,7 +84,14 @@ $(function() {
             video: {
                 width: 640, height: 480
             }
-        };
+        }
+
+        const navegador = navigator.userAgent;
+        if (navegador.match(/Android/i) || navegador.match(/webOS/i) || navegador.match(/iPhone/i) || navegador.match(/iPad/i) || navegador.match(/iPod/i) || navegador.match(/BlackBerry/i) || navegador.match(/Windows Phone/i)) {    
+            constraints.video.facingMode = {
+                exact: 'environment'
+            }
+        }
 
         navigator.mediaDevices.getUserMedia(constraints)
             .then((stream) => {
@@ -120,7 +127,14 @@ $(function() {
             video: {
                 width: 640, height: 480
             }
-        };
+        }
+
+        const navegador = navigator.userAgent;
+        if (navegador.match(/Android/i) || navegador.match(/webOS/i) || navegador.match(/iPhone/i) || navegador.match(/iPad/i) || navegador.match(/iPod/i) || navegador.match(/BlackBerry/i) || navegador.match(/Windows Phone/i)) {    
+            constraints.video.facingMode = {
+                exact: 'environment'
+            }
+        }
 
         navigator.mediaDevices.getUserMedia(constraints)
             .then((stream) => {                       

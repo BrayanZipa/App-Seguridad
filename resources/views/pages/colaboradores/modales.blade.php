@@ -271,7 +271,7 @@
                     <h4 class="modal-title">Cambiar a rol de colaborador con activo</h4>
                 </div>
                 <div class="modal-body">
-                    <p class="text-center" style="font-size: 18px">La persona seleccionada tiene un registro de ingreso hoy <br><b id="fechaIngreso">{{ session('registro_ingreso')[0] }}</b> a las <b id="horaIngreso">{{ session('registro_ingreso')[1] }}</b> </p>
+                    <p class="text-center" style="font-size: 18px">La persona seleccionada tiene un registro de ingreso el <br><b id="fechaIngreso">{{ session('registro_ingreso')[0] }}</b> a las <b id="horaIngreso">{{ session('registro_ingreso')[1] }}</b> </p>
                     <p>Si selecciona continuar se cambiará el rol y se registrará la salida de la persona</p>
                 </div>
                 <div class="modal-footer justify-content-between">
