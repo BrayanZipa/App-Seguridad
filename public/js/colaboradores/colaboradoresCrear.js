@@ -523,10 +523,7 @@ $(function() {
                         $(this).addClass('is-invalid');
                     }
                 });
-            } 
-            // else {
-            //     comprobarIngresoPersona($('#inputIdentificacion').val());
-            // }
+            }
         }, false);
     })();
 
@@ -547,6 +544,18 @@ $(function() {
             }
         }, false);
     })();
+
+
+
+    $('#botonConfirmar2').click(function() {
+        $('#formularioColaborador').attr('action','../colaboradores/registro_salida'); 
+        $('#formularioColaborador').submit();
+    });
+
+
+
+
+
 
     //Si en un input del cualquier formulario del módulo colaboradores esta la clase is-invalid al escribir en el mismo input se elimina esta clase 
     $('input.colaborador, textarea.colaborador, input.colaborador2, textarea.colaborador2, input.vehiculo, input.vehiculo2').keydown(function(event) {

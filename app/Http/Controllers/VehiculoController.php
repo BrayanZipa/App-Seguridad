@@ -76,10 +76,15 @@ class VehiculoController extends Controller
             $img = $nuevoVehiculo['foto_vehiculo'];
             $img = str_replace('data:image/png;base64,', '', $img);
             $img = str_replace(' ', '+', $img);
-            $foto = base64_decode($img);
+            $fotoDecodificada  = base64_decode($img);
             $filename = 'vehiculos/'. $nuevoVehiculo['id_persona']. '_'. $nuevoVehiculo['identificador']. '_'.date('Y-m-d'). '.png';
-            $ruta = storage_path() . '\app\public/' .  $filename;
-            Image::make($foto)->resize(600, 500)->save($ruta);
+            // $ruta = storage_path() . '\app\public/' .  $filename;
+            // Image::make($foto)->resize(600, 500)->save($ruta);
+
+            $foto = Image::make($fotoDecodificada)->resize(600, 500);
+            Storage::put('public/' . $filename, $foto->encode());
+
+            // $foto2->file($foto2)->storeAs('public/vehiculos', $filename);
             $url = Str::replaceFirst('/', '', Storage::url($filename));
         }
 
