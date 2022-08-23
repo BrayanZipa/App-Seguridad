@@ -46,9 +46,9 @@ Route::put('/visitantes/editar/{id}', [VisitanteController::class, 'update'])->n
 Route::get('/colaboradores/con_activo', [ColaboradorController::class, 'index'])->name('mostrarColaboradores')->middleware('auth');
 Route::get('/colaboradores/sin_activo', [ColaboradorController::class, 'index2'])->name('mostrarColaboradores2')->middleware('auth');
 Route::get('/colaboradores/crear', [ColaboradorController::class, 'create'])->name('formCrearColaborador')->middleware('auth');
-Route::post('/colaboradores/comprobar_ingreso', [ColaboradorController::class, 'comprobarIngresoPersona'])->name('comprobarIngreso')->middleware('auth');
-Route::post('/colaboradores/registro_salida', [ColaboradorController::class, 'registroSalidaPersona'])->name('registroSalida')->middleware('auth');
 Route::post('/colaboradores/crear', [ColaboradorController::class, 'store'])->name('crearColaborador')->middleware('auth');
+// Route::post('/colaboradores/comprobar_ingreso', [ColaboradorController::class, 'comprobarIngresoPersona'])->name('comprobarIngreso')->middleware('auth');
+Route::post('/colaboradores/registro_salida', [ColaboradorController::class, 'registroSalidaPersona'])->name('registroSalida')->middleware('auth');
 Route::get('/colaboradores/informacion', [ColaboradorController::class, 'informacionColaboradores'])->name('mostrarInfoColaboradores')->middleware('auth'); 
 Route::put('/colaboradores/editar/{id}', [ColaboradorController::class, 'update'])->name('editarColaborador')->middleware('auth');
 Route::delete('/colaboradores/cambiar_rol/{id}', [ColaboradorController::class, 'destroy'])->name('cambiarRol')->middleware('auth');

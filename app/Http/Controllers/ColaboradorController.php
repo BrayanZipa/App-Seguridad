@@ -26,16 +26,18 @@ class ColaboradorController extends Controller
     protected $colaboradores;
     protected $eps;
     protected $arl;
+    protected $vehiculos;
     protected $tipoVehiculos;
     protected $marcaVehiculos;
     protected $empresas;
     protected $activos;
     protected $registros;
 
-    public function __construct(Persona $colaboradores, Eps $eps, Arl $arl, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, Empresa $empresas, Activo $activos, Registro $registros){
+    public function __construct(Persona $colaboradores, Eps $eps, Arl $arl, Vehiculo $vehiculos, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, Empresa $empresas, Activo $activos, Registro $registros){
         $this->colaboradores = $colaboradores;
         $this->eps = $eps;
         $this->arl = $arl;
+        $this->vehiculos = $vehiculos;
         $this->tipoVehiculos = $tipoVehiculos;
         $this->marcaVehiculos = $marcaVehiculos;
         $this->empresas = $empresas;
@@ -87,21 +89,28 @@ class ColaboradorController extends Controller
     }
 
 
-    public function comprobarIngresoPersona(RequestColaborador $request)
-    {
+    // public function comprobarIngresoPersona(RequestColaborador $request)
+    // {
+    //     $nuevoColaborador = $request->all();
+    //     $registrosPersonas = $this->registros->registrosNulos();
+        
+    //     foreach ($registrosPersonas as $registroPersona) {
+    //         if($registroPersona['identificacion'] == $nuevoColaborador['identificacion'] && ($registroPersona['id_tipo_persona'] == 1 || $registroPersona['id_tipo_persona'] == 2)){
+    //             $fechaIngreso = Carbon::parse($registroPersona->ingreso_persona);
+    //             return back()->withInput()->with('registro_ingreso', [$fechaIngreso->format('d-m-Y'), $fechaIngreso->format('h:i a')]);
+    //         }
+    //     }
+    // }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {      
         $nuevoColaborador = $request->all();
-        return $nuevoColaborador;
-
-        // $nuevoColaborador['nombre'] = ucwords(mb_strtolower($nuevoColaborador['nombre']));
-        // $nuevoColaborador['apellido'] = ucwords(mb_strtolower($nuevoColaborador['apellido']));
-        // $nuevoColaborador['descripcion'] = ucfirst(mb_strtolower($nuevoColaborador['descripcion']));
-        // $nuevoColaborador['id_usuario'] = auth()->user()->id_usuarios;
-        // if(array_key_exists('casoIngreso', $nuevoColaborador)){
-        //     $nuevoColaborador['id_tipo_persona'] = 3;
-        // } else{
-        //     $nuevoColaborador['id_tipo_persona'] = 2;
-        // }
-
         $registrosPersonas = $this->registros->registrosNulos();
         
         foreach ($registrosPersonas as $registroPersona) {
@@ -111,17 +120,6 @@ class ColaboradorController extends Controller
             }
         }
 
-        return response()->json(['message' => 'Persona sin un registro de ingreso']);
-    }
-
-
-
-
-    public function registroSalidaPersona(Request $request)
-    {
-        $nuevoColaborador = $request->all();
-        $tiempoActual = date('Y-m-d H:i:s');
-        
         $nuevoColaborador['nombre'] = ucwords(mb_strtolower($nuevoColaborador['nombre']));
         $nuevoColaborador['apellido'] = ucwords(mb_strtolower($nuevoColaborador['apellido']));
         $nuevoColaborador['descripcion'] = ucfirst(mb_strtolower($nuevoColaborador['descripcion']));
@@ -131,85 +129,6 @@ class ColaboradorController extends Controller
         } else{
             $nuevoColaborador['id_tipo_persona'] = 2;
         }
-
-        $persona = Persona::where('identificacion', $nuevoColaborador['identificacion'])->first();
-        $this->store3($nuevoColaborador, $persona->id_personas);
-
-        $registroPersona = Registro::where('id_persona', $persona->id_personas)->whereNull('salida_persona')->first();
-        $registroPersona->salida_persona = $tiempoActual;
-        $registroPersona->codigo_activo_salida = $nuevoColaborador['codigo'];
-        $registroPersona->salida_activo = $tiempoActual;
-        if($registroPersona->ingreso_vehiculo != null){
-            $registroPersona->salida_vehiculo = $tiempoActual;
-        }
-        $registroPersona->descripcion = '';
-        $registroPersona->save();
-
-        $persona->update([
-            'id_usuario' => $nuevoColaborador['id_usuario'],
-            'id_tipo_persona' => $nuevoColaborador['id_tipo_persona'],
-            'nombre' => $nuevoColaborador['nombre'],
-            'apellido' => $nuevoColaborador['apellido'],
-            'id_eps' => $nuevoColaborador['id_eps'],
-            'id_arl' => $nuevoColaborador['id_arl'],
-            'tel_contacto' => $nuevoColaborador['tel_contacto'],
-            'email' => $nuevoColaborador['email'],
-            'id_empresa' => $nuevoColaborador['id_empresa']
-        ]);
-
-
-        // modalessssssssssss
-        // return $persona;
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(RequestColaborador $request)
-    {      
-        $nuevoColaborador = $request->all();
-
-        $nuevoColaborador['nombre'] = ucwords(mb_strtolower($nuevoColaborador['nombre']));
-        $nuevoColaborador['apellido'] = ucwords(mb_strtolower($nuevoColaborador['apellido']));
-        $nuevoColaborador['descripcion'] = ucfirst(mb_strtolower($nuevoColaborador['descripcion']));
-        $nuevoColaborador['id_usuario'] = auth()->user()->id_usuarios;
-        if(array_key_exists('casoIngreso', $nuevoColaborador)){
-            $nuevoColaborador['id_tipo_persona'] = 3;
-        } else{
-            $nuevoColaborador['id_tipo_persona'] = 2;
-        }
-
-        // $registrosPersonas = $this->registros->registrosNulos();
-        // $tiempoActual = date('Y-m-d H:i:s');
-        // foreach ($registrosPersonas as $registroPersona) {
-        //     if($registroPersona['identificacion'] == $nuevoColaborador['identificacion'] && ($registroPersona['id_tipo_persona'] == 1 || $registroPersona['id_tipo_persona'] == 2)){
-        //         return $registroPersona;
-        //         $registroPersona->salida_persona = $tiempoActual;
-        //         $registroPersona->codigo_activo_salida = $nuevoColaborador['codigo'];
-        //         $registroPersona->salida_activo = $tiempoActual;
-        //         $registroPersona->save();
-        //         $this->store3($nuevoColaborador, $nuevoColaborador['id_persona']);
-
-        //         if($registroPersona->ingreso_vehiculo != null){
-        //             $registroPersona->salida_vehiculo = $tiempoActual;
-        //         }
-        //         // $registro = Registro::findOrFail($registroPersona->id_registros);
-        //         // $registro->salida_persona = $tiempoActual;
-        //         // $registro->codigo_activo_salida = $nuevoColaborador['codigo'];
-        //         // $registro->salida_activo = $tiempoActual;
-        //         // $registro->salida_vehiculo = $tiempoActual;
-        //         // $registro->save();
-        //         // $this->store3($nuevoColaborador, $nuevoColaborador['id_persona']);
-        //     }
-        // }
-
-
-        // return 'Sin ningun ingreso';
-
-        
 
         $colaborador = Persona::updateOrCreate(
             ['identificacion' => $nuevoColaborador['identificacion']],
@@ -270,6 +189,61 @@ class ColaboradorController extends Controller
                 }
             }       
         }   
+    }
+
+    public function registroSalidaPersona(Request $request)
+    {
+        $nuevoColaborador = $request->all();
+        $tiempoActual = date('Y-m-d H:i:s');
+        
+        $nuevoColaborador['nombre'] = ucwords(mb_strtolower($nuevoColaborador['nombre']));
+        $nuevoColaborador['apellido'] = ucwords(mb_strtolower($nuevoColaborador['apellido']));
+        $nuevoColaborador['descripcion'] = ucfirst(mb_strtolower($nuevoColaborador['descripcion']));
+        $nuevoColaborador['id_usuario'] = auth()->user()->id_usuarios;
+
+        $persona = Persona::where('identificacion', $nuevoColaborador['identificacion'])->first();
+        $registroPersona = Registro::where('id_persona', $persona->id_personas)->whereNull('salida_persona')->first();
+        $modal['persona'] = $persona->nombre.' '.$persona->apellido;
+
+        if(array_key_exists('casoIngreso', $nuevoColaborador)){
+            $nuevoColaborador['id_tipo_persona'] = 3;
+            $modal['activo'] = $this->store3($nuevoColaborador, $persona->id_personas);
+            $registroPersona->codigo_activo_salida = $nuevoColaborador['codigo'];
+            $registroPersona->salida_activo = $tiempoActual;
+            if($persona->id_tipo_persona == 1){
+                $registroPersona->descripcion .= ' - '. $nuevoColaborador['descripcion']. ' - El visitante pasa a ser colaborador y el área de tecnología le asigna el activo '.$nuevoColaborador['codigo'].'.';
+            } else {
+                $registroPersona->descripcion .= ' - '. $nuevoColaborador['descripcion']. ' - El área de tecnología asigna el activo '.$nuevoColaborador['codigo'].' al colaborador.';
+            }
+        } else{
+            $nuevoColaborador['id_tipo_persona'] = 2;
+            if($persona->id_tipo_persona == 1){
+                $registroPersona->descripcion .= ' - '. $nuevoColaborador['descripcion']. ' - El visitante cambia su rol a colaborador.';
+            } if($registroPersona->ingreso_activo != null){
+                $modal['activo'] = $registroPersona->codigo_activo;
+                $registroPersona->salida_activo = $tiempoActual;
+            }
+        }   
+        $registroPersona->salida_persona = $tiempoActual;  
+        if($registroPersona->ingreso_vehiculo != null){
+            $modal['vehiculo'] = $this->vehiculos->obtenerVehiculo($registroPersona->id_vehiculo)->identificador;
+            $registroPersona->salida_vehiculo = $tiempoActual;
+        }
+        $registroPersona->save();
+
+        $persona->update([
+            'id_usuario' => $nuevoColaborador['id_usuario'],
+            'id_tipo_persona' => $nuevoColaborador['id_tipo_persona'],
+            'nombre' => $nuevoColaborador['nombre'],
+            'apellido' => $nuevoColaborador['apellido'],
+            'id_eps' => $nuevoColaborador['id_eps'],
+            'id_arl' => $nuevoColaborador['id_arl'],
+            'tel_contacto' => $nuevoColaborador['tel_contacto'],
+            'email' => $nuevoColaborador['email'],
+            'id_empresa' => $nuevoColaborador['id_empresa']
+        ]);
+
+        return redirect()->action([ColaboradorController::class, 'create'])->with('salida_colaborador', $modal);
     }
 
     /**

@@ -490,24 +490,24 @@ $(function() {
     });
 
     //
-    function comprobarIngresoPersona(identificacion) {
-        $.ajax({
-            url: 'comprobar_ingreso',
-            type: 'GET',
-            data: {
-                colaborador: identificacion,
-            },
-            dataType: 'json',
-            success: function(response) {   
-                $('#fechaIngreso').text(moment(response.ingreso_persona).format('DD-MM-YYYY'));
-                $('#horaIngreso').text(moment(response.ingreso_persona).format('h:mm:ss a'));
-                $('#modalCambioRol2').modal('show');
-            },
-            error: function() {
-                console.log('Error al traer los datos de la base de datos');
-            }         
-        });
-    }
+    // function comprobarIngresoPersona(identificacion) {
+    //     $.ajax({
+    //         url: 'comprobar_ingreso',
+    //         type: 'GET',
+    //         data: {
+    //             colaborador: identificacion,
+    //         },
+    //         dataType: 'json',
+    //         success: function(response) {   
+    //             $('#fechaIngreso').text(moment(response.ingreso_persona).format('DD-MM-YYYY'));
+    //             $('#horaIngreso').text(moment(response.ingreso_persona).format('h:mm:ss a'));
+    //             $('#modalCambioRol2').modal('show');
+    //         },
+    //         error: function() {
+    //             console.log('Error al traer los datos de la base de datos');
+    //         }         
+    //     });
+    // }
 
      // Función anónima que genera mensajes de error cuando el usuario intenta enviar algún formulario en la vista de colaborador con activo sin los datos requeridos, es una primera validación del lado del cliente
     (function() {
@@ -548,8 +548,15 @@ $(function() {
 
 
     $('#botonConfirmar2').click(function() {
-        $('#formularioColaborador').attr('action','../colaboradores/registro_salida'); 
-        $('#formularioColaborador').submit();
+        function asignarRuta(form) {
+            $(form).attr('action','../colaboradores/registro_salida'); 
+            $(form).submit();
+        }
+        if($('#colaboradorConActivo').hasClass('active')){
+            asignarRuta('#formularioColaborador');
+        } else {
+            asignarRuta('#formularioColaborador2');
+        }  
     });
 
 
@@ -615,23 +622,28 @@ $(function() {
         }
     }
 
+
+    function devolverAutorizacion() {
+        if($('#inputAutorizacion').val().includes('no')){
+            $('#autorizacion').css({
+                'color': '#dc3545', 
+                'font-size': '16px', 
+            });
+        } else {
+            $('#autorizacion').css({
+                'color': '#4ae11e', 
+                'font-size': '16px', 
+            });
+        }
+        $('#autorizacion').text($('#inputAutorizacion').val());
+    }
+
     //Función anónima que se ejecuta si alguno de los elementos mencionados se crea en la interfaz debido a errores cometidos en el ingreso de los formularios del módulo de colaboradores
     (function() {
         if (!!document.getElementById('botonRetorno')) {
             var caso = document.getElementById('casoIngreso').value;
-            var caso2 = document.getElementById('casoIngreso2').value;
-            if($('#inputAutorizacion').val().includes('no')){
-                $('#autorizacion').css({
-                    'color': '#dc3545', 
-                    'font-size': '16px', 
-                });
-            } else {
-                $('#autorizacion').css({
-                    'color': '#4ae11e', 
-                    'font-size': '16px', 
-                });
-            }
-            $('#autorizacion').text($('#inputAutorizacion').val());
+            var caso2 = document.getElementById('casoIngreso2').value;  
+            devolverAutorizacion();
 
             if(caso == 'conActivoVehiculo'){
                 retornarFotoVehiculo();
@@ -668,6 +680,12 @@ $(function() {
         }
     })();
 
+    (function() {
+        if (!!document.getElementById('modalCambioRol2')) {
+            devolverAutorizacion();
+        }
+    })();   
+
     //Muestra los modales de ingreso correcto dependiendo de que formularios se hayan ingresado y redirecciona en caso de que se oprima el botón continuar
     $('#modal-editar-colaborador').modal('show');
     $('#modal-editar-colaboradorActivo').modal('show');
@@ -677,15 +695,21 @@ $(function() {
     $('#modal-crear-colaboradorActivo').modal('show');
     $('#modal-crear-colaboradorVehiculo').modal('show');
     $('#modal-crear-colaboradorVehiculoActivo').modal('show');
-
-    $('#modalCambioRol2').modal('show');
-
+    
     $('.botonContinuar').click(function() {
         $(location).attr('href', '../colaboradores/con_activo');
     });
 
     $('.botonContinuar2').click(function() {
         $(location).attr('href', '../colaboradores/sin_activo');
+    });
+
+    //Muestra los modales de registro de salida correcto cuando un visitante o colaborador pasa a ser colaborador con activo y redirecciona en caso de que se oprima el botón continuar
+    $('#modalCambioRol2').modal('show');
+    $('#modal-registrar-salida').modal('show');
+
+    $('#botonSalida').click(function() {
+        $(location).attr('href', '../registros/completados');
     });
 
 });

@@ -261,22 +261,49 @@
     <!-- /.modal-dialog -->
 </div>
 
-
-
 @if (session('registro_ingreso'))
     <div class="modal fade" id="modalCambioRol2">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-danger">
-                    <h4 class="modal-title">Cambiar a rol de colaborador con activo</h4>
+                    <h4 class="modal-title">Cambiar a rol de colaborador</h4>
                 </div>
                 <div class="modal-body">
-                    <p class="text-center" style="font-size: 18px">La persona seleccionada tiene un registro de ingreso el <br><b id="fechaIngreso">{{ session('registro_ingreso')[0] }}</b> a las <b id="horaIngreso">{{ session('registro_ingreso')[1] }}</b> </p>
-                    <p>Si selecciona continuar se cambiará el rol y se registrará la salida de la persona</p>
+                    <p class="text-center" style="font-size: 18px">La persona ingresada tiene un registro de entrada el <br><b id="fechaIngreso">{{ session('registro_ingreso')[0] }}</b> a las <b id="horaIngreso">{{ session('registro_ingreso')[1] }}.</b> </p>
+                    <p class="text-center" style="font-size: 18px">Seleccione continuar para cambiar el rol y registrar la salida de la persona.</p>
                 </div>
-                <div class="modal-footer justify-content-between">
+                <div class="modal-footer justify-content-between mt-n2">
                     <button type="button" class="botonError btn btn-danger" data-dismiss="modal">Cerrar</button>
                     <button id="botonConfirmar2" type="button" class="btn btn-danger">Continuar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+@elseif (session('salida_colaborador'))
+    <div class="modal fade" id="modal-registrar-salida">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <div class="justify-content-between">
+                        <h4 class="modal-title">Cambio de rol a colaborador exitoso</h4>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <p>Se registro la salida del colaborador <b>{{ session('salida_colaborador')['persona'] }}</b> exitosamente.</p>
+                    @if(isset( session('salida_colaborador')['vehiculo'] ))
+                        <p>Se registro la salida del vehículo <b>{{ session('salida_colaborador')['vehiculo'] }}</b> exitosamente.</p>
+                    @endif
+                    @if(isset( session('salida_colaborador')['activo'] ))
+                        <p>Se registro la salida del activo <b>{{ session('salida_colaborador')['activo'] }}</b> exitosamente.</p>
+                    @endif                  
+                    <p>¿Desea permanecer en la página?</p>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" style="width: 100px">Si</button>
+                    <button id="botonSalida" type="submit" class="btn btn-primary">Continuar</button>
                 </div>
             </div>
             <!-- /.modal-content -->
