@@ -26,7 +26,7 @@
 
     <section class="content-header mb-n4">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-12">
                 <form id="formularioVisitante" action="{{ route('crearVisitante') }}" method="POST" novalidate>
                     @csrf
                     <div>

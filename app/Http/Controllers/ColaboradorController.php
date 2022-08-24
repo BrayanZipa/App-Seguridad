@@ -88,27 +88,13 @@ class ColaboradorController extends Controller
         return view('pages.colaboradores.crear', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos', 'empresas', 'listaColaboradores', 'personas'));
     }
 
-
-    // public function comprobarIngresoPersona(RequestColaborador $request)
-    // {
-    //     $nuevoColaborador = $request->all();
-    //     $registrosPersonas = $this->registros->registrosNulos();
-        
-    //     foreach ($registrosPersonas as $registroPersona) {
-    //         if($registroPersona['identificacion'] == $nuevoColaborador['identificacion'] && ($registroPersona['id_tipo_persona'] == 1 || $registroPersona['id_tipo_persona'] == 2)){
-    //             $fechaIngreso = Carbon::parse($registroPersona->ingreso_persona);
-    //             return back()->withInput()->with('registro_ingreso', [$fechaIngreso->format('d-m-Y'), $fechaIngreso->format('h:i a')]);
-    //         }
-    //     }
-    // }
-
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RequestColaborador $request)
     {      
         $nuevoColaborador = $request->all();
         $registrosPersonas = $this->registros->registrosNulos();
@@ -191,6 +177,9 @@ class ColaboradorController extends Controller
         }   
     }
 
+    /**
+     * Función que permite actualizar el rol de una persona a colaborador o colaborador con activo y al mismo tiempo registrar la salida de esta misma en la tabla se_registros, esto sucede cuando se quiere crear un colaborador o colaboraor con activo que previamente tenga un registro de ingreso como visitante o colaborador
+     */
     public function registroSalidaPersona(Request $request)
     {
         $nuevoColaborador = $request->all();
@@ -251,20 +240,19 @@ class ColaboradorController extends Controller
      */
     public function store2($datos, $id_persona)
     {
+        $datos['identificador'] = strtoupper($datos['identificador']);
         if(!isset($datos['foto_vehiculo'])){ //saber si es null
             $url = null;
         } else {
             $img = $datos['foto_vehiculo'];
             $img = str_replace('data:image/png;base64,', '', $img);
             $img = str_replace(' ', '+', $img);
-            $foto = base64_decode($img);
+            $fotoDecodificada = base64_decode($img);
             $filename = 'vehiculos/'. $id_persona. '_'. $datos['identificador']. '_'.date('Y-m-d'). '.png';
-            $ruta = storage_path() . '\app\public/' .  $filename;
-            Image::make($foto)->resize(600, 500)->save($ruta);
+            $foto = Image::make($fotoDecodificada)->resize(600, 500);
+            Storage::put('public/' . $filename, $foto->encode());
             $url = Str::replaceFirst('/', '', Storage::url($filename));
         }
-
-        $datos['identificador'] = strtoupper($datos['identificador']);
         if(!isset($datos['id_marca_vehiculo'])){ //saber si existe
             $datos['id_marca_vehiculo'] = null;
         }

@@ -489,26 +489,6 @@ $(function() {
         selectMarcaVehiculo2();
     });
 
-    //
-    // function comprobarIngresoPersona(identificacion) {
-    //     $.ajax({
-    //         url: 'comprobar_ingreso',
-    //         type: 'GET',
-    //         data: {
-    //             colaborador: identificacion,
-    //         },
-    //         dataType: 'json',
-    //         success: function(response) {   
-    //             $('#fechaIngreso').text(moment(response.ingreso_persona).format('DD-MM-YYYY'));
-    //             $('#horaIngreso').text(moment(response.ingreso_persona).format('h:mm:ss a'));
-    //             $('#modalCambioRol2').modal('show');
-    //         },
-    //         error: function() {
-    //             console.log('Error al traer los datos de la base de datos');
-    //         }         
-    //     });
-    // }
-
      // Función anónima que genera mensajes de error cuando el usuario intenta enviar algún formulario en la vista de colaborador con activo sin los datos requeridos, es una primera validación del lado del cliente
     (function() {
         'use strict'
@@ -527,7 +507,7 @@ $(function() {
         }, false);
     })();
 
-    // Función anónima que genera mensajes de error cuando el usuario intenta enviar algún formulario en la vista de colaborador sin activo sin los datos requeridos, es una primera validación del lado del cliente
+    //Función anónima que genera mensajes de error cuando el usuario intenta enviar algún formulario en la vista de colaborador sin activo sin los datos requeridos, es una primera validación del lado del cliente
     (function() {
         'use strict'
         var form = document.getElementById('formularioColaborador2');
@@ -545,8 +525,7 @@ $(function() {
         }, false);
     })();
 
-
-
+    //Botón que permite cambiar la ruta del formulario de crear nuevo colaborador o la ruta del formulario de nuevo colaborador con activo dependiendo del caso y después envía el formulario a dicha ruta, esto en caso de que el nuevo colaborador a crear previamente tenga un registro de ingreso
     $('#botonConfirmar2').click(function() {
         function asignarRuta(form) {
             $(form).attr('action','../colaboradores/registro_salida'); 
@@ -558,11 +537,6 @@ $(function() {
             asignarRuta('#formularioColaborador2');
         }  
     });
-
-
-
-
-
 
     //Si en un input del cualquier formulario del módulo colaboradores esta la clase is-invalid al escribir en el mismo input se elimina esta clase 
     $('input.colaborador, textarea.colaborador, input.colaborador2, textarea.colaborador2, input.vehiculo, input.vehiculo2').keydown(function(event) {
@@ -622,7 +596,7 @@ $(function() {
         }
     }
 
-
+    //Función que permite devolver la información de la autorización de la salida de un activo en la vista, esto en caso de que se cometan errores al momento de enviar un formulario o en caso de que se devuelva la alerta que notifica que el colaborador a crear ya tiene un registro de ingreso 
     function devolverAutorizacion() {
         if($('#inputAutorizacion').val().includes('no')){
             $('#autorizacion').css({

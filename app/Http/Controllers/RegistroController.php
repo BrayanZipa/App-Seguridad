@@ -373,6 +373,3 @@ class RegistroController extends Controller
         return response()->json(['registros' => $registros, 'totalRegistros' =>  $totalRegistros]);
     }
 }
-
-    // $registros = $this->registros->informacionRegistrosActivos();
-    // return $registros;

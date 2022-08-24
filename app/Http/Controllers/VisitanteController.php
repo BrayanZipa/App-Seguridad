@@ -107,10 +107,10 @@ class VisitanteController extends Controller
             $img = $request->foto;
             $img = str_replace('data:image/png;base64,', '', $img);
             $img = str_replace(' ', '+', $img);
-            $foto = base64_decode($img);
+            $fotoDecodificada = base64_decode($img);
             $filename = 'visitantes/'. $nuevoVisitante['identificacion']. '_'. date('Y-m-d'). '.png';
-            $ruta = storage_path() . '\app\public/' .  $filename;
-            Image::make($foto)->resize(600, 500)->save($ruta);
+            $foto = Image::make($fotoDecodificada)->resize(600, 500);
+            Storage::put('public/' . $filename, $foto->encode());
             $url = Str::replaceFirst('/', '', Storage::url($filename));
         }      
 
@@ -163,10 +163,10 @@ class VisitanteController extends Controller
             $img = $datos['foto_vehiculo'];
             $img = str_replace('data:image/png;base64,', '', $img);
             $img = str_replace(' ', '+', $img);
-            $foto = base64_decode($img);
+            $fotoDecodificada = base64_decode($img);
             $filename = 'vehiculos/'. $id_persona. '_'. $datos['identificador']. '_'.date('Y-m-d'). '.png';
-            $ruta = storage_path() . '\app\public/' .  $filename;
-            Image::make($foto)->resize(600, 500)->save($ruta);
+            $foto = Image::make($fotoDecodificada)->resize(600, 500);
+            Storage::put('public/' . $filename, $foto->encode());
             $url = Str::replaceFirst('/', '', Storage::url($filename));
         }
 
