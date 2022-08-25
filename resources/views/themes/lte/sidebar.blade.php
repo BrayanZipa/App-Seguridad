@@ -46,7 +46,6 @@
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
                 <li class="nav-item">
                     <a href="{{ route('home') }}" class="nav-link {{ Request::is('home') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -96,6 +95,15 @@
                         <i class="nav-icon fa-solid fa-calendar-days"></i>
                         <p>
                             Registros
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-header mt-n3">EXAMPLES</li>
+                <li class="nav-item">
+                    <a href="{{ route('users.index') }}" class="nav-link {{ Request::is('users.index') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-user-check"></i>
+                        <p>
+                            Usuarios
                         </p>
                     </a>
                 </li>

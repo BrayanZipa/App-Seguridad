@@ -4,6 +4,7 @@ use App\Http\Controllers\ColaboradorController;
 use App\Http\Controllers\ConductorController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RegistroController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehiculoController;
 use App\Http\Controllers\VisitanteController;
 use Illuminate\Support\Facades\Auth;
@@ -27,9 +28,18 @@ Route::get('/', function () {
 Auth::routes();
 
 /**
+ * Rutas del sistema de roles
+ */
+// Route::resource('users', UserController::class)->only(['index', 'edit', 'update'])->names('users');
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
+// ->middleware('can:nombre del permiso');
+//dentro del controlador hacer un constructor en caso que se utilice resource, se puede hacer varios
+// $this->middleware('can:nombre del permiso')->only('nombre de la funcion que se quiere proteger');
+
+/**
  * Ruta del home
  */
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home'); 
 
 /**
  * Rutas del módulo de visitantes

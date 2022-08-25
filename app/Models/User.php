@@ -9,10 +9,11 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use LdapRecord\Laravel\Auth\LdapAuthenticatable;
 use LdapRecord\Laravel\Auth\AuthenticatesWithLdap;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements LdapAuthenticatable
 {
-    use Notifiable, AuthenticatesWithLdap;
+    use Notifiable, AuthenticatesWithLdap, HasRoles;
     protected $table = 'se_usuarios';
 
     /**

@@ -15,22 +15,17 @@
 
         <div class="card-body mb-n4">
             <div class="row">
-                <div class="col-sm-4">
+                <div class="col-md-4 col-sm-12">
                     <div class="form-group">
                         <label for="inputFotoVehiculo">Fotografía</label>
-
-                        <input type="hidden" id="inputFotoVehiculo" class="{{ $errors->has('foto_vehiculo') ? 'is-invalid' : '' }}" name="foto_vehiculo"
-                            value="{{ old('foto_vehiculo') }}">
-
+                        <input type="hidden" id="inputFotoVehiculo" class="{{ $errors->has('foto_vehiculo') ? 'is-invalid' : '' }}" name="foto_vehiculo" value="{{ old('foto_vehiculo') }}">
                         <video src="" id="video2" class="img-fluid rounded" style="display: none"></video>
                         <canvas id="canvas2" class="img-fluid rounded" style="display: none"></canvas>
-
                         @if ($errors->has('foto_vehiculo')) 
                             <div class="invalid-feedback">
                                 {{ $errors->first('foto_vehiculo') }}
                             </div>            
                         @endif
-
                         <div class="mt-2">
                             <button id="botonActivar2" type="button" class="btn btn-sm"
                                 style="background-color: rgb(255, 115, 0)">Activar</button>
@@ -39,9 +34,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-8">
+                <div class="col-md-8 col-sm-12">
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-md-6 col-ms-12">
                             <div class="form-group">
                                 <label for="inputNumeroIdentificador">Ingrese el número identificador del vehículo</label>
                                 <input type="text" class="vehiculo form-control {{ $errors->has('identificador') ? 'is-invalid' : '' }}" id="inputNumeroIdentificador"
@@ -54,7 +49,7 @@
                                     @endif  
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-md-6 col-ms-12">
                             <div class="form-group">
                                 <label for="selectTipoVehiculo">Ingrese el tipo de vehículo</label>
                                 <select id="selectTipoVehiculo" class="vehiculo  select2bs4 form-control {{ $errors->has('id_tipo_vehiculo') ? 'is-invalid' : '' }}"
@@ -76,7 +71,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-md-6 col-ms-12">
                             <div class="form-group">
                                 <label for="selectMarcaVehiculo">Ingrese la marca del vehículo</label>
                                 <select id="selectMarcaVehiculo" class="form-control select2bs4" style="width: 100%;"

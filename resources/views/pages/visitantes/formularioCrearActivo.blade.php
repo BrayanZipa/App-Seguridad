@@ -15,7 +15,7 @@
 
         <div class="card-body mb-n4">
             <div class="row">
-                <div class="col-sm-4">
+                <div class="col-md-4 col-sm-12">
                     <div class="form-group">
                         <label for="inputActivo">Ingrese el tipo de activo</label>
                         <input type="text" class="activo form-control {{ $errors->has('activo') ? 'is-invalid' : '' }}" id="inputActivo" name="activo" value="{{ old('activo') }}"
@@ -27,7 +27,7 @@
                             @endif 
                     </div>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-md-4 col-sm-12">
                     <div class="form-group">
                         <label for="inputCodigo">Ingrese el código único del activo</label>
                         <input type="text" class="activo form-control {{ $errors->has('codigo') ? 'is-invalid' : '' }}" id="inputCodigo" name="codigo"
