@@ -12,7 +12,7 @@
 
     <div class="card-body">
         <div class="row">
-            <div class="col-sm-4">
+            <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                     <label for="inputFotoVehiculo">Fotografía</label>
 
@@ -33,9 +33,9 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-8">
+            <div class="col-md-8 col-sm-12">
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-md-6 col-sm-12">
                         <div class="form-group">
                             <label for="inputNumeroIdentificador">Ingrese el número identificador del vehículo</label>
                             <input type="text" class="conductor form-control {{ $errors->has('identificador') ? 'is-invalid' : '' }}" id="inputNumeroIdentificador"
@@ -48,7 +48,7 @@
                                 @endif  
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-md-6 col-sm-12">
                         <div class="form-group">
                             <label for="selectTipoVehiculo">Ingrese el tipo de vehículo</label>
                             <select id="selectTipoVehiculo" class="conductor select2bs4 form-control {{ $errors->has('id_tipo_vehiculo') ? 'is-invalid' : '' }}"
@@ -70,7 +70,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-md-6 col-sm-12">
                         <div class="form-group">
                             <label for="selectMarcaVehiculo">Ingrese la marca del vehículo</label>
                             <select id="selectMarcaVehiculo" class="conductor form-control select2bs4" style="width: 100%;"

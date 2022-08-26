@@ -15,7 +15,7 @@
 
         <div class="card-body">
             <div class="row">
-                <div class="col-sm-4">
+                <div class="col-md-4 col-sm-12">
                     <div class="form-group">
                         <label for="inputFotoVehiculo2">Fotografía</label>
 
@@ -39,9 +39,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-8">
+                <div class="col-md-8 col-sm-12">
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-md-6 col-sm-12">
                             <div class="form-group">
                                 <label for="inputNumeroIdentificador2">Ingrese el número identificador del vehículo</label>
                                 <input type="text" class="vehiculo2 form-control {{ $errors->has('identificador') && old('casoIngreso2') != '' ? 'is-invalid' : '' }}" id="inputNumeroIdentificador2"
@@ -54,7 +54,7 @@
                                     @endif  
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-md-6 col-sm-12">
                             <div class="form-group">
                                 <label for="selectTipoVehiculo2">Ingrese el tipo de vehículo</label>
                                 <select id="selectTipoVehiculo2" class="select2tipo vehiculo2 form-control {{ $errors->has('id_tipo_vehiculo') && old('casoIngreso2') != '' ? 'is-invalid' : '' }}"
@@ -76,7 +76,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-md-6 col-sm-12">
                             <div class="form-group">
                                 <label for="selectMarcaVehiculo2">Ingrese la marca del vehículo</label>
                                 <select id="selectMarcaVehiculo2" class="select2marca form-control" style="width: 100%;" name="id_marca_vehiculo">

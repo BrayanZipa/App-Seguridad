@@ -12,7 +12,7 @@
 
         <div class="card-body mb-n4">
             <div class="row">
-                <div class="col-sm-4">
+                <div class="col-md-4 col-sm-12">
                     <div class="form-group">
                         <label for="inputFotoVehiculo">Fotografía</label>
 
@@ -36,9 +36,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-8">
+                <div class="col-md-8 col-sm-12">
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-md-6 col-sm-12">
                             <div class="form-group">
                                 <label for="inputNumeroIdentificador">Ingrese el número identificador del vehículo</label>
                                 <input type="text" class="vehiculo form-control {{ $errors->has('identificador') ? 'is-invalid' : '' }}" id="inputNumeroIdentificador"
@@ -51,7 +51,7 @@
                                     @endif  
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-md-6 col-sm-12">
                             <div class="form-group">
                                 <label for="selectTipoVehiculo">Ingrese el tipo de vehículo</label>
                                 <select id="selectTipoVehiculo" class="vehiculo  select2bs4 form-control {{ $errors->has('id_tipo_vehiculo') ? 'is-invalid' : '' }}"
@@ -73,7 +73,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-md-6 col-sm-12">
                             <div class="form-group">
                                 <label for="selectMarcaVehiculo">Ingrese la marca del vehículo</label>
                                 <select id="selectMarcaVehiculo" class="form-control select2bs4" style="width: 100%;"
@@ -88,7 +88,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-md-6 col-sm-12">
                             <div class="form-group">
                                 <label for="selectTipoPersona">Ingrese al propietario del vehículo</label>
                                 <select id="selectTipoPersona" class="vehiculo select2bs4 form-control" name="tipoPersona" style="width: 100%;" required>
@@ -101,7 +101,7 @@
                         </div>
                     </div>
                     <div class="row" >
-                        <div id="selectPropietario" class="col-sm-6" style="display: none">
+                        <div id="selectPropietario" class="col-md-6 col-sm-12" style="display: none">
                             <input type="hidden" id="retornoPersona" name="retornoPersona" value="{{ old('retornoPersona') }}">
                             <div class="form-group">
                                 <label for="selectPersona">Propietario</label>

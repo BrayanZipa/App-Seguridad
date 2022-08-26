@@ -1,5 +1,5 @@
 <div class="row mb-n2">
-    <div class="col-md-12">
+    <div class="col-12">
         <form id="form_EditarVehiculo" action="" method="POST" novalidate>
             @csrf
             @method('PUT')
@@ -20,7 +20,7 @@
 
                 <div class="card-body mb-n4">
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-md-4 col-sm-12">
                             <div class="form-group">
                                 <input type="hidden" id="inputIdVehiculo" name="id_vehiculos" value="{{ old('id_vehiculos') }}">
 
@@ -35,9 +35,9 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="col-sm-8">
+                        <div class="col-md-8 col-sm-12">
                             <div class="row">
-                                <div class="col-sm-6">
+                                <div class="col-md-6 col-sm-12">
                                     <div class="form-group">
                                         <label for="inputNumeroIdentificador">Actualizar número identificador del vehículo</label>
                                         <input type="text" class="vehiculo form-control {{ $errors->has('identificador') ? 'is-invalid' : '' }}" id="inputNumeroIdentificador"
@@ -50,7 +50,7 @@
                                             @endif  
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-md-6 col-sm-12">
                                     <div class="form-group">
                                         <label for="selectTipoVehiculo">Actualizar tipo de vehículo</label>
                                         <select id="selectTipoVehiculo" class="vehiculo select2bs4 form-control {{ $errors->has('id_tipo_vehiculo') ? 'is-invalid' : '' }}"
@@ -72,7 +72,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-6">
+                                <div class="col-md-6 col-sm-12">
                                     <div class="form-group">
                                         <label for="selectMarcaVehiculo">Actualizar marca del vehículo</label>
                                         <select id="selectMarcaVehiculo" class="form-control select2bs4" style="width: 100%;"
@@ -87,7 +87,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-md-6 col-sm-12">
                                     <div class="form-group">
                                         <label for="selectTipoPersona">Actualizar propietario del vehículo</label>
                                         <select id="selectTipoPersona" class="vehiculo select2bs4 form-control" name="tipoPersona" style="width: 100%;" required>
@@ -100,7 +100,7 @@
                                 </div>
                             </div>
                             <div class="row" >
-                                <div class="col-sm-6">
+                                <div class="col-md-6 col-sm-12">
                                     <input type="hidden" id="personaAnterior" name="personaAnterior" value="{{ old('personaAnterior') }}">
                                     <input type="hidden" id="retornoPersona" name="retornoPersona" value="{{ old('retornoPersona') }}">
                                     <div class="form-group">

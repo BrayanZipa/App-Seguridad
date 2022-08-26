@@ -113,7 +113,7 @@
 
     <section class="content-header">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-12">
                 
                 {{-- <div class="card card-primary mb-n1">
                     <div class="card-header ">
@@ -166,7 +166,7 @@
                     
                         <div class="card-body mb-n4">
                             <div class="row">
-                                <div class="col-sm-4">
+                                <div class="col-md-4 col-sm-12">
                                     <div class="form-group">
                                         <input type="hidden" id="inputCodigo" name="codigo" value="{{ old('codigo') }}" required>
                                         <label for="selectCodigo">Ingrese el activo</label>
@@ -185,7 +185,7 @@
                                         @endif
                                     </div>
                                 </div>
-                                <div class="col-sm-4">
+                                <div class="col-md-4 col-sm-12">
                                     <div class="form-group">
                                         <label for="inputNombre">Ingrese el nombre</label>
                                         <input type="text" class="colaborador form-control {{ $errors->has('nombre') ? 'is-invalid' : '' }}" id="inputNombre" name="nombre" value="{{ old('nombre') }}" placeholder="Nombre" autocomplete="off" required>
@@ -196,7 +196,7 @@
                                             @endif
                                     </div>
                                 </div> 
-                                <div class="col-sm-4">
+                                <div class="col-md-4 col-sm-12">
                                     <div class="form-group">
                                         <label for="inputApellido">Ingrese el apellido</label>
                                         <input type="text" class="colaborador form-control {{ $errors->has('apellido') ? 'is-invalid' : '' }}" id="inputApellido" name="apellido" value="{{ old('apellido') }}" placeholder="Apellido" autocomplete="off" required>
@@ -209,7 +209,7 @@
                                 </div>  
                             </div>
                             <div class="row">          
-                                <div class="col-sm-4">
+                                <div class="col-md-4 col-sm-12">
                                     <div class="form-group">
                                         <label for="inputIdentificacion">Ingrese la identificación</label>
                                         <input type="text" class="colaborador form-control {{ $errors->has('identificacion') ? 'is-invalid' : '' }}" id="inputIdentificacion" name="identificacion" value="{{ old('identificacion') }}" placeholder="Identificación" autocomplete="off" required>
@@ -220,7 +220,7 @@
                                             @endif  
                                     </div>
                                 </div>
-                                <div class="col-sm-4">
+                                <div class="col-md-4 col-sm-12">
                                     <div class="form-group">
                                         <label for="inputEmail">Ingrese el correo empresarial</label>
                                         <input type="text" class="colaborador form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" id="inputEmail" name="email" value="{{ old('email') }}" placeholder="Correo empresarial" autocomplete="off">
@@ -231,7 +231,7 @@
                                             @endif  
                                     </div>
                                 </div>
-                                <div class="col-sm-4">
+                                <div class="col-md-4 col-sm-12">
                                     <div class="form-group">
                                         <label for="inputTelefono">Ingrese el teléfono</label>
                                         <input type="tel" class="colaborador form-control {{ $errors->has('tel_contacto') ? 'is-invalid' : '' }}" id="inputTelefono" name="tel_contacto" value="{{ old('tel_contacto') }}" placeholder="Teléfono" autocomplete="off" required>
@@ -244,7 +244,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-4">
+                                <div class="col-md-4 col-sm-12">
                                     <div class="form-group">
                                         <label for="selectEps">Ingrese la EPS</label>
                                         <select id="selectEps" class="select2eps colaborador form-control {{ $errors->has('id_eps') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_eps" required> 
@@ -262,7 +262,7 @@
                                         @endif
                                     </div>
                                 </div>
-                                <div class="col-sm-4">
+                                <div class="col-md-4 col-sm-12">
                                     <div class="form-group">
                                         <label for="selectArl">Ingrese el ARL</label>
                                         <select id="selectArl" class="select2arl colaborador form-control {{ $errors->has('id_arl') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_arl" required>
@@ -280,7 +280,7 @@
                                         @endif
                                     </div>
                                 </div>
-                                <div class="col-sm-4">
+                                <div class="col-md-4 col-sm-12">
                                     <div class="form-group">
                                         <label for="selectEmpresa">Ingrese la empresa a la que pertenece</label>
                                         <select id="selectEmpresa" class="colaborador form-control {{ $errors->has('id_empresa') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_empresa"
@@ -314,7 +314,7 @@
                                     </div>
                                 </div> --}}
 
-                                <div class="col-sm-8">
+                                <div class="col-md-8 col-sm-12">
                                     <div class="form-group">
                                         <label for="inputDescripcion">Ingrese una descripción</label>
                                         <textarea id="inputDescripcion" class="colaborador form-control {{ $errors->has('descripcion') ? 'is-invalid' : '' }}" name="descripcion">

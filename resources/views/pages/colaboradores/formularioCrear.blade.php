@@ -15,7 +15,7 @@
 
     <div class="card-body mb-n4">
         <div class="row">
-            <div class="col-sm-8">
+            <div class="col-md-8 col-sm-12">
                 <div class="form-group">
                     <select id="selectIdentificacion"  name="selectIdentificacion" class="form-control" style="width: 100%;">
                         <option selected="selected" value="" disabled></option>
@@ -27,13 +27,13 @@
                     </select>
                 </div>
             </div>
-            <div class="col-sm-4 text-center mt-1">
+            <div class="col-md-4 col-sm-12 text-center mt-1">
                 <label id="autorizacion"></label>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-sm-4">
+            <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                     <label for="inputCodigo">Ingrese el activo</label>
                     <input type="text" class="colaborador form-control {{ $errors->has('codigo') && old('casoIngreso2') == ''  ? 'is-invalid' : '' }}" id="inputCodigo" name="codigo" value="{{ old('casoIngreso2') == '' ? old('codigo') : '' }}" placeholder="Activo" autocomplete="off" readonly required>
@@ -44,7 +44,7 @@
                         @endif  
                 </div>
             </div>
-            <div class="col-sm-4">
+            <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                     <label for="inputNombre">Ingrese el nombre</label>
                     <input type="text" class="colaborador form-control {{ $errors->has('nombre') && old('casoIngreso2') == '' ? 'is-invalid' : '' }}" id="inputNombre" name="nombre" value="{{ old('casoIngreso2') == '' ? old('nombre') : '' }}"
@@ -56,7 +56,7 @@
                         @endif
                 </div>
             </div>
-            <div class="col-sm-4">
+            <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                     <label for="inputApellido">Ingrese el apellido</label>
                     <input type="text" class="colaborador form-control {{ $errors->has('apellido') && old('casoIngreso2') == '' ? 'is-invalid' : '' }}" id="inputApellido" name="apellido" value="{{ old('casoIngreso2') == '' ? old('apellido') : '' }}"
@@ -70,7 +70,7 @@
             </div> 
         </div>
         <div class="row">   
-            <div class="col-sm-4">
+            <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                     <label for="inputIdentificacion">Ingrese la identificación</label>
                     <input type="text" class="colaborador form-control {{ $errors->has('identificacion') && old('casoIngreso2') == '' ? 'is-invalid' : '' }}" id="inputIdentificacion"
@@ -82,7 +82,7 @@
                         @endif  
                 </div>
             </div>  
-            <div class="col-sm-4">
+            <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                     <label for="inputEmail">Ingrese el correo empresarial</label>
                     <input type="text" class="colaborador form-control {{ $errors->has('email') && old('casoIngreso2') == '' ? 'is-invalid' : '' }}" id="inputEmail" name="email" value="{{ old('casoIngreso2') == '' ? old('email') : '' }}"
@@ -94,7 +94,7 @@
                         @endif  
                 </div>
             </div>
-            <div class="col-sm-4">
+            <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                     <label for="inputTelefono">Ingrese el teléfono</label>
                     <input type="tel" class="colaborador form-control {{ $errors->has('tel_contacto') && old('casoIngreso2') == '' ? 'is-invalid' : '' }}" id="inputTelefono" name="tel_contacto" value="{{ old('casoIngreso2') == '' ? old('tel_contacto') : '' }}"
@@ -108,7 +108,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-4">
+            <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                     <label for="selectEps">Ingrese la EPS</label>
                     <select id="selectEps" class="select2eps colaborador form-control {{ $errors->has('id_eps') && old('casoIngreso2') == '' ? 'is-invalid' : '' }}" style="width: 100%;" name="id_eps" required>
@@ -126,7 +126,7 @@
                     @endif
                 </div>
             </div>
-            <div class="col-sm-4">
+            <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                     <label for="selectArl">Ingrese el ARL</label>
                     <select id="selectArl" class="select2arl colaborador form-control {{ $errors->has('id_arl') && old('casoIngreso2') == '' ? 'is-invalid' : '' }}" style="width: 100%;" name="id_arl" required>
@@ -144,7 +144,7 @@
                     @endif
                 </div>
             </div>
-            <div class="col-sm-4">
+            <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                     <label for="selectEmpresa">Ingrese la empresa a la que pertenece</label>
                     <select id="selectEmpresa" class="colaborador form-control {{ $errors->has('id_empresa') && old('casoIngreso2') == '' ? 'is-invalid' : '' }}" style="width: 100%;" name="id_empresa"
@@ -165,7 +165,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-4">
+            <div class="col-md-4 col-sm-12">
                 <!-- checkbox -->
                 <div class="form-group clearfix pt-4">
                     <div class="icheck-primary d-inline">
@@ -176,7 +176,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-8">
+            <div class="col-md-8 col-sm-12">
                 <div class="form-group">
                     <label for="inputDescripcion">Ingrese una descripción</label>
                     <textarea id="inputDescripcion" class="colaborador form-control {{ $errors->has('descripcion') && old('casoIngreso2') == '' ? 'is-invalid' : '' }}" name="descripcion">

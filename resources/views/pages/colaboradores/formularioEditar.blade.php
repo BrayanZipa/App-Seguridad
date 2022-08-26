@@ -1,5 +1,5 @@
 <div class="row mb-n2">
-    <div class="col-md-12">
+    <div class="col-12">
         <form id="form_EditarColaborador" action="" method="POST" novalidate>
             @csrf  
             @method('PUT')
@@ -21,7 +21,7 @@
                 <div class="card-body mb-n4">
                     <input type="hidden" id="inputId" name="id_personas" value="{{ old('id_personas') }}">
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-md-4 col-sm-12">
                             <div class="form-group">
                                 <label for="inputCodigo">Activo</label>
                                 <input type="text" class="colaborador form-control {{ $errors->has('codigo') ? 'is-invalid' : '' }}" id="inputCodigo" name="codigo" value="{{ old('codigo') }}" placeholder="Activo" autocomplete="off" readonly required>
@@ -32,7 +32,7 @@
                                     @endif  
                             </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-md-4 col-sm-12">
                             <div class="form-group">
                                 <label for="inputNombre">Nombre</label>
                                 <input type="text" class="colaborador form-control {{ $errors->has('nombre') ? 'is-invalid' : '' }}" id="inputNombre" name="nombre" value="{{ old('nombre') }}"
@@ -44,7 +44,7 @@
                                     @endif
                             </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-md-4 col-sm-12">
                             <div class="form-group">
                                 <label for="inputApellido">Apellido</label>
                                 <input type="text" class="colaborador form-control {{ $errors->has('apellido') ? 'is-invalid' : '' }}" id="inputApellido" name="apellido" value="{{ old('apellido') }}"
@@ -58,7 +58,7 @@
                         </div> 
                     </div>
                     <div class="row">   
-                        <div class="col-sm-4">
+                        <div class="col-md-4 col-sm-12">
                             <div class="form-group">
                                 <label for="inputIdentificacion">Identificación</label>
                                 <input type="text" class="colaborador form-control {{ $errors->has('identificacion') ? 'is-invalid' : '' }}" id="inputIdentificacion" name="identificacion" value="{{ old('identificacion') }}" placeholder="Identificación" autocomplete="off" readonly required>
@@ -69,7 +69,7 @@
                                     @endif  
                             </div>
                         </div>         
-                        <div class="col-sm-4">
+                        <div class="col-md-4 col-sm-12">
                             <div class="form-group">
                                 <label for="inputEmail">Correo empresarial</label>
                                 <input type="text" class="colaborador form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" id="inputEmail" name="email" value="{{ old('email') }}"
@@ -81,7 +81,7 @@
                                     @endif  
                             </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-md-4 col-sm-12">
                             <div class="form-group">
                                 <label for="inputTelefono">Actualizar teléfono</label>
                                 <input type="tel" class="colaborador form-control {{ $errors->has('tel_contacto') ? 'is-invalid' : '' }}" id="inputTelefono" name="tel_contacto" value="{{ old('tel_contacto') }}"
@@ -95,7 +95,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-md-4 col-sm-12">
                             <div class="form-group">
                                 <label for="selectEps">Actualizar EPS</label>
                                 <select id="selectEps" class="select2bs4 colaborador form-control {{ $errors->has('id_eps') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_eps" required>
@@ -113,7 +113,7 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-md-4 col-sm-12">
                             <div class="form-group">
                                 <label for="selectArl">Actualizar ARL</label>
                                 <select id="selectArl" class="select2bs4 colaborador form-control {{ $errors->has('id_arl') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_arl" required>
@@ -131,7 +131,7 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-md-4 col-sm-12">
                             <div class="form-group">
                                 <label for="selectEmpresa">Actualizar empresa a la que pertenece</label>
                                 <select id="selectEmpresa" class="colaborador form-control {{ $errors->has('id_empresa') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_empresa"

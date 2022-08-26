@@ -24,7 +24,7 @@
 
     <section class="content-header mb-n4">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-12">
                 <form id="formularioConductor" action="{{ route('crearConductor') }}" method="POST" novalidate>
                     @csrf
                     <div class="card">

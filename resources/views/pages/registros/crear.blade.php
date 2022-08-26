@@ -26,7 +26,7 @@
 
     <section class="content-header mb-n4">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-12">
                 <div class="card card-primary">
                     <div class="card-header">
                         <h3 class="card-title">Crear nuevo registro</h3>
@@ -38,7 +38,7 @@
                     </div>
                     <div class="card-body mb-n4 mt-n1" >
                         <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-md-6 col-sm-12">
                                 <input id="idTipoPersona" type="hidden" value="{{ $tipoPersona }}">
                                 <div class="form-group">
                                     <label for="selectTipoPersona">Seleccione el tipo de persona</label>
@@ -50,7 +50,7 @@
                                         </select>  
                                 </div>
                             </div>
-                            <div id="buscarPersona" class="col-sm-6" style="display: none">
+                            <div id="buscarPersona" class="col-md-6 col-sm-12" style="display: none">
                                 <input id="idPersona" type="hidden" value="">
                                 <div class="form-group">
                                     <label for="selectPersona">Seleccione a la persona</label>

@@ -325,36 +325,38 @@ $(function () {
                         } else if(tipoPersona == 4){
                             $('#mensajeVehiculo').text('El conductor ' + mensaje);
                         }
-                        $('#colMensajeVehiculo').css('display', '');
+                        $('#colMensajeVehiculo, #mensajeVehiculo').css('display', '');
                     } else if(tipoPersona == 2 || tipoPersona == 3){
                         if(tipoPersona == 2){
                             $('#selectVehiculo2').prop('disabled', true);
                             $('#mensajeVehiculo2').text('El colaborador ' + mensaje);
-                            $('#colMensajeVehiculo2').css('display', '');
+                            $('#colMensajeVehiculo2, #mensajeVehiculo2').css('display', '');
                         } else if(tipoPersona == 3){
-                            if($('#colInputVehiculo').hasClass('col-sm-8')){
-                                $('#colInputVehiculo').removeClass('col-sm-8');
-                                $('#colInputVehiculo').addClass('col-sm-4');
+                            if($('#colInputVehiculo').hasClass('col-md-8')){
+                                $('#colInputVehiculo').removeClass('col-md-8');
+                                $('#colInputVehiculo').addClass('col-md-4');
+                                $('#colMensajeVehiculo3').addClass('d-flex');
                             }   
                             $('#selectVehiculo3').prop('disabled', true);
                             $('#mensajeVehiculo3').text('El colaborador ' + mensaje);
-                            $('#colMensajeVehiculo3').css('display', '');
+                            $('#colMensajeVehiculo3, #mensajeVehiculo3').css('display', '');
                         }
                     } 
                 } else {
                     if(tipoPersona == 1 || tipoPersona == 4){
                         $('#selectVehiculo').prop('disabled', false);
-                        $('#colMensajeVehiculo').css('display', 'none'); 
+                        $('#colMensajeVehiculo, #mensajeVehiculo').css('display', 'none');                   
                     } else if(tipoPersona == 2){
                         $('#selectVehiculo2').prop('disabled', false);
-                        $('#colMensajeVehiculo2').css('display', 'none'); 
+                        $('#colMensajeVehiculo2, #mensajeVehiculo2').css('display', 'none'); 
                     } else if(tipoPersona == 3){
-                        if($('#colInputVehiculo').hasClass('col-sm-4')){
-                            $('#colInputVehiculo').removeClass('col-sm-4');
-                            $('#colInputVehiculo').addClass('col-sm-8');
+                        if($('#colInputVehiculo').hasClass('col-md-4')){
+                            $('#colInputVehiculo').removeClass('col-md-4');
+                            $('#colInputVehiculo').addClass('col-md-8');
+                            $('#colMensajeVehiculo3').removeClass('d-flex');
                         } 
                         $('#selectVehiculo3').prop('disabled', false);
-                        $('#colMensajeVehiculo3').css('display', 'none');
+                        $('#colMensajeVehiculo3, #mensajeVehiculo3').css('display', 'none');
                     } 
                     $('.mensajeVehiculo').text('');
                 }     

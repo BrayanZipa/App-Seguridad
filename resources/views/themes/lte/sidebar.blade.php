@@ -98,7 +98,7 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-header mt-n3">EXAMPLES</li>
+                {{-- <li class="nav-header mt-n3">Control</li> --}}
                 <li class="nav-item">
                     <a href="{{ route('users.index') }}" class="nav-link {{ Request::is('users.index') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-user-check"></i>

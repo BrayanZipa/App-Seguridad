@@ -1,5 +1,5 @@
 <div class="row mt-n2">
-    <div class="col-md-12">
+    <div class="col-12">
         <form id="formRegistros2" class="formularios" action="" method="POST" novalidate>
             @csrf
             @method('PUT')
@@ -22,7 +22,7 @@
                     <input type="hidden" id="registro2" name="casoRegistro" value="{{ old('casoRegistro') }}">
                     <input type="hidden" id="inputId2" name="id_personas" value="{{ old('id_personas') }}">
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-md-4 col-sm-12">
                             <div class="form-group">
                                 <label for="inputNombre2">Nombre</label>
                                 <input type="text" id="inputNombre2" class="registros form-control {{ $errors->has('nombre') ? 'is-invalid' : '' }}" name="nombre" value="{{ old('nombre') }}"
@@ -34,7 +34,7 @@
                                     @endif
                             </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-md-4 col-sm-12">
                             <div class="form-group">
                                 <label for="inputApellido2">Apellido</label>
                                 <input type="text" id="inputApellido2" class="registros form-control {{ $errors->has('apellido') ? 'is-invalid' : '' }}" name="apellido" value="{{ old('apellido') }}"
@@ -46,7 +46,7 @@
                                     @endif
                             </div>
                         </div> 
-                        <div class="col-sm-4">
+                        <div class="col-md-4 col-sm-12">
                             <div class="form-group">
                                 <label for="inputIdentificacion2">Identificación</label>
                                 <input type="text" id="inputIdentificacion2" class="registros form-control {{ $errors->has('identificacion') ? 'is-invalid' : '' }}" name="identificacion" value="{{ old('identificacion') }}" 
@@ -60,7 +60,7 @@
                         </div>  
                     </div>
                     <div class="row">          
-                        <div class="col-sm-4">
+                        <div class="col-md-4 col-sm-12">
                             <div class="form-group">
                                 <label for="inputEmail2">Correo empresarial</label>
                                 <input type="text" id="inputEmail2" class="registros form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" name="email" value="{{ old('email') }}"
@@ -72,7 +72,7 @@
                                     @endif  
                             </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-md-4 col-sm-12">
                             <div class="form-group">
                                 <label for="inputTelefono2">Teléfono</label>
                                 <input type="tel" id="inputTelefono2" class="registros form-control {{ $errors->has('tel_contacto') ? 'is-invalid' : '' }}" name="tel_contacto" value="{{ old('tel_contacto') }}"
@@ -84,7 +84,7 @@
                                     @endif  
                             </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-md-4 col-sm-12">
                             <div class="form-group">
                                 <label for="selectEps2">EPS</label>
                                 <select id="selectEps2" class="registros select2EPS form-control {{ $errors->has('id_eps') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_eps" required>
@@ -104,7 +104,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-md-4 col-sm-12">
                             <div class="form-group">
                                 <label for="selectArl2">ARL</label>
                                 <select id="selectArl2" class="registros select2ARL form-control {{ $errors->has('id_arl') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_arl" required>
@@ -122,7 +122,7 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-md-4 col-sm-12">
                             <div class="form-group">
                                 <label for="selectEmpresa2">Empresa a la que pertenece</label>
                                 <select id="selectEmpresa2" class="registros form-control {{ $errors->has('id_empresa') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_empresa" required>
@@ -140,7 +140,7 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-md-4 col-sm-12 mb-3">
                             <div class="form-group">
                                 <label for="inputDescripcion2">Ingrese una descripción</label>
                                 <textarea id="inputDescripcion2" class="registros form-control {{ $errors->has('descripcion') ? ' is-invalid ' : '' }}" name="descripcion">
@@ -155,7 +155,7 @@
                         </div>
                     </div>
                     <div id="divVehiculo2" class="row mt-n4 mb-4" style="display: none">
-                        <div class="col-sm-4">
+                        <div class="col-md-4 col-sm-12">
                             <div class="form-group">
                                 <input id="vehiculo2" type="hidden" name="retornoVehiculo" value="{{ old('id_vehiculo') }}">
                                 <label for="selectVehiculo2">Ingrese el vehículo</label>
@@ -167,12 +167,12 @@
                                 @endif
                             </div>
                         </div>
-                        <div id="colMensajeVehiculo2" class="col-sm-4" style="display: none"><br>
+                        <div id="colMensajeVehiculo2" class="col-md-4 col-sm-12 d-flex flex-column justify-content-center" style="display: none">
                             <div id="mensajeVehiculo2" class="mensajeVehiculo text-center"></div>
                         </div>
                     </div>
-                    <div id="divVehiculo2" class="row mt-n3">
-                        <div class="col-sm-4">
+                    <div id="divVehiculo2" class="row mt-n4">
+                        <div class="col-md-4 col-sm-12">
                             <div class="form-group clearfix">
                                 <div class="icheck-primary d-inline">
                                     <label for="checkVehiculo2">

@@ -1,5 +1,5 @@
 <div class="row mb-n2">
-    <div class="col-md-12">
+    <div class="col-12">
         <form id="form_EditarConductor" action="" method="POST" novalidate>
             @csrf
             @method('PUT')
@@ -21,7 +21,7 @@
                 <div class="card-body mb-n4">
 
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-md-4 col-sm-12">
                             <div class="form-group">
                                 <input type="hidden" id="inputId" name="id_personas" value="{{ old('id_personas') }}">
 
@@ -35,9 +35,9 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="col-sm-8">
+                        <div class="col-md-8 col-sm-12">
                             <div class="row">
-                                <div class="col-sm-6">
+                                <div class="col-md-6 col-sm-12">
                                     <div class="form-group">
                                         <label for="inputNombre">Nombre</label>
                                         <input type="text" class="conductor form-control {{ $errors->has('nombre') ? 'is-invalid' : '' }}" id="inputNombre" name="nombre" value="{{ old('nombre') }}" autocomplete="off"
@@ -49,7 +49,7 @@
                                         @endif
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-md-6 col-sm-12">
                                     <div class="form-group">
                                         <label for="inputApellido">Apellido</label>
                                         <input type="text" class="conductor form-control {{ $errors->has('apellido') ? 'is-invalid' : '' }}" id="inputApellido" name="apellido" value="{{ old('apellido') }}" autocomplete="off"
@@ -63,7 +63,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-6">
+                                <div class="col-md-6 col-sm-12">
                                     <div class="form-group">
                                         <label for="inputIdentificacion">Identificación</label>
                                         <input type="text" class="conductor form-control {{ $errors->has('identificacion') ? 'is-invalid' : '' }}" id="inputIdentificacion" name="identificacion" autocomplete="off"
@@ -75,7 +75,7 @@
                                         @endif 
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-md-6 col-sm-12">
                                     <div class="form-group">
                                         <label for="inputTelefono">Actualizar teléfono</label>
                                         <input type="tel" class="conductor form-control {{ $errors->has('tel_contacto') ? 'is-invalid' : '' }}"  id="inputTelefono" name="tel_contacto" value="{{ old('tel_contacto') }}" autocomplete="off"
@@ -89,7 +89,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-6">
+                                <div class="col-md-6 col-sm-12">
                                     <div class="form-group">
                                         <label for="inputEps">Actualizar EPS</label>
                                         <select class="conductor select2bs4 form-control {{ $errors->has('id_eps') ? 'is-invalid' : '' }}" style="width: 100%;" id="inputEps" name="id_eps"
@@ -108,7 +108,7 @@
                                         @endif
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-md-6 col-sm-12">
                                     <div class="form-group">
                                         <label for="inputArl">Actualizar ARL</label>
                                         <select class="conductor select2bs4 form-control {{ $errors->has('id_arl') ? 'is-invalid' : '' }}" style="width: 100%;" id="inputArl" name="id_arl"

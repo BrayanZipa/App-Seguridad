@@ -12,7 +12,7 @@
 
     <div class="card-body mb-n4">
         <div class="row">
-            <div class="col-sm-4">
+            <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                     <label for="inputFoto">Fotografía</label>
 
@@ -34,9 +34,9 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-8">
+            <div class="col-md-8 col-sm-12">
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-md-6 col-sm-12">
                         <div class="form-group">
                             <label for="inputNombre">Ingrese el nombre</label>
                             <input type="text" class="conductor form-control {{ $errors->has('nombre') ? 'is-invalid' : '' }}" id="inputNombre" name="nombre"
@@ -48,7 +48,7 @@
                                 @endif
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-md-6 col-sm-12">
                         <div class="form-group">
                             <label for="inputApellido">Ingrese el apellido</label>
                             <input type="text" class="conductor form-control {{ $errors->has('apellido') ? 'is-invalid' : '' }}" id="inputApellido" name="apellido"
@@ -62,7 +62,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-md-6 col-sm-12">
                         <div class="form-group">
                             <label for="inputIdentificacion">Ingrese la identificación</label>
                             <input type="text" class="conductor form-control {{ $errors->has('identificacion') ? 'is-invalid' : '' }}" id="inputIdentificacion" autocomplete="off"
@@ -75,7 +75,7 @@
                                 @endif  
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-md-6 col-sm-12">
                         <div class="form-group">
                             <label for="inputTelefono">Ingrese un teléfono</label>
                             <input type="tel" class="conductor form-control {{ $errors->has('tel_contacto') ? 'is-invalid' : '' }}" id="inputTelefono" name="tel_contacto"
@@ -89,7 +89,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-md-6 col-sm-12">
                         <div class="form-group">
                             <label for="selectEps">Ingrese la EPS</label>
                             <select id="selectEps" class="conductor select2bs4 form-control {{ $errors->has('id_eps') ? 'is-invalid' : '' }}" style="width: 100%;"
@@ -108,7 +108,7 @@
                             @endif
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-md-6 col-sm-12">
                         <div class="form-group">
                             <label for="selectArl">Ingrese la ARL</label>
                             <select id="selectArl" class="conductor select2bs4 form-control {{ $errors->has('id_arl') ? 'is-invalid' : '' }}" style="width: 100%;"
@@ -129,7 +129,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-md-6 col-sm-12">
                         <div class="form-group">
                             <label for="selectEmpresa">Ingrese la empresa que visita</label>
                             <select id="selectEmpresa" class="conductor form-control {{ $errors->has('empresa_visitada') ? 'is-invalid' : '' }}" style="width: 100%;"
@@ -148,7 +148,7 @@
                             @endif
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-md-6 col-sm-12">
                         <div class="form-group">
                             <label for="inputColaborador">Ingrese al colaborador a cargo</label>
                             <input type="text" class="conductor form-control {{ $errors->has('colaborador') ? ' is-invalid ' : '' }}" id="inputColaborador" name="colaborador"
@@ -162,7 +162,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-12">
+                    <div class="col-md-12 col-sm-12">
                         <div class="form-group">
                             <label for="inputDescripcion">Ingrese una descripción</label>
                             <textarea class="conductor form-control {{ $errors->has('descripcion') ? ' is-invalid ' : '' }}" name="descripcion" id="inputDescripcion">

@@ -40,7 +40,7 @@
 
     <section class="content-header">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-12">
                 <div id="informacionRegistro" class="mb-n2" style="display: none">
                     @include('pages.registros.panelDatosPersona')
                 </div>

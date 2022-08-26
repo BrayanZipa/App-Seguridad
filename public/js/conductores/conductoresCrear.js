@@ -81,9 +81,7 @@ $(function() {
 
         const constraints = {
             audio: false,
-            video: {
-                width: 640, height: 480
-            }
+            video: { width: 640, height: 500 }
         }
 
         const navegador = navigator.userAgent;
@@ -124,9 +122,7 @@ $(function() {
 
         const constraints = {
             audio: false,
-            video: {
-                width: 640, height: 480
-            }
+            video: { width: 640, height: 500 }
         }
 
         const navegador = navigator.userAgent;
@@ -253,7 +249,7 @@ $(function() {
         var contexto = canvas.getContext('2d');
 
         canvas.setAttribute('width', '640');
-        canvas.setAttribute('heigh', '480');
+        canvas.setAttribute('heigh', '500');
 
         canvas.style.borderStyle = 'solid';
         canvas.style.borderWidth = '1px';
@@ -275,7 +271,7 @@ $(function() {
         var contexto2 = canvas2.getContext('2d');
 
         canvas2.setAttribute('width', '640');
-        canvas2.setAttribute('height', '480');
+        canvas2.setAttribute('height', '500');
 
         canvas2.style.borderStyle = 'solid';
         canvas2.style.borderWidth = '1px';

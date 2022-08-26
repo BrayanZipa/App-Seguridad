@@ -1,6 +1,7 @@
 <input id="casoIngreso2" type="hidden" name="casoIngreso2" value="{{ old('casoIngreso2') }}">
 
 <div class="card card-primary mb-n4 mx-n1">
+
     <div class="card-header pb-1">
         <h3 class="card-title">Crear nuevo colaborador</h3>
         <div class="card-tools">
@@ -14,7 +15,7 @@
 
     <div class="card-body mb-n4">
         <div class="row">
-            <div class="col-sm-8">
+            <div class="col-sm-12 col-md-8">
                 <div class="form-group">
                     <select id="selectPersona" class="form-control" style="width: 100%;" name="persona">
                         <option selected="selected" value="" disabled></option>
@@ -29,7 +30,7 @@
         </div>
         
         <div class="row">
-            <div class="col-sm-4">
+            <div class="col-sm-12 col-md-4">
                 <div class="form-group">
                     <label for="inputNombre2">Ingrese el nombre</label>
                     <input type="text" class="colaborador2 form-control {{ $errors->has('nombre') && old('casoIngreso2') != '' ? 'is-invalid' : '' }}" id="inputNombre2" name="nombre" value="{{ old('casoIngreso2') != '' ? old('nombre') : '' }}"
@@ -41,7 +42,7 @@
                         @endif
                 </div>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-12 col-md-4">
                 <div class="form-group">
                     <label for="inputApellido2">Ingrese el apellido</label>
                     <input type="text" class="colaborador2 form-control {{ $errors->has('apellido') && old('casoIngreso2') != '' ? 'is-invalid' : '' }}" id="inputApellido2" name="apellido" value="{{ old('casoIngreso2') != '' ? old('apellido') : '' }}"
@@ -53,7 +54,7 @@
                         @endif
                 </div>
             </div> 
-            <div class="col-sm-4">
+            <div class="col-sm-12 col-md-4">
                 <div class="form-group">
                     <label for="inputIdentificacion2">Ingrese la identificación</label>
                     <input type="text" class="colaborador2 form-control {{ $errors->has('identificacion') && old('casoIngreso2') != '' ? 'is-invalid' : '' }}" id="inputIdentificacion2"
@@ -67,7 +68,7 @@
             </div>  
         </div>
         <div class="row">          
-            <div class="col-sm-4">
+            <div class="col-sm-12 col-md-4">
                 <div class="form-group">
                     <label for="inputEmail2">Ingrese el correo empresarial</label>
                     <input type="text" class="colaborador2 form-control {{ $errors->has('email') && old('casoIngreso2') != '' ? 'is-invalid' : '' }}" id="inputEmail2" name="email" value="{{ old('casoIngreso2') != '' ? old('email') : '' }}"
@@ -79,7 +80,7 @@
                         @endif  
                 </div>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-12 col-md-4">
                 <div class="form-group">
                     <label for="inputTelefono2">Ingrese el teléfono</label>
                     <input type="tel" class="colaborador2 form-control {{ $errors->has('tel_contacto') && old('casoIngreso2') != '' ? 'is-invalid' : '' }}" id="inputTelefono2" name="tel_contacto" value="{{ old('casoIngreso2') != '' ? old('tel_contacto') : '' }}"
@@ -91,7 +92,7 @@
                         @endif  
                 </div>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-12 col-md-4">
                 <div class="form-group">
                     <label for="selectEps2">Ingrese la EPS</label>
                     <select id="selectEps2" class="select2eps colaborador2 form-control {{ $errors->has('id_eps') && old('casoIngreso2') != '' ? 'is-invalid' : '' }}" style="width: 100%;" name="id_eps" required>
@@ -111,7 +112,7 @@
             </div>
         </div>
         <div class="row">     
-            <div class="col-sm-4">
+            <div class="col-sm-12 col-md-4">
                 <div class="form-group">
                     <label for="selectArl2">Ingrese el ARL</label>
                     <select id="selectArl2" class="select2arl colaborador2 form-control {{ $errors->has('id_arl') && old('casoIngreso2') != '' ? 'is-invalid' : '' }}" style="width: 100%;" name="id_arl" required>
@@ -129,7 +130,7 @@
                     @endif
                 </div>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-12 col-md-4">
                 <div class="form-group">
                     <label for="selectEmpresa2">Ingrese la empresa a la que pertenece</label>
                     <select id="selectEmpresa2" class="colaborador2 form-control {{ $errors->has('id_empresa') && old('casoIngreso2') != '' ? 'is-invalid' : '' }}" style="width: 100%;" name="id_empresa"
@@ -148,7 +149,7 @@
                     @endif
                 </div>
             </div>
-            <div class="col-sm-4">
+            <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                     <label for="inputDescripcion2">Ingrese una descripción</label>
                     <textarea id="inputDescripcion2" class="colaborador2 form-control {{ $errors->has('descripcion') && old('casoIngreso2') != '' ? ' is-invalid ' : '' }}" name="descripcion">
@@ -163,7 +164,7 @@
             </div>
         </div>
         <div class="row mt-n3">
-            <div class="col-sm-4">
+            <div class="col-md-4 col-sm-12">
                 <div class="form-group clearfix">
                     <div class="icheck-primary d-inline">
                         <label for="checkVehiculo2">

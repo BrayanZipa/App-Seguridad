@@ -18,6 +18,7 @@
     {{-- <script src="{{ asset('assets/lte/plugins/select2/js/select2.full.min.js') }}"></script>
     <!-- JavaScript propio -->
     <script src="{{ asset('js/colaboradores/colaboradoresCrear.js') }}"></script> --}}
+    {{-- <script src="{{ asset('assets/lte/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script> --}}
 @endsection
 
 @section('contenido')
@@ -70,7 +71,6 @@
                     <a href="{{ route('formCrearRegistro', ['tipoPersona' => 4]) }}" class="small-box-footer">Registrar nuevo ingreso <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
-
 
             <div class="col-lg-3 col-6">
                 <!-- small box -->

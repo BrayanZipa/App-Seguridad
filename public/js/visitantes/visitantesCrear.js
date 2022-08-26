@@ -1,7 +1,5 @@
 $(function () {
 
-    var camara = '0b49550c557e02ba21bc3947f4c1bac0acccbb20e8afb62dd1faef2718dd4ba3';
-
     //Permite que a los select de selección de EPS y ARL se les asigne una barra de búsqueda haciendolos más dinámicos
     function activarSelect2Visitante() {
         $('#selectEps').select2({
@@ -229,10 +227,7 @@ $(function () {
 
         const constraints = {
             audio: false,
-            video: {
-                width: 640, height: 600,
-                // deviceId: camara
-            }
+            video: { width: 640, height: 500 }
         }
 
         const navegador = navigator.userAgent;
@@ -273,10 +268,7 @@ $(function () {
 
         const constraints = {
             audio: false,
-            video: {
-                width: 640, height: 480,
-                // deviceId: camara
-            }
+            video: { width: 640, height: 500 }
         }
 
         const navegador = navigator.userAgent;
@@ -402,7 +394,7 @@ $(function () {
         var contexto = canvas.getContext('2d');
 
         canvas.setAttribute('width', '640');
-        canvas.setAttribute('height', '600');
+        canvas.setAttribute('height', '500');
 
         canvas.style.borderStyle = 'solid';
         canvas.style.borderWidth = '1px';
@@ -424,7 +416,7 @@ $(function () {
         var contexto2 = canvas2.getContext('2d');
 
         canvas2.setAttribute('width', '640');
-        canvas2.setAttribute('height', '480');
+        canvas2.setAttribute('height', '500');
 
         canvas2.style.borderStyle = 'solid';
         canvas2.style.borderWidth = '1px';

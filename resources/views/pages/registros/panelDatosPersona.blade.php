@@ -12,7 +12,7 @@
     </div>
     <div class="card-body mb-n4">
         <div class="row">
-            <div id="columnaFoto" class="col-sm-3">
+            <div id="columnaFoto" class="col-md-3 col-sm-12">
                 <div id="divFotoPersona" class="form-group">
                     <label>Fotografía</label><br>
                     <img id="fotoPersona" class="img-fluid rounded" style="border: 1px solid #007bff" src="" alt="Foto persona">
@@ -22,7 +22,7 @@
                     <img id="logoEmpresa" class="img-fluid rounded" src="" alt="Logo empresa">
                 </div>
             </div>
-            <div id="columnaInformacion" class="col-sm-9">
+            <div id="columnaInformacion" class="col-md-9 col-sm-12">
                 <label>Información del registro</label>
                 <div class="card card-primary card-tabs mx-1">
                     <div class="card-header p-0 pt-1">
