@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Registro;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -16,6 +17,14 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        // $user = User::find(auth()->user()->id_usuarios);
+        // $roles = $user->getRoleNames();
+
+        // if (empty($roles[0])) {
+
+        //     $user->assignRole(2);
+
+        // }
     }
 
     /**

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use Yajra\DataTables\DataTables;
 
 class UserController extends Controller
 {
@@ -14,8 +16,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        return view('pages.usuarios.administrarUsuarios', compact('users'));
+        $roles = Role::all();
+        return view('pages.usuarios.administrarUsuarios', compact('roles'));
     }
 
     /**
@@ -70,7 +72,25 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $usuario = User::find($id);
+        $roles = $usuario->getRoleNames();
+
+        if (empty($roles[0])) {
+
+            $usuario->assignRole('Admin');
+        }
+
+        // $user = User::find(auth()->user()->id_usuarios);
+
+        // $roles = $user->getRoleNames();
+
+        // if (empty($roles[0])) {
+
+        //     $user->assignRole('Admin');
+
+        // }
+
+        return $roles;
     }
 
     /**
@@ -82,5 +102,13 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function obtenerUsuarios(Request $request)
+    {
+        if($request->ajax()){
+            $usuarios = User::all();
+            return DataTables::of($usuarios)->make(true);
+        }
     }
 }
