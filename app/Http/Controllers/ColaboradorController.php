@@ -200,14 +200,14 @@ class ColaboradorController extends Controller
             $registroPersona->codigo_activo_salida = $nuevoColaborador['codigo'];
             $registroPersona->salida_activo = $tiempoActual;
             if($persona->id_tipo_persona == 1){
-                $registroPersona->descripcion .= ' - '. $nuevoColaborador['descripcion']. ' - El visitante pasa a ser colaborador y el área de tecnología le asigna el activo '.$nuevoColaborador['codigo'].'.';
+                $registroPersona->descripcion .= ($nuevoColaborador['descripcion'] != '' ? ' - '.$nuevoColaborador['descripcion'] : '').' - El visitante pasa a ser colaborador y el área de tecnología le asigna el activo '.$nuevoColaborador['codigo'].'.';
             } else {
-                $registroPersona->descripcion .= ' - '. $nuevoColaborador['descripcion']. ' - El área de tecnología asigna el activo '.$nuevoColaborador['codigo'].' al colaborador.';
+                $registroPersona->descripcion .= ($nuevoColaborador['descripcion'] != '' ? ' - '.$nuevoColaborador['descripcion'] : '').' - El área de tecnología asigna el activo '.$nuevoColaborador['codigo'].' al colaborador.';
             }
         } else{
             $nuevoColaborador['id_tipo_persona'] = 2;
             if($persona->id_tipo_persona == 1){
-                $registroPersona->descripcion .= ' - '. $nuevoColaborador['descripcion']. ' - El visitante cambia su rol a colaborador.';
+                $registroPersona->descripcion .= ($nuevoColaborador['descripcion'] != '' ? ' - '.$nuevoColaborador['descripcion'] : '').' - El visitante cambia su rol a colaborador.';
             } if($registroPersona->ingreso_activo != null){
                 $modal['activo'] = $registroPersona->codigo_activo;
                 $registroPersona->salida_activo = $tiempoActual;

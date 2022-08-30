@@ -15,6 +15,7 @@ class User extends Authenticatable implements LdapAuthenticatable
 {
     use Notifiable, AuthenticatesWithLdap, HasRoles;
     protected $table = 'se_usuarios';
+    protected $guard_name = 'web';
 
     /**
      * The attributes that are mass assignable.

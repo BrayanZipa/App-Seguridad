@@ -230,7 +230,7 @@ $(function() {
         }
     })();
 
-    //Boton que permite ocultar el formulario de editar vehículo
+    //Botón que permite ocultar el formulario de editar vehículo
     $('#botonCerrar').click(function(){
         $('#formEditarVehiculo').css('display', 'none'); 
     });

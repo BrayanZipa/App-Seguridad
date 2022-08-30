@@ -9,9 +9,6 @@
     <link rel="stylesheet" href="{{ asset('assets/lte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/lte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/lte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
-    <!-- Select2 -->
-    {{-- <link rel="stylesheet" href="{{ asset('assets/lte/plugins/select2/css/select2.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/lte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}"> --}}
 @endsection
 
 @section('scripts')
@@ -27,8 +24,6 @@
     <script src="{{ asset('assets/lte/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('assets/lte/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
     <script src="{{ asset('assets/lte/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
-    <!-- Select2 -->
-    {{-- <script src="{{ asset('assets/lte/plugins/select2/js/select2.full.min.js') }}"></script> --}}
     <!-- JavaScript propio -->
     <script src="{{ asset('js/usuarios/administrarUsuarios.js') }}"></script>
 @endsection
@@ -61,15 +56,11 @@
         
                         <div class="card-body mb-n3">
                             <div class="row">
+                                <input type="hidden" id="inputRol" name="role_anterior" value="{{ old('role_anterior') }}">
                                 <div class="col-md-6 col-sm-12">
                                     <div class="form-group">
                                         <label for="inputUsuario">Usuario</label>
-                                        <input type="text" class="usuario form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" id="inputUsuario" name="nombre" value="{{ old('name') }}" autocomplete="off" required>
-                                        {{-- @if ($errors->has('nombre')) 
-                                            <div class="invalid-feedback">
-                                                {{ $errors->first('nombre') }}
-                                            </div>            
-                                        @endif --}}
+                                        <input type="text" class="usuario form-control {{ $errors->has('nombre') ? 'is-invalid' : '' }}" id="inputUsuario" name="nombre" value="{{ old('nombre') }}" autocomplete="off" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-sm-12">
@@ -83,11 +74,6 @@
                                                 </option>
                                             @endforeach
                                         </select>
-                                        {{-- @if ($errors->has('id_eps')) 
-                                            <div class="invalid-feedback">
-                                                {{ $errors->first('id_eps') }}
-                                            </div>            
-                                        @endif --}}
                                     </div>
                                 </div>
                             </div>
@@ -129,5 +115,8 @@
 
             </div>
         </div>
+
+        @include('pages.usuarios.modales')
+
     </section>
 @endsection

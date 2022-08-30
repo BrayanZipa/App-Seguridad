@@ -1,13 +1,11 @@
 $(function() {
 
-    //Uso de DataTables para mostrar la información de todos los usuarios creados
+    //Uso de DataTables para mostrar la información de todos los usuarios creados en la aplicación
     $('#tabla_usuarios').DataTable({
         'destroy': true,
         'processing': true,
         'responsive': true,
         'autoWidth': false,
-        // 'serverSide': true,
-        // 'scrollY': '300px',
         'ajax': 'users/informacion',
         'columns': [
             {
@@ -23,8 +21,10 @@ $(function() {
                 'name': 'email',
             },
             {
-                'data': 'name',
-                'name': 'name',
+                'data': 'roles',
+                render: function ( data, type, row ) {
+                    return data[0].name;
+                }
             },
             {
                 'class': 'asignar_rol',
@@ -58,16 +58,17 @@ $(function() {
         } 
     });
 
-    //Se elije una fila de la tabla y se toma la información del vehículo para mostrarla en un formulario y permitir actualizarla
+    //Se elije una fila de la tabla de usuarios y se toma la información de este para mostrarla en un formulario y permitir asignar un rol
     $('#tabla_usuarios tbody').on('click', '.asignar_rol', function () { 
         var data = $('#tabla_usuarios').DataTable().row(this).data(); 
-
         $('#form_editarUsuario').attr('action','users/editar/' + data.id_usuarios); 
         $('#inputUsuario').val(data.name);
+        $('#inputRol').val(data.roles[0].id);
+        $('#selectRol').val(data.roles[0].id);
         $('#formEditarUsuario').css('display', 'block');  
     });
 
-    // Función anónima que genera mensajes de error cuando el usuario intenta enviar algún formulario del módulo vehículos sin los datos requeridos, es una primera validación del lado del cliente
+    // Función anónima que genera mensajes de error cuando el usuario intenta enviar el formulario de asignación de rol sin los datos requeridos, es una primera validación del lado del cliente
     (function () {
         'use strict'
         var form = document.getElementById('form_editarUsuario');
@@ -85,8 +86,29 @@ $(function() {
         }, false);
     })();
 
+    //Si en un input del formulario de asignación de rol esta la clase is-invalid al escribir en el mismo input se elimina esta clase 
+    $('input.usuario').keydown(function(event){
+        if($(this).hasClass('is-invalid')){
+            $(this).removeClass('is-invalid');
+        }     
+    });
+
+   //Si en un select del formulario de asignación de rol esta la clase is-invalid al seleccionar algo en el mismo select se elimina esta clase 
+    $( 'select.usuario' ).change(function() {
+        if($(this).hasClass('is-invalid')){
+            $(this).removeClass('is-invalid');
+        };   
+    }); 
+    
+    //Botón que permite ocultar el formulario de asignar rol
     $('#botonCerrar').click(function(){
         $('#formEditarUsuario').css('display', 'none'); 
     });
+
+    //Muestra el modal indicado al usuario que la asignación del rol se ha realizado correctamente
+    $('#modal-asignar-rol').modal('show');
+    setTimeout(function(){
+        $('#modal-asignar-rol').modal('hide');
+    }, 3000);
 
 });

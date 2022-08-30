@@ -25,6 +25,7 @@ class HomeController extends Controller
         //     $user->assignRole(2);
 
         // }
+        
     }
 
     /**

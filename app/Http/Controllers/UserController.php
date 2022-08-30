@@ -21,49 +21,6 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -73,41 +30,25 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $usuario = User::find($id);
-        $roles = $usuario->getRoleNames();
-
-        if (empty($roles[0])) {
-
-            $usuario->assignRole('Admin');
+        $rol = Role::find($request->role_id);
+        if($request->role_id != $request->role_anterior){  
+            $usuario->removeRole($request->role_anterior);
+            $usuario->assignRole($rol);
         }
-
-        // $user = User::find(auth()->user()->id_usuarios);
-
-        // $roles = $user->getRoleNames();
-
-        // if (empty($roles[0])) {
-
-        //     $user->assignRole('Admin');
-
-        // }
-
-        return $roles;
+        return redirect()->action([UserController::class, 'index'])->with('rol_asignado', [$rol->name, $usuario->name]);
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Función que recibe una petición Ajax para retornar los usuarios registrados en la tabla se_usuarios unidos al rol que tengan asignado.
      */
-    public function destroy($id)
-    {
-        //
-    }
-
     public function obtenerUsuarios(Request $request)
     {
         if($request->ajax()){
-            $usuarios = User::all();
+            try {
+                $usuarios = User::with('roles:id,name')->get(['se_usuarios.id_usuarios', 'se_usuarios.name', 'se_usuarios.email']);
+            } catch (\Throwable $th) {
+                return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
+            }
             return DataTables::of($usuarios)->make(true);
         }
     }
