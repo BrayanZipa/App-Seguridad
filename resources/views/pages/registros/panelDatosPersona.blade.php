@@ -19,7 +19,9 @@
                 </div>
                 <div id="divLogoEmpresa" class="form-group">
                     <label>Empresa</label><br>
-                    <img id="logoEmpresa" class="img-fluid rounded" src="" alt="Logo empresa">
+                    <div class="text-center">
+                        <img id="logoEmpresa" class="img-fluid rounded" src="" alt="Logo empresa">
+                    </div>
                 </div>
             </div>
             <div id="columnaInformacion" class="col-md-9 col-sm-12">
@@ -49,7 +51,7 @@
                             <div class="tab-pane fade active show" id="datosIngreso" role="tabpanel" aria-labelledby="tabDatosIngreso">
                                 <div class="ml-4">
                                     <div class="row">                              
-                                        <div class="columnaPanel col-sm-3">
+                                        <div class="columnaPanel col-md-3 col-sm-6">
                                             <div class="form-group">
                                                 <div class="description-block text-left">
                                                     <h5 class="description-header mb-1">Fecha de ingreso</h5>                                         
@@ -57,7 +59,7 @@
                                                 </div>                                         
                                             </div>
                                         </div>
-                                        <div class="columnaPanel col-sm-3">
+                                        <div class="columnaPanel col-md-3 col-sm-6">
                                             <div class="form-group">
                                                 <div class="description-block text-left">
                                                     <h5 class="description-header mb-1">Hora de ingreso</h5>                                         
@@ -65,9 +67,9 @@
                                                 </div>                                         
                                             </div>
                                         </div>
-                                        <div id="infoSalidaPersona" class="col-sm-6">
+                                        <div id="infoSalidaPersona" class="col-md-6 col-sm-12">
                                             <div class="row">
-                                                <div class="col-sm-6">
+                                                <div class="col-md-6 col-sm-6">
                                                     <div class="form-group">
                                                         <div class="description-block text-left">
                                                             <h5 class="description-header mb-1">Fecha de salida</h5>
@@ -75,7 +77,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-6">
+                                                <div class="col-md-6 col-sm-6">
                                                     <div class="form-group">
                                                         <div class="description-block text-left">
                                                             <h5 class="description-header mb-1">Hora de salida</h5>
@@ -87,9 +89,9 @@
                                         </div>
                                     </div>                                                   
                                     <div class="row"> 
-                                        <div id="infoVisitanteConductor" class="col-sm-6">
+                                        <div id="infoVisitanteConductor" class="col-md-6 col-sm-12">
                                             <div class="row"> 
-                                                <div class="col-sm-6">
+                                                <div class="col-md-6 col-sm-6">
                                                     <div class="form-group">
                                                         <div class="description-block text-left">
                                                             <h5 class="description-header mb-1">Empresa que visita</h5>                                         
@@ -97,7 +99,7 @@
                                                         </div>                                         
                                                     </div>
                                                 </div>                             
-                                                <div class="col-sm-6">
+                                                <div class="col-md-6 col-sm-6">
                                                     <div class="form-group">
                                                         <div class="description-block text-left">
                                                             <h5 class="description-header mb-1">Colaborador a cargo</h5>                                         
@@ -107,7 +109,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div id="columnaDescripcion" class="col-sm-6">
+                                        <div id="columnaDescripcion" class="col-md-6 col-sm-12">
                                             <div class="form-group">
                                                 <div class="description-block text-left">
                                                     <h5 class="description-header mb-1">Descripción</h5>                                         
@@ -121,7 +123,7 @@
                             <div class="tab-pane fade" id="datosBasicos" role="tabpanel" aria-labelledby="tabDatosBasicos">
                                 <div class="ml-4">
                                     <div class="row">                              
-                                        <div class="col-sm-4">
+                                        <div class="col-md-4 col-sm-6">
                                             <div class="form-group">
                                                 <div class="description-block text-left">
                                                     <h5 class="description-header mb-1">Nombre</h5>                                         
@@ -129,7 +131,7 @@
                                                 </div>                                         
                                             </div>
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-md-4 col-sm-6">
                                             <div class="form-group">
                                                 <div class="description-block text-left">
                                                     <h5 class="description-header mb-1">Apellidos</h5>                                         
@@ -137,7 +139,7 @@
                                                 </div>                                         
                                             </div>
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-md-4 col-sm-6">
                                             <div class="form-group">
                                                 <div class="description-block text-left">
                                                     <h5 class="description-header mb-1">Identificación</h5>                                         
@@ -145,9 +147,7 @@
                                                 </div>                                         
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-4">
+                                        <div class="col-md-4 col-sm-6">
                                             <div class="form-group">
                                                 <div class="description-block text-left">
                                                     <h5 id="tituloTelefono" class="description-header mb-1"></h5>                                         
@@ -155,7 +155,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-md-4 col-sm-6">
                                             <div class="form-group">
                                                 <div class="description-block text-left">
                                                     <h5 class="description-header mb-1">EPS</h5>                                         
@@ -163,7 +163,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-md-4  col-sm-6">
                                             <div class="form-group">
                                                 <div class="description-block text-left">
                                                     <h5 class="description-header mb-1">ARL</h5>                                         
@@ -173,7 +173,7 @@
                                         </div>
                                     </div>
                                     <div id="infoColaborador" class="row">
-                                        <div class="col-sm-4">
+                                        <div class="col-md-4 col-sm-6">
                                             <div class="form-group">
                                                 <div class="description-block text-left">
                                                     <h5 class="description-header mb-1">Empresa a la que pertenece</h5>                                         
@@ -181,7 +181,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-md-4 col-sm-6">
                                             <div class="form-group">
                                                 <div class="description-block text-left">
                                                     <h5 class="description-header mb-1">Correo empresarial</h5>                                         
@@ -195,7 +195,7 @@
                             <div class="tab-pane fade" id="datosActivo" role="tabpanel" aria-labelledby="tabDatosActivo">
                                 <div class="ml-4">
                                     <div class="row">
-                                        <div class="columnaPanel col-sm-3">
+                                        <div class="columnaPanel col-md-3 col-sm-6">
                                             <div class="form-group">
                                                 <div class="description-block text-left">
                                                     <h5 class="description-header mb-1">Fecha de ingreso</h5>                                         
@@ -203,7 +203,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="columnaPanel col-sm-3">
+                                        <div class="columnaPanel col-md-3 col-sm-6">
                                             <div class="form-group">
                                                 <div class="description-block text-left">
                                                     <h5 class="description-header mb-1">Hora de ingreso</h5>                                         
@@ -211,9 +211,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div id="infoSalidaActivo" class="col-sm-6">
+                                        <div id="infoSalidaActivo" class="col-md-6 col-sm-12">
                                             <div class="row">
-                                                <div class="col-sm-6">
+                                                <div class="col-md-6 col-sm-6">
                                                     <div class="form-group">
                                                         <div class="description-block text-left">
                                                             <h5 class="description-header mb-1">Fecha de salida</h5>
@@ -221,7 +221,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-6">
+                                                <div class="col-md-6 col-sm-6">
                                                     <div class="form-group">
                                                         <div class="description-block text-left">
                                                             <h5 class="description-header mb-1">Hora de salida</h5>
@@ -233,7 +233,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="columnaPanel col-sm-3">
+                                        <div class="columnaPanel col-md-3 col-sm-6">
                                             <div class="form-group">
                                                 <div class="description-block text-left">
                                                     <h5 class="description-header mb-1">Tipo de activo</h5>                                         
@@ -241,7 +241,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="columnaPanel col-sm-3">
+                                        <div class="columnaPanel col-md-3 col-sm-6">
                                             <div class="form-group mb-0">
                                                 <div class="description-block text-left mb-0">
                                                     <h5 class="description-header mb-1">Activo</h5>                                        
@@ -252,10 +252,10 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div id="columnaActivo" class="columnaPanel col-sm-3" style="display: none">
+                                        <div id="columnaActivo" class="columnaPanel col-md-3 col-sm-12" style="display: none">
                                             <div class="form-group mb-0">
                                                 <div class="description-block text-left mb-0">
-                                                    <h5 class="description-header mb-1">Cambio de activo</h5>
+                                                    <h5 id="tituloActivo" class="description-header mb-1"></h5>
                                                     <span id="spanCodigoActivo2"></span>
                                                     <div class="mt-1">
                                                         <label id="autorizacion2"></label>
@@ -265,7 +265,7 @@
                                         </div>
                                     </div>
                                     <div id="divActivo" class="row mt-3 mb-n3">
-                                        <div class="col-sm-12">
+                                        <div class="col-12">
                                             <div class="form-group clearfix">  
                                                 <div class="icheck-primary d-inline">
                                                     <label for="checkActivo">
@@ -280,10 +280,10 @@
                             </div>
                             <div class="tab-pane fade" id="datosVehiculo" role="tabpanel" aria-labelledby="tabDatosVehiculo">
                                 <div class="row">
-                                    <div class="col-sm-9">
+                                    <div class="col-md-9 col-sm-12">
                                         <div class="ml-4">
                                             <div class="row">                              
-                                                <div class="columnaPanel col-sm-3">
+                                                <div class="columnaPanel col-md-3 col-sm-6">
                                                     <div class="form-group">
                                                         <div class="description-block text-left">
                                                             <h5 class="description-header mb-1">Fecha de ingreso</h5>                                         
@@ -291,7 +291,7 @@
                                                         </div>                                         
                                                     </div>
                                                 </div>
-                                                <div class="columnaPanel col-sm-3">
+                                                <div class="columnaPanel col-md-3 col-sm-6">
                                                     <div class="form-group">
                                                         <div class="description-block text-left">
                                                             <h5 class="description-header mb-1">Hora de ingreso</h5>                                         
@@ -299,9 +299,9 @@
                                                         </div>                                         
                                                     </div>
                                                 </div>
-                                                <div id="infoSalidaVehiculo" class="col-sm-6">
+                                                <div id="infoSalidaVehiculo" class="col-md-6 col-sm-12">
                                                     <div class="row">
-                                                        <div class="col-sm-6">
+                                                        <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
                                                                 <div class="description-block text-left">
                                                                     <h5 class="description-header mb-1">Fecha de salida</h5>
@@ -309,7 +309,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-sm-6">
+                                                        <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
                                                                 <div class="description-block text-left">
                                                                     <h5 class="description-header mb-1">Hora de salida</h5>
@@ -321,7 +321,7 @@
                                                 </div>
                                             </div>                                                   
                                             <div class="row">                              
-                                                <div class="columnaPanel col-sm-3">
+                                                <div class="columnaPanel col-md-3 col-sm-6">
                                                     <div class="form-group">
                                                         <div class="description-block text-left">
                                                             <h5 class="description-header mb-1">Identificador</h5>                                         
@@ -329,7 +329,7 @@
                                                         </div>                                         
                                                     </div>
                                                 </div>
-                                                <div class="columnaPanel col-sm-3">
+                                                <div class="columnaPanel col-md-3 col-sm-6">
                                                     <div class="form-group">
                                                         <div class="description-block text-left">
                                                             <h5 class="description-header mb-1">Tipo de vehículo</h5>                                         
@@ -337,7 +337,7 @@
                                                         </div>                                         
                                                     </div>
                                                 </div>
-                                                <div class="columnaPanel col-sm-3">
+                                                <div class="columnaPanel col-md-3 col-sm-6">
                                                     <div class="form-group">
                                                         <div class="description-block text-left">
                                                             <h5 class="description-header mb-1">Marca del vehículo</h5>                                         
@@ -347,7 +347,7 @@
                                                 </div>
                                             </div>
                                             <div id="divVehiculo" class="row mt-3 mb-n3">
-                                                <div class="col-sm-12">
+                                                <div class="col-12">
                                                     <div class="form-group clearfix">
                                                         <div class="icheck-primary d-inline">
                                                             <label for="checkVehiculo">
@@ -360,9 +360,9 @@
                                             </div>
                                         </div> 
                                     </div>
-                                    <div class="col-sm-3 mb-n4">
+                                    <div class="col-md-3 col-sm-12 mb-n4">
                                         <div class="form-group">
-                                            <label>Fotografía vehículo</label>
+                                            <label class="ml-4">Fotografía vehículo</label>
                                             <img id="fotoVehiculo" class="img-fluid rounded" style="border: 1px solid #fd7e14" src="" alt="Foto vehículo">
                                         </div>
                                     </div>
@@ -371,7 +371,7 @@
                             <div class="tab-pane fade" id="historial" role="tabpanel" aria-labelledby="tabHistorial">
                                 <div class="ml-4">
                                     <div class="row">                              
-                                        <div class="col-sm-4">
+                                        <div class="col-md-4 col-sm-12">
                                             <div class="form-group">
                                                 <label for="selectAnio">Filtrar registros por año</label>
                                                 <select id="selectAnio" class="form-control" style="width: 100%;">
@@ -381,7 +381,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-md-4 col-sm-12">
                                             <div class="form-group">
                                                 <label for="selectMes">Filtrar registros por mes</label>
                                                 <select id="selectMes" class="form-control" style="width: 100%;">
@@ -401,7 +401,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-md-4 col-sm-12">
                                             <div class="form-group">
                                                 <label>Total registros</label>
                                                 <input type="text" id="totalRegistros" class="form-control" disabled>
@@ -409,7 +409,7 @@
                                         </div>                                      
                                     </div>
                                     <div class="row">                              
-                                        <div class="col-sm-12">
+                                        <div class="col-12">
                                             <div id="tablaRegistros" class="table-responsive" style="display: none">
                                                 <table class="table m-0">
                                                     <thead>

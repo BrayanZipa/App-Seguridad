@@ -12,13 +12,15 @@
     </div>
     <div class="card-body mb-n4">
         <div class="row">
-            <div class="col-sm-2">
+            <div class="col-md-2 col-sm-12">
                 <div class="form-group">
                     <label>Empresa</label><br>
-                    <img id="logoEmpresa3" class="img-fluid rounded" src="" alt="Logo empresa">
+                    <div class="text-center">
+                        <img id="logoEmpresa3" class="img-fluid rounded" src="" alt="Logo empresa">
+                    </div>
                 </div>
             </div>
-            <div class="col-sm-10">
+            <div class="col-md-10 col-sm-12">
                 <label>Información del registro</label>
                 <div class="card card-primary card-tabs mx-1">
                     <div class="card-header p-0 pt-1">
@@ -39,7 +41,7 @@
                             <div class="tab-pane fade" id="datosIngreso3" role="tabpanel" aria-labelledby="tabDatosIngreso3">
                                 <div class="ml-4">
                                     <div class="row">                              
-                                        <div class="col-sm-4">
+                                        <div class="col-md-4 col-sm-6">
                                             <div class="form-group">
                                                 <div class="description-block text-left">
                                                     <h5 class="description-header mb-1">Fecha de ingreso</h5>                                         
@@ -47,7 +49,7 @@
                                                 </div>                                         
                                             </div>
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-md-4 col-sm-6">
                                             <div class="form-group">
                                                 <div class="description-block text-left">
                                                     <h5 class="description-header mb-1">Hora de ingreso</h5>                                         
@@ -57,7 +59,7 @@
                                         </div>
                                     </div>                                                   
                                     <div class="row"> 
-                                        <div class="col-sm-6">
+                                        <div class="col-md-6 col-sm-12">
                                             <div class="form-group">
                                                 <div class="description-block text-left">
                                                     <h5 class="description-header mb-1">Descripción</h5>                                         
@@ -71,7 +73,7 @@
                             <div class="tab-pane fade" id="datosBasicos3" role="tabpanel" aria-labelledby="tabDatosBasicos3">
                                 <div class="ml-4">
                                     <div class="row">                              
-                                        <div class="col-sm-4">
+                                        <div class="col-md-4 col-sm-6">
                                             <div class="form-group">
                                                 <div class="description-block text-left">
                                                     <h5 class="description-header mb-1">Nombre</h5>                                         
@@ -79,7 +81,7 @@
                                                 </div>                                         
                                             </div>
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-md-4 col-sm-6">
                                             <div class="form-group">
                                                 <div class="description-block text-left">
                                                     <h5 class="description-header mb-1">Apellidos</h5>                                         
@@ -87,7 +89,7 @@
                                                 </div>                                         
                                             </div>
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-md-4 col-sm-6">
                                             <div class="form-group">
                                                 <div class="description-block text-left">
                                                     <h5 class="description-header mb-1">Identificación</h5>                                         
@@ -95,9 +97,7 @@
                                                 </div>                                         
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-4">
+                                        <div class="col-md-4 col-sm-6">
                                             <div class="form-group">
                                                 <div class="description-block text-left">
                                                     <h5 class="description-header mb-1">Teléfono de contacto</h5>                                         
@@ -105,7 +105,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-md-4 col-sm-6">
                                             <div class="form-group">
                                                 <div class="description-block text-left">
                                                     <h5 class="description-header mb-1">EPS</h5>                                         
@@ -113,7 +113,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-md-4 col-sm-6">
                                             <div class="form-group">
                                                 <div class="description-block text-left">
                                                     <h5 class="description-header mb-1">ARL</h5>                                         
@@ -123,7 +123,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-sm-4">
+                                        <div class="col-md-4 col-sm-6">
                                             <div class="form-group">
                                                 <div class="description-block text-left">
                                                     <h5 class="description-header mb-1">Empresa a la que pertenece</h5>                                         
@@ -131,7 +131,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-md-4 col-sm-6">
                                             <div class="form-group">
                                                 <div class="description-block text-left">
                                                     <h5 class="description-header mb-1">Correo empresarial</h5>                                         
@@ -145,7 +145,7 @@
                             <div class="tab-pane fade active show" id="datosActivo3" role="tabpanel" aria-labelledby="tabDatosActivo3">
                                 <div class="ml-4">
                                     <div class="row">
-                                        <div class="col-sm-4">
+                                        <div class="col-md-4 col-sm-6">
                                             <div class="form-group">
                                                 <div class="description-block text-left">
                                                     <h5 class="description-header mb-1">Fecha de ingreso</h5>                                         
@@ -153,7 +153,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-md-4 col-sm-6">
                                             <div class="form-group">
                                                 <div class="description-block text-left">
                                                     <h5 class="description-header mb-1">Hora de ingreso</h5>                                         
@@ -163,7 +163,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-sm-4">
+                                        <div class="col-md-4 col-sm-6">
                                             <div class="form-group">
                                                 <div class="description-block text-left">
                                                     <h5 class="description-header mb-1">Tipo de activo</h5>                                         
@@ -171,7 +171,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-md-4 col-sm-6">
                                             <div class="form-group">
                                                 <div class="description-block text-left">
                                                     <h5 class="description-header mb-1">Activo</h5>                                         
@@ -182,7 +182,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div id="columnaActivo2" class="col-sm-4 mb-3" style="display: none">
+                                        <div id="columnaActivo2" class="col-md-4 col-sm-12 mb-3" style="display: none">
                                             <div class="form-group mb-0">
                                                 <div class="description-block text-left mb-0">
                                                     <h5 class="description-header mb-1">Cambio de activo</h5>

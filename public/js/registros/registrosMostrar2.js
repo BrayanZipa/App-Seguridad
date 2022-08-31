@@ -370,27 +370,27 @@ $(function() {
     //Función que permite cambiar el tamaño del espacio que va a ocupar las imagenes en los registros, para los visitantes y conductores la fotografía ocupa más espacio y para los colaboradores la imagen del logo ocupa menos espacio
     function establecerImagen(tipoPersona, columnaFoto, columnaInformacion, columnaDescripcion) {
         if(tipoPersona == 1 || tipoPersona == 4){
-            if($(columnaFoto).hasClass('col-sm-2')){
-                $(columnaFoto).removeClass('col-sm-2');
-                $(columnaFoto).addClass('col-sm-3');
-                $(columnaInformacion).removeClass('col-sm-10');
-                $(columnaInformacion).addClass('col-sm-9'); 
+            if($(columnaFoto).hasClass('col-md-2')){
+                $(columnaFoto).removeClass('col-md-2');
+                $(columnaFoto).addClass('col-md-3');
+                $(columnaInformacion).removeClass('col-md-10');
+                $(columnaInformacion).addClass('col-md-9'); 
             }
-            if($(columnaDescripcion).hasClass('col-sm-6')){
-                $(columnaDescripcion).removeClass('col-sm-6');
-                $(columnaDescripcion).addClass('col-sm-4');
+            if($(columnaDescripcion).hasClass('col-md-6')){
+                $(columnaDescripcion).removeClass('col-md-6');
+                $(columnaDescripcion).addClass('col-md-4');
             }
 
         } else {
-            if($(columnaFoto).hasClass('col-sm-3')){
-                $(columnaFoto).removeClass('col-sm-3');
-                $(columnaFoto).addClass('col-sm-2');
-                $(columnaInformacion).removeClass('col-sm-9');
-                $(columnaInformacion).addClass('col-sm-10');
+            if($(columnaFoto).hasClass('col-md-3')){
+                $(columnaFoto).removeClass('col-md-3');
+                $(columnaFoto).addClass('col-md-2');
+                $(columnaInformacion).removeClass('col-md-9');
+                $(columnaInformacion).addClass('col-md-10');
             }
-            if($(columnaDescripcion).hasClass('col-sm-4')){
-                $(columnaDescripcion).removeClass('col-sm-4');
-                $(columnaDescripcion).addClass('col-sm-6');
+            if($(columnaDescripcion).hasClass('col-md-4')){
+                $(columnaDescripcion).removeClass('col-md-4');
+                $(columnaDescripcion).addClass('col-md-6');
             }
         } 
     }
@@ -415,15 +415,21 @@ $(function() {
         }
     }
 
+    //Función que permite dar formato a un dato de tipo Datetime separando la fecha y hora en valores diferentes, estos valores se muestran en la vista en forma de texto
+    function formatoFechaHora(spanFecha, spanHora, fechaHora) {
+        $(spanFecha).text(moment(fechaHora).format('DD-MM-YYYY'));
+        $(spanHora).text(moment(fechaHora).format('h:mm:ss a'));
+    }
+
     //Al momento en que se carga la página se ocultan elemetos al usuario para esta vista y se cambia el tamaño de varias columnas para mostar de mejor manera la información
     $('#tabHistorial').css('display', 'none');
     $('#infoSalidaPersona').css('display', 'none');
     $('#infoSalidaVehiculo').css('display', 'none');
     $('#infoSalidaActivo').css('display', 'none');
-    $('.columnaPanel').removeClass('col-sm-3');
-    $('.columnaPanel').addClass('col-sm-4');
-    $('#infoVisitanteConductor').removeClass('col-sm-6');
-    $('#infoVisitanteConductor').addClass('col-sm-8');
+    $('.columnaPanel').removeClass('col-md-3');
+    $('.columnaPanel').addClass('col-md-4');
+    $('#infoVisitanteConductor').removeClass('col-md-6');
+    $('#infoVisitanteConductor').addClass('col-md-8');
 
     $('#panel').addClass('mb-4 mx-n1');
     $('#cardHeader').addClass('pb-1');
@@ -459,8 +465,7 @@ $(function() {
                 $('#checkVehiculo').prop('checked', false);
             }     
             $('#fotoVehiculo').attr('src', '../' + data.foto_vehiculo);
-            $('#spanFechaVehiculo').text(moment(data.ingreso_vehiculo).format('DD-MM-YYYY'));
-            $('#spanHoraVehiculo').text(moment(data.ingreso_vehiculo).format('h:mm:ss a'));
+            formatoFechaHora('#spanFechaVehiculo', '#spanHoraVehiculo', data.ingreso_vehiculo);
             $('#spanIdentificador').text(data.identificador);
             $('#spanTipo').text(data.tipo);  
             $('#spanMarca').text(data.marca);   
@@ -475,8 +480,7 @@ $(function() {
             } 
             $('#columnaActivo').css('display', 'none');
             $('#divActivo').css('display', '');
-            $('#spanFechaActivo').text(moment(data.ingreso_activo).format('DD-MM-YYYY'));
-            $('#spanHoraActivo').text(moment(data.ingreso_activo).format('h:mm:ss a'));
+            formatoFechaHora('#spanFechaActivo', '#spanHoraActivo', data.ingreso_activo);
             $('#spanTipoActivo').text(data.activo);
             $('#spanCodigoActivo').text(data.codigo_activo);  
             $('#tabDatosActivo').css('display', 'block');
@@ -484,8 +488,7 @@ $(function() {
             $('#tabDatosActivo').css('display', 'none');
         }
     
-        $('#spanFecha').text(moment(data.ingreso_persona).format('DD-MM-YYYY'));
-        $('#spanHora').text(moment(data.ingreso_persona).format('h:mm:ss a'));
+        formatoFechaHora('#spanFecha', '#spanHora', data.ingreso_persona);
         $('#spanNombre').text(data.nombre);
         $('#spanApellido').text(data.apellido);
         $('#spanIdentificacion').text(data.identificacion);
@@ -544,8 +547,7 @@ $(function() {
             datosRegistroVehiculo.vehiculo = data.tipo + ' ' + data.marca + ' ' + data.identificador;
         }
 
-        $('#spanFecha2').text(moment(data.ingreso_persona).format('DD-MM-YYYY'));
-        $('#spanHora2').text(moment(data.ingreso_persona).format('h:mm:ss a'));
+        formatoFechaHora('#spanFecha2', '#spanHora2', data.ingreso_persona);
         $('#spanNombre2').text(data.nombre);
         $('#spanApellido2').text(data.apellido);
         $('#spanIdentificacion2').text(data.identificacion);
@@ -555,8 +557,7 @@ $(function() {
         $('#parrafoDescripcion2').text(data.descripcion);
 
         $('#fotoVehiculo2').attr('src', '../' + data.foto_vehiculo);
-        $('#spanFechaVehiculo2').text(moment(data.ingreso_vehiculo).format('DD-MM-YYYY'));
-        $('#spanHoraVehiculo2').text(moment(data.ingreso_vehiculo).format('h:mm:ss a'));
+        formatoFechaHora('#spanFechaVehiculo2', '#spanHoraVehiculo2', data.ingreso_vehiculo);
         $('#spanIdentificador2').text(data.identificador);
         $('#spanTipo2').text(data.tipo);
         $('#spanMarca2').text(data.marca);
@@ -602,8 +603,7 @@ $(function() {
         var urlLogo = '../assets/imagenes/' + data.empresa.toLowerCase() +'.png';
         $('#logoEmpresa3').attr('src', urlLogo);
 
-        $('#spanFecha3').text(moment(data.ingreso_persona).format('DD-MM-YYYY'));
-        $('#spanHora3').text(moment(data.ingreso_persona).format('h:mm:ss a'));
+        formatoFechaHora('#spanFecha3', '#spanHora3', data.ingreso_persona);
         $('#spanNombre3').text(data.nombre);
         $('#spanApellido3').text(data.apellido);
         $('#spanIdentificacion3').text(data.identificacion);
@@ -614,8 +614,7 @@ $(function() {
         $('#spanEmpresaCol3').text(data.empresa);
         $('#parrafoDescripcion3').text(data.descripcion);
 
-        $('#spanFechaActivo3').text(moment(data.ingreso_activo).format('DD-MM-YYYY'));
-        $('#spanHoraActivo3').text(moment(data.ingreso_activo).format('h:mm:ss a'));
+        formatoFechaHora('#spanFechaActivo3', '#spanHoraActivo3', data.ingreso_activo);
         $('#spanTipoActivo3').text(data.activo);
         $('#spanCodigoActivo3').text(data.codigo_activo); 
         
