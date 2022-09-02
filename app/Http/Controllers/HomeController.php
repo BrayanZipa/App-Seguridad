@@ -5,27 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\Registro;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 
 class HomeController extends Controller
 {
+    protected $usuarios;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(User $usuarios)
     {
-        $this->middleware('auth');
-        // $user = User::find(auth()->user()->id_usuarios);
-        // $roles = $user->getRoleNames();
-
-        // if (empty($roles[0])) {
-
-        //     $user->assignRole(2);
-
-        // }
-        
+        $this->usuarios = $usuarios;
     }
 
     /**
@@ -35,6 +28,8 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $exitCode = Artisan::call('cache:clear');
+        $this->usuarios->asiganrRol(auth()->user());
         $visitantes = $this->totalPersonasDiarias(1);
         $conductores = $this->totalPersonasDiarias(4);
         $colaboradoresActivo = $this->totalColaboradoresActivoDiarios(3);

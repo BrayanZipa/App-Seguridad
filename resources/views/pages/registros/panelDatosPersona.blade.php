@@ -255,7 +255,7 @@
                                         <div id="columnaActivo" class="columnaPanel col-md-3 col-sm-12" style="display: none">
                                             <div class="form-group mb-0">
                                                 <div class="description-block text-left mb-0">
-                                                    <h5 id="tituloActivo" class="description-header mb-1"></h5>
+                                                    <h5 id="tituloActivo" class="description-header mb-1">Cambio de activo</h5>
                                                     <span id="spanCodigoActivo2"></span>
                                                     <div class="mt-1">
                                                         <label id="autorizacion2"></label>
@@ -264,18 +264,20 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="divActivo" class="row mt-3 mb-n3">
-                                        <div class="col-12">
-                                            <div class="form-group clearfix">  
-                                                <div class="icheck-primary d-inline">
-                                                    <label for="checkActivo">
-                                                        ¿La persona sale sin activo?
-                                                    </label>
-                                                    <input type="checkbox" id="checkActivo">
+                                    @can('registrarSalida')
+                                        <div id="divActivo" class="row mt-3 mb-n3">
+                                            <div class="col-12">
+                                                <div class="form-group clearfix">  
+                                                    <div class="icheck-primary d-inline">
+                                                        <label for="checkActivo">
+                                                            ¿La persona sale sin activo?
+                                                        </label>
+                                                        <input type="checkbox" id="checkActivo">
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
+                                        </div> 
+                                    @endcan
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="datosVehiculo" role="tabpanel" aria-labelledby="tabDatosVehiculo">
@@ -346,18 +348,20 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div id="divVehiculo" class="row mt-3 mb-n3">
-                                                <div class="col-12">
-                                                    <div class="form-group clearfix">
-                                                        <div class="icheck-primary d-inline">
-                                                            <label for="checkVehiculo">
-                                                                ¿La persona sale sin vehículo?
-                                                            </label>
-                                                            <input type="checkbox" id="checkVehiculo">
+                                            @can('registrarSalida')
+                                                <div id="divVehiculo" class="row mt-3 mb-n3">
+                                                    <div class="col-12">
+                                                        <div class="form-group clearfix">
+                                                            <div class="icheck-primary d-inline">
+                                                                <label for="checkVehiculo">
+                                                                    ¿La persona sale sin vehículo?
+                                                                </label>
+                                                                <input type="checkbox" id="checkVehiculo">
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
+                                                </div>  
+                                            @endcan
                                         </div> 
                                     </div>
                                     <div class="col-md-3 col-sm-12 mb-n4">
@@ -435,7 +439,9 @@
             </div>
         </div>
     </div>
-    <div id="footerPanel" class="card-footer">
-        <button type='button' id="botonGuardarSalida" class="btn btn-primary">Registrar salida</button>
-    </div>
+    @can('registrarSalida')
+        <div id="footerPanel" class="card-footer">
+            <button type='button' id="botonGuardarSalida" class="btn btn-primary">Registrar salida</button>
+        </div> 
+    @endcan
 </div>

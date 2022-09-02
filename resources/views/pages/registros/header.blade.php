@@ -10,8 +10,10 @@
         <li class="nav-item d-none d-sm-inline-block">
             <a href="{{ route('mostrarRegistros') }}" class="nav-link {{ Route::is('mostrarRegistros') ? 'active' : '' }}">Registros completados</a>
         </li>
-        <li class="nav-item d-none d-sm-inline-block">
-            <a href="{{ route('formCrearRegistro') }}" class="nav-link {{ Route::is('formCrearRegistro') ? 'active' : '' }}">Nuevo registro</a>
-        </li>
+        @can('formCrearRegistro')
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="{{ route('formCrearRegistro') }}" class="nav-link {{ Route::is('formCrearRegistro') ? 'active' : '' }}">Nuevo registro</a>
+            </li> 
+        @endcan
     </ul>
 </nav>

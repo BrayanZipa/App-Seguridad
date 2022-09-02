@@ -79,9 +79,11 @@
                             </div>
                         </div>
                         <!-- /.card-body -->
-                        <div class="card-footer">
-                            <button type='submit' class="btn btn-primary">Asignar</button>
-                        </div>
+                        @can('editarUsuario')
+                            <div class="card-footer">
+                                <button type='submit' class="btn btn-primary">Asignar</button>
+                            </div>   
+                        @endcan
                         <!-- /.card-footer-->
                     </div>
                 </form>

@@ -62,8 +62,8 @@ return [
     'providers' => [
         'ldap' => [
             'driver' => 'ldap',
-            'model' => LdapRecord\Models\OpenLDAP\User::class,
-            // 'model' => LdapRecord\Models\ActiveDirectory\User::class,
+            // 'model' => LdapRecord\Models\OpenLDAP\User::class,
+            'model' => LdapRecord\Models\ActiveDirectory\User::class,
             'rules' => [],
             'database' => [
                 'model' => App\Models\User::class,
@@ -74,6 +74,7 @@ return [
                     'username' => 'samaccountname',
                     'identification' => 'postofficebox',
                     'department' => 'department',
+                    'city' => 'l',
                     'tittle' => 'tittle',
                     'company' => 'company',
                 ],

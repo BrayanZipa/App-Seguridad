@@ -222,10 +222,12 @@
         </div>
     </div>
     <!-- /.card-body -->
-    <div class="card-footer" >
-        <button id="botonCrear" type='submit' class="btn btn-primary">Crear</button>
-        <button id="botonLimpiar" type='button' class="btn btn-secondary">Limpiar</button>
-    </div>
+    @can('crearVisitante')
+        <div class="card-footer" >
+            <button id="botonCrear" type='submit' class="btn btn-primary">Crear</button>
+            <button id="botonLimpiar" type='button' class="btn btn-secondary">Limpiar</button>
+        </div>
+    @endcan
     <!-- /.card-footer-->
 </div>
 <!-- /.card -->

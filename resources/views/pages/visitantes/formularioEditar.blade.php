@@ -155,9 +155,11 @@
                     </div>
                 </div>
                 <!-- /.card-body -->
-                <div class="card-footer">
-                    <button type='submit' class="btn btn-primary">Actualizar</button>
-                </div>
+                @can('editarVisitante')
+                    <div class="card-footer">
+                        <button type='submit' class="btn btn-primary">Actualizar</button>
+                    </div> 
+                @endcan
                 <!-- /.card-footer-->
             </div>
             <!-- /.card -->

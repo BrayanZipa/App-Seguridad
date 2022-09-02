@@ -12,6 +12,7 @@ use App\Models\Persona;
 use App\Models\PersonaVehiculo;
 use App\Models\Registro;
 use App\Models\TipoVehiculo;
+use App\Models\User;
 use App\Models\Vehiculo;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
@@ -20,6 +21,7 @@ use Intervention\Image\Facades\Image;
 
 class ConductorController extends Controller
 {
+    protected $usuarios;
     protected $conductores;
     protected $eps;
     protected $arl;
@@ -27,7 +29,8 @@ class ConductorController extends Controller
     protected $marcaVehiculos;
     protected $empresas;
 
-    public function __construct(Persona $conductores, Eps $eps, Arl $arl, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, Empresa $empresas){
+    public function __construct(User $usuarios, Persona $conductores, Eps $eps, Arl $arl, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, Empresa $empresas){
+        $this->usuarios = $usuarios;
         $this->conductores = $conductores;
         $this->eps = $eps;
         $this->arl = $arl;
@@ -44,6 +47,7 @@ class ConductorController extends Controller
     public function index()
     {
         $exitCode = Artisan::call('cache:clear');
+        $this->usuarios->asiganrRol(auth()->user());
         $eps = $this->eps->obtenerEps();
         $arl = $this->arl->obtenerArl();
         return view('pages.conductores.mostrar', compact('eps', 'arl'));
@@ -57,6 +61,7 @@ class ConductorController extends Controller
     public function create()
     {
         $exitCode = Artisan::call('cache:clear');   
+        $this->usuarios->asiganrRol(auth()->user());
         [$eps, $arl, $tipoVehiculos, $marcaVehiculos, $empresas] = $this->obtenerModelos();
         return view('pages.conductores.crear', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos', 'empresas'));
     }

@@ -12,6 +12,7 @@ use App\Models\Persona;
 use App\Models\PersonaVehiculo;
 use App\Models\Registro;
 use App\Models\TipoVehiculo;
+use App\Models\User;
 use App\Models\Vehiculo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
@@ -21,6 +22,7 @@ use Intervention\Image\Facades\Image;
 
 class VisitanteController extends Controller
 {
+    protected $usuarios;
     protected $visitantes;
     protected $eps;
     protected $arl;
@@ -32,8 +34,9 @@ class VisitanteController extends Controller
     /**
      * Contructor que inicializa todos los modelos
      */
-    public function __construct(Persona $visitantes, Eps $eps, Arl $arl, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, Empresa $empresas, Activo $activos)
+    public function __construct(User $usuarios, Persona $visitantes, Eps $eps, Arl $arl, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, Empresa $empresas, Activo $activos)
     {
+        $this->usuarios = $usuarios;
         $this->visitantes = $visitantes;
         $this->eps = $eps;
         $this->arl = $arl;
@@ -50,6 +53,7 @@ class VisitanteController extends Controller
     public function index()
     {
         $exitCode = Artisan::call('cache:clear');
+        $this->usuarios->asiganrRol(auth()->user());
         $eps = $this->eps->obtenerEps();
         $arl = $this->arl->obtenerArl();
         return view('pages.visitantes.mostrar', compact('eps', 'arl'));
@@ -62,6 +66,7 @@ class VisitanteController extends Controller
     public function create()
     {
         $exitCode = Artisan::call('cache:clear');
+        $this->usuarios->asiganrRol(auth()->user());
         [$eps, $arl, $tipoVehiculos, $marcaVehiculos, $empresas] = $this->obtenerModelos();
         return view('pages.visitantes.crear', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos', 'empresas'));
     }

@@ -12,6 +12,7 @@ use App\Models\Persona;
 use App\Models\PersonaVehiculo;
 use App\Models\Registro;
 use App\Models\TipoVehiculo;
+use App\Models\User;
 use App\Models\Vehiculo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -23,6 +24,7 @@ use Intervention\Image\Facades\Image;
 
 class ColaboradorController extends Controller
 {
+    protected $usuarios;
     protected $colaboradores;
     protected $eps;
     protected $arl;
@@ -33,7 +35,8 @@ class ColaboradorController extends Controller
     protected $activos;
     protected $registros;
 
-    public function __construct(Persona $colaboradores, Eps $eps, Arl $arl, Vehiculo $vehiculos, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, Empresa $empresas, Activo $activos, Registro $registros){
+    public function __construct(User $usuarios, Persona $colaboradores, Eps $eps, Arl $arl, Vehiculo $vehiculos, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, Empresa $empresas, Activo $activos, Registro $registros){
+        $this->usuarios = $usuarios;
         $this->colaboradores = $colaboradores;
         $this->eps = $eps;
         $this->arl = $arl;
@@ -53,6 +56,7 @@ class ColaboradorController extends Controller
     public function index()
     {
         $exitCode = Artisan::call('cache:clear');
+        $this->usuarios->asiganrRol(auth()->user());
         [$eps, $arl, $empresas] = $this->obtenerModelos();
         return view('pages.colaboradores.mostrar', compact('eps', 'arl', 'empresas'));
     }
@@ -60,6 +64,7 @@ class ColaboradorController extends Controller
     public function index2()
     {
         $exitCode = Artisan::call('cache:clear');
+        $this->usuarios->asiganrRol(auth()->user());
         [$eps, $arl, $empresas] = $this->obtenerModelos();
         return view('pages.colaboradores.mostrar2', compact('eps', 'arl', 'empresas'));
     }
@@ -72,6 +77,7 @@ class ColaboradorController extends Controller
     public function create()
     {
         $exitCode = Artisan::call('cache:clear');
+        $this->usuarios->asiganrRol(auth()->user());
         $personas = $this->colaboradores->obtenerPersonas(1);
         $colaboradoresActivo = $this->colaboradores->obtenerPersonas(3);
         $listaColaboradores = $this->getColaboradores();
@@ -178,7 +184,7 @@ class ColaboradorController extends Controller
     }
 
     /**
-     * Función que permite actualizar el rol de una persona a colaborador o colaborador con activo y al mismo tiempo registrar la salida de esta misma en la tabla se_registros, esto sucede cuando se quiere crear un colaborador o colaboraor con activo que previamente tenga un registro de ingreso como visitante o colaborador
+     * Función que permite actualizar el rol de una persona a colaborador o colaborador con activo y al mismo tiempo registrar la salida de esta misma en la tabla se_registros, esto sucede cuando se quiere crear un colaborador o colaborador con activo que previamente tenga un registro de ingreso como visitante o colaborador
      */
     public function registroSalidaPersona(Request $request)
     {
@@ -529,6 +535,7 @@ class ColaboradorController extends Controller
     public function getComputadores()
     {
         $exitCode = Artisan::call('cache:clear');
+        $this->usuarios->asiganrRol(auth()->user());
         $sesionToken = $this->colaboradores->initSesionGlpi();
         try {
             $consulta = Http::withHeaders([

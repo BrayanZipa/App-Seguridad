@@ -120,9 +120,11 @@
                     </div>
                 </div>
                 <!-- /.card-body -->
-                <div class="card-footer">
-                    <button type='submit' class="btn" style="background-color: rgb(255, 115, 0)">Actualizar</button>
-                </div>
+                @can('editarVehiculo')
+                    <div class="card-footer">
+                        <button type='submit' class="btn" style="background-color: rgb(255, 115, 0)">Actualizar</button>
+                    </div> 
+                @endcan
                 <!-- /.card-footer-->
             </div>
             <!-- /.card -->

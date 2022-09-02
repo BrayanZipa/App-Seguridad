@@ -7,9 +7,11 @@
         <li class="nav-item d-none d-sm-inline-block">
             <a href="{{ route('mostrarVisitantes')}}" class="nav-link {{ Route::is('mostrarVisitantes') ? 'active' : '' }}">Visitantes</a>
         </li>
-        <li class="nav-item d-none d-sm-inline-block">
-            <a href="{{ route('formCrearVisitante')}}" class="nav-link {{ Route::is('formCrearVisitante') ? 'active' : '' }}">Nuevo visitante</a>
-        </li>
+        @can('formCrearVisitante')
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="{{ route('formCrearVisitante')}}" class="nav-link {{ Route::is('formCrearVisitante') ? 'active' : '' }}">Nuevo visitante</a>
+            </li>
+        @endcan
     </ul>
 
     <!-- SEARCH FORM -->

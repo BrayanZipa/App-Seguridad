@@ -230,7 +230,9 @@
             </div>
         </div>
     </div>
-    <div class="card-footer">
-        <button type='button' id="botonGuardarSalida2" class="btn" style="background-color: rgb(255, 115, 0)">Registrar salida</button>
-    </div>
+    @can('registrarSalida')
+        <div class="card-footer">
+            <button type='button' id="botonGuardarSalida2" class="btn" style="background-color: rgb(255, 115, 0)">Registrar salida</button>
+        </div> 
+    @endcan
 </div>

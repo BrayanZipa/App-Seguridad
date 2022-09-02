@@ -25,6 +25,12 @@ class User extends Authenticatable implements LdapAuthenticatable
     protected $fillable = [
         'name',
         'email',
+        'company',
+        'department',
+        'city',
+        'tittle',
+        'username',
+        'identification',
         'password',
     ];
 
@@ -48,6 +54,26 @@ class User extends Authenticatable implements LdapAuthenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Función que asigna un rol a un usuario que ingresa a la aplicación e inicia sesión por primera vez.
+     */
+    public function asiganrRol($usuario)
+    {
+        try {
+            $user = User::find($usuario->id_usuarios);
+            $roles = $user->getRoleNames();
+            if (empty($roles[0])) {
+                if($usuario->department == 'Desarrollo'){
+                    $user->assignRole(1);
+                } else {
+                    $user->assignRole(3);
+                }
+            }
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
+        }
+    }
 
     // public function persona(){
     //     return $this->hasMany(Persona::class, 'id_usuario', 'id_usuarios'); 

@@ -1,6 +1,6 @@
 <div class="row mt-n2">
     <div class="col-md-12">
-        <form id="formRegistros1" class="formularios" action="{{ route('crearRegistro') }}" method="POST" novalidate>
+        <form id="formRegistros1" class="formularios" action="" method="POST" novalidate>
             @csrf
             @method('PUT')
             <div class="card card-primary">
@@ -238,9 +238,11 @@
                     </div>
                 </div>
                 <!-- /.card-body -->
-                <div class="card-footer">
-                    <button type='submit' class="btn btn-primary">Guardar registro</button>
-                </div>
+                @can('registrarIngreso')
+                    <div class="card-footer">
+                        <button type='submit' class="btn btn-primary">Guardar registro</button>
+                    </div>
+                @endcan
                 <!-- /.card-footer-->
             </div>
             <!-- /.card -->

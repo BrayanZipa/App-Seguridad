@@ -19,7 +19,6 @@
                 <!-- /.card-header -->
 
                 <div class="card-body mb-n4">
-
                     <div class="row">
                         <div class="col-md-4 col-sm-12">
                             <div class="form-group">
@@ -130,12 +129,13 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <!-- /.card-body -->
-                <div class="card-footer">
-                    <button type='submit' class="btn btn-primary">Actualizar</button>
-                </div>
+                @can('editarConductor')
+                    <div class="card-footer">
+                        <button type='submit' class="btn btn-primary">Actualizar</button>
+                    </div> 
+                @endcan
                 <!-- /.card-footer-->
             </div>
             <!-- /.card -->

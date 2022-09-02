@@ -143,10 +143,12 @@
 
                 </div>
                 <!-- /.card-body -->
-                <div class="card-footer">
-                    <button type='submit' class="btn btn-primary">Actualizar</button>
-                    <button id="botonCambiarRol" type='button' class="btn btn-danger">Cambiar a visitante</button>
-                </div>
+                @can('editarColaborador')
+                    <div class="card-footer">
+                        <button type='submit' class="btn btn-primary">Actualizar</button>
+                        <button id="botonCambiarRol" type='button' class="btn btn-danger">Cambiar a visitante</button>
+                    </div>
+                @endcan
                 <!-- /.card-footer-->
             </div>
         </form>

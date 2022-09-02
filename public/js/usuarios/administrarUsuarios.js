@@ -109,6 +109,6 @@ $(function() {
     $('#modal-asignar-rol').modal('show');
     setTimeout(function(){
         $('#modal-asignar-rol').modal('hide');
-    }, 3000);
+    }, 2000);
 
 });

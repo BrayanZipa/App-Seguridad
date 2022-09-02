@@ -7,18 +7,10 @@
 @section('css')
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <link rel="stylesheet" href="{{ asset('assets/lte/plugins/select2/css/select2.min.css') }}">
-    <!-- Select2 -->
-    {{-- <link rel="stylesheet" href="{{ asset('assets/lte/plugins/select2/css/select2.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/lte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}"> --}}
 @endsection
 
 @section('scripts')
-    <!-- Select2 -->
-    {{-- <script src="{{ asset('assets/lte/plugins/select2/js/select2.full.min.js') }}"></script>
-    <!-- JavaScript propio -->
-    <script src="{{ asset('js/colaboradores/colaboradoresCrear.js') }}"></script> --}}
-    {{-- <script src="{{ asset('assets/lte/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script> --}}
+
 @endsection
 
 @section('contenido')
@@ -40,7 +32,9 @@
                     <div class="icon">
                         <i class="ion ion-ios-people"></i>
                     </div>
-                    <a href="{{ route('formCrearRegistro', ['tipoPersona' => 1]) }}" class="small-box-footer">Registrar nuevo ingreso <i class="fas fa-arrow-circle-right"></i></a>
+                    @can('registrarIngreso')
+                        <a href="{{ route('formCrearRegistro', ['tipoPersona' => 1]) }}" class="small-box-footer">Registrar nuevo ingreso <i class="fas fa-arrow-circle-right"></i></a>
+                    @endcan
                 </div>
             </div>
 
@@ -54,7 +48,9 @@
                     <div class="icon">
                         <i class="ion ion-android-laptop"></i>
                     </div>
-                    <a href="{{ route('formCrearRegistro', ['tipoPersona' => 3]) }}" class="small-box-footer">Registrar nuevo ingreso <i class="fas fa-arrow-circle-right"></i></a>
+                    @can('registrarIngreso')
+                        <a href="{{ route('formCrearRegistro', ['tipoPersona' => 3]) }}" class="small-box-footer">Registrar nuevo ingreso <i class="fas fa-arrow-circle-right"></i></a>
+                    @endcan
                 </div>
             </div>
 
@@ -68,7 +64,9 @@
                     <div class="icon">
                         <i class="ion ion-person"></i>
                     </div>
-                    <a href="{{ route('formCrearRegistro', ['tipoPersona' => 4]) }}" class="small-box-footer">Registrar nuevo ingreso <i class="fas fa-arrow-circle-right"></i></a>
+                    @can('registrarIngreso')
+                        <a href="{{ route('formCrearRegistro', ['tipoPersona' => 4]) }}" class="small-box-footer">Registrar nuevo ingreso <i class="fas fa-arrow-circle-right"></i></a>
+                    @endcan
                 </div>
             </div>
 
@@ -82,7 +80,9 @@
                     <div class="icon">
                         <i class="ion ion-model-s"></i>
                     </div>
-                    <a href="{{ route('formCrearRegistro') }}" class="small-box-footer">Registrar nuevo ingreso  <i class="fas fa-arrow-circle-right"></i></a>
+                    @can('registrarIngreso')
+                        <a href="{{ route('formCrearRegistro') }}" class="small-box-footer">Registrar nuevo ingreso  <i class="fas fa-arrow-circle-right"></i></a>
+                    @endcan
                 </div>
             </div>
             

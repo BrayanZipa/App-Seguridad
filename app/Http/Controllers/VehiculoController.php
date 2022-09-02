@@ -7,6 +7,7 @@ use App\Models\Persona;
 use App\Models\PersonaVehiculo;
 use App\Models\TipoPersona;
 use App\Models\TipoVehiculo;
+use App\Models\User;
 use App\Models\Vehiculo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
@@ -16,6 +17,7 @@ use Intervention\Image\Facades\Image;
 
 class VehiculoController extends Controller
 {
+    protected $usuarios;
     protected $personas;
     protected $tipoVehiculos;
     protected $marcaVehiculos;
@@ -24,8 +26,9 @@ class VehiculoController extends Controller
     /**
      * Contructor que inicializa todos los modelos
      */
-    public function __construct(Persona $personas, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, TipoPersona $tipoPersonas)
+    public function __construct(User $usuarios, Persona $personas, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, TipoPersona $tipoPersonas)
     {
+        $this->usuarios = $usuarios;
         $this->personas = $personas;
         $this->tipoVehiculos = $tipoVehiculos;
         $this->marcaVehiculos = $marcaVehiculos;
@@ -40,6 +43,7 @@ class VehiculoController extends Controller
     public function index()
     {
         $exitCode = Artisan::call('cache:clear');
+        $this->usuarios->asiganrRol(auth()->user());
         [$tipoVehiculos, $marcaVehiculos, $tipoPersonas] = $this->obtenerModelos();
 
         return view('pages.vehiculos.mostrar', compact('tipoVehiculos', 'marcaVehiculos', 'tipoPersonas'));
@@ -53,6 +57,7 @@ class VehiculoController extends Controller
     public function create()
     {
         $exitCode = Artisan::call('cache:clear');
+        $this->usuarios->asiganrRol(auth()->user());
         [$tipoVehiculos, $marcaVehiculos, $tipoPersonas] = $this->obtenerModelos();
 
         return view('pages.vehiculos.crear', compact('tipoVehiculos', 'marcaVehiculos', 'tipoPersonas'));

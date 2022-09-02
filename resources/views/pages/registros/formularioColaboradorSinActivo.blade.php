@@ -185,9 +185,11 @@
                     </div>
                 </div>
                 <!-- /.card-body -->
-                <div class="card-footer mt-n2">
-                    <button type='submit' class="btn btn-primary">Guardar registro</button>
-                </div>
+                @can('registrarIngreso')
+                    <div class="card-footer mt-n2">
+                        <button type='submit' class="btn btn-primary">Guardar registro</button>
+                    </div>
+                @endcan
                 <!-- /.card-footer-->
             </div>
         </form>

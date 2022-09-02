@@ -202,7 +202,9 @@
             </div>
         </div>
     </div>
-    <div class="card-footer">
-        <button type='button' id="botonGuardarSalida3" class="btn btn-primary">Registrar salida</button>
-    </div>
+    @can('registrarSalida')
+        <div class="card-footer">
+            <button type='button' id="botonGuardarSalida3" class="btn btn-primary">Registrar salida</button>
+        </div>  
+    @endcan
 </div>

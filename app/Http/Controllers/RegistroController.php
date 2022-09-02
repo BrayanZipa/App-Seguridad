@@ -14,10 +14,12 @@ use Illuminate\Support\Facades\Artisan;
 use Yajra\DataTables\DataTables;
 use App\Models\Activo;
 use App\Models\PersonaVehiculo;
+use App\Models\User;
 use App\Models\Vehiculo;
 
 class RegistroController extends Controller
 {
+    protected $usuarios;
     protected $registros;
     protected $tipoPersonas;
     protected $personas;
@@ -27,7 +29,8 @@ class RegistroController extends Controller
     protected $activos;
     protected $vehiculos;
     
-    public function __construct(Registro $registros, TipoPersona $tipoPersonas, Persona $personas, Eps $eps, Arl $arl, Empresa $empresas, Activo $activos, Vehiculo $vehiculos){
+    public function __construct(User $usuarios, Registro $registros, TipoPersona $tipoPersonas, Persona $personas, Eps $eps, Arl $arl, Empresa $empresas, Activo $activos, Vehiculo $vehiculos){
+        $this->usuarios = $usuarios;
         $this->registros = $registros;
         $this->tipoPersonas = $tipoPersonas;
         $this->personas = $personas;
@@ -45,6 +48,7 @@ class RegistroController extends Controller
      */
     public function index()
     {
+        $this->usuarios->asiganrRol(auth()->user());
         return view('pages.registros.mostrarRegistrosCompletos');
     }
 
@@ -53,6 +57,7 @@ class RegistroController extends Controller
      */
     public function registrosSinSalida()
     {
+        $this->usuarios->asiganrRol(auth()->user());
         return view('pages.registros.mostrarRegistrosIncompletos');
     }
 
@@ -64,6 +69,7 @@ class RegistroController extends Controller
     public function create($tipoPersona = null)
     {
         $exitCode = Artisan::call('cache:clear');
+        $this->usuarios->asiganrRol(auth()->user());
         $eps = $this->eps->obtenerEps();
         $arl = $this->arl->obtenerArl();
         $tipoPersonas = $this->tipoPersonas->obtenerTipoPersona();

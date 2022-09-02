@@ -4,11 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\DataTables;
 
 class UserController extends Controller
 {
+    protected $usuarios;
+
+    /**
+     * Contructor que inicializa todos los modelos
+     */
+    public function __construct(User $usuarios)
+    {
+        $this->usuarios = $usuarios;
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -16,6 +27,8 @@ class UserController extends Controller
      */
     public function index()
     {
+        $exitCode = Artisan::call('cache:clear');
+        $this->usuarios->asiganrRol(auth()->user());
         $roles = Role::all();
         return view('pages.usuarios.administrarUsuarios', compact('roles'));
     }

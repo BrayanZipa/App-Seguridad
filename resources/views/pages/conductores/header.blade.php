@@ -7,8 +7,10 @@
         <li class="nav-item d-none d-sm-inline-block">
             <a href="{{ route('mostrarConductores')}}" class="nav-link {{ Route::is('mostrarConductores') ? 'active' : '' }}">Conductores</a>
         </li>
-        <li class="nav-item d-none d-sm-inline-block">
-            <a href="{{ route('formCrearConductor')}}" class="nav-link {{ Route::is('formCrearConductor') ? 'active' : '' }}">Nuevo conductor</a>
-        </li>
+        @can('formCrearConductor')
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="{{ route('formCrearConductor')}}" class="nav-link {{ Route::is('formCrearConductor') ? 'active' : '' }}">Nuevo conductor</a>
+            </li>
+        @endcan
     </ul>
 </nav>
