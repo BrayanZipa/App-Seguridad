@@ -1,29 +1,13 @@
-.login-page{
-    background-color: rgb(6, 6, 28);
-    /* background-image: url(https://amchamcolombia.co/business-mail/wp-content/uploads/2021/05/Aviomar.jpg); */
-    background-image: url(../assets/imagenes/fondo.png);
-    /* background-image: url(../assets/imagenes/fondo2.jpg); */
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-    background-size: 100% 100%;
-
-    /* position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    top: 0; */
-    /* background-size: cover; */
-    /* background-repeat: no-repeat; */
-    /* background-position: left; */
-}
-
 body{
     background-color:rgb(6, 6, 28);
     background-image: url(../assets/imagenes/fondo.png);
     background-repeat: no-repeat;
     background-size: 100% 100%;
     background-attachment: fixed;
+}
+
+#imagen{
+    max-width: 150px;
 }
 
 .form-image{
@@ -43,37 +27,47 @@ body{
     box-shadow: none; 
 }
 
+.form-login:hover{
+    background: rgb(0, 0, 0, 0.8);
+    transition: 0.5s ease-in;
+}
 
+.form-login:not(:hover) {
+    transition: 0.5s ease-in;
+}
 
 .form-control, .input-group-text{
     color: white;
     background: rgba(0, 0, 0, .5);
-    border-radius:0%;
+    border-radius: 0px;
     border-style: none;
-    border-bottom: solid 1px ;
-    transition: 0.5s ease-in;
+    border-bottom: solid 1px;
 }
 
 .form-control:focus{
     background: none;
     color: white;
     box-shadow: none;
-    outline: none;
-    
+    outline: none; 
 }
 
-/* .form-control::content{
-    background: none;
-} */
+.form-control:hover{
+    background: rgb(0, 0, 0);
+}
 
 .form-control::placeholder{
     color: white;
 }
 
 .ingresar{
-    /* background-color: #222A3F; */
     transition: 0.5s ease-in;
 }
 
-/* onmouseover() posicionar el raton*/
-/* onmouseout() quitar el raton*/
+.mensaje-error{
+    font-size: 100%;
+}
+
+input:-webkit-autofill{ 
+    -webkit-box-shadow: 0 50px 0 20px rgba(0, 0, 0, 0.95) inset !important; 
+    -webkit-text-fill-color: white !important;
+}
