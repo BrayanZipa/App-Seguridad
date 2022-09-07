@@ -6,29 +6,51 @@ body{
     background-attachment: fixed;
 }
 
+/* La pantalla tiene que estar en mínimo 560px para que se establezcan los estilos */
+@media (height <= 850px) { 
+    .container{
+        margin-top: 3vh;
+    }
+    .form-login{
+        padding: 40px 65px 30px;
+    }
+}
+
+/* La pantalla tiene que estar en mínimo 800px para que se establezcan los estilos */
+@media (height > 850px) { 
+    .container{
+        margin-top: 9vh;
+    }
+    .form-login{
+        padding: 90px 65px 85px;
+    }
+    .btnColumna{
+        margin-top: 50px;
+    }
+}
+
 #imagen{
     max-width: 150px;
 }
 
 .form-image{
-    background: rgb(0, 0, 0, 0.8);
+    background: rgb(0, 0, 0, .8);
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
-    padding: 10px;
+    padding: 20px 15px 5px;
 }
 
 .form-login{
-    background: rgb(0, 0, 0, 0.5);
+    background: rgb(0, 0, 0, .4);
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
-    padding: 40px 40px 50px;
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.568);
+    box-shadow: 0 0 30px rgba(0, 0, 0, .568);
     outline: none;
     box-shadow: none; 
 }
 
 .form-login:hover{
-    background: rgb(0, 0, 0, 0.8);
+    background: rgb(0, 0, 0, .8);
     transition: 0.5s ease-in;
 }
 
@@ -38,7 +60,7 @@ body{
 
 .form-control, .input-group-text{
     color: white;
-    background: rgba(0, 0, 0, .5);
+    background: rgba(0, 0, 0, 0);
     border-radius: 0px;
     border-style: none;
     border-bottom: solid 1px;
@@ -68,6 +90,6 @@ body{
 }
 
 input:-webkit-autofill{ 
-    -webkit-box-shadow: 0 50px 0 20px rgba(0, 0, 0, 0.95) inset !important; 
+    -webkit-box-shadow: 0 50px 0 20px rgb(0, 0, 0) inset !important; 
     -webkit-text-fill-color: white !important;
 }

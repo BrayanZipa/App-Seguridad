@@ -64,7 +64,7 @@
     </div> --}}
 
     <div class="container">
-        <div class="row justify-content-center mt-4">
+        <div class="row justify-content-center">
             <div class="col-lg-6 col-md-8 col-sm-10">
                 <div class="text-center form-image">
                     <img  src="{{ asset('assets/imagenes/logo.png') }}" id="imagen" alt="Logo Visión">
@@ -72,12 +72,12 @@
                 <div class="form-login">
                     <form action="{{ route('login') }}" method="post">
                         @csrf
-                        <div class="form-group text-white mt-n4">
+                        <div class="form-group text-white mt-n3">
                             <h5 class="text-center"><p>Ingresa para iniciar sesión</p></h5>
                         </div>
-                        <div class="input-group">
+                        <div class="input-group mt-4">
                             <label for="username" class="col-md-12 col-form-label text-white">{{ __('Correo empresarial') }}</label>
-                            <input id="username" type="text" class="inputLogin form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus placeholder="Email">
+                            <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus placeholder="Email">
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-envelope"></span>
@@ -91,7 +91,7 @@
                         </div>
                         <div class="input-group pt-5 mt-n2">
                             <label for="password" class="col-md-12 col-form-label text-white">{{ __('Contraseña') }}</label>
-                            <input id="password" type="password" class="inputLogin form-control  @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="Password">
+                            <input id="password" type="password" class="form-control  @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="Password">
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-lock"></span>
@@ -112,8 +112,8 @@
                                     </label>
                                 </div>
                             </div> --}}
-                            <div class="col-5">
-                                <div class="form-group text-white mt-5 pt-3">
+                            <div class="col-5 btnColumna">
+                                <div class="form-group text-white mt-5">
                                     <button type="submit" class="btn btn-primary btn-block ingresar">Ingresar</button>
                                 </div>
                             </div>
