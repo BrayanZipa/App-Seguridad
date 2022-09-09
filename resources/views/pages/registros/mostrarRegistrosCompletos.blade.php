@@ -65,6 +65,11 @@
                                     <th>Hora salida</th> 
                                     <th>Ingresa activo</th>
                                     <th>Ingresa vehículo</th> 
+                                    @hasanyrole('Admin|Seguridad')
+                                        <th id="thCiudad">Ciudad</th>
+                                    @else
+                                        <th>Ciudad</th> 
+                                    @endhasanyrole
                                     <th>Ingresado por</th>
                                     <th>Consultar</th>
                                 </tr>

@@ -6,8 +6,7 @@ body{
     background-attachment: fixed;
 }
 
-/* La pantalla tiene que estar en mínimo 560px para que se establezcan los estilos */
-@media (height <= 850px) { 
+@media screen, (height <= 850px) { 
     .container{
         margin-top: 3vh;
     }
@@ -16,7 +15,6 @@ body{
     }
 }
 
-/* La pantalla tiene que estar en mínimo 800px para que se establezcan los estilos */
 @media (height > 850px) { 
     .container{
         margin-top: 9vh;

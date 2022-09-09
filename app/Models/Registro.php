@@ -43,7 +43,7 @@ class Registro extends Model
      */
     public function informacionRegistros(){
         try {
-            $registros = Registro::select('se_registros.*', 'personas.nombre', 'personas.apellido', 'personas.identificacion', 'personas.tel_contacto', 'personas.email', 'personas.id_tipo_persona', 'tpersona.tipo AS tipopersona', 'personas.foto', 'eps.eps', 'arl.arl', 'c_empresa.nombre AS empresa', 'activos.activo', 'activos.codigo', 'vehiculos.identificador', 'vehiculos.foto_vehiculo', 'tipo.tipo', 'marca.marca', 'v_empresa.nombre AS empresavisitada', 'usuarios.name')
+            $registros = Registro::select('se_registros.*', 'personas.nombre', 'personas.apellido', 'personas.identificacion', 'personas.tel_contacto', 'personas.email', 'personas.id_tipo_persona', 'tpersona.tipo AS tipopersona', 'personas.foto', 'eps.eps', 'arl.arl', 'c_empresa.nombre AS empresa', 'activos.activo', 'activos.codigo', 'vehiculos.identificador', 'vehiculos.foto_vehiculo', 'tipo.tipo', 'marca.marca', 'v_empresa.nombre AS empresavisitada', 'usuarios.name', 'usuarios.city')
             ->leftjoin('se_personas AS personas', 'se_registros.id_persona', '=', 'personas.id_personas')
             ->leftjoin('se_tipo_personas AS tpersona', 'personas.id_tipo_persona', '=', 'tpersona.id_tipo_personas')
             ->leftjoin('se_eps AS eps', 'personas.id_eps', '=', 'eps.id_eps')
@@ -55,7 +55,6 @@ class Registro extends Model
             ->leftjoin('se_marca_vehiculos AS marca', 'vehiculos.id_marca_vehiculo', '=', 'marca.id_marca_vehiculos')
             ->leftjoin('se_empresas AS v_empresa', 'se_registros.empresa_visitada', '=', 'v_empresa.id_empresas')
             ->leftjoin('se_usuarios AS usuarios', 'se_registros.id_usuario', '=', 'usuarios.id_usuarios');
-            // ->get();
             // $response = ['data' => $registros->all()];
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
@@ -68,7 +67,11 @@ class Registro extends Model
      */
     public function registrosNulos(){
         try {
-            $registros = $this->informacionRegistros()->whereNull('salida_persona')->get();
+            if(auth()->user()->hasRole(['Admin', 'Seguridad'])){
+                $registros = $this->informacionRegistros()->whereNull('salida_persona')->get();
+            } else {
+                $registros = $this->informacionRegistros()->where('city', auth()->user()->city)->whereNull('salida_persona')->get();
+            }
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
         }
@@ -80,7 +83,11 @@ class Registro extends Model
      */
     public function registrosNoNulos(){
         try {
-            $registros = $this->informacionRegistros()->whereNotNull('salida_persona')->get();
+            if(auth()->user()->hasRole(['Admin', 'Seguridad'])){
+                $registros = $this->informacionRegistros()->whereNotNull('salida_persona')->get();
+            } else{
+                $registros = $this->informacionRegistros()->where('city', auth()->user()->city)->whereNotNull('salida_persona')->get();
+            }
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
         }
@@ -92,7 +99,11 @@ class Registro extends Model
      */
     public function informacionRegistrosVehiculos(){
         try {
-            $registros = $this->informacionRegistros()->whereNotNull('salida_persona')->whereNotNull('ingreso_vehiculo')->whereNull('salida_vehiculo')->get();
+            if(auth()->user()->hasRole(['Admin', 'Seguridad'])){
+                $registros = $this->informacionRegistros()->whereNotNull('salida_persona')->whereNotNull('ingreso_vehiculo')->whereNull('salida_vehiculo')->get();
+            } else {
+                $registros = $this->informacionRegistros()->where('city', auth()->user()->city)->whereNotNull('salida_persona')->whereNotNull('ingreso_vehiculo')->whereNull('salida_vehiculo')->get();
+            }      
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
         }
@@ -104,7 +115,11 @@ class Registro extends Model
      */
     public function informacionRegistrosActivos(){
         try {
-            $registros = $this->informacionRegistros()->where('id_tipo_persona', 3)->whereNotNull('salida_persona')->whereNotNull('ingreso_activo')->whereNull('salida_activo')->get();
+            if(auth()->user()->hasRole(['Admin', 'Seguridad'])){
+                $registros = $this->informacionRegistros()->where('id_tipo_persona', 3)->whereNotNull('salida_persona')->whereNotNull('ingreso_activo')->whereNull('salida_activo')->get();
+            } else {
+                $registros = $this->informacionRegistros()->where('id_tipo_persona', 3)->where('city', auth()->user()->city)->whereNotNull('salida_persona')->whereNotNull('ingreso_activo')->whereNull('salida_activo')->get();
+            }          
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
         }

@@ -67,7 +67,7 @@ class User extends Authenticatable implements LdapAuthenticatable
                 if($usuario->department == 'Desarrollo'){
                     $user->assignRole(1);
                 } else {
-                    $user->assignRole(3);
+                    $user->assignRole(4);
                 }
             }
         } catch (\Throwable $th) {

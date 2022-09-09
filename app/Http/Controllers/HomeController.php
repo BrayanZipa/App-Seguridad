@@ -40,15 +40,27 @@ class HomeController extends Controller
     /**
      * 
      */
+    public function definirConsulta($consulta)
+    {
+        if(auth()->user()->hasRole(['Admin', 'Seguridad'])){
+            return $consulta->count();
+        } 
+        return $consulta->where('city', auth()->user()->city)->count();
+    }
+
+    /**
+     * 
+     */
     public function totalPersonasDiarias($tipoPersona)
     {
-        try {       
-            $numRegistros = Registro::leftjoin('se_personas AS personas', 'se_registros.id_persona', '=', 'personas.id_personas')
-            ->where('id_tipo_persona', $tipoPersona)->whereDate('ingreso_persona', Carbon::now()->toDateString())->count();
+        try {  
+            $consulta = Registro::leftjoin('se_personas AS personas', 'se_registros.id_persona', '=', 'personas.id_personas')
+            ->leftjoin('se_usuarios AS usuarios', 'se_registros.id_usuario', '=', 'usuarios.id_usuarios')
+            ->where('id_tipo_persona', $tipoPersona)->whereDate('ingreso_persona', Carbon::now()->toDateString());
+            return $this->definirConsulta($consulta);
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
         }
-        return $numRegistros;
     }
 
     /**
@@ -56,13 +68,14 @@ class HomeController extends Controller
      */
     public function totalColaboradoresActivoDiarios($tipoPersona)
     {
-        try {       
-            $numColaboradores = Registro::leftjoin('se_personas AS personas', 'se_registros.id_persona', '=', 'personas.id_personas')
-            ->where('id_tipo_persona', $tipoPersona)->whereNotNull('ingreso_activo')->whereDate('ingreso_persona', Carbon::now()->toDateString())->count();
+        try { 
+            $consulta = Registro::leftjoin('se_personas AS personas', 'se_registros.id_persona', '=', 'personas.id_personas')
+            ->leftjoin('se_usuarios AS usuarios', 'se_registros.id_usuario', '=', 'usuarios.id_usuarios')
+            ->where('id_tipo_persona', $tipoPersona)->whereNotNull('ingreso_activo')->whereDate('ingreso_persona', Carbon::now()->toDateString());
+            return $this->definirConsulta($consulta);
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
         }
-        return $numColaboradores;
     }
 
     /**
@@ -71,11 +84,12 @@ class HomeController extends Controller
     public function totalVehiculosDiarios()
     {
         try {       
-            $numVehiculos = Registro::whereDate('ingreso_vehiculo', Carbon::now()->toDateString())->count();
+            $consulta = Registro::leftjoin('se_usuarios AS usuarios', 'se_registros.id_usuario', '=', 'usuarios.id_usuarios')
+            ->whereDate('ingreso_vehiculo', Carbon::now()->toDateString());
+            return $this->definirConsulta($consulta);
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
         }
-        return $numVehiculos;
     }
 
     // /**
@@ -132,10 +146,10 @@ class HomeController extends Controller
 
     
 
-    public function prueba()
-    {
-        // $date = Carbon::now();
+    // public function prueba()
+    // {
+    //     // $date = Carbon::now();
         
-        return Carbon::now()->toDateString();
-    }
+    //     return Carbon::now()->toDateString();
+    // }
 }

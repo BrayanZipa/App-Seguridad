@@ -14,7 +14,12 @@ $(function() {
 
     //Uso de DataTables para mostrar los registros realizados en los cuales no se registra la salida de los diferentes tipos de persona (visitantes, conductores, colaboradores con y sin activo)
     function datatableRegistrosSalida(){
+        var estado = false;
+        if($('#thCiudad').length){ 
+            estado = true;
+        } 
         $('#tabla_registros_salida').DataTable({
+            // 'searching': false,
             'destroy': true,
             'processing': true,
             'responsive': true,
@@ -27,11 +32,11 @@ $(function() {
             'columns': [
                 {
                     'data': 'id_registros',
-                    'name': 'id_registros'
+                    'name': 'id_registros',
                 },
                 {
                     'data': 'tipopersona',
-                    'name': 'tipopersona'
+                    'name': 'tipopersona',
                 },
                 {  
                     'data': null, 
@@ -73,13 +78,16 @@ $(function() {
                         if(data != null){ return row.identificador; }
                         return 'No';
                     }
-                },     
+                }, 
+                {
+                    'data': 'city',
+                    'name': 'city',
+                    'visible': estado
+                }, 
                 {
                     'data': 'name',
                     'name': 'name',
-                    // 'searchable': false,
-                    // 'orderable': false
-                },
+                },   
                 {
                     'class': 'registrar_salida',
                     'orderable': false,
@@ -117,6 +125,10 @@ $(function() {
 
     //Uso de DataTables para mostrar los registros realizados donde se ingresa un vehículo y se registra la salida del propietario pero no del vehículo
     function datatableRegistrosVehiculos() {
+        var estado = false;
+        if($('#thCiudad2').length){ 
+            estado = true;
+        } 
         $('#tabla_registros_vehiculos').DataTable({
             'destroy': true,
             'processing': true,
@@ -174,7 +186,12 @@ $(function() {
                     render: function (data) {
                         return moment(data).format('h:mm:ss a');
                     } 
-                },                     
+                },
+                {
+                    'data': 'city',
+                    'name': 'city',
+                    'visible': estado
+                },                      
                 {
                     'data': 'name',
                     'name': 'name',
@@ -214,6 +231,10 @@ $(function() {
 
     //Uso de DataTables para mostrar los registros realizados donde se ingresa un activo y se registra la salida del propietario pero no del activo
     function datatableRegistrosActivos() {
+        var estado = false;
+        if($('#thCiudad3').length){ 
+            estado = true;
+        } 
         $('#tabla_registros_activos').DataTable({
             'destroy': true,
             'processing': true,
@@ -267,7 +288,12 @@ $(function() {
                     render: function (data) {
                         return moment(data).format('h:mm:ss a');
                     } 
-                },                     
+                },
+                {
+                    'data': 'city',
+                    'name': 'city',
+                    'visible': estado
+                },                      
                 {
                     'data': 'name',
                     'name': 'name',
@@ -319,6 +345,28 @@ $(function() {
     $('#tabActivosSinSalida').click(function () {
         datatableRegistrosActivos();
     });
+
+
+
+    $('#selectCiudad').on( 'change', function () {
+        var prueba = this.value;
+        var filteredData = $('#tabla_registros_salida').DataTable().column(  9 ).data().filter( function ( value, index ) {
+            return value == prueba ? true : false;
+        } );
+        $('#tabla_registros_salida').DataTable().columns( 9 ).search( this.value ).draw();
+            console.log(filteredData );
+        // var data = $('#tabla_registros_vehiculos').DataTable().row(this).data(); 
+        // var filteredData = $('#tabla_registros_salida').DataTable().column(  9 ).data();
+        // console.log(filteredData);
+        // $('#tabla_registros_salida').DataTable().search( this.value ).draw();
+    });
+
+    $('#selectTipoPersona').on( 'change', function () {
+        $('#tabla_registros_salida').DataTable().columns( 1 ).search( this.value ).draw();
+    });
+
+
+
 
     //Función que permite remover las clases de la pestaña (tab) que esta seleccionado para poder reestablecerla cada vez que se seleccione un registro diferente
     function removerClases(idTab, idDatos) {

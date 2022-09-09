@@ -68,9 +68,48 @@
                                         </div>
                                         <!-- /.card-header -->
                                         <div class="card-body">
+                                            <div class="row mb-3">
+                                                @hasanyrole('Admin|Seguridad')
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                        <label for="selectCiudad">Filtrar por ciudad</label>
+                                                            <select id="selectCiudad" class="form-control" style="width: 100%;">
+                                                                <option selected="selected" value="" disabled>Ciudad</option>
+                                                                <option value="Bogotá">Bogotá</option>
+                                                                <option value="Cartagena">Cartagena</option>
+                                                                <option value="Buenaventura">Buenaventura</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                @endhasanyrole
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                    <label for="selectTipoPersona">Filtrar por tipo de persona</label>
+                                                        <select id="selectTipoPersona" class="form-control" style="width: 100%;">
+                                                            <option selected="selected" value="" disabled>Tipo de persona</option>
+                                                            <option value="Visitantes">Visitantes</option>
+                                                            <option value="Colaboradores">Colaboradores</option>
+                                                            <option value="Colaboradores con activo">Colaboradores con activo</option>
+                                                            <option value="Conductores">Conductores</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="">Filtrar por ciudad</label>
+                                                        <input type="search" id="" class="registros form-control" placeholder="Nombre" autocomplete="off">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    sdfsdf
+                                                </div>
+                                                <div class="col-md-3">
+                                                    sdfsdf
+                                                </div>
+                                            </div>
                                             <table id="tabla_registros_salida" class="table table-bordered table-striped table-hover">
                                                 <thead>
-                                                    <tr>
+                                                    <tr>   
                                                         <th>ID</th>
                                                         <th>Tipo de persona</th>
                                                         <th>Nombre</th>
@@ -80,6 +119,11 @@
                                                         <th>Hora ingreso</th>                   
                                                         <th>Ingresa activo</th>
                                                         <th>Ingresa vehículo</th> 
+                                                        @hasanyrole('Admin|Seguridad')
+                                                            <th id="thCiudad">Ciudad</th>
+                                                        @else
+                                                            <th>Ciudad</th> 
+                                                        @endhasanyrole
                                                         <th>Ingresado por</th>
                                                         <th>Dar salida</th>
                                                     </tr>
@@ -116,7 +160,12 @@
                                                         <th>Tipo</th> 
                                                         <th>Marca</th> 
                                                         <th>Fecha ingreso</th>
-                                                        <th>Hora ingreso</th>                   
+                                                        <th>Hora ingreso</th> 
+                                                        @hasanyrole('Admin|Seguridad')
+                                                            <th id="thCiudad2">Ciudad</th>
+                                                        @else
+                                                            <th>Ciudad</th> 
+                                                        @endhasanyrole                  
                                                         <th>Ingresado por</th>
                                                         <th>Dar salida</th>
                                                     </tr>
@@ -152,7 +201,12 @@
                                                         <th>Activo</th> 
                                                         <th>Código</th> 
                                                         <th>Fecha ingreso</th>
-                                                        <th>Hora ingreso</th>                   
+                                                        <th>Hora ingreso</th> 
+                                                        @hasanyrole('Admin|Seguridad')
+                                                            <th id="thCiudad3">Ciudad</th>
+                                                        @else
+                                                            <th>Ciudad</th> 
+                                                        @endhasanyrole                    
                                                         <th>Ingresado por</th>
                                                         <th>Dar salida</th>
                                                     </tr>

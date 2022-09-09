@@ -4,6 +4,11 @@ $(function() {
     var idPersona = '';
 
     //Uso de DataTables para mostrar los registros realizados en donde se completo tanto las entradas como salidas de todos los tipos de persona (visitantes, conductores, colaboradores con y sin activo)
+    var estado = false;
+    if($('#thCiudad').length){ 
+        estado = true;
+    } 
+
     $('#tabla_registros').DataTable({
         'destroy': true,
         'processing': true,
@@ -71,7 +76,12 @@ $(function() {
                     if(data != null){ return row.identificador; }
                     return 'No';
                 }
-            },     
+            },   
+            {
+                'data': 'city',
+                'name': 'city',
+                'visible': estado
+            },   
             {
                 'data': 'name',
                 'name': 'name',

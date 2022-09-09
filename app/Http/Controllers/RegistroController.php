@@ -334,7 +334,7 @@ class RegistroController extends Controller
         if($request->ajax()){
             $registros = $this->registros->registrosNulos();
             return DataTables::of($registros)->make(true);
-        }     
+        }
     }
 
     /**
