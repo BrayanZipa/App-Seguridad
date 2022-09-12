@@ -68,12 +68,24 @@
                                         </div>
                                         <!-- /.card-header -->
                                         <div class="card-body">
-                                            <div class="row mb-3">
-                                                @hasanyrole('Admin|Seguridad')
-                                                    <div class="col-md-3">
+                                            @hasanyrole('Admin|Seguridad')
+                                                <div class="row mb-3">
+                                                    <div class="col-md-3 col-sm-12">
+                                                        <div class="form-group">
+                                                        <label for="selectTipoPersona">Filtrar por tipo de persona</label>
+                                                            <select id="selectTipoPersona" class="filtros form-control" style="width: 100%;">
+                                                                <option selected="selected" value="" disabled>Tipo de persona</option>
+                                                                <option value="Visitantes">Visitantes</option>
+                                                                <option value="Colaboradores">Colaboradores</option>
+                                                                <option value="Colaboradores con activo">Colaboradores con activo</option>
+                                                                <option value="Conductores">Conductores</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-sm-12">
                                                         <div class="form-group">
                                                         <label for="selectCiudad">Filtrar por ciudad</label>
-                                                            <select id="selectCiudad" class="form-control" style="width: 100%;">
+                                                            <select id="selectCiudad" class="filtros form-control" style="width: 100%;">
                                                                 <option selected="selected" value="" disabled>Ciudad</option>
                                                                 <option value="Bogotá">Bogotá</option>
                                                                 <option value="Cartagena">Cartagena</option>
@@ -81,32 +93,19 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                @endhasanyrole
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                    <label for="selectTipoPersona">Filtrar por tipo de persona</label>
-                                                        <select id="selectTipoPersona" class="form-control" style="width: 100%;">
-                                                            <option selected="selected" value="" disabled>Tipo de persona</option>
-                                                            <option value="Visitantes">Visitantes</option>
-                                                            <option value="Colaboradores">Colaboradores</option>
-                                                            <option value="Colaboradores con activo">Colaboradores con activo</option>
-                                                            <option value="Conductores">Conductores</option>
-                                                        </select>
+                                                    <div class="col-md-3 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label for="inputBuscar">Búsqueda manual</label>
+                                                            <input type="search" id="inputBuscar" class="filtros registros form-control" placeholder="Buscar">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-sm-12 d-flex align-items-end">
+                                                        <div class="form-group">
+                                                            <button id="btnFiltros" class="btn btn-primary btn-block">Limpiar</button>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label for="">Filtrar por ciudad</label>
-                                                        <input type="search" id="" class="registros form-control" placeholder="Nombre" autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    sdfsdf
-                                                </div>
-                                                <div class="col-md-3">
-                                                    sdfsdf
-                                                </div>
-                                            </div>
+                                            @endhasanyrole
                                             <table id="tabla_registros_salida" class="table table-bordered table-striped table-hover">
                                                 <thead>
                                                     <tr>   
@@ -148,6 +147,44 @@
                                         </div>
                                         <!-- /.card-header -->
                                         <div class="card-body">
+                                            @hasanyrole('Admin|Seguridad')
+                                                <div class="row mb-3">
+                                                    <div class="col-md-3 col-sm-12">
+                                                        <div class="form-group">
+                                                        <label for="selectTipoPersona2">Filtrar por tipo de persona</label>
+                                                            <select id="selectTipoPersona2" class="filtros2 form-control" style="width: 100%;">
+                                                                <option selected="selected" value="" disabled>Tipo de persona</option>
+                                                                <option value="Visitantes">Visitantes</option>
+                                                                <option value="Colaboradores">Colaboradores</option>
+                                                                <option value="Colaboradores con activo">Colaboradores con activo</option>
+                                                                <option value="Conductores">Conductores</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-sm-12">
+                                                        <div class="form-group">
+                                                        <label for="selectCiudad2">Filtrar por ciudad</label>
+                                                            <select id="selectCiudad2" class="filtros2 form-control" style="width: 100%;">
+                                                                <option selected="selected" value="" disabled>Ciudad</option>
+                                                                <option value="Bogotá">Bogotá</option>
+                                                                <option value="Cartagena">Cartagena</option>
+                                                                <option value="Buenaventura">Buenaventura</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label for="inputBuscar2">Búsqueda manual</label>
+                                                            <input type="search" id="inputBuscar2" class="filtros2 registros form-control" placeholder="Buscar">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-sm-12 d-flex align-items-end">
+                                                        <div class="form-group">
+                                                            <button id="btnFiltros2" class="btn btn-primary btn-block">Limpiar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endhasanyrole
                                             <table id="tabla_registros_vehiculos" class="table table-bordered table-striped table-hover">
                                                 <thead>
                                                     <tr>
@@ -190,6 +227,32 @@
                                         </div>
                                         <!-- /.card-header -->
                                         <div class="card-body">
+                                            @hasanyrole('Admin|Seguridad')
+                                                <div class="row mb-3">
+                                                    <div class="col-md-3 col-sm-12">
+                                                        <div class="form-group">
+                                                        <label for="selectCiudad3">Filtrar por ciudad</label>
+                                                            <select id="selectCiudad3" class="filtros3 form-control" style="width: 100%;">
+                                                                <option selected="selected" value="" disabled>Ciudad</option>
+                                                                <option value="Bogotá">Bogotá</option>
+                                                                <option value="Cartagena">Cartagena</option>
+                                                                <option value="Buenaventura">Buenaventura</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label for="inputBuscar3">Búsqueda manual</label>
+                                                            <input type="search" id="inputBuscar3" class="filtros3 registros form-control" placeholder="Buscar">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-sm-12 d-flex align-items-end">
+                                                        <div class="form-group">
+                                                            <button id="btnFiltros3" class="btn btn-primary btn-block">Limpiar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endhasanyrole
                                             <table id="tabla_registros_activos" class="table table-bordered table-striped table-hover">
                                                 <thead>
                                                     <tr>

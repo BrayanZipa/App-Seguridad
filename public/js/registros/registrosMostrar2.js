@@ -10,16 +10,20 @@ $(function() {
     var casoSalida = '';
     var datosRegistro = {};
     var datosRegistroVehiculo = {};  
-    var datosRegistroActivo = {};
+    var datosRegistroActivo = {};    
+    var estado = false;
+    var buscador = "<'col-sm-12 col-md-6'f>";
 
     //Uso de DataTables para mostrar los registros realizados en los cuales no se registra la salida de los diferentes tipos de persona (visitantes, conductores, colaboradores con y sin activo)
     function datatableRegistrosSalida(){
-        var estado = false;
         if($('#thCiudad').length){ 
             estado = true;
-        } 
+            buscador = '';
+            $('#inputBuscar').focus();
+        }
         $('#tabla_registros_salida').DataTable({
-            // 'searching': false,
+            'dom': "<'row'<'col-sm-12 col-md-6'l>" + buscador + ">" +
+                "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
             'destroy': true,
             'processing': true,
             'responsive': true,
@@ -118,18 +122,24 @@ $(function() {
                     'previous': 'Anterior'
                 }
             },
-        });  
-        $('div.dataTables_filter input', $('#tabla_registros_salida').DataTable().table().container()).focus();
+        });
+        
+        if(!$('#thCiudad').length){ 
+            $('div.dataTables_filter input', $('#tabla_registros_salida').DataTable().table().container()).focus();
+        }
     }
     datatableRegistrosSalida();
 
     //Uso de DataTables para mostrar los registros realizados donde se ingresa un vehículo y se registra la salida del propietario pero no del vehículo
     function datatableRegistrosVehiculos() {
-        var estado = false;
         if($('#thCiudad2').length){ 
             estado = true;
+            buscador = '';   
+            $('#inputBuscar2').focus(); 
         } 
         $('#tabla_registros_vehiculos').DataTable({
+            'dom': "<'row'<'col-sm-12 col-md-6'l>" + buscador + ">" +
+                "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
             'destroy': true,
             'processing': true,
             'responsive': true,
@@ -227,15 +237,22 @@ $(function() {
                 }
             },
         });
+
+        if(!$('#thCiudad2').length){ 
+            $('div.dataTables_filter input', $('#tabla_registros_vehiculos').DataTable().table().container()).focus();
+        }
     }
 
     //Uso de DataTables para mostrar los registros realizados donde se ingresa un activo y se registra la salida del propietario pero no del activo
     function datatableRegistrosActivos() {
-        var estado = false;
         if($('#thCiudad3').length){ 
             estado = true;
+            buscador = '';  
+            $('#inputBuscar3').focus(); 
         } 
         $('#tabla_registros_activos').DataTable({
+            'dom': "<'row'<'col-sm-12 col-md-6'l>" + buscador + ">" +
+                "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
             'destroy': true,
             'processing': true,
             'responsive': true,
@@ -329,44 +346,69 @@ $(function() {
                 }
             },
         });
+
+        if(!$('#thCiudad3').length){ 
+            $('div.dataTables_filter input', $('#tabla_registros_activos').DataTable().table().container()).focus();
+        }
     }
 
-    //Función que se activa cuando se le da click al Tab de Personas, actualiza la información de la Datatable de los registros sin salida
-    $('#tabPersonasSinSalida').click(function () {
-        datatableRegistrosSalida();
-    });
-
-    //Función que se activa cuando se le da click al Tab de Vehículos, actualiza la información de la Datatable de los registros de vehículos sin salida
-    $('#tabVehiculosSinSalida').click(function () {
-        datatableRegistrosVehiculos();
-    });
-
-    //Función que se activa cuando se le da click al Tab de Activos, actualiza la información de la Datatable de los registros de activos sin salida
-    $('#tabActivosSinSalida').click(function () {
-        datatableRegistrosActivos();
-    });
-
-
-
-    $('#selectCiudad').on( 'change', function () {
-        var prueba = this.value;
-        var filteredData = $('#tabla_registros_salida').DataTable().column(  9 ).data().filter( function ( value, index ) {
-            return value == prueba ? true : false;
-        } );
-        $('#tabla_registros_salida').DataTable().columns( 9 ).search( this.value ).draw();
-            console.log(filteredData );
-        // var data = $('#tabla_registros_vehiculos').DataTable().row(this).data(); 
-        // var filteredData = $('#tabla_registros_salida').DataTable().column(  9 ).data();
-        // console.log(filteredData);
-        // $('#tabla_registros_salida').DataTable().search( this.value ).draw();
-    });
-
+    //Al seleccionar permite filtrar la información de la tabla de registros sin salida por el tipo de persona ingresada
     $('#selectTipoPersona').on( 'change', function () {
         $('#tabla_registros_salida').DataTable().columns( 1 ).search( this.value ).draw();
     });
 
+    //Al seleccionar permite filtrar la información de la tabla de registros sin salida por la ciudad ingresada
+    $('#selectCiudad').on( 'change', function () {
+        $('#tabla_registros_salida').DataTable().columns( 9 ).search( this.value ).draw();
+    });
 
+    //Al escribir sobre el input se realiza una búsqueda en todos los campos la tabla de registros sin salida y se filtra la información que coincida con lo escrito
+    $('#inputBuscar').on( 'keyup', function () {
+        $('#tabla_registros_salida').DataTable().search( this.value ).draw();
+    });
 
+    //Al seleccionar permite filtrar la información de la tabla registros vehículos por el tipo de persona ingresada
+    $('#selectTipoPersona2').on( 'change', function () {
+        $('#tabla_registros_vehiculos').DataTable().columns( 1 ).search( this.value ).draw();
+    });
+
+    //Al seleccionar permite filtrar la información de la tabla de registros vehículos por la ciudad ingresada
+    $('#selectCiudad2').on( 'change', function () {
+        $('#tabla_registros_vehiculos').DataTable().columns( 10 ).search( this.value ).draw();
+    });
+
+    //Al escribir sobre el input se realiza una búsqueda en todos los campos de la tabla registros vehículos y se filtra la información que coincida con lo escrito
+    $('#inputBuscar2').on( 'keyup', function () {
+        $('#tabla_registros_vehiculos').DataTable().search( this.value ).draw();
+    });
+
+    //Al seleccionar permite filtrar la información de la tabla registros activos por la ciudad ingresada
+    $('#selectCiudad3').on( 'change', function () {
+        $('#tabla_registros_activos').DataTable().columns( 9 ).search( this.value ).draw();
+    });
+
+    //Al escribir sobre el input se realiza una búsqueda en todos los campos de la tabla registros activos y se filtra la información que coincida con lo escrito
+    $('#inputBuscar3').on( 'keyup', function () {
+        $('#tabla_registros_activos').DataTable().search( this.value ).draw();
+    });
+
+    //Función que se activa cuando se le da click al Tab de Personas o al botón limpiar en los filtros, actualiza la información de la Datatable de los registros sin salida y limpia los filtros realizados
+    $('#tabPersonasSinSalida, #btnFiltros').click(function () {
+        $('.filtros').val('');
+        datatableRegistrosSalida();
+    });
+
+    //Función que se activa cuando se le da click al Tab de Vehículos o al botón limpiar en los filtros, actualiza la información de la Datatable de los registros de vehículos sin salida y limpia los filtros realizados
+    $('#tabVehiculosSinSalida, #btnFiltros2').click(function () {
+        $('.filtros2').val('');
+        datatableRegistrosVehiculos();
+    });
+
+    //Función que se activa cuando se le da click al Tab de Activos o al botón limpiar en los filtros, actualiza la información de la Datatable de los registros de activos sin salida y limpia los filtros realizados
+    $('#tabActivosSinSalida, #btnFiltros3').click(function () {
+        $('.filtros3').val('');
+        datatableRegistrosActivos();
+    });
 
     //Función que permite remover las clases de la pestaña (tab) que esta seleccionado para poder reestablecerla cada vez que se seleccione un registro diferente
     function removerClases(idTab, idDatos) {

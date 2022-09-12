@@ -77,7 +77,7 @@
                         </div>
                         <div class="input-group mt-4">
                             <label for="username" class="col-md-12 col-form-label text-white">{{ __('Correo empresarial') }}</label>
-                            <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus placeholder="Email">
+                            <input id="username" type="text" class="inputLogin form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus placeholder="Email">
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-envelope"></span>
@@ -91,7 +91,7 @@
                         </div>
                         <div class="input-group pt-5 mt-n2">
                             <label for="password" class="col-md-12 col-form-label text-white">{{ __('Contraseña') }}</label>
-                            <input id="password" type="password" class="form-control  @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="Password">
+                            <input id="password" type="password" class="inputLogin form-control  @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="Password">
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-lock"></span>
