@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="{{ asset('assets/lte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/lte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/lte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+    <!-- DateRangePicker.js -->
+    <link rel="stylesheet" href="{{ asset('assets/lte/plugins/daterangepicker/daterangepicker.css') }}">
 @endsection
 
 @section('scripts')
@@ -29,6 +31,8 @@
     <script src="{{ asset('assets/lte/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
     <!-- Moment.js -->
     <script src="{{ asset('assets/lte/plugins/moment/moment.min.js') }}"></script>
+    <!-- DateRangePicker.js -->
+    <script src="{{ asset('assets/lte/plugins/daterangepicker/daterangepicker.js') }}"></script>
     <!-- JavaScript propio -->
     <script src="{{ asset('js/registros/registrosMostrar.js') }}"></script>
 @endsection
@@ -51,6 +55,70 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-3 col-sm-12">
+                                <div class="form-group">
+                                    <label for="inputBuscar">Búsqueda manual</label>
+                                    <input type="search" id="inputBuscar" class="filtros registros form-control" placeholder="Buscar" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-12">
+                                <div class="form-group">
+                                <label for="selectTipoPersona">Filtrar por tipo de persona</label>
+                                    <select id="selectTipoPersona" class="filtros form-control" style="width: 100%;">
+                                        <option selected="selected" value="" disabled>Tipo de persona</option>
+                                        <option value="Visitantes">Visitantes</option>
+                                        <option value="Colaboradores">Colaboradores</option>
+                                        <option value="Colaboradores con activo">Colaboradores con activo</option>
+                                        <option value="Conductores">Conductores</option>
+                                    </select>
+                                </div>
+                            </div>
+                            @hasanyrole('Admin|Seguridad')
+                                <div class="col-md-3 col-sm-12">
+                                    <div class="form-group">
+                                    <label for="selectCiudad">Filtrar por ciudad</label>
+                                        <select id="selectCiudad" class="filtros form-control" style="width: 100%;">
+                                            <option selected="selected" value="" disabled>Ciudad</option>
+                                            <option value="Bogotá">Bogotá</option>
+                                            <option value="Cartagena">Cartagena</option>
+                                            <option value="Buenaventura">Buenaventura</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            @endhasanyrole
+                            <div class="col-md-3 col-sm-12">
+                                <div class="form-group">
+                                    <label>Filtrar por fecha de ingreso</label>
+                                    <div class="input-group">
+                                        <input type="text" class="filtros form-control float-right" id="inputFechaIngreso" placeholder="Fecha de ingreso" autocomplete="off">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="far fa-calendar"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-12">
+                                <div class="form-group">
+                                    <label>Filtrar por fecha de salida</label>
+                                    <div class="input-group">
+                                        <input type="text" class="filtros form-control float-right" id="inputFechaSalida" placeholder="Fecha de salida" autocomplete="off">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="far fa-calendar"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-12 d-flex align-items-end">
+                                <div class="form-group">
+                                    <button id="btnFiltros" class="btn btn-primary btn-block">Limpiar</button>
+                                </div>
+                            </div>
+                        </div>
                         <!-- /.card-body -->
                         <table id="tabla_registros" class="table table-bordered table-striped table-hover">
                             <thead>

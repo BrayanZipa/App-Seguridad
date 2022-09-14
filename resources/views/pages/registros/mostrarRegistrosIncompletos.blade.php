@@ -72,6 +72,12 @@
                                                 <div class="row mb-3">
                                                     <div class="col-md-3 col-sm-12">
                                                         <div class="form-group">
+                                                            <label for="inputBuscar">Búsqueda manual</label>
+                                                            <input type="search" id="inputBuscar" class="filtros registros form-control" placeholder="Buscar" autocomplete="off">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-sm-12">
+                                                        <div class="form-group">
                                                         <label for="selectTipoPersona">Filtrar por tipo de persona</label>
                                                             <select id="selectTipoPersona" class="filtros form-control" style="width: 100%;">
                                                                 <option selected="selected" value="" disabled>Tipo de persona</option>
@@ -91,12 +97,6 @@
                                                                 <option value="Cartagena">Cartagena</option>
                                                                 <option value="Buenaventura">Buenaventura</option>
                                                             </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3 col-sm-12">
-                                                        <div class="form-group">
-                                                            <label for="inputBuscar">Búsqueda manual</label>
-                                                            <input type="search" id="inputBuscar" class="filtros registros form-control" placeholder="Buscar">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-3 col-sm-12 d-flex align-items-end">
@@ -151,6 +151,12 @@
                                                 <div class="row mb-3">
                                                     <div class="col-md-3 col-sm-12">
                                                         <div class="form-group">
+                                                            <label for="inputBuscar2">Búsqueda manual</label>
+                                                            <input type="search" id="inputBuscar2" class="filtros2 registros form-control" placeholder="Buscar" autocomplete="off">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-sm-12">
+                                                        <div class="form-group">
                                                         <label for="selectTipoPersona2">Filtrar por tipo de persona</label>
                                                             <select id="selectTipoPersona2" class="filtros2 form-control" style="width: 100%;">
                                                                 <option selected="selected" value="" disabled>Tipo de persona</option>
@@ -170,12 +176,6 @@
                                                                 <option value="Cartagena">Cartagena</option>
                                                                 <option value="Buenaventura">Buenaventura</option>
                                                             </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3 col-sm-12">
-                                                        <div class="form-group">
-                                                            <label for="inputBuscar2">Búsqueda manual</label>
-                                                            <input type="search" id="inputBuscar2" class="filtros2 registros form-control" placeholder="Buscar">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-3 col-sm-12 d-flex align-items-end">
@@ -231,6 +231,12 @@
                                                 <div class="row mb-3">
                                                     <div class="col-md-3 col-sm-12">
                                                         <div class="form-group">
+                                                            <label for="inputBuscar3">Búsqueda manual</label>
+                                                            <input type="search" id="inputBuscar3" class="filtros3 registros form-control" placeholder="Buscar" autocomplete="off">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-sm-12">
+                                                        <div class="form-group">
                                                         <label for="selectCiudad3">Filtrar por ciudad</label>
                                                             <select id="selectCiudad3" class="filtros3 form-control" style="width: 100%;">
                                                                 <option selected="selected" value="" disabled>Ciudad</option>
@@ -238,12 +244,6 @@
                                                                 <option value="Cartagena">Cartagena</option>
                                                                 <option value="Buenaventura">Buenaventura</option>
                                                             </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3 col-sm-12">
-                                                        <div class="form-group">
-                                                            <label for="inputBuscar3">Búsqueda manual</label>
-                                                            <input type="search" id="inputBuscar3" class="filtros3 registros form-control" placeholder="Buscar">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-3 col-sm-12 d-flex align-items-end">

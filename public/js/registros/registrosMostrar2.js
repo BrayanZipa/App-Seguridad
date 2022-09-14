@@ -568,6 +568,7 @@ $(function() {
             if($('#checkActivo').prop('checked')){
                 $('#checkActivo').prop('checked', false);
             } 
+            $('#autorizacion').text('');
             $('#columnaActivo').css('display', 'none');
             $('#divActivo').css('display', '');
             formatoFechaHora('#spanFechaActivo', '#spanHoraActivo', data.ingreso_activo);
@@ -614,11 +615,13 @@ $(function() {
             $('#spanCorreo').text(data.email); 
             $('#spanEmpresaCol').text(data.empresa);
             parametrosPanel(data.id_tipo_persona, '#infoColaborador', '#infoVisitanteConductor', '#tabInfoRegistro', '#tituloTelefono');
+            if(data.id_tipo_persona == 2){
+                $('#divActivo').css('display', 'none');
+            } 
             if(data.id_tipo_persona == 3 && data.ingreso_activo !=  null){
                 removerClases('#tabDatosIngreso', '#datosIngreso');
                 $('#tabDatosActivo').addClass('active');
                 $('#datosActivo').addClass('active show');
-                $('#autorizacion').text('');
                 obtenerActivoActualizado(data.identificacion, data.codigo_activo, '#botonGuardarSalida', 1);
             }
         } 

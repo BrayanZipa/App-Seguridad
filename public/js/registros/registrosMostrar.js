@@ -1,5 +1,5 @@
 $(function() { 
-
+    
     const fecha = new Date();
     var idPersona = '';
 
@@ -9,7 +9,8 @@ $(function() {
         estado = true;
     } 
 
-    $('#tabla_registros').DataTable({
+    var tablaRegistros = $('#tabla_registros').DataTable({
+        'dom': "<'row'<'col-sm-12 col-md-6'l>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
         'destroy': true,
         'processing': true,
         'responsive': true,
@@ -118,6 +119,76 @@ $(function() {
                 'previous': 'Anterior'
             }
         },
+    });
+    $('#inputBuscar').focus();
+
+    //Al seleccionar permite filtrar la información de la tabla registros por el tipo de persona ingresada
+    $('#selectTipoPersona').on( 'change', function () {
+        tablaRegistros.columns( 1 ).search( this.value ).draw();
+    });
+
+    //Al seleccionar permite filtrar la información de la tabla registros por la ciudad ingresada
+    $('#selectCiudad').on( 'change', function () {
+        tablaRegistros.columns( 10 ).search( this.value ).draw();
+    });
+
+    //Al escribir sobre el input se realiza una búsqueda en todos los campos la tabla registros y se filtra la información que coincida con lo escrito
+    $('#inputBuscar').on( 'keyup', function () {
+        tablaRegistros.search( this.value ).draw();
+    });
+
+    //Función propia del plugin de DateRangePicker con el cual se da formato y funcionamiento al input donde se filtra la información de la tabla registros por fecha de ingreso 
+    $('#inputFechaIngreso').daterangepicker({
+        autoUpdateInput: false,
+        showDropdowns: true,
+        minYear: 2021,
+        opens: 'center',
+        locale: {
+            applyLabel: 'Aplicar',
+            cancelLabel: 'Cancelar'
+        },
+    });
+
+    //Función propia del plugin de DateRangePicker con el cual se da formato y funcionamiento al input donde se filtra la información de la tabla registros por fecha de ingreso 
+    $('#inputFechaSalida').daterangepicker({
+        autoUpdateInput: false,
+        showDropdowns: true,
+        minYear: 2021,
+        opens: 'left',
+        locale: {
+            applyLabel: 'Aplicar',
+            cancelLabel: 'Cancelar'
+        },
+    });
+
+    //Botón que se forma mediante los estilos del plugin de DateRangePicker y que al oprimirse permite guardar el rango de fecha seleccionado en una cadena de string como value del input de filtro de fecha de ingreso
+    $('#inputFechaIngreso').on('apply.daterangepicker', function(ev, picker) {
+        $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+        tablaRegistros.draw();
+    });
+    
+    //Función propia del plugin DataTables que permite hacer filtros por rangos mediante condicionales, se utiliza esta función para filtrar información de la tabla registros por un rango de fecha seleccionado
+    $.fn.dataTable.ext.search.push(
+        function (settings, data, dataIndex) {
+            if ($('#inputFechaIngreso').val() != '') {
+                var fechas = $('#inputFechaIngreso').val().split('-');
+                var fechaIngreso = data[4].split('-').reverse().join('-');
+                var fechaInicial = fechas[0].trim().split('/').reverse().join('-');
+                var fechaFinal = fechas[1].trim().split('/').reverse().join('-');
+
+                if ((Date.parse(fechaInicial) <= Date.parse(fechaIngreso) && Date.parse(fechaIngreso) <= Date.parse(fechaFinal))){
+                    return true;
+                }
+                return false;
+            }
+            return true;
+        }
+    );
+
+    //Botón que permite limpiar la información de los filtros de la tabla registros y reestablecer su información 
+    $('#btnFiltros').click(function () {
+        $('.filtros').val('');
+        tablaRegistros.search('').columns().search('').draw();
     });
 
     //Función que permite reestablecer las pestañas de selección (Tabs) en la vista para que sea la pestaña inicial la primera que se muestre al momento en que se seleccione un nuevo registro para ser consultado
