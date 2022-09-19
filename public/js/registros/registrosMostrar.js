@@ -122,6 +122,11 @@ $(function() {
     });
     $('#inputBuscar').focus();
 
+    //Al escribir sobre el input se realiza una búsqueda en todos los campos la tabla registros y se filtra la información que coincida con lo escrito
+    $('#inputBuscar').on( 'keyup', function () {
+        tablaRegistros.search( this.value ).draw();
+    });
+
     //Al seleccionar permite filtrar la información de la tabla registros por el tipo de persona ingresada
     $('#selectTipoPersona').on( 'change', function () {
         tablaRegistros.columns( 1 ).search( this.value ).draw();
@@ -132,25 +137,26 @@ $(function() {
         tablaRegistros.columns( 10 ).search( this.value ).draw();
     });
 
-    //Al escribir sobre el input se realiza una búsqueda en todos los campos la tabla registros y se filtra la información que coincida con lo escrito
-    $('#inputBuscar').on( 'keyup', function () {
-        tablaRegistros.search( this.value ).draw();
+    //Al seleccionar permite filtrar la información de la tabla registros dependiendo si se ingreso o no un activo
+    $('#selectIngresoActivo').on( 'change', function () {
+        if($('#selectIngresoActivo').val() == 'Si'){
+            tablaRegistros.column( 8 ).search('[a-zñA-ZÑ0-9]{3,}', true, false).draw();
+        } else {
+            tablaRegistros.columns( 8 ).search('No').draw();
+        }
+    });
+
+     //Al seleccionar permite filtrar la información de la tabla registros dependiendo si se ingreso o no un vehículo
+    $('#selectIngresoVehiculo').on( 'change', function () {
+        if($('#selectIngresoVehiculo').val() == 'Si'){
+            tablaRegistros.column( 9 ).search('[a-zñA-ZÑ0-9]{3,}', true, false).draw();
+        } else {
+            tablaRegistros.columns( 9 ).search('No').draw();
+        }
     });
 
     //Función propia del plugin de DateRangePicker con el cual se da formato y funcionamiento al input donde se filtra la información de la tabla registros por fecha de ingreso 
     $('#inputFechaIngreso').daterangepicker({
-        autoUpdateInput: false,
-        showDropdowns: true,
-        minYear: 2021,
-        opens: 'center',
-        locale: {
-            applyLabel: 'Aplicar',
-            cancelLabel: 'Cancelar'
-        },
-    });
-
-    //Función propia del plugin de DateRangePicker con el cual se da formato y funcionamiento al input donde se filtra la información de la tabla registros por fecha de ingreso 
-    $('#inputFechaSalida').daterangepicker({
         autoUpdateInput: false,
         showDropdowns: true,
         minYear: 2021,
@@ -166,22 +172,55 @@ $(function() {
         $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
         tablaRegistros.draw();
     });
+
+    //Función propia del plugin de DateRangePicker con el cual se da formato y funcionamiento al input donde se filtra la información de la tabla registros por fecha de salida
+    $('#inputFechaSalida').daterangepicker({
+        autoUpdateInput: false,
+        showDropdowns: true,
+        minYear: 2021,
+        opens: 'right',
+        locale: {
+            applyLabel: 'Aplicar',
+            cancelLabel: 'Cancelar'
+        },
+    });
+
+    //Botón que se forma mediante los estilos del plugin de DateRangePicker y que al oprimirse permite guardar el rango de fecha seleccionado en una cadena de string como value del input de filtro de fecha de salida
+    $('#inputFechaSalida').on('apply.daterangepicker', function(ev, picker) {
+        $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+        tablaRegistros.draw();
+    });
+
+    //Función que permite obtener por separado las dos fechas de un rango de fechas elegido, estas fechas se comparan con las fechas que se muestran en la tabla registros para determinar que fechas hacen parte del rango seleccionado
+    function obtenerRangoFechas(inputFecha, fechaDataTable) {
+        var fechas = $(inputFecha).val().split('-');
+        var fechaIngreso = fechaDataTable.split('-').reverse().join('-');
+        var fechaInicial = fechas[0].trim().split('/').reverse().join('-');
+        var fechaFinal = fechas[1].trim().split('/').reverse().join('-');
+            
+        if ((Date.parse(fechaInicial) <= Date.parse(fechaIngreso) && Date.parse(fechaIngreso) <= Date.parse(fechaFinal))){
+            return true;
+        }
+        return false;
+    }
     
-    //Función propia del plugin DataTables que permite hacer filtros por rangos mediante condicionales, se utiliza esta función para filtrar información de la tabla registros por un rango de fecha seleccionado
+    //Función propia del plugin DataTables que permite añadir filtros mediante condicionales, dentro de esta función se agrega el filtro que permite consultar la información de la tabla registros por un rango de fecha de ingreso seleccionado
     $.fn.dataTable.ext.search.push(
         function (settings, data, dataIndex) {
             if ($('#inputFechaIngreso').val() != '') {
-                var fechas = $('#inputFechaIngreso').val().split('-');
-                var fechaIngreso = data[4].split('-').reverse().join('-');
-                var fechaInicial = fechas[0].trim().split('/').reverse().join('-');
-                var fechaFinal = fechas[1].trim().split('/').reverse().join('-');
-
-                if ((Date.parse(fechaInicial) <= Date.parse(fechaIngreso) && Date.parse(fechaIngreso) <= Date.parse(fechaFinal))){
-                    return true;
-                }
-                return false;
+                return obtenerRangoFechas('#inputFechaIngreso', data[4]);
             }
             return true;
+        }
+    );
+
+    //Función propia del plugin DataTables que permite añadir filtros mediante condicionales, dentro de esta función se agrega el filtro que permite consultar la información de la tabla registros por un rango de fecha de salida seleccionado
+    $.fn.dataTable.ext.search.push(
+        function (settings, data, dataIndex) {
+            if ($('#inputFechaSalida').val() != '') {
+                return obtenerRangoFechas('#inputFechaSalida', data[6]);
+            }
+            return true;   
         }
     );
 

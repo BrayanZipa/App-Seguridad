@@ -89,9 +89,9 @@
                             @endhasanyrole
                             <div class="col-md-3 col-sm-12">
                                 <div class="form-group">
-                                    <label>Filtrar por fecha de ingreso</label>
+                                    <label for="inputFechaIngreso">Filtrar por fecha de ingreso</label>
                                     <div class="input-group">
-                                        <input type="text" class="filtros form-control float-right" id="inputFechaIngreso" placeholder="Fecha de ingreso" autocomplete="off">
+                                        <input type="text" id="inputFechaIngreso" class="filtros form-control float-right" placeholder="Fecha de ingreso" autocomplete="off">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">
                                                 <i class="far fa-calendar"></i>
@@ -102,15 +102,35 @@
                             </div>
                             <div class="col-md-3 col-sm-12">
                                 <div class="form-group">
-                                    <label>Filtrar por fecha de salida</label>
+                                    <label for="inputFechaSalida">Filtrar por fecha de salida</label>
                                     <div class="input-group">
-                                        <input type="text" class="filtros form-control float-right" id="inputFechaSalida" placeholder="Fecha de salida" autocomplete="off">
+                                        <input type="text" id="inputFechaSalida" class="filtros form-control float-right" placeholder="Fecha de salida" autocomplete="off">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">
                                                 <i class="far fa-calendar"></i>
                                             </span>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-12">
+                                <div class="form-group">
+                                <label for="selectIngresoActivo">Filtrar por ingreso de activo</label>
+                                    <select id="selectIngresoActivo" class="filtros form-control" style="width: 100%;">
+                                        <option selected="selected" value="" disabled>Ingreso de activo</option>
+                                        <option value="Si">Si</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-12">
+                                <div class="form-group">
+                                <label for="selectIngresoVehiculo">Filtrar por ingreso de vehículo</label>
+                                    <select id="selectIngresoVehiculo" class="filtros form-control" style="width: 100%;">
+                                        <option selected="selected" value="" disabled>Ingreso de vehículo</option>
+                                        <option value="Si">Si</option>
+                                        <option value="No">No</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-3 col-sm-12 d-flex align-items-end">
