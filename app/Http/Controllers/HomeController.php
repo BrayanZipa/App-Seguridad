@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Registro;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 
 class HomeController extends Controller
@@ -40,24 +41,31 @@ class HomeController extends Controller
     /**
      * 
      */
-    public function definirConsulta($consulta)
+    public function definirConsulta($consulta, $ciudad = null)
     {
-        if(auth()->user()->hasRole(['Admin', 'Seguridad'])){
-            return $consulta->count();
-        } 
-        return $consulta->where('city', auth()->user()->city)->count();
+        try {  
+            if(auth()->user()->hasRole(['Admin', 'Seguridad'])){
+                if($ciudad != null){
+                    return $consulta->where('city', $ciudad)->count();
+                }
+                return $consulta->count();
+            } 
+            return $consulta->where('city', auth()->user()->city)->count();
+        } catch (\Throwable $e) {
+            return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
+        }
     }
 
     /**
      * 
      */
-    public function totalPersonasDiarias($tipoPersona)
+    public function totalPersonasDiarias($tipoPersona, $ciudad = null)
     {
         try {  
             $consulta = Registro::leftjoin('se_personas AS personas', 'se_registros.id_persona', '=', 'personas.id_personas')
             ->leftjoin('se_usuarios AS usuarios', 'se_registros.id_usuario', '=', 'usuarios.id_usuarios')
             ->where('id_tipo_persona', $tipoPersona)->whereDate('ingreso_persona', Carbon::now()->toDateString());
-            return $this->definirConsulta($consulta);
+            return $this->definirConsulta($consulta, $ciudad);
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
         }
@@ -66,13 +74,13 @@ class HomeController extends Controller
     /**
      * 
      */
-    public function totalColaboradoresActivoDiarios($tipoPersona)
+    public function totalColaboradoresActivoDiarios($tipoPersona, $ciudad = null)
     {
         try { 
             $consulta = Registro::leftjoin('se_personas AS personas', 'se_registros.id_persona', '=', 'personas.id_personas')
             ->leftjoin('se_usuarios AS usuarios', 'se_registros.id_usuario', '=', 'usuarios.id_usuarios')
             ->where('id_tipo_persona', $tipoPersona)->whereNotNull('ingreso_activo')->whereDate('ingreso_persona', Carbon::now()->toDateString());
-            return $this->definirConsulta($consulta);
+            return $this->definirConsulta($consulta, $ciudad);
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
         }
@@ -81,14 +89,37 @@ class HomeController extends Controller
     /**
      * 
      */
-    public function totalVehiculosDiarios()
+    public function totalVehiculosDiarios($ciudad = null)
     {
         try {       
             $consulta = Registro::leftjoin('se_usuarios AS usuarios', 'se_registros.id_usuario', '=', 'usuarios.id_usuarios')
             ->whereDate('ingreso_vehiculo', Carbon::now()->toDateString());
-            return $this->definirConsulta($consulta);
+            return $this->definirConsulta($consulta, $ciudad);
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
+        }
+    }
+
+
+    public function prueba(Request $request)
+    {
+        if($request->ajax()){
+            $ciudad = $request->input('ciudad');
+            $visitantes = $this->totalPersonasDiarias(1, $ciudad);
+            $conductores = $this->totalPersonasDiarias(4, $ciudad);
+            $colaboradoresActivo = $this->totalColaboradoresActivoDiarios(3, $ciudad);
+            $vehiculos = $this->totalVehiculosDiarios($ciudad);
+
+            // return response()->json($visitantes, $conductores);
+            // return $visitantes; ['message' => 'Error al traer la información de la base de datos']
+            // return $visitantes;
+
+            return response()->json([
+                'visitantes' => $visitantes,
+                'conductores' => $conductores,
+                'colaboradoresActivo' => $colaboradoresActivo,
+                'vehiculos' => $vehiculos
+            ]);
         }
     }
 

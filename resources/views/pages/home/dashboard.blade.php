@@ -10,7 +10,9 @@
 @endsection
 
 @section('scripts')
-
+    <!-- JavaScript propio -->
+    <script src="{{ asset('js/home/dashboard.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.17.0/TweenMax.min.js"></script>
 @endsection
 
 @section('contenido')
@@ -26,7 +28,7 @@
                 <!-- small box -->
                 <div class="small-box bg-primary">
                     <div class="inner">
-                        <h3>{{ $visitantes }}</h3>
+                        <h3 id="numVisitantes">{{ $visitantes }}</h3>
                         <p>Visitantes en la empresa</p>
                     </div>
                     <div class="icon">
@@ -42,7 +44,7 @@
                 <!-- small box -->
                 <div class="small-box bg-secondary">
                     <div class="inner">
-                        <h3>{{ $colaboradoresActivo }}</h3>
+                        <h3 id="numColaboradoresActivo">{{ $colaboradoresActivo }}</h3>
                         <p>Colaboradores con activo</p>
                     </div>
                     <div class="icon">
@@ -58,7 +60,7 @@
                 <!-- small box -->
                 <div class="small-box bg-info">
                     <div class="inner">
-                        <h3>{{ $conductores }}</h3>
+                        <h3 id="numConductores">{{ $conductores }}</h3>
                         <p>Conductores en la empresa</p>
                     </div>
                     <div class="icon">
@@ -74,7 +76,7 @@
                 <!-- small box -->
                 <div class="small-box bg-orange">
                     <div class="inner">
-                        <h3>{{ $vehiculos }}</h3>
+                        <h3 id="numVehiculos">{{ $vehiculos }}</h3>
                         <p>Vehículos en la empresa</p>
                     </div>
                     <div class="icon">
@@ -88,5 +90,7 @@
             
         </div>
     </section>
+
+    <div class="counter">0</div>
     
 @endsection
