@@ -49,6 +49,7 @@ $(function () {
 
     //Manejo de los radio buttons al ser seleccionados, dependiendo de la selección se retira o no la propiedad required de los select de EPS y ARL
     $('input[type=radio]').on('change', function () {
+        $('#botonActivar').trigger('click');
         if ($('#radioEntrevista').is(':checked')) {
             $('#tipoVisitante').val('entrevista');
             $('#cardFormulario').css('display', 'none');
@@ -81,9 +82,7 @@ $(function () {
             setTimeout(() => {
                 $('#cardFormulario').css('display', '');
                 $('#inputNombre').focus();
-            }, 100);
-
-            
+            }, 100);   
         }
     });
 
@@ -91,6 +90,9 @@ $(function () {
     $('input[type=checkbox]').on('change', function () {
         if ($('#checkVehiculo').is(':checked') && $('#checkActivo').is(':checked')) {
             $('#botonComprimirVisitante').trigger('click');
+            if($('#inputFotoVehiculo').val() == ''){
+                $('#botonActivar2').trigger('click');
+            }
             $('#crearVehiculo').css('display', 'block');
             $('#crearActivo').css('display', 'block');
             $('#inputActivo').val('Computador');
@@ -102,6 +104,7 @@ $(function () {
             requiredTrue('.activo');
 
         } else if ($('#checkVehiculo').is(':checked') && ($('#checkActivo').prop('checked') == false)) {
+            $('#botonActivar2').trigger('click');
             $('#crearVehiculo').css('display', 'block');
             $('#botonCrear').css('display', 'none');
             $('#botonCrear2').css('display', 'inline');
@@ -167,6 +170,7 @@ $(function () {
     //Botón que limpia la información del formulario de Vehículo
     $('#botonLimpiar2').click(function () {
         document.getElementById('inputFotoVehiculo').setAttribute('value', '');
+        $('#botonActivar2').trigger('click');
         $('#video2').css('display', 'none');
         $('#canvas2').css('display', 'none');
         $('#botonCapturar2').css('display', 'none');
@@ -212,10 +216,6 @@ $(function () {
 
     //Botón que da acceso a la cámara web del computador donde este abierta la aplicación desde el formulario crear visitante
     $('#botonActivar').click(function () {
-        var inputFoto = document.getElementById('inputFoto');
-        if (inputFoto.classList.contains('is-invalid')) {
-            inputFoto.classList.remove('is-invalid');
-        }
         document.getElementById('canvas').style.display = 'none';
         document.getElementById('inputFoto').setAttribute('value', '');
         const video = document.getElementById('video');
@@ -246,6 +246,7 @@ $(function () {
 
                 video.srcObject = stream;
                 video.play();
+                document.getElementById('botonActivar').style.display = 'inline';
                 document.getElementById('botonCapturar').style.display = 'inline';
             })
             .catch((err) => console.log(err))
@@ -253,10 +254,6 @@ $(function () {
 
     //Botón que da acceso a la cámara web del computador donde este abierta la aplicación desde el formulario ingresar vehículo
     $('#botonActivar2').click(function () {
-        var inputFotoVehiculo = document.getElementById('inputFotoVehiculo');
-        if (inputFotoVehiculo.classList.contains('is-invalid')) {
-            inputFotoVehiculo.classList.remove('is-invalid');
-        }
         document.getElementById('canvas2').style.display = 'none';
         document.getElementById('inputFotoVehiculo').setAttribute('value', '');
         const video2 = document.getElementById('video2');
@@ -302,6 +299,10 @@ $(function () {
 
     //Botón que captura una fotografía desde el formulario de crear visitante con la cámara web del computador donde este abierta la aplicación
     $('#botonCapturar').click(function () {
+        var inputFoto = document.getElementById('inputFoto');
+        if (inputFoto.classList.contains('is-invalid')) {
+            inputFoto.classList.remove('is-invalid');
+        }
         var video = document.getElementById('video');
         video.pause();
         var canvas = document.getElementById('canvas');
@@ -316,6 +317,10 @@ $(function () {
 
     //Botón que captura una fotografía desde el formulario de crear vehículo con la cámara web del computador donde este abierta la aplicación
     $('#botonCapturar2').click(function () {
+        var inputFotoVehiculo = document.getElementById('inputFotoVehiculo');
+        if (inputFotoVehiculo.classList.contains('is-invalid')) {
+            inputFotoVehiculo.classList.remove('is-invalid');
+        }
         var video2 = document.getElementById('video2');
         video2.pause();
         var canvas2 = document.getElementById('canvas2');
@@ -390,6 +395,10 @@ $(function () {
     // Función que permite mantener la fotografía tomada previamente al visitante en caso de que haya errores al enviar el formulario crear visitante
     function retornarFotoVisitante() {
         var inputFoto = document.getElementById('inputFoto').value;
+        if(inputFoto == ''){
+            document.getElementById('botonActivar').click(); 
+            return;
+        }
         var canvas = document.getElementById('canvas');
         var contexto = canvas.getContext('2d');
 
@@ -407,11 +416,21 @@ $(function () {
             document.getElementById('canvas').style.display = 'block';
             contexto.drawImage(imagen, 0, 0, imagen.width, imagen.height);
         }
+
+        document.getElementById('botonActivar').style.display = '';
+        document.getElementById('botonCapturar').style.display = '';
     }
+
+
 
     //Función que permite mantener la fotografía tomada previamente al vehículo en caso de que haya errores al enviar el formulario crear vehículo
     function retornarFotoVehiculo() {
         var inputFotoVehiculo = document.getElementById('inputFotoVehiculo').value;
+        if(inputFotoVehiculo == ''){
+            selectMarcaVehiculo();
+            document.getElementById('checkVehiculo').click();
+            return;
+        }
         var canvas2 = document.getElementById('canvas2');
         var contexto2 = canvas2.getContext('2d');
 
@@ -431,7 +450,13 @@ $(function () {
         }
 
         selectMarcaVehiculo();
-        document.getElementById('checkVehiculo').click();
+        document.getElementById('crearVehiculo').style.display = 'block';
+        document.getElementById('botonCrear').style.display = 'none';
+        document.getElementById('botonCrear2').style.display = 'inline';
+        document.getElementById('checkVehiculo').disabled = true;
+        document.getElementById('checkVehiculo').checked = true;
+        document.getElementById('casoIngreso').value = 'casoVehiculo';
+        requiredTrue('.vehiculo');
     }
 
     //Función que permite identificar que tipo de visitante habia elegido el usuario y vuelve a marcar la opción seleccionada en caso de que se cometan errores al momento de enviar información 
@@ -510,167 +535,3 @@ $(function () {
     });
     
 });
-
-
-
-
-
-
-
-
-
-
-
-// function tieneSoporteUserMedia() {
-// 	return !!(navigator.getUserMedia || (navigator.mozGetUserMedia || navigator.mediaDevices.getUserMedia) || navigator.webkitGetUserMedia || navigator.msGetUserMedia)
-// }
-// function _getUserMedia() {
-// 	return (navigator.getUserMedia || (navigator.mozGetUserMedia || navigator.mediaDevices.getUserMedia) || navigator.webkitGetUserMedia || navigator.msGetUserMedia).apply(navigator, arguments);
-// }
- 
-// // Declaramos elementos del DOM
-// const $video = document.querySelector("#video"),
-// 	$canvas = document.querySelector("#canvas"),
-// 	$boton = document.querySelector("#boton"),
-// 	$estado = document.querySelector("#estado"),
-// 	$listaDeDispositivos = document.querySelector("#listaDeDispositivos");
- 
-// // La función que es llamada después de que ya se dieron los permisos
-// // Lo que hace es llenar el select con los dispositivos obtenidos
-// const llenarSelectConDispositivosDisponibles = () => {
- 
-// 	navigator
-// 		.mediaDevices
-// 		.enumerateDevices()
-// 		.then(function (dispositivos) {
-// 			const dispositivosDeVideo = [];
-// 			dispositivos.forEach(function (dispositivo) {
-// 				const tipo = dispositivo.kind;
-// 				if (tipo === "videoinput") {
-// 					dispositivosDeVideo.push(dispositivo);
-// 				}
-// 			});
- 
-// 			// Vemos si encontramos algún dispositivo, y en caso de que si, entonces llamamos a la función
-// 			if (dispositivosDeVideo.length > 0) {
-// 				// Llenar el select
-// 				dispositivosDeVideo.forEach(dispositivo => {
-// 					const option = document.createElement('option');
-// 					option.value = dispositivo.deviceId;
-// 					option.text = dispositivo.label;
-// 					$listaDeDispositivos.appendChild(option);
-// 					console.log("$listaDeDispositivos => ", $listaDeDispositivos)
-// 				});
-// 			}
-// 		});
-// }
- 
-// (function () {
-// 	// Comenzamos viendo si tiene soporte, si no, nos detenemos
-// 	if (!tieneSoporteUserMedia()) {
-// 		alert("Lo siento. Tu navegador no soporta esta característica");
-// 		$estado.innerHTML = "Parece que tu navegador no soporta esta característica. Intenta actualizarlo.";
-// 		return;
-// 	}
-// 	//Aquí guardaremos el stream globalmente
-// 	let stream;
- 
- 
-// 	// Comenzamos pidiendo los dispositivos
-// 	navigator
-// 		.mediaDevices
-// 		.enumerateDevices()
-// 		.then(function (dispositivos) {
-// 			// Vamos a filtrarlos y guardar aquí los de vídeo
-// 			const dispositivosDeVideo = [];
- 
-// 			// Recorrer y filtrar
-// 			dispositivos.forEach(function (dispositivo) {
-// 				const tipo = dispositivo.kind;
-// 				if (tipo === "videoinput") {
-// 					dispositivosDeVideo.push(dispositivo);
-// 				}
-// 			});
- 
-// 			// Vemos si encontramos algún dispositivo, y en caso de que si, entonces llamamos a la función
-// 			// y le pasamos el id de dispositivo
-// 			if (dispositivosDeVideo.length > 0) {
-// 				// Mostrar stream con el ID del primer dispositivo, luego el usuario puede cambiar
-// 				mostrarStream(dispositivosDeVideo[0].deviceId);
-// 			}
-// 		});
- 
- 
- 
-// 	const mostrarStream = idDeDispositivo => {
-// 		_getUserMedia(
-// 			{
-// 				video: {
-// 					// Justo aquí indicamos cuál dispositivo usar
-// 					deviceId: idDeDispositivo,
-// 				}
-// 			},
-// 			function (streamObtenido) {
-// 				// Aquí ya tenemos permisos, ahora sí llenamos el select,
-// 				// pues si no, no nos daría el nombre de los dispositivos
-// 				llenarSelectConDispositivosDisponibles();
- 
-// 				// Escuchar cuando seleccionen otra opción y entonces llamar a esta función
-// 				$listaDeDispositivos.onchange = () => {
-// 					// Detener el stream
-// 					if (stream) {
-// 						stream.getTracks().forEach(function (track) {
-// 							track.stop();
-// 						});
-// 					}
-// 					// Mostrar el nuevo stream con el dispositivo seleccionado
-// 					mostrarStream($listaDeDispositivos.value);
-// 				}
- 
-// 				// Simple asignación
-// 				stream = streamObtenido;
- 
-// 				// Mandamos el stream de la cámara al elemento de vídeo
-// 				$video.srcObject = stream;
-// 				$video.play();
- 
-// 				//Escuchar el click del botón para tomar la foto
-// 				$boton.addEventListener("click", function () {
- 
-// 					//Pausar reproducción
-// 					$video.pause();
- 
-// 					//Obtener contexto del canvas y dibujar sobre él
-// 					let contexto = $canvas.getContext("2d");
-// 					$canvas.width = $video.videoWidth;
-// 					$canvas.height = $video.videoHeight;
-// 					contexto.drawImage($video, 0, 0, $canvas.width, $canvas.height);
- 
-// 					let foto = $canvas.toDataURL(); //Esta es la foto, en base 64
-// 					$estado.innerHTML = "Enviando foto. Por favor, espera...";
-// 					fetch("./guardar_foto.php", {
-// 						method: "POST",
-// 						body: encodeURIComponent(foto),
-// 						headers: {
-// 							"Content-type": "application/x-www-form-urlencoded",
-// 						}
-// 					})
-// 						.then(resultado => {
-// 							// A los datos los decodificamos como texto plano
-// 							return resultado.text()
-// 						})
-// 						.then(nombreDeLaFoto => {
-// 							// nombreDeLaFoto trae el nombre de la imagen que le dio PHP
-// 							console.log("La foto fue enviada correctamente");
-// 							$estado.innerHTML = `Foto guardada con éxito. Puedes verla <a target='_blank' href='./${nombreDeLaFoto}'> aquí</a>`;
-// 						})
- 
-// 					//Reanudar reproducción
-// 					$video.play();
-// 				});
-// 			}, function (error) {
-// 				console.log("Permiso denegado o error: ", error);
-// 				$estado.innerHTML = "No se puede acceder a la cámara, o no diste permiso.";
-// 			});
-// 	}
-// })();

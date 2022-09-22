@@ -16,7 +16,7 @@
                 <div class="form-group">
                     <label for="inputFoto">Fotografía</label>
 
-                    <input type="hidden" id="inputFoto" class="{{ $errors->has('foto') ? 'is-invalid' : '' }}" name="foto" value="{{ old('foto') }}">
+                    <input type="hidden" id="inputFoto" class="conductor {{ $errors->has('foto') ? 'is-invalid' : '' }}" name="foto" value="{{ old('foto') }}">
 
                     <video src="" id="video" class="img-fluid rounded" style="display: none"></video>
                     <canvas id="canvas" class="img-fluid rounded" style="display: none"></canvas>
@@ -28,9 +28,8 @@
                     @endif
 
                     <div class="mt-2">
-                        <button id="botonActivar" type="button" class="btn btn-primary btn-sm">Activar</button>
-                        <button id="botonCapturar" type="button" class="btn btn-primary btn-sm"
-                            style="display: none">Capturar</button>
+                        <button id="botonActivar" type="button" class="btn btn-primary btn-sm" style="display: none">Activar</button>
+                        <button id="botonCapturar" type="button" class="btn btn-primary btn-sm" style="display: none">Capturar</button>
                     </div>
                 </div>
             </div>

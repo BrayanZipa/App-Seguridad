@@ -18,7 +18,7 @@
                 <div class="col-md-4 col-sm-12">
                     <div class="form-group">
                         <label for="inputFotoVehiculo">Fotografía</label>
-                        <input type="hidden" id="inputFotoVehiculo" class="{{ $errors->has('foto_vehiculo') ? 'is-invalid' : '' }}" name="foto_vehiculo" value="{{ old('foto_vehiculo') }}">
+                        <input type="hidden" id="inputFotoVehiculo" class="vehiculo {{ $errors->has('foto_vehiculo') ? 'is-invalid' : '' }}" name="foto_vehiculo" value="{{ old('foto_vehiculo') }}">
                         <video src="" id="video2" class="img-fluid rounded" style="display: none"></video>
                         <canvas id="canvas2" class="img-fluid rounded" style="display: none"></canvas>
                         @if ($errors->has('foto_vehiculo')) 

@@ -16,7 +16,7 @@
                     <div class="form-group">
                         <label for="inputFotoVehiculo">Fotografía</label>
 
-                        <input type="text" id="inputFotoVehiculo" class="{{ $errors->has('foto_vehiculo') ? 'is-invalid' : '' }}" name="foto_vehiculo"
+                        <input type="text" id="inputFotoVehiculo" class="vehiculo {{ $errors->has('foto_vehiculo') ? 'is-invalid' : '' }}" name="foto_vehiculo"
                             value="{{ old('foto_vehiculo') }}" style="display: none">
 
                         <video src="" id="video2" class="img-fluid rounded" style="display: none"></video>
@@ -29,10 +29,8 @@
                         @endif
 
                         <div class="mt-2">
-                            <button id="botonActivar2" type="button" class="btn btn-sm"
-                                style="background-color: rgb(255, 115, 0)">Activar</button>
-                            <button id="botonCapturar2" type="button" class="btn btn-sm"
-                                style="display: none">Capturar</button>
+                            <button id="botonActivar2" type="button" class="btn btn-sm" style="background-color: rgb(255, 115, 0); display: none">Activar</button>
+                            <button id="botonCapturar2" type="button" class="btn btn-sm" style="display: none">Capturar</button>
                         </div>
                     </div>
                 </div>

@@ -44,10 +44,6 @@ $(function() {
 
     //Botón que da acceso a la cámara web del computador donde este abierta la aplicación desde el formulario ingresar vehículo
     $('#botonActivar2').click(function() {
-        var inputFotoVehiculo = document.getElementById('inputFotoVehiculo');
-        if(inputFotoVehiculo.classList.contains( 'is-invalid' )){
-            inputFotoVehiculo.classList.remove('is-invalid');
-        }
         document.getElementById('canvas2').style.display = 'none';
         document.getElementById('inputFotoVehiculo').setAttribute('value', '');
         const video2 = document.getElementById('video2');
@@ -80,10 +76,14 @@ $(function() {
                 video2.play(); 
 
                 document.getElementById('botonCapturar2').style.backgroundColor = 'rgb(255, 115, 0)'; 
+                document.getElementById('botonActivar2').style.display = 'inline';
                 document.getElementById('botonCapturar2').style.display = 'inline';                      
             })
             .catch((err) => console.log(err))            
     });
+    if($('#inputFotoVehiculo').val() == ''){
+        $('#botonActivar2').trigger('click');
+    }
 
     // Función que permite saber si el navegador que se esta utilizando soporta características audio visuales
     function tieneSoporteUserMedia() {
@@ -93,6 +93,10 @@ $(function() {
 
     //Botón que captura una fotografía desde el formulario de crear vehículo con la cámara web del computador donde este abierta la aplicación
     $('#botonCapturar2').click(function() {
+        var inputFotoVehiculo = document.getElementById('inputFotoVehiculo');
+        if(inputFotoVehiculo.classList.contains( 'is-invalid' )){
+            inputFotoVehiculo.classList.remove('is-invalid');
+        }
         var video2 = document.getElementById('video2');
         video2.pause();
         var canvas2 = document.getElementById('canvas2');
@@ -227,7 +231,10 @@ $(function() {
     //Función anónima que se ejecuta si el botón mencionado se crea en la interfaz debido a errores cometidos en el ingreso del formulario crear vehículo
     (function () {
         if (!!document.getElementById('botonRetorno2')){
-            retornarFotoVehiculo();
+            if($('#inputFotoVehiculo').val() != ''){
+                retornarFotoVehiculo();
+                $('#botonActivar2').css('display', '');
+            }        
             selectMarcaVehiculo();                   
             selectPropietario();
         }

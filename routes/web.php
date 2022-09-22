@@ -31,6 +31,7 @@ Auth::routes();
  * Ruta del home
  */
 Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware('auth'); 
+Route::get('/home/total_registros', [HomeController::class, 'totalRegistrosDiarios'])->name('registrosDiarios')->middleware('auth');
 
 /**
  * Rutas del sistema de roles
@@ -104,4 +105,4 @@ Route::put('/registros/editar_persona/{id}', [RegistroController::class, 'update
 Route::put('/registros/salida_persona/{id}', [RegistroController::class, 'registrarSalida'])->name('salidaPersona')->middleware(['auth', 'can:registrarSalida']);   
 
 // Route::post('/registros/crear', [RegistroController::class, 'store'])->name('crearRegistro')->middleware('auth');
-Route::get('/prueba', [HomeController::class, 'prueba'])->name('prueba');
+// Route::get('/prueba', [HomeController::class, 'prueba'])->name('prueba');

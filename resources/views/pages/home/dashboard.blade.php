@@ -10,9 +10,11 @@
 @endsection
 
 @section('scripts')
+    <!-- ApexCharts -->
+    <script src="{{ asset('assets/plugins/apexcharts/apexcharts.min.js') }}"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> --}}
     <!-- JavaScript propio -->
     <script src="{{ asset('js/home/dashboard.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.17.0/TweenMax.min.js"></script>
 @endsection
 
 @section('contenido')
@@ -23,7 +25,6 @@
 
     <section class="content-header">
         <div class="row">
-
             <div class="col-lg-3 col-6">
                 <!-- small box -->
                 <div class="small-box bg-primary">
@@ -39,7 +40,6 @@
                     @endcan
                 </div>
             </div>
-
             <div class="col-lg-3 col-6">
                 <!-- small box -->
                 <div class="small-box bg-secondary">
@@ -55,7 +55,6 @@
                     @endcan
                 </div>
             </div>
-
             <div class="col-lg-3 col-6">
                 <!-- small box -->
                 <div class="small-box bg-info">
@@ -71,7 +70,6 @@
                     @endcan
                 </div>
             </div>
-
             <div class="col-lg-3 col-6">
                 <!-- small box -->
                 <div class="small-box bg-orange">
@@ -87,10 +85,16 @@
                     @endcan
                 </div>
             </div>
-            
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div id="chart1"></div>
+            </div> 
+            <div class="col-md-6">
+                <div id="chart2"></div>
+            </div> 
         </div>
     </section>
-
-    <div class="counter">0</div>
     
 @endsection
