@@ -257,6 +257,21 @@ class RegistroController extends Controller
         return response()->json($personas);
     }
 
+    // public function prueba(){
+    //     $tipoPersona = 3;
+    //     $personasRegistradas = $this->registros->registrosNulos();
+    //     $personas = $this->personas->obtenerPersonas($tipoPersona);
+
+    //     foreach ($personasRegistradas as $personaRegistrada) {
+    //         foreach ($personas as $indice => $persona) {
+    //             if($persona->id_personas == $personaRegistrada->id_persona){
+    //                 unset($personas[$indice]);
+    //             }     
+    //         }
+    //     }
+    //     return response()->json($personas);
+    // }
+
     /**
      * Función que recibe una petición Ajax con el id de una persona con el cuál se realiza una búsqueda y se retorna la información que esta persona tenga asociada.
      */

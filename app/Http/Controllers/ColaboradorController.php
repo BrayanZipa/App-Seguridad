@@ -76,6 +76,33 @@ class ColaboradorController extends Controller
      */
     public function create()
     {
+        // $exitCode = Artisan::call('cache:clear');
+        // $this->usuarios->asiganrRol(auth()->user());
+        // $sesionToken = $this->colaboradores->initSesionGlpi();
+        // try {
+        //     $consulta = Http::withHeaders([
+        //         'Session-Token' => $sesionToken
+        //     ])->get(env('API_URL', 'No hay URL').'computer/', [
+        //         'range' => '0-1000',
+        //         'get_hateoas' => false
+        //     ]);
+        // } catch (\Throwable $th) {
+        //     return response()->json(['message' => 'Error al traer la información de los activos desde GLPI'], 500);
+        // }      
+        // $computadores = $consulta->json();
+        // $this->colaboradores->killSesionGlpi($sesionToken);
+
+        // $numComputadores=count($computadores);
+        // for ($i=0; $i < $numComputadores; $i++) { 
+        //     if(!isset($computadores[$i]['users_id']) || $computadores[$i]['users_id'] == 0){
+        //         unset($computadores[$i]);
+        //     }
+        // }
+
+        // $personas = $this->colaboradores->obtenerPersonas(1);
+        // [$eps, $arl, $tipoVehiculos, $marcaVehiculos, $empresas] = $this->obtenerModelos2();
+        // return view('pages.colaboradores.crear', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos', 'empresas', 'computadores', 'personas'));
+
         $exitCode = Artisan::call('cache:clear');
         $this->usuarios->asiganrRol(auth()->user());
         $personas = $this->colaboradores->obtenerPersonas(1);

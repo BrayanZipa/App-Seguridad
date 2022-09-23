@@ -171,9 +171,6 @@ $(function () {
     $('#botonLimpiar2').click(function () {
         document.getElementById('inputFotoVehiculo').setAttribute('value', '');
         $('#botonActivar2').trigger('click');
-        $('#video2').css('display', 'none');
-        $('#canvas2').css('display', 'none');
-        $('#botonCapturar2').css('display', 'none');
         $('.vehiculo').each(function (index) {
             $(this).val('');
             if ($(this).hasClass('is-invalid')) {

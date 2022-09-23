@@ -187,6 +187,9 @@ $(function() {
     $('#checkVehiculo').on('change', function() {
         if ($('#checkVehiculo').is(':checked')) {
             $('#botonComprimirColaborador').trigger('click');
+            if($('#inputFotoVehiculo').val() == ''){
+                $('#botonActivar').trigger('click');
+            }
             $('#crearVehiculo').css('display', 'block');
             $('#botonCrear').css('display', 'none');
             $('#checkVehiculo').prop('disabled', true);
@@ -199,6 +202,9 @@ $(function() {
     $('#checkVehiculo2').on('change', function() {
         if ($('#checkVehiculo2').is(':checked')) {
             $('#botonComprimirColaborador2').trigger('click');
+            if($('#inputFotoVehiculo2').val() == ''){
+                $('#botonActivar2').trigger('click');
+            }
             $('#crearVehiculo2').css('display', 'block');
             $('#botonCrear3').css('display', 'none');
             $('#checkVehiculo2').prop('disabled', true);
@@ -246,9 +252,7 @@ $(function() {
     //Botón que limpia la información del formulario de vehículo en la vista de colaborador con activo
     $('#botonLimpiar2').click(function() {
         document.getElementById('inputFotoVehiculo').setAttribute('value', '');
-        $('#video').css('display', 'none');
-        $('#canvas').css('display', 'none');
-        $('#botonCapturar').css('display', 'none');
+        $('#botonActivar').trigger('click');
         $('.vehiculo').each(function(index) {
             $(this).val('');
             if ($(this).hasClass('is-invalid')) {
@@ -273,9 +277,7 @@ $(function() {
     //Botón que limpia la información del formulario de vehículo en la vista de colaborador sin activo
     $('#botonLimpiar4').click(function() {
         document.getElementById('inputFotoVehiculo2').setAttribute('value', '');
-        $('#video2').css('display', 'none');
-        $('#canvas2').css('display', 'none');
-        $('#botonCapturar2').css('display', 'none');
+        $('#botonActivar2').trigger('click');
         $('.vehiculo2').each(function(index) {
             $(this).val('');
             if($(this).hasClass('is-invalid')){
@@ -312,10 +314,6 @@ $(function() {
 
     //Botón que da acceso a la cámara web del computador donde este abierta la aplicación desde el formulario ingresar vehículo en la vista nuevo colaborador con activo
     $('#botonActivar').click(function() {
-        var inputFotoVehiculo = document.getElementById('inputFotoVehiculo');
-        if(inputFotoVehiculo.classList.contains( 'is-invalid' )){
-            inputFotoVehiculo.classList.remove('is-invalid');
-        }
         document.getElementById('canvas').style.display = 'none';
         document.getElementById('inputFotoVehiculo').setAttribute('value', '');
         const video = document.getElementById('video');
@@ -348,6 +346,7 @@ $(function() {
                 video.play(); 
 
                 document.getElementById('botonCapturar').style.backgroundColor = 'rgb(255, 115, 0)'; 
+                document.getElementById('botonActivar').style.display = 'inline';  
                 document.getElementById('botonCapturar').style.display = 'inline';                      
             })
             .catch((err) => console.log(err))            
@@ -355,10 +354,6 @@ $(function() {
 
     //Botón que da acceso a la cámara web del computador donde este abierta la aplicación desde el formulario ingresar vehículo en la vista nuevo colaborador sin activo
     $('#botonActivar2').click(function() {
-        var inputFotoVehiculo = document.getElementById('inputFotoVehiculo2');
-        if (inputFotoVehiculo.classList.contains('is-invalid')) {
-            inputFotoVehiculo.classList.remove('is-invalid');
-        }
         document.getElementById('canvas2').style.display = 'none';
         document.getElementById('inputFotoVehiculo2').setAttribute('value', '');
         const video2 = document.getElementById('video2');
@@ -391,6 +386,7 @@ $(function() {
                 video2.play();
 
                 document.getElementById('botonCapturar2').style.backgroundColor = 'rgb(255, 115, 0)';
+                document.getElementById('botonActivar2').style.display = 'inline'; 
                 document.getElementById('botonCapturar2').style.display = 'inline';
             })
             .catch((err) => console.log(err))
@@ -405,6 +401,10 @@ $(function() {
 
     //Botón que captura una fotografía desde el formulario de crear vehículo en la vista nuevo colaborador con activo
     $('#botonCapturar').click(function() {
+        var inputFotoVehiculo = document.getElementById('inputFotoVehiculo');
+        if(inputFotoVehiculo.classList.contains( 'is-invalid' )){
+            inputFotoVehiculo.classList.remove('is-invalid');
+        }
         var video = document.getElementById('video');
         video.pause();
         var canvas = document.getElementById('canvas');
@@ -419,6 +419,10 @@ $(function() {
 
     //Botón que captura una fotografía desde el formulario de crear vehículo en la vista nuevo colaborador con vehículo
     $('#botonCapturar2').click(function() {
+        var inputFotoVehiculo = document.getElementById('inputFotoVehiculo2');
+        if (inputFotoVehiculo.classList.contains('is-invalid')) {
+            inputFotoVehiculo.classList.remove('is-invalid');
+        }
         var video2 = document.getElementById('video2');
         video2.pause();
         var canvas2 = document.getElementById('canvas2');
@@ -572,7 +576,7 @@ $(function() {
 
     //Función que permite mantener la fotografía tomada previamente al vehículo en la vista de colaborador sin activo en caso de que haya errores al enviar el formulario crear vehículo
     function retornarFotoVehiculo2() {
-        var inputFotoVehiculo2 = document.getElementById('inputFotoVehiculo2').value;
+        var inputFotoVehiculo2 = document.getElementById('inputFotoVehiculo2').value;   
         var canvas2 = document.getElementById('canvas2');
         var contexto2 = canvas2.getContext('2d');
 
@@ -616,7 +620,12 @@ $(function() {
             devolverAutorizacion();
 
             if(caso == 'conActivoVehiculo'){
-                retornarFotoVehiculo();
+                if($('#inputFotoVehiculo').val() != ''){
+                    retornarFotoVehiculo();
+                    document.getElementById('botonActivar').style.display = ''; 
+                } else {
+                    document.getElementById('botonActivar').click();
+                }
                 selectMarcaVehiculo();
                 $('#crearVehiculo').css('display', 'block');
                 $('#botonCrear').css('display', 'none');
@@ -625,7 +634,12 @@ $(function() {
                 requiredTrue('.vehiculo');
 
             } else if(caso2 == 'sinActivoVehiculo'){
-                retornarFotoVehiculo2();
+                if($('#inputFotoVehiculo2').val() != ''){
+                    retornarFotoVehiculo2();
+                    document.getElementById('botonActivar2').style.display = ''; 
+                } else {
+                    document.getElementById('botonActivar2').click();
+                }
                 selectMarcaVehiculo2();
                 $('#crearVehiculo2').css('display', 'block');
                 $('#botonCrear3').css('display', 'none');
@@ -638,12 +652,18 @@ $(function() {
             var caso2 = document.getElementById('casoIngreso2').value;
 
             if(caso == 'conActivoVehiculo'){
-                retornarFotoVehiculo();
+                if($('#inputFotoVehiculo').val() != ''){
+                    retornarFotoVehiculo();
+                    document.getElementById('botonActivar').style.display = ''; 
+                }
                 selectMarcaVehiculo();
                 document.getElementById('checkVehiculo').click();
 
             } else if(caso2 == 'sinActivoVehiculo') {
-                retornarFotoVehiculo2();
+                if($('#inputFotoVehiculo2').val() != ''){
+                    retornarFotoVehiculo2();
+                    document.getElementById('botonActivar2').style.display = ''; 
+                }
                 selectMarcaVehiculo2();
                 document.getElementById('checkVehiculo2').click();
             }

@@ -105,4 +105,4 @@ Route::put('/registros/editar_persona/{id}', [RegistroController::class, 'update
 Route::put('/registros/salida_persona/{id}', [RegistroController::class, 'registrarSalida'])->name('salidaPersona')->middleware(['auth', 'can:registrarSalida']);   
 
 // Route::post('/registros/crear', [RegistroController::class, 'store'])->name('crearRegistro')->middleware('auth');
-// Route::get('/prueba', [HomeController::class, 'prueba'])->name('prueba');
+// Route::get('/prueba', [RegistroController::class, 'prueba'])->name('prueba');

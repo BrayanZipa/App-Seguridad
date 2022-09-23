@@ -20,7 +20,7 @@ class Persona extends Model
      */
     public function obtenerPersonas($tipoPersona){
         try {
-            $personas = Persona::where('id_tipo_persona', $tipoPersona)->orderBy('id_personas')->get();
+            $personas = Persona::where('id_tipo_persona', $tipoPersona)->orderBy('identificacion')->get();
         } catch (\Throwable $th) {
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
         }

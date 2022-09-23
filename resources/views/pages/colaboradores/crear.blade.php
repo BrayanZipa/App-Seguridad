@@ -47,6 +47,7 @@
                                     @csrf
                                     <div class="mt-n3 mx-n3">
                                         @include('pages.colaboradores.formularioCrear')
+                                        {{-- @include('pages.colaboradores.prueba2') --}}
                                     </div>
 
                                     <div id="crearVehiculo" class="mt-n2 mx-n3" style="display: none">
