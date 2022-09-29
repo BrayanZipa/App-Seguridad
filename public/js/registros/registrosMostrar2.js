@@ -871,7 +871,7 @@ $(function() {
                 registroSalida: casoSalida,      
             },
             success: function() {
-                datatableRegistrosSalida();
+                $('#btnFiltros').trigger('click');
                 $('#informacionRegistro').css('display', 'none'); 
 
                 $('.textoPersona').text(obtenerNombrePersona());
@@ -916,7 +916,7 @@ $(function() {
                 registroSalida: 'salidaVehiculo',
             },
             success: function() {
-                datatableRegistrosVehiculos();
+                $('#btnFiltros2').trigger('click');
                 $('#infoRegistroVehiculo').css('display', 'none'); 
                 $('#textoVehiculo').text(datosRegistroVehiculo.vehiculo);
                 $('#modal-salida-vehiculo').modal('show');
@@ -955,7 +955,7 @@ $(function() {
                 registroSalida: 'salidaActivo',
             },
             success: function() {
-                datatableRegistrosActivos();
+                $('#btnFiltros3').trigger('click');
                 $('#infoRegistroActivo').css('display', 'none'); 
                 asiganarMensaje('#textoActivo');
                 $('#modal-salida-activo').modal('show');

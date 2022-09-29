@@ -55,14 +55,18 @@ $(function () {
             dataType: 'json',
             success: function(response){
                 $('#buscarPersona').css('display', 'block'); 
-                $.each(response, function(key, value){                   
-                    $('#selectPersona').append("<option value='" + value.id_personas + "'> C.C. " + value.identificacion + " - " + value.nombre + " " + value.apellido + "</option>");
+                $.each(response, function(key, value){
+                    if('codigo' in value){
+                        $('#selectPersona').append("<option value='" + value.id_personas + "'> C.C. " + value.identificacion + " - " + value.nombre + " " + value.apellido + (value.codigo != null ? ' - ' + value.codigo : '') + "</option>");
+                    } else {
+                        $('#selectPersona').append("<option value='" + value.id_personas + "'> C.C. " + value.identificacion + " - " + value.nombre + " " + value.apellido + "</option>");
+                    }
                 });                                              
             }, 
             error: function(){
                 console.log('Error obteniendo los datos de las personas');
             }
-        }); 
+        });
     }
 
     //Función que se activa cuando el usuario selecciona alguna opción del select tipo de persona

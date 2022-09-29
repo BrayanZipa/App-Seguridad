@@ -20,7 +20,13 @@ class Persona extends Model
      */
     public function obtenerPersonas($tipoPersona){
         try {
-            $personas = Persona::where('id_tipo_persona', $tipoPersona)->orderBy('identificacion')->get();
+            if($tipoPersona != 3){
+                $personas = Persona::where('id_tipo_persona', $tipoPersona)->orderBy('identificacion')->get();
+            } else {
+                $personas = Persona::select('se_personas.*', 'activos.codigo')
+                ->leftjoin('se_activos AS activos', 'se_personas.id_personas', '=', 'activos.id_persona')
+                ->where('id_tipo_persona', $tipoPersona)->orderBy('codigo')->get();
+            }
         } catch (\Throwable $th) {
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
         }

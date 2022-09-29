@@ -11,7 +11,8 @@ body{
         margin-top: 3vh;
     }
     .form-login{
-        padding: 40px 65px 30px;
+        /* padding: 40px 65px 30px; */
+        padding: 40px 60px 20px;
     }
 }
 
@@ -20,7 +21,7 @@ body{
         margin-top: 9vh;
     }
     .form-login{
-        padding: 90px 65px 85px;
+        padding: 90px 60px 60px;
     }
     .btnColumna{
         margin-top: 50px;
@@ -32,14 +33,16 @@ body{
 }
 
 .form-image{
+    margin: 0px 40px;
+    padding: 20px 15px 5px;
     background: rgb(0, 0, 0, .8);
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
-    padding: 20px 15px 5px;
 }
 
 .form-login{
-    background: rgb(0, 0, 0, .4);
+    margin: 0px 40px;
+    background: rgb(0, 0, 0, .3);
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
     box-shadow: 0 0 30px rgba(0, 0, 0, .568);

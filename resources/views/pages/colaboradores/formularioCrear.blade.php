@@ -17,11 +17,11 @@
         <div class="row">
             <div class="col-md-8 col-sm-12">
                 <div class="form-group">
-                    <select id="selectIdentificacion"  name="selectIdentificacion" class="form-control" style="width: 100%;">
+                    <select id="selectCodigo" name="selectCodigo" class="form-control" style="width: 100%;">
                         <option selected="selected" value="" disabled></option>
-                        @foreach ($listaColaboradores as $colaborador)
-                            <option value="{{  $colaborador['id'] }}"
-                            {{ $colaborador['id'] == old('selectIdentificacion') && old('casoIngreso2') == '' ? 'selected' : '' }}>C.C. {{ $colaborador['registration_number'] }} - {{ $colaborador['firstname'] }} {{ $colaborador['realname'] }} 
+                        @foreach ($computadores as $computador)
+                            <option value="{{ $computador['id'] }}"
+                                {{ $computador['id'] == old('selectCodigo') && old('casoIngreso2') == '' ? 'selected' : '' }}>{{ $computador['name'] }}
                             </option>
                         @endforeach
                     </select>
@@ -31,50 +31,47 @@
                 <label id="autorizacion"></label>
             </div>
         </div>
-
         <div class="row">
             <div class="col-md-4 col-sm-12">
                 <div class="form-group">
-                    <label for="inputCodigo">Ingrese el activo</label>
-                    <input type="text" class="colaborador form-control {{ $errors->has('codigo') && old('casoIngreso2') == ''  ? 'is-invalid' : '' }}" id="inputCodigo" name="codigo" value="{{ old('casoIngreso2') == '' ? old('codigo') : '' }}" placeholder="Activo" autocomplete="off" readonly required>
+                    <label for="inputCodigo">Activo</label>
+                    <input type="text" class="colaborador form-control {{ $errors->has('codigo') && old('casoIngreso2') == '' ? 'is-invalid' : '' }}"  id="inputCodigo" name="codigo" value="{{ old('casoIngreso2') == '' ? old('codigo') : '' }}" placeholder="Activo" autocomplete="off" readonly required>
                         @if ($errors->has('codigo')) 
                             <div class="invalid-feedback">
                                 {{ $errors->first('codigo') }}
-                            </div>          
-                        @endif  
+                            </div>            
+                        @endif
                 </div>
-            </div>
+            </div> 
             <div class="col-md-4 col-sm-12">
                 <div class="form-group">
-                    <label for="inputNombre">Ingrese el nombre</label>
-                    <input type="text" class="colaborador form-control {{ $errors->has('nombre') && old('casoIngreso2') == '' ? 'is-invalid' : '' }}" id="inputNombre" name="nombre" value="{{ old('casoIngreso2') == '' ? old('nombre') : '' }}"
-                        placeholder="Nombre" autocomplete="off" readonly required>
+                    <label for="inputNombre">Nombre</label>
+                    <input type="text" class="colaborador form-control {{ $errors->has('nombre') && old('casoIngreso2') == '' ? 'is-invalid' : '' }}"  id="inputNombre" name="nombre" value="{{ old('casoIngreso2') == '' ? old('nombre') : '' }}" placeholder="Nombre" autocomplete="off" readonly required>
                         @if ($errors->has('nombre')) 
                             <div class="invalid-feedback">
                                 {{ $errors->first('nombre') }}
                             </div>            
                         @endif
                 </div>
-            </div>
+            </div> 
             <div class="col-md-4 col-sm-12">
                 <div class="form-group">
-                    <label for="inputApellido">Ingrese el apellido</label>
-                    <input type="text" class="colaborador form-control {{ $errors->has('apellido') && old('casoIngreso2') == '' ? 'is-invalid' : '' }}" id="inputApellido" name="apellido" value="{{ old('casoIngreso2') == '' ? old('apellido') : '' }}"
-                        placeholder="Apellido" autocomplete="off" readonly required>
+                    <label for="inputApellido">Apellido</label>
+                    <input type="text" class="colaborador form-control {{ $errors->has('apellido') && old('casoIngreso2') == '' ? 'is-invalid' : '' }}" id="inputApellido" name="apellido" value="{{ old('casoIngreso2') == '' ? old('apellido') : '' }}" placeholder="Apellido" autocomplete="off" readonly required>
                         @if ($errors->has('apellido')) 
                             <div class="invalid-feedback">
                                 {{ $errors->first('apellido') }}
                             </div>            
                         @endif
                 </div>
-            </div> 
+            </div>  
         </div>
         <div class="row">   
             <div class="col-md-4 col-sm-12">
                 <div class="form-group">
-                    <label for="inputIdentificacion">Ingrese la identificación</label>
-                    <input type="text" class="colaborador form-control {{ $errors->has('identificacion') && old('casoIngreso2') == '' ? 'is-invalid' : '' }}" id="inputIdentificacion"
-                        name="identificacion" value="{{ old('casoIngreso2') == '' ? old('identificacion') : '' }}" placeholder="Identificación" autocomplete="off" readonly required>
+                    <label for="inputIdentificacion">Identificación</label>
+                    <input type="text" class="colaborador form-control {{ $errors->has('identificacion') && old('casoIngreso2') == '' ? 'is-invalid' : '' }}" id="inputIdentificacion" name="identificacion" value="{{ old('casoIngreso2') == '' ? old('identificacion') : '' }}" 
+                        placeholder="Identificación" autocomplete="off" readonly required>
                         @if ($errors->has('identificacion')) 
                             <div class="invalid-feedback">
                                 {{ $errors->first('identificacion') }}
@@ -84,7 +81,7 @@
             </div>  
             <div class="col-md-4 col-sm-12">
                 <div class="form-group">
-                    <label for="inputEmail">Ingrese el correo empresarial</label>
+                    <label for="inputEmail">Correo empresarial</label>
                     <input type="text" class="colaborador form-control {{ $errors->has('email') && old('casoIngreso2') == '' ? 'is-invalid' : '' }}" id="inputEmail" name="email" value="{{ old('casoIngreso2') == '' ? old('email') : '' }}"
                         placeholder="Correo empresarial" autocomplete="off" readonly>
                         @if ($errors->has('email')) 
@@ -147,8 +144,7 @@
             <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                     <label for="selectEmpresa">Ingrese la empresa a la que pertenece</label>
-                    <select id="selectEmpresa" class="colaborador form-control {{ $errors->has('id_empresa') && old('casoIngreso2') == '' ? 'is-invalid' : '' }}" style="width: 100%;" name="id_empresa"
-                        required>
+                    <select id="selectEmpresa" class="colaborador form-control {{ $errors->has('id_empresa') && old('casoIngreso2') == '' ? 'is-invalid' : '' }}" style="width: 100%;" name="id_empresa" required>
                         <option selected="selected" value="" disabled>Seleccione la empresa</option>
                         @foreach ($empresas as $empresa)
                             <option value="{{ $empresa->id_empresas}}"
@@ -190,9 +186,8 @@
                 </div>
             </div>
         </div>
-
     </div>
-    <!-- /.card-body -->
+
     @can('crearColaborador')
         <div class="card-footer">
             <button id="botonCrear" type='submit' class="btn btn-primary">Crear</button>

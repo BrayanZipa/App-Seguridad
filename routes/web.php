@@ -57,8 +57,8 @@ Route::get('/colaboradores/sin_activo', [ColaboradorController::class, 'index2']
 Route::get('/colaboradores/informacion', [ColaboradorController::class, 'informacionColaboradores'])->name('mostrarInfoColaboradores')->middleware('auth');
 Route::get('/colaboradores/crear', [ColaboradorController::class, 'create'])->name('formCrearColaborador')->middleware(['auth', 'can:formCrearColaborador']);
 Route::get('/colaboradores/persona', [ColaboradorController::class, 'getColaborador'])->name('colaborador')->middleware(['auth', 'can:crearColaborador']);
-Route::get('/colaboradores/computadores', [ColaboradorController::class, 'getComputadores'])->name('computadores')->middleware(['auth', 'can:crearColaborador']);
 Route::get('/colaboradores/computador', [ColaboradorController::class, 'getComputador'])->name('computador')->middleware(['auth', 'can:crearColaborador']);
+Route::get('/colaboradores/computer', [ColaboradorController::class, 'getComputer'])->name('computer')->middleware(['auth', 'can:crearColaborador']);
 Route::get('/colaboradores/personacreada', [ColaboradorController::class, 'getPersona'])->name('persona')->middleware(['auth', 'can:crearColaborador']);
 Route::get('/colaboradores/colaboradoridentificado', [ColaboradorController::class, 'getColaboradorIdentificacion'])->name('colaboradoridentificado')->middleware(['auth', 'can:crearColaborador']);
 Route::post('/colaboradores/registro_salida', [ColaboradorController::class, 'registroSalidaPersona'])->name('registroSalida')->middleware(['auth', 'can:crearColaborador']);
@@ -104,5 +104,4 @@ Route::get('/registros/activo_sin_salida', [RegistroController::class, 'utimoReg
 Route::put('/registros/editar_persona/{id}', [RegistroController::class, 'updatePersona'])->name('editarPersona')->middleware(['auth', 'can:registrarIngreso']); 
 Route::put('/registros/salida_persona/{id}', [RegistroController::class, 'registrarSalida'])->name('salidaPersona')->middleware(['auth', 'can:registrarSalida']);   
 
-// Route::post('/registros/crear', [RegistroController::class, 'store'])->name('crearRegistro')->middleware('auth');
 // Route::get('/prueba', [RegistroController::class, 'prueba'])->name('prueba');

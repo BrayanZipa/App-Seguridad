@@ -22,9 +22,9 @@ $(function() {
 
     //Permite que a los select de selección de identificación, EPS y ARL se les asigne una barra de búsqueda haciendolos más dinámicos
     function activarSelect2Colaborador() {
-        $('#selectIdentificacion').select2({
+        $('#selectCodigo').select2({
             theme: 'bootstrap4',
-            placeholder: 'Buscar colaborador si esta creado en el sistema GLPI',
+            placeholder: 'Buscar el activo del colaborador en el sistema GLPI',
             language: {
                 noResults: function() {
                     return 'No hay resultado';
@@ -85,18 +85,18 @@ $(function() {
     activarSelect2Vehiculo();
     activarSelect2Colaborador();
 
-    //Función que permite traer los datos de un colaborador y el código del activo que tiene asignado desde GLPI cuando se selecciona una identificación en el formulario de la vista de colaborador con activo, una vez traidos se colocan automáticamente en su respectivo input
-    $('#selectIdentificacion').change(function() {
-        var idColaborador = $('#selectIdentificacion option:selected').val();
- 
+    //Función que permite traer los datos de un colaborador y los datos del activo que tiene asignado desde GLPI cuando se selecciona un código en el formulario de la vista de colaborador con activo, una vez traidos se colocan automáticamente en su respectivo input
+    $('#selectCodigo').change(function() {
+        var idActivo = $('#selectCodigo option:selected');
+
         $.ajax({
-            url: 'computador',
+            url: 'computer',
             type: 'GET',
             data: {
-                colaborador: idColaborador,
+                activo: idActivo.val(),
             },
             dataType: 'json',
-            success: function(response) {   
+            success: function(response) {  
                 if ('name' in response) {
                     $('#botonLimpiar').trigger('click');
                     $('#inputCodigo').val(response['name']);
@@ -112,22 +112,22 @@ $(function() {
                             url: 'persona',
                             type: 'GET',
                             data: {
-                                colaborador: idColaborador,
+                                colaborador: response.users_id,
                             },
                             dataType: 'json',
                             success: function(colaborador) {
-                                    $('#inputIdentificacion').val(colaborador['registration_number']);
-                                    $('#inputNombre').val(colaborador['firstname']);
-                                    $('#inputApellido').val(colaborador['realname']);
-                                    $('#inputEmail').val(colaborador['email']);
+                                $('#inputNombre').val(colaborador['firstname']);
+                                $('#inputApellido').val(colaborador['realname']);
+                                $('#inputIdentificacion').val(colaborador['registration_number']);
+                                $('#inputEmail').val(colaborador['email']);
     
-                                    if (colaborador['phone2'].includes('Aviomar')) {
-                                        $('#selectEmpresa').val(1);
-                                    } else if (colaborador['phone2'].includes('Snider')) {
-                                        $('#selectEmpresa').val(2);
-                                    } else if (colaborador['phone2'].includes('Colvan')) {
-                                        $('#selectEmpresa').val(3);
-                                    }      
+                                if (colaborador['phone2'].includes('Aviomar')) {
+                                    $('#selectEmpresa').val(1);
+                                } else if (colaborador['phone2'].includes('Snider')) {
+                                    $('#selectEmpresa').val(2);
+                                } else if (colaborador['phone2'].includes('Colvan')) {
+                                    $('#selectEmpresa').val(3);
+                                }      
                             },
                             error: function() {
                                 console.log('Error obteniendo los datos de GLPI');
@@ -146,7 +146,7 @@ $(function() {
                 } else {
                     $('#botonLimpiar').trigger('click');
                     $('#inputCodigo').addClass('is-invalid');
-                    $('#inputCodigo').val('*Colaborador sin activo asignado');
+                    $('#inputCodigo').val('*Activo eliminado del sistema GLPI');
                     $('#autorizacion').text('');  
                     $('#inputAutorizacion').val($('#autorizacion').text());                   
                 }  
@@ -701,5 +701,5 @@ $(function() {
     $('#botonSalida').click(function() {
         $(location).attr('href', '../registros/completados');
     });
-
+    
 });

@@ -10,9 +10,6 @@
         <li class="nav-item d-none d-sm-inline-block">
             <a href="{{ route('mostrarColaboradores2')}}" class="nav-link {{ Route::is('mostrarColaboradores2') ? 'active' : '' }}">Colaboradores sin activo</a>
         </li>
-        <li class="nav-item d-none d-sm-inline-block">
-            <a href="{{ route('computadores')}}" class="nav-link {{ Route::is('computadores') ? 'active' : '' }}">Nuevo colaborador por activo</a>
-        </li>
         @can('formCrearColaborador')
             <li class="nav-item d-none d-sm-inline-block">
                 <a href="{{ route('formCrearColaborador')}}" class="nav-link {{ Route::is('formCrearColaborador') ? 'active' : '' }}">Nuevo colaborador</a>

@@ -64,7 +64,9 @@ return [
             'driver' => 'ldap',
             'model' => LdapRecord\Models\OpenLDAP\User::class,
             // 'model' => LdapRecord\Models\ActiveDirectory\User::class,
-            'rules' => [],
+            'rules' => [
+                // App\Ldap\Rules\SoloUsuariosVision::class, 
+            ],
             'database' => [
                 'model' => App\Models\User::class,
                 'sync_passwords' => true,
