@@ -184,6 +184,20 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label for="inputFicha">Ingrese la ficha otorgada</label>
+                            <input type="text" class="visitante form-control {{ $errors->has('ficha') ? ' is-invalid ' : '' }}" id="inputFicha" name="ficha"
+                                value="{{ old('ficha') }}" autocomplete="off" placeholder="Ficha" required>
+                                @if ($errors->has('ficha')) 
+                                    <div class="invalid-feedback">
+                                        {{ $errors->first('ficha') }}
+                                    </div>          
+                                @endif      
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-12">
                         <div class="form-group">
                             <label for="inputDescripcion">Ingrese una descripción</label>

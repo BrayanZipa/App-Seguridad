@@ -70,7 +70,7 @@ class HomeController extends Controller
         try {  
             $consulta = Registro::leftjoin('se_personas AS personas', 'se_registros.id_persona', '=', 'personas.id_personas')
             ->leftjoin('se_usuarios AS usuarios', 'se_registros.id_usuario', '=', 'usuarios.id_usuarios')
-            ->where('id_tipo_persona', $tipoPersona)->whereDate('ingreso_persona', Carbon::now()->toDateString());
+            ->where('id_tipo_persona', $tipoPersona)->whereDate('ingreso_persona', Carbon::now()->toDateString())->whereNull('salida_persona');
             return $this->definirConsulta($consulta, $ciudad);
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
@@ -85,7 +85,7 @@ class HomeController extends Controller
         try { 
             $consulta = Registro::leftjoin('se_personas AS personas', 'se_registros.id_persona', '=', 'personas.id_personas')
             ->leftjoin('se_usuarios AS usuarios', 'se_registros.id_usuario', '=', 'usuarios.id_usuarios')
-            ->where('id_tipo_persona', 3)->whereNotNull('ingreso_activo')->whereDate('ingreso_persona', Carbon::now()->toDateString());
+            ->where('id_tipo_persona', 3)->whereNotNull('ingreso_activo')->whereDate('ingreso_persona', Carbon::now()->toDateString())->whereNull('salida_persona');
             return $this->definirConsulta($consulta, $ciudad);
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
@@ -99,7 +99,7 @@ class HomeController extends Controller
     {
         try {       
             $consulta = Registro::leftjoin('se_usuarios AS usuarios', 'se_registros.id_usuario', '=', 'usuarios.id_usuarios')
-            ->whereDate('ingreso_vehiculo', Carbon::now()->toDateString());
+            ->whereDate('ingreso_vehiculo', Carbon::now()->toDateString())->whereNull('salida_vehiculo');
             return $this->definirConsulta($consulta, $ciudad);
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);

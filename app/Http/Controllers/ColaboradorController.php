@@ -120,19 +120,15 @@ class ColaboradorController extends Controller
         $nuevoColaborador = $request->all();
         $registrosPersonas = $this->registros->registrosNulos();
         foreach ($registrosPersonas as $registroPersona) {
-            $hola = intval($registroPersona['identificacion']);
-            echo $hola.' - '.gettype($hola);
-            $hola2 = strval($hola);
-            // (int)cadena
-            echo $hola2.' - '.gettype($hola2);
-            if($registroPersona['identificacion'] === $nuevoColaborador['identificacion'] && ($registroPersona['id_tipo_persona'] == 1 || $registroPersona['id_tipo_persona'] == 2)){
+            if($registroPersona['identificacion'] == $nuevoColaborador['identificacion'] && ($registroPersona['id_tipo_persona'] == 1 || $registroPersona['id_tipo_persona'] == 2)){
                 $fechaIngreso = Carbon::parse($registroPersona->ingreso_persona);
                 return back()->withInput()->with('registro_ingreso', [$fechaIngreso->format('d-m-Y'), $fechaIngreso->format('h:i a')]);
             }
         }
-return  $request->all();
+
         $nuevoColaborador['nombre'] = ucwords(mb_strtolower($nuevoColaborador['nombre']));
         $nuevoColaborador['apellido'] = ucwords(mb_strtolower($nuevoColaborador['apellido']));
+        $nuevoColaborador['identificacion'] = (int)$nuevoColaborador['identificacion'];
         $nuevoColaborador['descripcion'] = ucfirst(mb_strtolower($nuevoColaborador['descripcion']));
         $nuevoColaborador['id_usuario'] = auth()->user()->id_usuarios;
         if(array_key_exists('casoIngreso', $nuevoColaborador)){
@@ -212,6 +208,7 @@ return  $request->all();
         
         $nuevoColaborador['nombre'] = ucwords(mb_strtolower($nuevoColaborador['nombre']));
         $nuevoColaborador['apellido'] = ucwords(mb_strtolower($nuevoColaborador['apellido']));
+        $nuevoColaborador['identificacion'] = (int)$nuevoColaborador['identificacion'];
         $nuevoColaborador['descripcion'] = ucfirst(mb_strtolower($nuevoColaborador['descripcion']));
         $nuevoColaborador['id_usuario'] = auth()->user()->id_usuarios;
 

@@ -10,7 +10,7 @@ class Registro extends Model
     use HasFactory;
     protected $table = 'se_registros';
 
-    protected $fillable = ['id_persona', 'ingreso_persona', 'salida_persona', 'ingreso_vehiculo', 'salida_vehiculo', 'id_vehiculo', 'ingreso_activo', 'salida_activo', 'codigo_activo', 'codigo_activo_salida', 'descripcion', 'empresa_visitada', 'colaborador', 'id_usuario'];
+    protected $fillable = ['id_persona', 'ingreso_persona', 'salida_persona', 'ingreso_vehiculo', 'salida_vehiculo', 'id_vehiculo', 'ingreso_activo', 'salida_activo', 'codigo_activo', 'codigo_activo_salida', 'descripcion', 'empresa_visitada', 'colaborador', 'ficha', 'id_usuario'];
 
     protected $primaryKey = 'id_registros';
 

@@ -90,9 +90,9 @@ class VisitanteController extends Controller
             $this->validarVehiculo($request);
             $this->validarActivo($request);
         }
-
         $nuevoVisitante['nombre'] = ucwords(mb_strtolower($nuevoVisitante['nombre']));
         $nuevoVisitante['apellido'] = ucwords(mb_strtolower($nuevoVisitante['apellido']));
+        $nuevoVisitante['identificacion'] = (int)$nuevoVisitante['identificacion'];
         $nuevoVisitante['colaborador'] = ucwords(mb_strtolower($nuevoVisitante['colaborador']));
         $nuevoVisitante['descripcion'] = ucfirst(mb_strtolower($nuevoVisitante['descripcion']));
         $nuevoVisitante['identificador'] = strtoupper($nuevoVisitante['identificador']);
@@ -105,7 +105,7 @@ class VisitanteController extends Controller
         } if (!isset($nuevoVisitante['id_arl'])){ //saber si existe
             $nuevoVisitante['id_arl'] = null;
         }
-        
+
         if(!isset($nuevoVisitante['foto'])){ //saber si es null
             $url = null;
         } else{
@@ -221,6 +221,7 @@ class VisitanteController extends Controller
                 'descripcion' => $datos['descripcion'],
                 'empresa_visitada' => $datos['empresa_visitada'],
                 'colaborador' => $datos['colaborador'],
+                'ficha' => $datos['ficha'],
                 'id_usuario' => $datos['id_usuario'],
             ])->save(); 
 
@@ -233,6 +234,7 @@ class VisitanteController extends Controller
                 'descripcion' => $datos['descripcion'],
                 'empresa_visitada' => $datos['empresa_visitada'],
                 'colaborador' => $datos['colaborador'],
+                'ficha' => $datos['ficha'],
                 'id_usuario' => $datos['id_usuario'],
             ])->save(); 
 
@@ -247,6 +249,7 @@ class VisitanteController extends Controller
                 'descripcion' => $datos['descripcion'],
                 'empresa_visitada' => $datos['empresa_visitada'],
                 'colaborador' => $datos['colaborador'],
+                'ficha' => $datos['ficha'],
                 'id_usuario' => $datos['id_usuario'],
                 ])->save();  
 
@@ -257,6 +260,7 @@ class VisitanteController extends Controller
                 'descripcion' => $datos['descripcion'],
                 'empresa_visitada' => $datos['empresa_visitada'],
                 'colaborador' => $datos['colaborador'],
+                'ficha' => $datos['ficha'],
                 'id_usuario' => $datos['id_usuario'],
             ])->save(); 
         }

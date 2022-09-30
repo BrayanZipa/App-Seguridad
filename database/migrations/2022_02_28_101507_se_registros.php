@@ -31,6 +31,7 @@ class SeRegistros extends Migration
             $table->unsignedInteger('empresa_visitada')->nullable();
             $table->foreign('empresa_visitada')->references('id_empresas')->on('se_empresas');  
             $table->string('colaborador', 50)->nullable();
+            $table->string('ficha', 3)->nullable();
             $table->unsignedInteger('id_usuario');
             $table->foreign('id_usuario')->references('id_usuarios')->on('se_usuarios');      
             $table->timestamps();
