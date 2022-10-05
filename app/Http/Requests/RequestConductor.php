@@ -23,25 +23,15 @@ class RequestConductor extends FormRequest
      */
     public function rules()
     {
-        return [
-            'nombre' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:25|min:3',
-            'apellido' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:25|min:3',   
-            'identificacion' => 'required|numeric|unique:se_personas,identificacion,'.$this->id.',id_personas|digits_between:4,15',     
-            'tel_contacto' => 'required|numeric|digits_between:7,10',   
-            //|unique:se_personas,tel_contacto,'.$this->id.',id_personas
-            'id_eps' => 'required|integer',         
-            'id_arl' => 'required|integer',
-            'empresa_visitada' => 'required|integer',
-            'colaborador' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:50|min:3',
-            'ficha' => 'required|numeric|digits_between:1,2',
-            'descripcion' => 'nullable|max:255',
-            'foto' => 'required|string',
+        $datos = $this->all();
+        if(isset($datos['id_vehiculo'])){
+            $validacion = $this->validacionConductor();
+            $validacion['id_vehiculo'] = 'required|integer';   
+        } else{
+            $validacion = array_merge($this->validacionConductor(), $this->validacionVehiculo());
+        }
 
-            'identificador' => 'required|string|unique:se_vehiculos,identificador|alpha_num|max:15|min:6',
-            'id_tipo_vehiculo' => 'required|integer',   
-            'id_marca_vehiculo' => 'integer|nullable',
-            'foto_vehiculo'  => 'required|string',
-        ];
+        return $validacion;
     }
 
     public function messages()
@@ -107,6 +97,43 @@ class RequestConductor extends FormRequest
 
             'foto_vehiculo.required' => 'Se requiere que tome una foto del vehículo',
             'foto_vehiculo.string' => 'La información de la foto del vehículo debe estar en formato de texto',
+
+            'id_vehiculo.required' => 'Se requiere que elija una opción en el vehículo',
+            'id_vehiculo.integer' => 'El vehículo debe ser de tipo entero',
         ];
     }
+
+    /**
+     * Función que retorna las validaciones que verifican los datos del conductor
+     */
+    public function validacionConductor()
+    {
+        return[
+            'nombre' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:25|min:3',
+            'apellido' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:25|min:3',   
+            'identificacion' => 'required|numeric|unique:se_personas,identificacion,'.$this->id.',id_personas|digits_between:4,15',     
+            'tel_contacto' => 'required|numeric|digits_between:7,10',   
+            //|unique:se_personas,tel_contacto,'.$this->id.',id_personas
+            'id_eps' => 'required|integer',         
+            'id_arl' => 'required|integer',
+            'empresa_visitada' => 'required|integer',
+            'colaborador' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:50|min:3',
+            'ficha' => 'required|numeric|digits_between:1,2',
+            'descripcion' => 'nullable|max:255',
+            'foto' => 'required|string',
+        ];
+    } 
+
+    /**
+     * Función que retorna las validaciones que verifican los datos del vehículo perteneciente al conductor
+     */
+    public function validacionVehiculo()
+    {
+        return[
+            'identificador' => 'required|string|unique:se_vehiculos,identificador|alpha_num|max:15|min:6',
+            'id_tipo_vehiculo' => 'required|integer',   
+            'id_marca_vehiculo' => 'integer|nullable',
+            'foto_vehiculo'  => 'required|string',
+        ];
+    } 
 }

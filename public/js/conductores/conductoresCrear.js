@@ -72,14 +72,30 @@ $(function() {
     });
 
 
-    
+
 
     //Al hacel click en el checkBox se oculta el formulario de creación de nuevo vehículo y se muestra un select donde se listan todos los vehículos ingresados en la aplicación, esto para asignar al conductor a un vehículo ya creado en el sistema
     $('#checkVehiculo').click(function() {
         if ($('#checkVehiculo').is(':checked')) {
+            if ($('.vehiculo').hasClass('is-invalid')) {
+                $('.vehiculo').removeClass('is-invalid');
+            }
+            $('#botonActivar2').trigger('click');
+            $('.vehiculo').val('');
+            $('#selectMarcaVehiculo').val('');
+            activarSelect2Vehiculo();
+            $('.vehiculo').prop('required', false);
+            $('#selectVehiculo').prop('required', true);
             $('#filaVehiculoNuevo').css('display', 'none');
             $('#filaVehiculoExistente').css('display', '');
         } else {
+            if ($('#selectVehiculo').hasClass('is-invalid')) {
+                $('#selectVehiculo').removeClass('is-invalid');
+            }
+            $('#selectVehiculo').val('');
+            activarSelect2Vehiculo();
+            $('.vehiculo').prop('required', true);
+            $('#selectVehiculo').prop('required', false);
             $('#filaVehiculoExistente').css('display', 'none');
             $('#filaVehiculoNuevo').css('display', '');
         }
@@ -174,9 +190,7 @@ $(function() {
     
     // Función que permite saber si el navegador que se esta utilizando soporta características audio visuales
     function tieneSoporteUserMedia() {
-        return !!(navigator.getUserMedia || (navigator.mozGetUserMedia || navigator.mediaDevices
-                .getUserMedia) ||
-            navigator.webkitGetUserMedia || navigator.msGetUserMedia)
+        return !!(navigator.getUserMedia || (navigator.mozGetUserMedia || navigator.mediaDevices.getUserMedia) || navigator.webkitGetUserMedia || navigator.msGetUserMedia)
     }
 
     //Botón que captura una fotografía desde el formulario de crear visitante con la cámara web del computador donde este abierta la aplicación

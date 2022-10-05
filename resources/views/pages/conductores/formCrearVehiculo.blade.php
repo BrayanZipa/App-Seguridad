@@ -19,7 +19,7 @@
                         <label for="checkVehiculo">
                             ¿El vehículo ya esta ingresado en el sistema?
                         </label>
-                        <input type="checkbox" id="checkVehiculo" name="vehiculoExistente">
+                        <input type="checkbox" id="checkVehiculo">
                     </div><br>
                 </div>
             </div>
@@ -28,8 +28,7 @@
             <div class="col-md-6 col-sm-12">
                 <div class="form-group">
                     <label for="selectVehiculo">Ingrese el vehículo</label>
-                    <select id="selectVehiculo" class="form-control {{ $errors->has('id_vehiculo') ? 'is-invalid' : '' }}"
-                        style="width: 100%;" name="id_vehiculo" required>
+                    <select id="selectVehiculo" class="conductor form-control {{ $errors->has('id_vehiculo') ? 'is-invalid' : '' }}" style="width: 100%;" name="id_vehiculo">
                         <option selected="selected" value="" disabled></option>
                         @foreach ($vehiculos as $vehiculo)
                             <option value="{{ $vehiculo->id_vehiculos }}"
@@ -52,7 +51,7 @@
                 <div class="form-group">
                     <label for="inputFotoVehiculo">Fotografía</label>
 
-                    <input type="hidden" id="inputFotoVehiculo" class="conductor {{ $errors->has('foto_vehiculo') ? 'is-invalid' : '' }}" name="foto_vehiculo" value="{{ old('foto_vehiculo') }}">
+                    <input type="hidden" id="inputFotoVehiculo" class="conductor vehiculo {{ $errors->has('foto_vehiculo') ? 'is-invalid' : '' }}" name="foto_vehiculo" value="{{ old('foto_vehiculo') }}">
 
                     <video src="" id="video2" class="img-fluid rounded" style="display: none"></video>
                     <canvas id="canvas2" class="img-fluid rounded" style="display: none"></canvas>
@@ -74,7 +73,7 @@
                     <div class="col-md-6 col-sm-12">
                         <div class="form-group">
                             <label for="inputNumeroIdentificador">Ingrese el número identificador del vehículo</label>
-                            <input type="text" class="conductor form-control {{ $errors->has('identificador') ? 'is-invalid' : '' }}" id="inputNumeroIdentificador"
+                            <input type="text" class="conductor vehiculo form-control {{ $errors->has('identificador') ? 'is-invalid' : '' }}" id="inputNumeroIdentificador"
                                 name="identificador" value="{{ old('identificador') }}" autocomplete="off"
                                 placeholder="Número identificador" required>
                                 @if ($errors->has('identificador')) 
@@ -87,7 +86,7 @@
                     <div class="col-md-6 col-sm-12">
                         <div class="form-group">
                             <label for="selectTipoVehiculo">Ingrese el tipo de vehículo</label>
-                            <select id="selectTipoVehiculo" class="conductor form-control {{ $errors->has('id_tipo_vehiculo') ? 'is-invalid' : '' }}"
+                            <select id="selectTipoVehiculo" class="conductor vehiculo form-control {{ $errors->has('id_tipo_vehiculo') ? 'is-invalid' : '' }}"
                                 style="width: 100%;" name="id_tipo_vehiculo" required>
                                 <option selected="selected" value="" disabled></option>
                                 @foreach ($tipoVehiculos as $tipoVehiculo)

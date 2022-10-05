@@ -100,7 +100,7 @@ class RequestRegistros extends FormRequest
             'id_empresa.integer' => 'La Empresa debe ser de tipo entero',
 
             'id_vehiculo.required' => 'Se requiere que elija una opción en el vehículo',
-            'id_vehiculo.integer' => 'El Vehículo debe ser de tipo entero',
+            'id_vehiculo.integer' => 'El vehículo debe ser de tipo entero',
 
             'colaborador.required' => 'Se requiere que ingrese al colaborador a cargo',
             'colaborador.string' => 'El colaborador debe ser de tipo texto',

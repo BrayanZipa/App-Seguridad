@@ -25,12 +25,13 @@ class ConductorController extends Controller
     protected $conductores;
     protected $eps;
     protected $arl;
+    protected $vehiculos;
     protected $tipoVehiculos;
     protected $marcaVehiculos;
     protected $personasVehiculos;
     protected $empresas;
 
-    public function __construct(User $usuarios, Persona $conductores, Eps $eps, Arl $arl, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, PersonaVehiculo $personasVehiculos, Empresa $empresas){
+    public function __construct(User $usuarios, Persona $conductores, Eps $eps, Arl $arl, Vehiculo $vehiculos, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, PersonaVehiculo $personasVehiculos, Empresa $empresas){
         $this->usuarios = $usuarios;
         $this->conductores = $conductores;
         $this->eps = $eps;
@@ -39,6 +40,7 @@ class ConductorController extends Controller
         $this->marcaVehiculos = $marcaVehiculos;
         $this->personasVehiculos = $personasVehiculos;
         $this->empresas = $empresas;
+        $this->vehiculos = $vehiculos;
     }
 
     /**
@@ -77,6 +79,9 @@ class ConductorController extends Controller
     public function store(RequestConductor $request)
     {
         $nuevoConductor = $request->all();
+
+        // return $nuevoConductor;
+
         $nuevoConductor['nombre'] = ucwords(mb_strtolower($nuevoConductor['nombre']));
         $nuevoConductor['apellido'] = ucwords(mb_strtolower($nuevoConductor['apellido']));
         $nuevoConductor['identificacion'] = (int)$nuevoConductor['identificacion'];
@@ -110,27 +115,26 @@ class ConductorController extends Controller
             'tel_contacto' => $nuevoConductor['tel_contacto'],
         ]);
         $conductor->save();
-    
-        [$mensajeVehiculo, $id_vehiculo] = $this->store2($nuevoConductor, $conductor->id_personas);
-        $this->store3($nuevoConductor, $conductor->id_personas, $id_vehiculo);
-        $modal = [$conductor->nombre.' '.$conductor->apellido, $mensajeVehiculo];
-        
+
+        if(isset($nuevoConductor['id_vehiculo'])){ 
+            PersonaVehiculo::create([
+                'id_vehiculo' => $nuevoConductor['id_vehiculo'],
+                'id_persona' => $conductor->id_personas, 
+            ])->save();
+            $this->store3($nuevoConductor, $conductor->id_personas, $nuevoConductor['id_vehiculo']);
+            $modal = [$conductor->nombre.' '.$conductor->apellido, $this->vehiculos->obtenerVehiculo($nuevoConductor['id_vehiculo'])->identificador, 'asignado'];
+        } else {
+            [$mensajeVehiculo, $id_vehiculo] = $this->store2($nuevoConductor, $conductor->id_personas);
+            $this->store3($nuevoConductor, $conductor->id_personas, $id_vehiculo);
+            $modal = [$conductor->nombre.' '.$conductor->apellido, $mensajeVehiculo, 'creado'];
+        }
+
         return redirect()->action([ConductorController::class, 'create'])->with('crear_conductor', $modal);
     }
 
-    // public function prueba()
-    // {
-    //     PersonaVehiculo::create([
-    //         'id_persona' => $id_persona,
-    //         'id_vehiculo' => $vehiculo->id_vehiculos,
-    //     ])->save();
-    // }
-
-
-
-
-
-    //Función que permite registrar un nuevo vehículo creado desde el módulo de conductores
+    /**
+     * Función que permite registrar un nuevo vehículo creado desde el módulo de conductores
+     */
     public function store2($datos, $id_persona)
     {
         if(!isset($datos['foto_vehiculo'])){ //saber si es null
@@ -167,7 +171,9 @@ class ConductorController extends Controller
         return [$vehiculo->identificador, $vehiculo->id_vehiculos];
     }
 
-    //Función que permite hacer un registro de la entrada de un conductor al momento que se crea un nuevo conductor en la base de datos
+    /**
+     * Función que permite hacer un registro de la entrada de un conductor al momento que se crea un nuevo conductor en la base de datos
+     */
     public function store3($datos, $id_persona, $id_vehiculo)
     {
         Registro::create([
