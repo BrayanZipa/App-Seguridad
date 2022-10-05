@@ -88,28 +88,34 @@
                                             </div>
                                         </div>
                                     </div>                                                   
-                                    <div class="row"> 
-                                        <div id="infoVisitanteConductor" class="col-md-6 col-sm-12">
-                                            <div class="row"> 
-                                                <div class="col-md-6 col-sm-6">
-                                                    <div class="form-group">
-                                                        <div class="description-block text-left">
-                                                            <h5 class="description-header mb-1">Empresa que visita</h5>                                         
-                                                            <span id="spanEmpresa"></span>
-                                                        </div>                                         
-                                                    </div>
-                                                </div>                             
-                                                <div class="col-md-6 col-sm-6">
-                                                    <div class="form-group">
-                                                        <div class="description-block text-left">
-                                                            <h5 class="description-header mb-1">Colaborador a cargo</h5>                                         
-                                                            <span id="spanColaborador"></span>
-                                                        </div>                                         
-                                                    </div>
-                                                </div>
+                                    <div id="infoVisitanteConductor" class="row"> 
+                                        <div class="columnaPanel col-md-3 col-sm-6">
+                                            <div class="form-group">
+                                                <div class="description-block text-left">
+                                                    <h5 class="description-header mb-1">Empresa que visita</h5>                                         
+                                                    <span id="spanEmpresa"></span>
+                                                </div>                                         
                                             </div>
-                                        </div>
-                                        <div id="columnaDescripcion" class="col-md-6 col-sm-12">
+                                        </div>                                    
+                                        <div class="columnaPanel col-md-3 col-sm-6">
+                                            <div class="form-group">
+                                                <div class="description-block text-left">
+                                                    <h5 class="description-header mb-1">Colaborador a cargo</h5>                                         
+                                                    <span id="spanColaborador"></span>
+                                                </div>                                         
+                                            </div>
+                                        </div>       
+                                        <div class="columnaPanel col-md-3 col-sm-12">
+                                            <div class="form-group">
+                                                <div class="description-block text-left">
+                                                    <h5 class="description-header mb-1">Ficha de entrada</h5>                                         
+                                                    <span id="spanFicha"></span>
+                                                </div>                                         
+                                            </div>
+                                        </div>       
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
                                             <div class="form-group">
                                                 <div class="description-block text-left">
                                                     <h5 class="description-header mb-1">Descripción</h5>                                         

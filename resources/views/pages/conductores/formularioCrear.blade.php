@@ -161,7 +161,19 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-12 col-sm-12">
+                    <div class="col-md-4 col-sm-12">
+                        <div class="form-group">
+                            <label for="inputFicha">Ingrese la ficha otorgada</label>
+                            <input type="text" class="conductor form-control {{ $errors->has('ficha') ? ' is-invalid ' : '' }}" id="inputFicha" name="ficha"
+                                value="{{ old('ficha') }}" autocomplete="off" placeholder="Ficha" required>
+                                @if ($errors->has('ficha')) 
+                                    <div class="invalid-feedback">
+                                        {{ $errors->first('ficha') }}
+                                    </div>          
+                                @endif      
+                        </div>
+                    </div>
+                    <div class="col-md-8 col-sm-12">
                         <div class="form-group">
                             <label for="inputDescripcion">Ingrese una descripción</label>
                             <textarea class="conductor form-control {{ $errors->has('descripcion') ? ' is-invalid ' : '' }}" name="descripcion" id="inputDescripcion">

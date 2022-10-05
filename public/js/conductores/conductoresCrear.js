@@ -24,6 +24,15 @@ $(function() {
 
     //Permite que a los select de selección Tipo de vehículo y Marca de vehículo se les asigne una barra de búsqueda haciendolos más dinámicos            
     function activarSelect2Vehiculo() {
+        $('#selectVehiculo').select2({
+            theme: 'bootstrap4',
+            placeholder: 'Seleccione el vehículo',
+            language: {
+                noResults: function() {
+                    return 'No hay resultado';
+                }
+            }
+        });
         $('#selectTipoVehiculo').select2({
             theme: 'bootstrap4',
             placeholder: 'Seleccione el tipo',
@@ -61,6 +70,23 @@ $(function() {
         activarSelect2Conductor();
         activarSelect2Vehiculo();
     });
+
+
+    
+
+    //Al hacel click en el checkBox se oculta el formulario de creación de nuevo vehículo y se muestra un select donde se listan todos los vehículos ingresados en la aplicación, esto para asignar al conductor a un vehículo ya creado en el sistema
+    $('#checkVehiculo').click(function() {
+        if ($('#checkVehiculo').is(':checked')) {
+            $('#filaVehiculoNuevo').css('display', 'none');
+            $('#filaVehiculoExistente').css('display', '');
+        } else {
+            $('#filaVehiculoExistente').css('display', 'none');
+            $('#filaVehiculoNuevo').css('display', '');
+        }
+    });
+
+
+
 
     //Botón que da acceso a la cámara web del computador donde este abierta la aplicación desde el formulario crear conductor
     $('#botonActivar').click(function() {

@@ -458,17 +458,13 @@ $(function() {
     }
 
     //Función que permite cambiar el tamaño del espacio que va a ocupar las imagenes en los registros, para los visitantes y conductores la fotografía ocupa más espacio y para los colaboradores la imagen del logo ocupa menos espacio
-    function establecerImagen(tipoPersona, columnaFoto, columnaInformacion, columnaDescripcion) {
+    function establecerImagen(tipoPersona, columnaFoto, columnaInformacion) {
         if(tipoPersona == 1 || tipoPersona == 4){
             if($(columnaFoto).hasClass('col-md-2')){
                 $(columnaFoto).removeClass('col-md-2');
                 $(columnaFoto).addClass('col-md-3');
                 $(columnaInformacion).removeClass('col-md-10');
                 $(columnaInformacion).addClass('col-md-9'); 
-            }
-            if($(columnaDescripcion).hasClass('col-md-6')){
-                $(columnaDescripcion).removeClass('col-md-6');
-                $(columnaDescripcion).addClass('col-md-4');
             }
 
         } else {
@@ -477,10 +473,6 @@ $(function() {
                 $(columnaFoto).addClass('col-md-2');
                 $(columnaInformacion).removeClass('col-md-9');
                 $(columnaInformacion).addClass('col-md-10');
-            }
-            if($(columnaDescripcion).hasClass('col-md-4')){
-                $(columnaDescripcion).removeClass('col-md-4');
-                $(columnaDescripcion).addClass('col-md-6');
             }
         } 
     }
@@ -518,8 +510,6 @@ $(function() {
     $('#infoSalidaActivo').css('display', 'none');
     $('.columnaPanel').removeClass('col-md-3');
     $('.columnaPanel').addClass('col-md-4');
-    $('#infoVisitanteConductor').removeClass('col-md-6');
-    $('#infoVisitanteConductor').addClass('col-md-8');
 
     $('#panel').addClass('mb-4 mx-n1');
     $('#cardHeader').addClass('pb-1');
@@ -593,20 +583,21 @@ $(function() {
         }
 
         if(data.id_tipo_persona == 1 || data.id_tipo_persona == 4){
-            establecerImagen(data.id_tipo_persona, '#columnaFoto', '#columnaInformacion', '#columnaDescripcion');
+            establecerImagen(data.id_tipo_persona, '#columnaFoto', '#columnaInformacion');
             $('#divLogoEmpresa').css('display', 'none');
             $('#fotoPersona').attr('src', '../' + data.foto).on('load', function() {
                 $('#divFotoPersona').css('display', 'block');
             });       
             $('#spanEmpresa').text(data.empresavisitada); 
             $('#spanColaborador').text(data.colaborador); 
+            $('#spanFicha').text(data.ficha); 
             parametrosPanel(data.id_tipo_persona, '#infoColaborador', '#infoVisitanteConductor', '#tabInfoRegistro', '#tituloTelefono');
             if(data.id_tipo_persona == 1){
                 $('#divActivo').css('display', 'none');
             }      
 
         } else if(data.id_tipo_persona == 2 || data.id_tipo_persona == 3){
-            establecerImagen(data.id_tipo_persona, '#columnaFoto', '#columnaInformacion', '#columnaDescripcion');
+            establecerImagen(data.id_tipo_persona, '#columnaFoto', '#columnaInformacion');
             var urlLogo = '../assets/imagenes/' + data.empresa.toLowerCase() +'.png';
             $('#divFotoPersona').css('display', 'none');
             $('#logoEmpresa').attr('src', urlLogo).on('load', function() {
@@ -656,17 +647,18 @@ $(function() {
         $('#spanMarca2').text(data.marca);
 
         if(data.id_tipo_persona == 1 || data.id_tipo_persona == 4){
-            establecerImagen(data.id_tipo_persona, '#columnaFoto2', '#columnaInformacion2', '#columnaDescripcion2');
+            establecerImagen(data.id_tipo_persona, '#columnaFoto2', '#columnaInformacion2');
             $('#divLogoEmpresa2').css('display', 'none');
             $('#fotoPersona2').attr('src', '../' + data.foto).on('load', function() {
                 $('#divFotoPersona2').css('display', 'block');
             });       
             $('#spanEmpresa2').text(data.empresavisitada); 
             $('#spanColaborador2').text(data.colaborador);
+            $('#spanFicha2').text(data.ficha); 
             parametrosPanel(data.id_tipo_persona, '#infoColaborador2', '#infoVisitanteConductor2', '#tabInfoRegistro2', '#tituloTelefono2');
 
         } else if(data.id_tipo_persona == 2 || data.id_tipo_persona == 3){
-            establecerImagen(data.id_tipo_persona, '#columnaFoto2', '#columnaInformacion2', '#columnaDescripcion2');
+            establecerImagen(data.id_tipo_persona, '#columnaFoto2', '#columnaInformacion2');
             var urlLogo = '../assets/imagenes/' + data.empresa.toLowerCase() +'.png';
             $('#divFotoPersona2').css('display', 'none');
             $('#logoEmpresa2').attr('src', urlLogo).on('load', function() {

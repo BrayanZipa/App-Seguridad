@@ -93,7 +93,7 @@ class RequestPersona extends FormRequest
 
             'ficha.required' => 'Se requiere que ingrese la ficha',
             'ficha.numeric' => 'La ficha debe ser un valor númerico y no debe contener espacios',
-            'ficha.digits_between' => 'La ficha debe tener máximo 3 dígitos',
+            'ficha.digits_between' => 'La ficha debe tener máximo 2 dígitos',
 
             'descripcion.max' => 'La descripción solo puede tener un máximo de 255 caracteres',   
 
@@ -136,7 +136,7 @@ class RequestPersona extends FormRequest
         return[
             'empresa_visitada' => 'required|integer',
             'colaborador' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:50|min:3',
-            'ficha' => 'required|numeric|digits_between:1,3',
+            'ficha' => 'required|numeric|digits_between:1,2',
             'descripcion' => 'nullable|max:255'
         ];
     } 

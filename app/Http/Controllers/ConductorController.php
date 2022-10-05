@@ -27,15 +27,17 @@ class ConductorController extends Controller
     protected $arl;
     protected $tipoVehiculos;
     protected $marcaVehiculos;
+    protected $personasVehiculos;
     protected $empresas;
 
-    public function __construct(User $usuarios, Persona $conductores, Eps $eps, Arl $arl, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, Empresa $empresas){
+    public function __construct(User $usuarios, Persona $conductores, Eps $eps, Arl $arl, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, PersonaVehiculo $personasVehiculos, Empresa $empresas){
         $this->usuarios = $usuarios;
         $this->conductores = $conductores;
         $this->eps = $eps;
         $this->arl = $arl;
         $this->tipoVehiculos = $tipoVehiculos;
         $this->marcaVehiculos = $marcaVehiculos;
+        $this->personasVehiculos = $personasVehiculos;
         $this->empresas = $empresas;
     }
 
@@ -62,8 +64,8 @@ class ConductorController extends Controller
     {
         $exitCode = Artisan::call('cache:clear');   
         $this->usuarios->asiganrRol(auth()->user());
-        [$eps, $arl, $tipoVehiculos, $marcaVehiculos, $empresas] = $this->obtenerModelos();
-        return view('pages.conductores.crear', compact('eps', 'arl', 'tipoVehiculos', 'marcaVehiculos', 'empresas'));
+        [$eps, $arl, $vehiculos, $tipoVehiculos, $marcaVehiculos, $empresas] = $this->obtenerModelos();
+        return view('pages.conductores.crear', compact('eps', 'arl', 'vehiculos', 'tipoVehiculos', 'marcaVehiculos', 'empresas'));
     }
 
     /**
@@ -116,6 +118,18 @@ class ConductorController extends Controller
         return redirect()->action([ConductorController::class, 'create'])->with('crear_conductor', $modal);
     }
 
+    // public function prueba()
+    // {
+    //     PersonaVehiculo::create([
+    //         'id_persona' => $id_persona,
+    //         'id_vehiculo' => $vehiculo->id_vehiculos,
+    //     ])->save();
+    // }
+
+
+
+
+
     //Función que permite registrar un nuevo vehículo creado desde el módulo de conductores
     public function store2($datos, $id_persona)
     {
@@ -164,6 +178,7 @@ class ConductorController extends Controller
             'descripcion' => $datos['descripcion'],
             'empresa_visitada' => $datos['empresa_visitada'],
             'colaborador' => $datos['colaborador'],
+            'ficha' => $datos['ficha'],
             'id_usuario' => $datos['id_usuario'],
         ])->save(); 
     }
@@ -191,11 +206,12 @@ class ConductorController extends Controller
     {
         $eps = $this->eps->obtenerEps();
         $arl = $this->arl->obtenerArl();
+        $vehiculos = $this->personasVehiculos->informacionVehiculos();
         $tipoVehiculos = $this->tipoVehiculos->obtenerTipoVehiculos();
         $marcaVehiculos = $this->marcaVehiculos->obtenerMarcaVehiculos();
         $empresas = $this->empresas->obtenerEmpresas();
 
-        return [$eps, $arl, $tipoVehiculos, $marcaVehiculos, $empresas];
+        return [$eps, $arl, $vehiculos, $tipoVehiculos, $marcaVehiculos, $empresas];
     }
 
     /**

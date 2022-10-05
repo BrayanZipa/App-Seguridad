@@ -12,6 +12,42 @@
 
     <div class="card-body">
         <div class="row">
+            <div class="col-12">
+                <!-- checkbox -->
+                <div class="form-group clearfix mb-1">
+                    <div class="icheck-primary d-inline">
+                        <label for="checkVehiculo">
+                            ¿El vehículo ya esta ingresado en el sistema?
+                        </label>
+                        <input type="checkbox" id="checkVehiculo" name="vehiculoExistente">
+                    </div><br>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="filaVehiculoExistente" style="display: none">
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label for="selectVehiculo">Ingrese el vehículo</label>
+                    <select id="selectVehiculo" class="form-control {{ $errors->has('id_vehiculo') ? 'is-invalid' : '' }}"
+                        style="width: 100%;" name="id_vehiculo" required>
+                        <option selected="selected" value="" disabled></option>
+                        @foreach ($vehiculos as $vehiculo)
+                            <option value="{{ $vehiculo->id_vehiculos }}"
+                                {{ $vehiculo->id_vehiculos == old('id_vehiculo') ? 'selected' : '' }}>
+                                {{ $vehiculo->tipo.' '.($vehiculo->marca =! null ? $vehiculo->marca : '').' '.$vehiculo->identificador }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @if ($errors->has('id_vehiculo')) 
+                        <div class="invalid-feedback">
+                            {{ $errors->first('id_vehiculo') }}
+                        </div>            
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        <div class="row" id="filaVehiculoNuevo">
             <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                     <label for="inputFotoVehiculo">Fotografía</label>
@@ -51,7 +87,7 @@
                     <div class="col-md-6 col-sm-12">
                         <div class="form-group">
                             <label for="selectTipoVehiculo">Ingrese el tipo de vehículo</label>
-                            <select id="selectTipoVehiculo" class="conductor select2bs4 form-control {{ $errors->has('id_tipo_vehiculo') ? 'is-invalid' : '' }}"
+                            <select id="selectTipoVehiculo" class="conductor form-control {{ $errors->has('id_tipo_vehiculo') ? 'is-invalid' : '' }}"
                                 style="width: 100%;" name="id_tipo_vehiculo" required>
                                 <option selected="selected" value="" disabled></option>
                                 @foreach ($tipoVehiculos as $tipoVehiculo)
@@ -73,7 +109,7 @@
                     <div class="col-md-6 col-sm-12">
                         <div class="form-group">
                             <label for="selectMarcaVehiculo">Ingrese la marca del vehículo</label>
-                            <select id="selectMarcaVehiculo" class="conductor form-control select2bs4" style="width: 100%;"
+                            <select id="selectMarcaVehiculo" class="conductor form-control" style="width: 100%;"
                                 name="id_marca_vehiculo">
                                 <option selected="selected" value="" disabled></option>
                                 @foreach ($marcaVehiculos as $marcaVehiculo)

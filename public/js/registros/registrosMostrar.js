@@ -337,6 +337,7 @@ $(function() {
             $('#infoColaborador').css('display', 'none');            
             $('#spanEmpresa').text(data.empresavisitada); 
             $('#spanColaborador').text(data.colaborador);
+            $('#spanFicha').text(data.ficha); 
             $('#infoVisitanteConductor').css('display', '');  
             
             $('#divLogoEmpresa').css('display', 'none');

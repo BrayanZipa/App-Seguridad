@@ -59,7 +59,7 @@
                                         </div>
                                     </div>                                                   
                                     <div class="row"> 
-                                        <div class="col-md-6 col-sm-12">
+                                        <div class="col-12">
                                             <div class="form-group">
                                                 <div class="description-block text-left">
                                                     <h5 class="description-header mb-1">Descripción</h5>                                         

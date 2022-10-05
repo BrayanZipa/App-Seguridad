@@ -28,8 +28,9 @@ class RegistroController extends Controller
     protected $empresas;
     protected $activos;
     protected $vehiculos;
+    protected $personasVehiculos;
     
-    public function __construct(User $usuarios, Registro $registros, TipoPersona $tipoPersonas, Persona $personas, Eps $eps, Arl $arl, Empresa $empresas, Activo $activos, Vehiculo $vehiculos){
+    public function __construct(User $usuarios, Registro $registros, TipoPersona $tipoPersonas, Persona $personas, Eps $eps, Arl $arl, Empresa $empresas, Activo $activos, Vehiculo $vehiculos, PersonaVehiculo $personasVehiculos){
         $this->usuarios = $usuarios;
         $this->registros = $registros;
         $this->tipoPersonas = $tipoPersonas;
@@ -39,6 +40,7 @@ class RegistroController extends Controller
         $this->empresas = $empresas;
         $this->activos = $activos;
         $this->vehiculos = $vehiculos;
+        $this->personasVehiculos = $personasVehiculos;
     }
 
     /**
@@ -181,12 +183,14 @@ class RegistroController extends Controller
             $datos['ingreso_activo'] = null;
             $datos['empresa_visitada'] = null;
             $datos['colaborador'] = null;
+            $datos['ficha'] = null;
         }
         else if($datos['casoRegistro'] == 'colaboradorConActivo'){
             $datos['codigo_activo'] = $datos['codigo'];
             $datos['ingreso_activo'] = date('Y-m-d H:i:s');
             $datos['empresa_visitada'] = null;
             $datos['colaborador'] = null;
+            $datos['ficha'] = null;
         }
 
         Registro::create([
@@ -199,6 +203,7 @@ class RegistroController extends Controller
             'descripcion' => $datos['descripcion'],
             'empresa_visitada' => $datos['empresa_visitada'],
             'colaborador' => $datos['colaborador'],
+            'ficha' => $datos['ficha'],
             'id_usuario' => $datos['id_usuario'],
         ])->save(); 
 
@@ -270,16 +275,7 @@ class RegistroController extends Controller
      */
     public function getVehiculos(Request $request){
         $id = $request->input('persona');
-        try {       
-            $vehiculos = PersonaVehiculo::select('vehiculos.*', 'tipo.tipo', 'marca.marca')
-            ->leftjoin('se_vehiculos AS vehiculos', 'se_per_vehi.id_vehiculo', '=', 'vehiculos.id_vehiculos')
-            ->leftjoin('se_tipo_vehiculos AS tipo', 'vehiculos.id_tipo_vehiculo', '=', 'tipo.id_tipo_vehiculos')
-            ->leftjoin('se_marca_vehiculos AS marca', 'vehiculos.id_marca_vehiculo', '=', 'marca.id_marca_vehiculos')
-            ->where('id_persona', $id)->get();
-        } catch (\Throwable $e) {
-            return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
-        }
-        return response()->json($vehiculos);
+        return response()->json($this->personasVehiculos->informacionVehiculos($id));
     }
 
     /**
