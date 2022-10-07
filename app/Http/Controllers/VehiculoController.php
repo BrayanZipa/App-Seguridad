@@ -19,6 +19,7 @@ class VehiculoController extends Controller
 {
     protected $usuarios;
     protected $personas;
+    protected $vehiculos;
     protected $tipoVehiculos;
     protected $marcaVehiculos;
     protected $tipoPersonas;
@@ -26,10 +27,11 @@ class VehiculoController extends Controller
     /**
      * Contructor que inicializa todos los modelos
      */
-    public function __construct(User $usuarios, Persona $personas, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, TipoPersona $tipoPersonas)
+    public function __construct(User $usuarios, Persona $personas, PersonaVehiculo $vehiculos, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, TipoPersona $tipoPersonas)
     {
         $this->usuarios = $usuarios;
         $this->personas = $personas;
+        $this->vehiculos = $vehiculos;
         $this->tipoVehiculos = $tipoVehiculos;
         $this->marcaVehiculos = $marcaVehiculos;
         $this->tipoPersonas = $tipoPersonas;
@@ -44,9 +46,10 @@ class VehiculoController extends Controller
     {
         $exitCode = Artisan::call('cache:clear');
         $this->usuarios->asiganrRol(auth()->user());
+        $vehiculos = $this->vehiculos->informacionVehiculos();
         [$tipoVehiculos, $marcaVehiculos, $tipoPersonas] = $this->obtenerModelos();
-
-        return view('pages.vehiculos.mostrar', compact('tipoVehiculos', 'marcaVehiculos', 'tipoPersonas'));
+        
+        return view('pages.vehiculos.mostrar', compact('vehiculos', 'tipoVehiculos', 'marcaVehiculos', 'tipoPersonas'));
     }
 
     /**
@@ -107,6 +110,35 @@ class VehiculoController extends Controller
         ])->save();
 
         return redirect()->action([VehiculoController::class, 'create'])->with('crear_vehiculo', $vehiculo->identificador);
+    }
+
+    /**
+     * Función que permite asignar un vehículo a una persona, ambos ya deben estar previamente creados en el sistema.
+     */
+    public function asignarVehiculo(Request $request)
+    {
+        $this->validate($request, [
+            'vehiculo_id' => 'required|integer',
+            'persona_id' => 'required|integer',
+        ],[
+            'vehiculo_id.required' => 'Se requiere que elija una opción en el vehículo',
+            'vehiculo_id.integer' => 'El vehículo debe ser de tipo entero',
+            'persona_id.required' => 'Se requiere que elija una opción en la persona',
+            'persona_id.integer' => 'La persona debe ser de tipo entero',
+        ]);
+
+        $datos = $request->all();
+        if(!PersonaVehiculo::where('id_persona', $datos['persona_id'])->where('id_vehiculo', $datos['vehiculo_id'])->exists()){
+            PersonaVehiculo::create([
+                'id_vehiculo' => $datos['vehiculo_id'],
+                'id_persona' => $datos['persona_id'],
+            ])->save();
+        } 
+
+        $vehiculo = Vehiculo::findOrFail($datos['vehiculo_id'])->identificador;
+        $persona = $this->personas->obtenerPersona($datos['persona_id']);
+
+        return redirect()->action([VehiculoController::class, 'index'])->with('asignar_vehiculo', [$vehiculo, $persona->nombre.' '.$persona->apellido]);
     }
 
     /**

@@ -214,9 +214,35 @@ class RegistroController extends Controller
     * Función que recibe una petición de Ajax para registrar la salida de un tipo de persona en la base de datos teniendo en cuenta si se registra la salida de un vehículo, un activo o solo la persona.
     */
     public function registrarSalida(Request $request, $id){
+        // $registro = Registro::findOrFail($id);
+        // $persona = Persona::findOrFail($registro->id_persona);
+
+        // if($persona->id_tipo_persona != 3){
+        //     try {
+        //         $vehiculoSinSalida = Registro::where('id_persona', $registro->id_persona)->whereNotNull('salida_persona')->whereNotNull('ingreso_vehiculo')->whereNull('salida_vehiculo')->latest('ingreso_vehiculo')->exists();
+        //     } catch (\Throwable $th) {
+        //         return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
+        //     }
+
+        //     if($vehiculoSinSalida){
+
+        //     }
+        // }
+
+        // try {
+        //     $vehiculoSinSalida = Registro::where('id_persona', $registro->id_persona)->whereNotNull('salida_persona')->whereNotNull('ingreso_vehiculo')->whereNull('salida_vehiculo')->latest('ingreso_vehiculo')->exists();
+        //     $activoSinSalida = Registro::where('id_persona', $registro->id_persona)->whereNotNull('salida_persona')->whereNotNull('ingreso_activo')->whereNull('salida_activo')->latest('ingreso_activo')->exists();
+        // } catch (\Throwable $th) {
+        //     return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
+        // }
+
+        // return $activoSinSalida;
+
+
+
+
         $registro = Registro::findOrFail($id);
         $tiempoActual = date('Y-m-d H:i:s');
-
         $datos = ['salida_persona' => $tiempoActual];
         if($request['registroSalida'] == 'salidaVehiculoActivo' || $request['registroSalida'] == 'salidaPersonaActivo' || $request['registroSalida'] == 'salidaActivo'){
             if ($request['registroSalida'] == 'salidaVehiculoActivo') {
@@ -275,7 +301,21 @@ class RegistroController extends Controller
      */
     public function getVehiculos(Request $request){
         $id = $request->input('persona');
-        return response()->json($this->personasVehiculos->informacionVehiculos($id));
+        try {
+            $vehiculosSinSalida = Registro::whereNotNull('salida_persona')->whereNotNull('ingreso_vehiculo')->whereNull('salida_vehiculo')->get();
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
+        }
+        $vehiculos = $this->personasVehiculos->informacionVehiculos($id);
+
+        foreach ($vehiculosSinSalida as $vehiculoSinSalida) {
+            foreach ($vehiculos as $indice => $vehiculo) {
+                if($vehiculo->id_vehiculos == $vehiculoSinSalida->id_vehiculo){
+                    unset($vehiculos[$indice]);
+                }
+            }
+        }
+        return response()->json($vehiculos);
     }
 
     /**

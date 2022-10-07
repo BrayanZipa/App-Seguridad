@@ -39,6 +39,12 @@
         @include('pages.vehiculos.header')
     </div>
 
+    @can('editarVehiculo')
+        <section id="formAsignarVehiculo" class="content-header mb-n4">
+            @include('pages.vehiculos.formularioAsignar')
+        </section>
+    @endcan
+
     <section id="formEditarVehiculo" class="content-header mb-n4" style="display: none">
         @include('pages.vehiculos.formularioEditar')
     </section>

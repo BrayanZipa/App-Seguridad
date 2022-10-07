@@ -862,7 +862,10 @@ $(function() {
                 codigo: datosRegistro.nuevoActivo,
                 registroSalida: casoSalida,      
             },
-            success: function() {
+            success: function(res) {
+
+                // console.log(res);
+                
                 $('#btnFiltros').trigger('click');
                 $('#informacionRegistro').css('display', 'none'); 
 
@@ -907,7 +910,9 @@ $(function() {
             data: {
                 registroSalida: 'salidaVehiculo',
             },
-            success: function() {
+            success: function(res) {
+
+                // console.log(res);
                 $('#btnFiltros2').trigger('click');
                 $('#infoRegistroVehiculo').css('display', 'none'); 
                 $('#textoVehiculo').text(datosRegistroVehiculo.vehiculo);

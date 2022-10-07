@@ -21,6 +21,24 @@
         <!-- /.modal-dialog -->
     </div>
 
+@elseif (session('asignar_vehiculo'))
+    <div class="modal fade" id="modal-asignar-vehiculo">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-orange">
+                    <div class="d-flex justify-content-center">
+                        <h4 class="modal-title">ASIGNACIÓN COMPLETADA</h4>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <p>Se ha asignado el vehículo <b>{{ session('asignar_vehiculo')[0] }}</b> a la persona <b>{{ session('asignar_vehiculo')[1] }}</b> exitosamente.</p>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
 @elseif (session('editar_vehiculo'))
     <div class="modal fade" id="modal-editar-vehiculo">
         <div class="modal-dialog ">

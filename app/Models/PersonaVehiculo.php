@@ -27,7 +27,7 @@ class PersonaVehiculo extends Model
     }
 
     /**
-     * Función que permite retornar los datos de los vehículos unidos a su correspondiente marca y tipo de vehículo asignados, esto donde tengan un id en común.
+     * Función que permite retornar los datos de los vehículos unidos a su correspondiente marca y tipo de vehículo asignados, dependiendo del caso también retorna a los propietarios de los vehículos, esto donde tengan un id en común.
      */
     public function informacionVehiculos($id = null){
         try { 

@@ -79,6 +79,10 @@ $(function() {
     //Se elije una fila de la tabla y se toma la información del vehículo para mostrarla en un formulario y permitir actualizarla
     $('#tabla_vehiculos tbody').on('click', '.editar_vehiculo', function () { 
         var data = $('#tabla_vehiculos').DataTable().row(this).data(); 
+
+        if($('#btnComprimir').hasClass('fa-minus')){
+            $('#btnComprimirAsignacion').trigger('click');
+        }
         
         if($('.vehiculo').hasClass('is-invalid')){
             $('.vehiculo').removeClass('is-invalid');
@@ -95,9 +99,31 @@ $(function() {
         $('#personaAnterior').val(data.id_persona);
         selectMarcaVehiculo(); 
         activarSelect2();
-        selectPropietario(data.id_persona); 
+        selectPropietario('#selectPersona', $('#selectTipoPersona option:selected').val(), data.id_persona); 
         $('#formEditarVehiculo').css('display', 'block');
     });
+    
+    //Permite que a los select de selección de tipo de vehículo y marca de vehículo del formulario actualizar vehículo se les asigne una barra de búsqueda haciendolos más dinámicos
+    function activarSelect2Asignacion() {
+        $('#selectAsignarPersona').select2({
+            theme: 'bootstrap4',
+            placeholder: 'Persona',
+            language: {
+            noResults: function() {
+                return 'No hay resultado';        
+            }}
+        });
+
+        $('#selectAsignarVehiculo').select2({
+            theme: 'bootstrap4',
+            placeholder: 'Vehículo',
+            language: {
+            noResults: function() {
+                return 'No hay resultado';        
+            }}
+        });
+    }
+    activarSelect2Asignacion();
 
     //Permite que a los select de selección de tipo de vehículo y marca de vehículo del formulario actualizar vehículo se les asigne una barra de búsqueda haciendolos más dinámicos
     function activarSelect2() {
@@ -148,24 +174,49 @@ $(function() {
     });
 
     //Función que se activa cuando el usuario selecciona alguna opción del select tipo de persona, esto permite que se desplegue otro select en el cual se puede buscar y seleccionar al propietario del vehículo
-    function selectPropietario(idPersona) {
-        if($('#selectPersona').hasClass('is-invalid')){
-            $('#selectPersona').removeClass('is-invalid');
+    // function selectPropietario(idPersona) {
+    //     if($('#selectPersona').hasClass('is-invalid')){
+    //         $('#selectPersona').removeClass('is-invalid');
+    //     }  
+    //     $('#selectPersona').empty();        
+        
+    //     $.ajax({
+    //         url: 'vehiculos/personas',
+    //         type: 'GET',
+    //         data: {
+    //             tipoPersona: $('#selectTipoPersona option:selected').val(),
+    //         },
+    //         dataType: 'json',
+    //         success: function(response){
+    //             $.each(response.data, function(key, value){                   
+    //                 $('#selectPersona').append("<option value='" + value.id_personas + "'> C.C. " + value.identificacion + " - " + value.nombre + " " + value.apellido + "</option>");
+    //             });
+    //             $('#selectPersona').val(idPersona);               
+    //         }, 
+    //         error: function(){
+    //             console.log('Error obteniendo los datos');
+    //         }
+    //     });
+    // }
+
+    function selectPropietario(select, personaSeleccionada, idPersona) {
+        if($(select).hasClass('is-invalid')){
+            $(select).removeClass('is-invalid');
         }  
-        $('#selectPersona').empty();        
+        $(select).empty();        
         
         $.ajax({
             url: 'vehiculos/personas',
             type: 'GET',
             data: {
-                tipoPersona: $('#selectTipoPersona option:selected').val(),
+                tipoPersona: personaSeleccionada,
             },
             dataType: 'json',
             success: function(response){
                 $.each(response.data, function(key, value){                   
-                    $('#selectPersona').append("<option value='" + value.id_personas + "'> C.C. " + value.identificacion + " - " + value.nombre + " " + value.apellido + "</option>");
+                    $(select).append("<option value='" + value.id_personas + "'> C.C. " + value.identificacion + " - " + value.nombre + " " + value.apellido + "</option>");
                 });
-                $('#selectPersona').val(idPersona);               
+                $(select).val(idPersona);            
             }, 
             error: function(){
                 console.log('Error obteniendo los datos');
@@ -173,18 +224,42 @@ $(function() {
         });
     }
 
-    //Función que se activa cuando el usuario selecciona alguna opción del select tipo de persona
+    //Función que se activa cuando el usuario selecciona alguna opción del select tipo de persona en el apartado de asignar vehículo
+    $('#selectAsignarTipoPersona').change(function() {  
+        $('#columnaAsignarPersona').css('display', '');
+        selectPropietario('#selectAsignarPersona', $('#selectAsignarTipoPersona option:selected').val(), '');                    
+    }); 
+
+    //Función que se activa cuando el usuario selecciona alguna opción del select tipo de persona en el apartado de actualizar vehículo
     $('#selectTipoPersona').change(function() {  
         $('#retornoPersona').val(''); 
-        selectPropietario('');                  
+        selectPropietario('#selectPersona', $('#selectTipoPersona option:selected').val(), '');                  
     }); 
 
     //Función que se activa cuando el usuario selecciona alguna opción del select de propietario, permite que se guarde la selección del usuario para que se pueda retanar el valor en caso de que haya errores al momento de enviar la información
     $('#selectPersona').change(function() {  
         $('#retornoPersona').val($('#selectPersona option:selected').val());
-    });  
+    }); 
+    
+    //Función anónima que genera mensajes de error cuando el usuario intenta enviar el formulario de asignación de vehículo sin los datos requeridos, es una primera validación del lado del cliente
+    (function () {
+        'use strict'
+        var form = document.getElementById('form_AsignarVehiculo');
+        form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
 
-    // Función anónima que genera mensajes de error cuando el usuario intenta enviar el formulario de actualización de vehículos sin los datos requeridos, es una primera validación del lado del cliente
+                $('.asignarVehiculo').each(function(index) {
+                    if (!this.checkValidity()) {
+                        $(this).addClass('is-invalid');
+                    }
+                });
+            }
+        }, false);
+    })();
+
+    //Función anónima que genera mensajes de error cuando el usuario intenta enviar el formulario de actualización de vehículos sin los datos requeridos, es una primera validación del lado del cliente
     (function () {
         'use strict'
         var form = document.getElementById('form_EditarVehiculo');
@@ -210,7 +285,7 @@ $(function() {
     });
 
     //Si en un select del formulario actualizar vehículos esta la clase is-invalid al seleccionar algo en el mismo select se elimina esta clase 
-    $( 'select.vehiculo').change(function() {
+    $( 'select.vehiculo, select.asignarVehiculo').change(function() {
         if($(this).hasClass('is-invalid')){
             $(this).removeClass('is-invalid');
         };   
@@ -225,7 +300,7 @@ $(function() {
             document.getElementById('fotoVehiculo').setAttribute('src', foto);        
             selectMarcaVehiculo();
             activarSelect2();
-            selectPropietario($('#retornoPersona').val());
+            selectPropietario('#selectPersona', $('#selectTipoPersona option:selected').val(), $('#retornoPersona').val());
             document.getElementById('formEditarVehiculo').style.display = 'block';
         }
     })();
@@ -233,7 +308,16 @@ $(function() {
     //Botón que permite ocultar el formulario de editar vehículo
     $('#botonCerrar').click(function(){
         $('#formEditarVehiculo').css('display', 'none'); 
+        if($('#btnComprimir').hasClass('fa-plus')){
+            $('#btnComprimirAsignacion').trigger('click');
+        }
     });
+
+    //Muestra el modal indicado al usuario que la asignación del vehículo se ha realizado correctamente
+    $('#modal-asignar-vehiculo').modal('show');
+    setTimeout(function(){
+        $('#modal-asignar-vehiculo').modal('hide');
+    }, 2000);
 
     //Muestra el modal indicado al usuario que la actualización del vehículo se ha realizado correctamente
     $('#modal-editar-vehiculo').modal('show');

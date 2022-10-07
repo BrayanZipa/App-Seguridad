@@ -83,6 +83,7 @@ Route::get('/vehiculos/informacion', [VehiculoController::class, 'informacionVeh
 Route::get('/vehiculos/crear', [VehiculoController::class, 'create'])->name('formCrearVehiculo')->middleware(['auth', 'can:formCrearVehiculo']);
 Route::get('/vehiculos/personas', [VehiculoController::class, 'getPersonas'])->name('personas')->middleware(['auth', 'can:crearVehiculo']);
 Route::post('/vehiculos/crear', [VehiculoController::class, 'store'])->name('crearVehiculo')->middleware(['auth', 'can:crearVehiculo']);
+Route::post('/vehiculos/asignar', [VehiculoController::class, 'asignarVehiculo'])->name('asignarVehiculo')->middleware(['auth', 'can:editarVehiculo']);
 Route::put('/vehiculos/editar/{id}', [VehiculoController::class, 'update'])->name('editarVehiculo')->middleware(['auth', 'can:editarVehiculo']);
 
 /**

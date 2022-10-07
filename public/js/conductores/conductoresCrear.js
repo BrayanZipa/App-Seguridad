@@ -71,12 +71,9 @@ $(function() {
         activarSelect2Vehiculo();
     });
 
-
-
-
     //Al hacel click en el checkBox se oculta el formulario de creación de nuevo vehículo y se muestra un select donde se listan todos los vehículos ingresados en la aplicación, esto para asignar al conductor a un vehículo ya creado en el sistema
     $('#checkVehiculo').click(function() {
-        if ($('#checkVehiculo').is(':checked')) {
+        if ($(this).is(':checked')) {
             if ($('.vehiculo').hasClass('is-invalid')) {
                 $('.vehiculo').removeClass('is-invalid');
             }
@@ -100,9 +97,6 @@ $(function() {
             $('#filaVehiculoNuevo').css('display', '');
         }
     });
-
-
-
 
     //Botón que da acceso a la cámara web del computador donde este abierta la aplicación desde el formulario crear conductor
     $('#botonActivar').click(function() {
@@ -184,7 +178,7 @@ $(function() {
             })
             .catch((err) => console.log(err))            
     });
-    if($('#inputFotoVehiculo').val() == ''){
+    if($('#inputFotoVehiculo').val() == ''  && $('#selectVehiculo').val() == null){
         $('#botonActivar2').trigger('click');
     }
     
@@ -339,11 +333,15 @@ $(function() {
                 retornarFotoConductor();
                 $('#botonActivar').css('display', '');
             }
-            if($('#inputFotoVehiculo').val() != ''){
-                retornarFotoVehiculo();
-                $('#botonActivar2').css('display', '');
+            if($('#selectVehiculo').val() != null){
+                $('#checkVehiculo').trigger('click');
+            } else {
+                if($('#inputFotoVehiculo').val() != ''){
+                    retornarFotoVehiculo();
+                    $('#botonActivar2').css('display', '');
+                }
+                selectMarcaVehiculo();
             }
-            selectMarcaVehiculo();
         }
     })();
 
