@@ -214,44 +214,40 @@ class RegistroController extends Controller
     * Función que recibe una petición de Ajax para registrar la salida de un tipo de persona en la base de datos teniendo en cuenta si se registra la salida de un vehículo, un activo o solo la persona.
     */
     public function registrarSalida(Request $request, $id){
-        // $registro = Registro::findOrFail($id);
-        // $persona = Persona::findOrFail($registro->id_persona);
-
-        // if($persona->id_tipo_persona != 3){
-        //     try {
-        //         $vehiculoSinSalida = Registro::where('id_persona', $registro->id_persona)->whereNotNull('salida_persona')->whereNotNull('ingreso_vehiculo')->whereNull('salida_vehiculo')->latest('ingreso_vehiculo')->exists();
-        //     } catch (\Throwable $th) {
-        //         return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
-        //     }
-
-        //     if($vehiculoSinSalida){
-
-        //     }
-        // }
-
-        // try {
-        //     $vehiculoSinSalida = Registro::where('id_persona', $registro->id_persona)->whereNotNull('salida_persona')->whereNotNull('ingreso_vehiculo')->whereNull('salida_vehiculo')->latest('ingreso_vehiculo')->exists();
-        //     $activoSinSalida = Registro::where('id_persona', $registro->id_persona)->whereNotNull('salida_persona')->whereNotNull('ingreso_activo')->whereNull('salida_activo')->latest('ingreso_activo')->exists();
-        // } catch (\Throwable $th) {
-        //     return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
-        // }
-
-        // return $activoSinSalida;
-
-
-
-
         $registro = Registro::findOrFail($id);
+        $persona = Persona::findOrFail($registro->id_persona);
         $tiempoActual = date('Y-m-d H:i:s');
+        $ingresoPersona = false;
+
+        if ($request['registroSalida'] == 'salidaVehiculo'){
+            $consulta = $this->consultarIngresoPersona($persona->id_personas);
+            if ($consulta->exists()) {
+                $personaSinSalida = $consulta->first();
+                if ($persona->id_tipo_persona != 3 || ($persona->id_tipo_persona == 3 && $personaSinSalida->ingreso_activo == null && $personaSinSalida->salida_activo == null)) {
+                    $personaSinSalida->salida_persona = $tiempoActual;
+                    if($personaSinSalida->ingreso_activo != null) {
+                        $personaSinSalida->salida_activo = $tiempoActual;
+                    }
+                    $personaSinSalida->save();
+                    $ingresoPersona = true;
+                }
+            } 
+        }
+
+
+        // $registro = Registro::findOrFail($id);
+        // $tiempoActual = date('Y-m-d H:i:s');
         $datos = ['salida_persona' => $tiempoActual];
-        if($request['registroSalida'] == 'salidaVehiculoActivo' || $request['registroSalida'] == 'salidaPersonaActivo' || $request['registroSalida'] == 'salidaActivo'){
+        // || $request['registroSalida'] == 'salidaActivo'
+        if($request['registroSalida'] == 'salidaVehiculoActivo' || $request['registroSalida'] == 'salidaPersonaActivo'){
             if ($request['registroSalida'] == 'salidaVehiculoActivo') {
                 $datos += ['salida_vehiculo' => $tiempoActual, 'salida_activo' => $tiempoActual];
             } else if($request['registroSalida'] == 'salidaPersonaActivo') {
                 $datos += ['salida_activo' => $tiempoActual];
-            } else if($request['registroSalida'] == 'salidaActivo'){
-                $datos = ['salida_activo' => $tiempoActual];
-            }
+            } 
+            // else if($request['registroSalida'] == 'salidaActivo'){
+            //     $datos = ['salida_activo' => $tiempoActual];
+            // }
             if($request['codigo'] != null){
                 $request['codigo'] = ucfirst($request['codigo']);
                 $this->updateActivo($request['idPersona'], $request['codigo']);
@@ -266,8 +262,91 @@ class RegistroController extends Controller
         } else if($request['registroSalida'] == 'salidaVehiculo'){
             $datos = ['salida_vehiculo' => $tiempoActual];
         }  
-
         $registro->update($datos);
+
+        if($ingresoPersona){
+            return response()->json(['tipoPersona' => $persona->id_tipo_persona, 'persona' => $persona->nombre.' '.$persona->apellido]);
+        }
+        return response()->json(['message' => 'Sin registro de ingreso de persona asociado']);
+    }
+
+    /**
+     * Función que recibe una petición Ajax para registrar la salida de un activo al cual no se le había hecho el registro de salida anteriormente y de ser el caso también registra la salida de la persona asociada a este activo.
+     */
+    public function registrarSalidaActivo(Request $request, $id){
+        $registro = Registro::findOrFail($id);
+        $persona = Persona::findOrFail($registro->id_persona);
+        $tiempoActual = date('Y-m-d H:i:s');
+        $datos = ['salida_activo' => $tiempoActual];
+
+        if($request['codigo'] != null){
+            $request['codigo'] = ucfirst($request['codigo']);
+            $this->updateActivo($request['idPersona'], $request['codigo']);
+            $descripcion = ' - Se realiza el cambio del activo '.$request['activoActual'].' y se asigna el '.$request['codigo']. ' por parte del área de tecnología.';
+            $registro->descripcion .= $descripcion;
+            $datos += ['codigo_activo_salida' => $request['codigo']];
+        }
+        $registro->update($datos);
+
+        $consulta = $this->consultarIngresoPersona($persona->id_personas);
+        if ($consulta->exists()) {
+            $personaSinSalida = $consulta->first();
+            if ($persona->id_tipo_persona == 3) {
+                $personaSinSalida->salida_persona = $tiempoActual;
+                $personaSinSalida->save();
+                return response()->json(['id_persona' => $persona->id_personas, 'persona' => $persona->nombre.' '.$persona->apellido]);
+            }
+        } 
+        return response()->json(['message' => 'Sin registro de ingreso de persona asociado']);
+    }
+
+    /**
+     * Función con doble propósito, lo primero es que resive una petición Ajax para consultar si un determinado registro tiene el ingreso de un vehículo, pero no tiene registrado su salida y lo segundo es poder registrar la salida del vehículo previamente consultado.
+     */
+    public function verificarEstadoVehiculo(Request $request)
+    {
+        if ($request->isMethod('GET')) {
+            $idPersona = $request->input('idPersona');
+            $consulta = $this->consultarIngresoPersona($idPersona);
+            if ($consulta->exists()) {
+                $personaSinSalida = $consulta->first();
+                if($personaSinSalida->ingreso_vehiculo != null){
+                    $vehiculoIngresado = $this->vehiculos->obtenerVehiculo($personaSinSalida->id_vehiculo)->identificador;
+                    return response()->json(['vehiculo_ingresado' => $vehiculoIngresado, 'registro' => $personaSinSalida->id_registros]);
+                }
+            }
+
+            try {
+                $consultaVehiculo = Registro::where('id_persona', $idPersona)->whereNotNull('ingreso_vehiculo')->whereNull('salida_vehiculo')->latest('ingreso_vehiculo');
+            } catch (\Throwable $th) {
+                return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
+            }
+            if ($consultaVehiculo->exists()) {
+                $vehiculoSinSalida = $consultaVehiculo->first();
+                $vehiculoPermutado = $this->vehiculos->obtenerVehiculo($vehiculoSinSalida->id_vehiculo)->identificador;
+                return response()->json(['vehiculo_permutado' => $vehiculoPermutado, 'registro' => $vehiculoSinSalida->id_registros]);
+            }
+            return response()->json(['message' => 'Sin registro de vehículo asociado']);
+
+        } else if ($request->isMethod('PUT')) {
+            $idRegistro = $request->input('idRegistro');
+            $registro = Registro::findOrFail($idRegistro);
+            $registro->salida_vehiculo = date('Y-m-d H:i:s');
+            $registro->save();
+        }
+    }
+
+    /**
+     * Función que permite retornar el último registro de una persona a la cual no se le ha registrado la salida
+     */
+    public function consultarIngresoPersona($idPersona)
+    {
+        try {
+            $consulta = Registro::where('id_persona', $idPersona)->whereNull('salida_persona')->latest('ingreso_persona');
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
+        }
+        return $consulta;
     }
 
     /**
@@ -302,7 +381,7 @@ class RegistroController extends Controller
     public function getVehiculos(Request $request){
         $id = $request->input('persona');
         try {
-            $vehiculosSinSalida = Registro::whereNotNull('salida_persona')->whereNotNull('ingreso_vehiculo')->whereNull('salida_vehiculo')->get();
+            $vehiculosSinSalida = Registro::whereNotNull('ingreso_vehiculo')->whereNull('salida_vehiculo')->get();
         } catch (\Throwable $th) {
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
         }

@@ -27,7 +27,7 @@ class VehiculoController extends Controller
     /**
      * Contructor que inicializa todos los modelos
      */
-    public function __construct(User $usuarios, Persona $personas, PersonaVehiculo $vehiculos, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, TipoPersona $tipoPersonas)
+    public function __construct(User $usuarios, Persona $personas, Vehiculo $vehiculos, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, TipoPersona $tipoPersonas)
     {
         $this->usuarios = $usuarios;
         $this->personas = $personas;

@@ -86,10 +86,9 @@
                 <div class="row">
                     <div class="col-md-6 col-sm-12">
                         <div class="form-group">
-                            <label for="inputIdentificacion">Ingrese número de identificación</label>
+                            <label for="inputIdentificacion">Ingrese el número de identificación</label>
                             <input type="text" class="visitante form-control {{ $errors->has('identificacion') ? 'is-invalid' : '' }}" id="inputIdentificacion"
-                                name="identificacion" value="{{ old('identificacion') }}" autocomplete="off"
-                                placeholder="Identificación" required>
+                                name="identificacion" value="{{ old('identificacion') }}" autocomplete="off" placeholder="Identificación" required onkeypress="return /[0-9]/i.test(event.key)">
                                 @if ($errors->has('identificacion')) 
                                     <div class="invalid-feedback">
                                         {{ $errors->first('identificacion') }}
@@ -101,7 +100,7 @@
                         <div class="form-group">
                             <label for="inputTelefono">Ingrese un teléfono en caso de emergencia</label>
                             <input type="tel" class="visitante form-control {{ $errors->has('tel_contacto') ? 'is-invalid' : '' }}" id="inputTelefono" name="tel_contacto"
-                                value="{{ old('tel_contacto') }}" autocomplete="off" placeholder="Teléfono" required>
+                                value="{{ old('tel_contacto') }}" autocomplete="off" placeholder="Teléfono" required onkeypress="return /[0-9]/i.test(event.key)">
                                 @if ($errors->has('tel_contacto')) 
                                     <div class="invalid-feedback">
                                         {{ $errors->first('tel_contacto') }}
@@ -188,7 +187,7 @@
                         <div class="form-group">
                             <label for="inputFicha">Ingrese la ficha otorgada</label>
                             <input type="text" class="visitante form-control {{ $errors->has('ficha') ? ' is-invalid ' : '' }}" id="inputFicha" name="ficha"
-                                value="{{ old('ficha') }}" autocomplete="off" placeholder="Ficha" required>
+                                value="{{ old('ficha') }}" autocomplete="off" placeholder="Ficha" required onkeypress="return /[0-9]/i.test(event.key)">
                                 @if ($errors->has('ficha')) 
                                     <div class="invalid-feedback">
                                         {{ $errors->first('ficha') }}

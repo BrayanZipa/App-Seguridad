@@ -862,10 +862,7 @@ $(function() {
                 codigo: datosRegistro.nuevoActivo,
                 registroSalida: casoSalida,      
             },
-            success: function(res) {
-
-                // console.log(res);
-                
+            success: function(res) {   
                 $('#btnFiltros').trigger('click');
                 $('#informacionRegistro').css('display', 'none'); 
 
@@ -910,9 +907,15 @@ $(function() {
             data: {
                 registroSalida: 'salidaVehiculo',
             },
-            success: function(res) {
+            success: function(response) {
+                if('persona' in response) {
+                    console.log(response);
+                    if($('#parrafoPersona2').length){ $('#parrafoPersona2').remove(); }  
+                    $('#parrafoVehiculo2').before(`<p id="parrafoPersona2">Se registro la salida del <b>${response.persona}</b> exitosamente.</p>`);
+                } else {
 
-                // console.log(res);
+                }
+                
                 $('#btnFiltros2').trigger('click');
                 $('#infoRegistroVehiculo').css('display', 'none'); 
                 $('#textoVehiculo').text(datosRegistroVehiculo.vehiculo);
@@ -943,22 +946,78 @@ $(function() {
     $('#botonContinuarSalida3').on('click', function () {
         $('#modal-registrarSalidaActivo').modal('hide');
         $.ajax({
-            url: 'salida_persona/' + datosRegistroActivo.idRegistro,
+            url: 'salida_activo/' + datosRegistroActivo.idRegistro,
             type: 'PUT',
+            dataType : 'json',
             data: {  
                 idPersona: datosRegistroActivo.idPersona,           
                 activoActual: datosRegistroActivo.activo,
                 codigo: datosRegistroActivo.nuevoActivo,
-                registroSalida: 'salidaActivo',
             },
-            success: function() {
+            success: function(response) {
+                if('id_persona' in response){
+                    $.ajax({
+                        url: 'estado_vehiculo',
+                        type: 'GET',
+                        dataType : 'json',
+                        data: {  
+                            idPersona: response.id_persona
+                        },
+                        success: function(estadoVehiculo) {
+                            if('vehiculo_ingresado' in estadoVehiculo || 'vehiculo_permutado' in estadoVehiculo){
+                                if('vehiculo_ingresado' in estadoVehiculo){
+                                    $('#mensajeVehiculo').html(`El colaborador ingreso con el vehículo <b>${estadoVehiculo.vehiculo_ingresado}</b>`);
+                                    datosRegistroActivo.identificadorVehiculo = estadoVehiculo.vehiculo_ingresado; 
+                                } else {
+                                    $('#mensajeVehiculo').html(`El colaborador tiene en las instalaciones el vehículo <b>${estadoVehiculo.vehiculo_permutado}</b>`);
+                                    datosRegistroActivo.identificadorVehiculo = estadoVehiculo.vehiculo_permutado; 
+                                } 
+                                datosRegistroActivo.idRegistroVehiculo = estadoVehiculo.registro; 
+                                datosRegistroActivo.nombrePersona = response.persona; 
+                                $('#modal-infoEstadoVehiculo').modal('show');
+                            } else {
+                                if($('#parrafoPersona').length){ $('#parrafoPersona').remove(); }  
+                                if($('#parrafoVehiculo').length){ $('#parrafoVehiculo').remove(); } 
+                                $('#parrafoActivo').before(`<p id="parrafoPersona">Se registro la salida del <b>colaborador ${response.persona}</b> exitosamente.</p>`);
+                                asiganarMensaje('#textoActivo');
+                                $('#modal-salida-activo').modal('show');
+                            }   
+                        },
+                        error: function() {
+                            console.log('Error obteniendo los datos de la base de datos');
+                        }
+                    }); 
+                } else {
+                    asiganarMensaje('#textoActivo');
+                    $('#modal-salida-activo').modal('show');
+                }
                 $('#btnFiltros3').trigger('click');
                 $('#infoRegistroActivo').css('display', 'none'); 
+            },
+            error: function() {
+                console.log('Error al registrar la salida del activo');
+            }
+        }); 
+    });
+
+    //Botón que envía una petición Ajax al servidor para registrar la salida de un vehículo, esto solo si se esta registrando la salida desde la vista de Activos en los registros sin salida, si el registro es exito muestra un modal con la información del registro
+    $('#btnSalidaVehiculo').click(function(){
+        $.ajax({
+            url: 'estado_vehiculo',
+            type: 'PUT',
+            data: {  
+                idRegistro: datosRegistroActivo.idRegistroVehiculo
+            },
+            success: function() {
+                if($('#parrafoPersona').length){ $('#parrafoPersona').remove(); }  
+                if($('#parrafoVehiculo').length){ $('#parrafoVehiculo').remove(); } 
+                $('#parrafoActivo').before(`<p id="parrafoPersona">Se registro la salida del <b>colaborador ${datosRegistroActivo.nombrePersona}</b> exitosamente.</p>`);
+                $('#parrafoActivo').after(`<p id="parrafoVehiculo">Se registro la salida del vehículo <b>${datosRegistroActivo.identificadorVehiculo}</b> exitosamente.</p>`);
                 asiganarMensaje('#textoActivo');
                 $('#modal-salida-activo').modal('show');
             },
             error: function() {
-                console.log('Error al registrar la salida del activo');
+                console.log('Error obteniendo los datos de la base de datos');
             }
         }); 
     });

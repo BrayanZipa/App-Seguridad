@@ -109,8 +109,9 @@ $(function () {
                     $('#inputTelefono').val(response.tel_contacto);
                     $('#selectEps').val(response.id_eps);
                     $('#selectArl').val(response.id_arl);
-                    $('#inputColaborador').val('');
                     $('#selectEmpresa').val('');
+                    $('#inputColaborador').val('');
+                    $('#inputFicha').val('');
                     $('#inputDescripcion').val('');
 
                     if(response.id_tipo_persona == 1){ 
@@ -185,7 +186,8 @@ $(function () {
     }); 
 
     //Función que permite que al seleccionar una persona de tipo colaborador con activo se traiga su información directamente desde el API de GLPI por medio de una solicitud Ajax, también se traer la información del último registro que haya tenido del colaborador donde se haya registrado su ingreso, así como el ingreso de un activo, pero se haya registrado la salida de la persona y no la del activo. Si este registro existe no se realiza la búsqueda del activo y se muestra un mensaje informativo
-    function obtenerColaborador(data){      
+    function obtenerColaborador(data){ 
+        $('#inputCodigo3').attr('placeholder', 'Activo');     
         if($('#mensajeError').length){ $('#mensajeError').remove(); }  
         if($('#mensajeCodigo').length){ $('#mensajeCodigo').remove(); } 
         if($('#mensajeActivo').css('display') != 'none'){ $('#mensajeActivo').css('display', 'none'); }
@@ -246,6 +248,7 @@ $(function () {
                                     }
                                 );
                                 $('#registro3').val('colaboradorSinActivo2');
+                                $('#inputCodigo3').attr('placeholder', activoSinSalida.codigo_activo);
                                 $('#mensajeActivo').text(mensaje);
                                 
                             } else {

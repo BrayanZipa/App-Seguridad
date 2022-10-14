@@ -173,32 +173,6 @@ $(function() {
         selectMarcaVehiculo();
     });
 
-    //Función que se activa cuando el usuario selecciona alguna opción del select tipo de persona, esto permite que se desplegue otro select en el cual se puede buscar y seleccionar al propietario del vehículo
-    // function selectPropietario(idPersona) {
-    //     if($('#selectPersona').hasClass('is-invalid')){
-    //         $('#selectPersona').removeClass('is-invalid');
-    //     }  
-    //     $('#selectPersona').empty();        
-        
-    //     $.ajax({
-    //         url: 'vehiculos/personas',
-    //         type: 'GET',
-    //         data: {
-    //             tipoPersona: $('#selectTipoPersona option:selected').val(),
-    //         },
-    //         dataType: 'json',
-    //         success: function(response){
-    //             $.each(response.data, function(key, value){                   
-    //                 $('#selectPersona').append("<option value='" + value.id_personas + "'> C.C. " + value.identificacion + " - " + value.nombre + " " + value.apellido + "</option>");
-    //             });
-    //             $('#selectPersona').val(idPersona);               
-    //         }, 
-    //         error: function(){
-    //             console.log('Error obteniendo los datos');
-    //         }
-    //     });
-    // }
-
     function selectPropietario(select, personaSeleccionada, idPersona) {
         if($(select).hasClass('is-invalid')){
             $(select).removeClass('is-invalid');

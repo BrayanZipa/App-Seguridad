@@ -224,7 +224,7 @@
                 </div>
             </div>
             <div class="modal-body">
-                <p>Se registro la salida del vehículo <b id="textoVehiculo"></b> exitosamente.</p>
+                <p id="parrafoVehiculo2">Se registro la salida del vehículo <b id="textoVehiculo"></b> exitosamente.</p>
                 <p>¿Desea registrar otra salida?</p>
             </div>
             <div class="modal-footer justify-content-between">
@@ -268,7 +268,7 @@
                 </div>
             </div>
             <div class="modal-body">
-                <p>Se registro la salida del activo <b id="textoActivo"></b> exitosamente.</p>
+                <p id="parrafoActivo">Se registro la salida del activo <b id="textoActivo"></b> exitosamente.</p>
                 <p>¿Desea registrar otra salida?</p>
             </div>
             <div class="modal-footer justify-content-between">
@@ -295,6 +295,28 @@
             <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-default" data-dismiss="modal" style="width: 100px">Cerrar</button>
                 <button type="submit" id="botonContinuarSalida3" class="btn btn-primary">Continuar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="modal-infoEstadoVehiculo">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <div class="d-flex justify-content-center">
+                    <h4 class="modal-title text-center">REGISTRO DE VEHÍCULO</h4>
+                </div>
+            </div>
+            <div class="modal-body">
+                <p id="mensajeVehiculo" class="text-center" style="font-size: 18px"></p>
+                <P class="text-center" style="font-size: 18px">¿Desea registrar la salida del vehículo?</P>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal" style="width: 100px">No</button>
+                <button id="btnSalidaVehiculo" type="button" class="btn btn-primary" data-dismiss="modal"style="width: 100px">Sí</button>
             </div>
         </div>
         <!-- /.modal-content -->

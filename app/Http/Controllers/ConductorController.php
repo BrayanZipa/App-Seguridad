@@ -28,19 +28,17 @@ class ConductorController extends Controller
     protected $vehiculos;
     protected $tipoVehiculos;
     protected $marcaVehiculos;
-    protected $personasVehiculos;
     protected $empresas;
 
-    public function __construct(User $usuarios, Persona $conductores, Eps $eps, Arl $arl, Vehiculo $vehiculos, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, PersonaVehiculo $personasVehiculos, Empresa $empresas){
+    public function __construct(User $usuarios, Persona $conductores, Eps $eps, Arl $arl, Vehiculo $vehiculos, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, Empresa $empresas){
         $this->usuarios = $usuarios;
         $this->conductores = $conductores;
         $this->eps = $eps;
         $this->arl = $arl;
+        $this->vehiculos = $vehiculos;
         $this->tipoVehiculos = $tipoVehiculos;
         $this->marcaVehiculos = $marcaVehiculos;
-        $this->personasVehiculos = $personasVehiculos;
         $this->empresas = $empresas;
-        $this->vehiculos = $vehiculos;
     }
 
     /**
@@ -79,9 +77,6 @@ class ConductorController extends Controller
     public function store(RequestConductor $request)
     {
         $nuevoConductor = $request->all();
-
-        // return $nuevoConductor;
-
         $nuevoConductor['nombre'] = ucwords(mb_strtolower($nuevoConductor['nombre']));
         $nuevoConductor['apellido'] = ucwords(mb_strtolower($nuevoConductor['apellido']));
         $nuevoConductor['identificacion'] = (int)$nuevoConductor['identificacion'];
@@ -212,7 +207,7 @@ class ConductorController extends Controller
     {
         $eps = $this->eps->obtenerEps();
         $arl = $this->arl->obtenerArl();
-        $vehiculos = $this->personasVehiculos->informacionVehiculos();
+        $vehiculos = $this->vehiculos->informacionVehiculos();
         $tipoVehiculos = $this->tipoVehiculos->obtenerTipoVehiculos();
         $marcaVehiculos = $this->marcaVehiculos->obtenerMarcaVehiculos();
         $empresas = $this->empresas->obtenerEmpresas();

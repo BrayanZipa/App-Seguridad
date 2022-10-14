@@ -43,12 +43,10 @@ class Vehiculo extends Model
      */
     public function informacionVehiculos(){
         try { 
-            $vehiculos = Vehiculo::select('vehiculos.*', 'tipo.tipo', 'marca.marca')
-            ->leftjoin('se_vehiculos AS vehiculos', 'se_per_vehi.id_vehiculo', '=', 'vehiculos.id_vehiculos')
+            $vehiculos = Vehiculo::select('se_vehiculos.*', 'tipo.tipo', 'marca.marca')
             ->leftjoin('se_tipo_vehiculos AS tipo', 'se_vehiculos.id_tipo_vehiculo', '=', 'tipo.id_tipo_vehiculos')
             ->leftjoin('se_marca_vehiculos AS marca', 'se_vehiculos.id_marca_vehiculo', '=', 'marca.id_marca_vehiculos')
             ->orderBy('tipo', 'desc')->get();
-
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
         }

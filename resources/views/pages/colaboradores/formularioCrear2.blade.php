@@ -58,7 +58,7 @@
                 <div class="form-group">
                     <label for="inputIdentificacion2">Ingrese la identificación</label>
                     <input type="text" class="colaborador2 form-control {{ $errors->has('identificacion') && old('casoIngreso2') != '' ? 'is-invalid' : '' }}" id="inputIdentificacion2"
-                        name="identificacion" value="{{ old('casoIngreso2') != '' ? old('identificacion') : '' }}" placeholder="Identificación" autocomplete="off" required>
+                        name="identificacion" value="{{ old('casoIngreso2') != '' ? old('identificacion') : '' }}" placeholder="Identificación" autocomplete="off" required onkeypress="return /[0-9]/i.test(event.key)">
                         @if ($errors->has('identificacion')) 
                             <div class="invalid-feedback">
                                 {{ $errors->first('identificacion') }}
@@ -84,7 +84,7 @@
                 <div class="form-group">
                     <label for="inputTelefono2">Ingrese el teléfono</label>
                     <input type="tel" class="colaborador2 form-control {{ $errors->has('tel_contacto') && old('casoIngreso2') != '' ? 'is-invalid' : '' }}" id="inputTelefono2" name="tel_contacto" value="{{ old('casoIngreso2') != '' ? old('tel_contacto') : '' }}"
-                        placeholder="Teléfono" autocomplete="off" required>
+                        placeholder="Teléfono" autocomplete="off" required onkeypress="return /[0-9]/i.test(event.key)">
                         @if ($errors->has('tel_contacto')) 
                             <div class="invalid-feedback">
                                 {{ $errors->first('tel_contacto') }}

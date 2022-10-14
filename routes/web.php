@@ -102,7 +102,9 @@ Route::get('/registros/persona', [RegistroController::class, 'getPersona'])->nam
 Route::get('/registros/vehiculos', [RegistroController::class, 'getVehiculos'])->name('vehiculos')->middleware(['auth', 'can:registrarIngreso']); 
 Route::get('/registros/vehiculo_sin_salida', [RegistroController::class, 'utimoRegistroVehiculo'])->name('utimoRegistroVehiculo')->middleware(['auth', 'can:registrarIngreso']); 
 Route::get('/registros/activo_sin_salida', [RegistroController::class, 'utimoRegistroActivo'])->name('utimoRegistroActivo')->middleware(['auth', 'can:registrarIngreso']); 
-Route::put('/registros/editar_persona/{id}', [RegistroController::class, 'updatePersona'])->name('editarPersona')->middleware(['auth', 'can:registrarIngreso']); 
+Route::put('/registros/editar_persona/{id}', [RegistroController::class, 'updatePersona'])->name('editarPersona')->middleware(['auth', 'can:registrarIngreso']);
 Route::put('/registros/salida_persona/{id}', [RegistroController::class, 'registrarSalida'])->name('salidaPersona')->middleware(['auth', 'can:registrarSalida']);   
+Route::put('/registros/salida_activo/{id}', [RegistroController::class, 'registrarSalidaActivo'])->name('salidaActivo')->middleware(['auth', 'can:registrarSalida']);  
+Route::match(['get', 'put'], '/registros/estado_vehiculo', [RegistroController::class, 'verificarEstadoVehiculo'])->name('estadoVehiculo')->middleware(['auth', 'can:registrarSalida']);  
 
 // Route::get('/prueba', [RegistroController::class, 'prueba'])->name('prueba');

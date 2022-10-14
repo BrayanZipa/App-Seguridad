@@ -78,7 +78,7 @@
                                     <div class="form-group">
                                         <label for="inputTelefono">Actualizar teléfono</label>
                                         <input type="tel" class="conductor form-control {{ $errors->has('tel_contacto') ? 'is-invalid' : '' }}"  id="inputTelefono" name="tel_contacto" value="{{ old('tel_contacto') }}" autocomplete="off"
-                                            placeholder="Teléfono" required>
+                                            placeholder="Teléfono" required onkeypress="return /[0-9]/i.test(event.key)">
                                         @if ($errors->has('tel_contacto')) 
                                             <div class="invalid-feedback">
                                                 {{ $errors->first('tel_contacto') }}
