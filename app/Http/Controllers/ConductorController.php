@@ -80,6 +80,7 @@ class ConductorController extends Controller
         $nuevoConductor['nombre'] = ucwords(mb_strtolower($nuevoConductor['nombre']));
         $nuevoConductor['apellido'] = ucwords(mb_strtolower($nuevoConductor['apellido']));
         $nuevoConductor['identificacion'] = (int)$nuevoConductor['identificacion'];
+        $nuevoConductor['colaborador'] = ucwords(mb_strtolower($nuevoConductor['colaborador']));
         $nuevoConductor['descripcion'] = ucfirst(mb_strtolower($nuevoConductor['descripcion']));
         $nuevoConductor['identificador'] = strtoupper($nuevoConductor['identificador']);
         $nuevoConductor['id_usuario'] = auth()->user()->id_usuarios;

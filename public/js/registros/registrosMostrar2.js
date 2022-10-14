@@ -863,7 +863,7 @@ $(function() {
                 registroSalida: casoSalida,      
             },
             success: function(res) {   
-                $('#btnFiltros').trigger('click');
+                $('#tabPersonasSinSalida').trigger('click');
                 $('#informacionRegistro').css('display', 'none'); 
 
                 $('.textoPersona').text(obtenerNombrePersona());
@@ -908,18 +908,23 @@ $(function() {
                 registroSalida: 'salidaVehiculo',
             },
             success: function(response) {
+                if($('#parrafoPersona2').length){ $('#parrafoPersona2').remove(); } 
                 if('persona' in response) {
-                    console.log(response);
-                    if($('#parrafoPersona2').length){ $('#parrafoPersona2').remove(); }  
-                    $('#parrafoVehiculo2').before(`<p id="parrafoPersona2">Se registro la salida del <b>${response.persona}</b> exitosamente.</p>`);
-                } else {
-
+                    var tipoPersona = '';
+                    if(response.tipoPersona == 1){
+                        tipoPersona = 'visitante';
+                    } else if(response.tipoPersona == 4){
+                        tipoPersona = 'conductor';
+                    } else {
+                        tipoPersona = 'colaborador';
+                    } 
+                    $('#parrafoVehiculo2').before(`<p id="parrafoPersona2">Se registro la salida del <b>${tipoPersona} ${response.persona}</b> exitosamente.</p>`);
                 }
                 
-                $('#btnFiltros2').trigger('click');
-                $('#infoRegistroVehiculo').css('display', 'none'); 
                 $('#textoVehiculo').text(datosRegistroVehiculo.vehiculo);
                 $('#modal-salida-vehiculo').modal('show');
+                $('#tabVehiculosSinSalida').trigger('click');
+                $('#infoRegistroVehiculo').css('display', 'none'); 
             },
             error: function() {
                 console.log('Error al registrar la salida del vehículo');
@@ -991,7 +996,7 @@ $(function() {
                     asiganarMensaje('#textoActivo');
                     $('#modal-salida-activo').modal('show');
                 }
-                $('#btnFiltros3').trigger('click');
+                $('#tabActivosSinSalida').trigger('click');
                 $('#infoRegistroActivo').css('display', 'none'); 
             },
             error: function() {

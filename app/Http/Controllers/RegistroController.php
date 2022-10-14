@@ -211,7 +211,7 @@ class RegistroController extends Controller
     }
 
     /**
-    * Función que recibe una petición de Ajax para registrar la salida de un tipo de persona en la base de datos teniendo en cuenta si se registra la salida de un vehículo, un activo o solo la persona.
+    * Función que recibe una petición Ajax para registrar la salida de un tipo de persona en la base de datos teniendo en cuenta si se registra la salida de un vehículo, un activo o solo la persona.
     */
     public function registrarSalida(Request $request, $id){
         $registro = Registro::findOrFail($id);
@@ -225,6 +225,7 @@ class RegistroController extends Controller
                 $personaSinSalida = $consulta->first();
                 if ($persona->id_tipo_persona != 3 || ($persona->id_tipo_persona == 3 && $personaSinSalida->ingreso_activo == null && $personaSinSalida->salida_activo == null)) {
                     $personaSinSalida->salida_persona = $tiempoActual;
+                    $personaSinSalida->id_usuario = auth()->user()->id_usuarios;
                     if($personaSinSalida->ingreso_activo != null) {
                         $personaSinSalida->salida_activo = $tiempoActual;
                     }
@@ -234,20 +235,13 @@ class RegistroController extends Controller
             } 
         }
 
-
-        // $registro = Registro::findOrFail($id);
-        // $tiempoActual = date('Y-m-d H:i:s');
-        $datos = ['salida_persona' => $tiempoActual];
-        // || $request['registroSalida'] == 'salidaActivo'
+        $datos = ['salida_persona' => $tiempoActual, 'id_usuario' => auth()->user()->id_usuarios];
         if($request['registroSalida'] == 'salidaVehiculoActivo' || $request['registroSalida'] == 'salidaPersonaActivo'){
             if ($request['registroSalida'] == 'salidaVehiculoActivo') {
                 $datos += ['salida_vehiculo' => $tiempoActual, 'salida_activo' => $tiempoActual];
             } else if($request['registroSalida'] == 'salidaPersonaActivo') {
                 $datos += ['salida_activo' => $tiempoActual];
             } 
-            // else if($request['registroSalida'] == 'salidaActivo'){
-            //     $datos = ['salida_activo' => $tiempoActual];
-            // }
             if($request['codigo'] != null){
                 $request['codigo'] = ucfirst($request['codigo']);
                 $this->updateActivo($request['idPersona'], $request['codigo']);
@@ -293,6 +287,7 @@ class RegistroController extends Controller
             $personaSinSalida = $consulta->first();
             if ($persona->id_tipo_persona == 3) {
                 $personaSinSalida->salida_persona = $tiempoActual;
+                $personaSinSalida->id_usuario = auth()->user()->id_usuarios;
                 $personaSinSalida->save();
                 return response()->json(['id_persona' => $persona->id_personas, 'persona' => $persona->nombre.' '.$persona->apellido]);
             }
