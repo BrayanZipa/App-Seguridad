@@ -221,7 +221,7 @@
                             </div><br>
                             <div class="icheck-primary d-inline ml-n4">
                                 <label for="checkActivo">
-                                    ¿El visitante ingresa computador?
+                                    ¿El visitante ingresa un dispositivo?
                                 </label>
                                 <input type="checkbox" id="checkActivo">
                             </div>

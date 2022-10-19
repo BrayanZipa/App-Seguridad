@@ -187,8 +187,8 @@
                             <div id="divActivo" class="row visitante" style="display: none">
                                 <div class="col-md-6 col-sm-12">
                                     <div class="form-group">
-                                        <label for="inputActivo">Ingrese el tipo de activo</label>
-                                        <input type="text" id="inputActivo" class="registros form-control {{ $errors->has('activo') ? 'is-invalid' : '' }}" name="activo" value="{{ old('activo') }}" autocomplete="off" placeholder="Tipo de activo">
+                                        <label for="inputActivo">Ingrese el tipo de dispositivo</label>
+                                        <input type="text" id="inputActivo" class="registros form-control {{ $errors->has('activo') ? 'is-invalid' : '' }}" name="activo" value="{{ old('activo') }}" autocomplete="off" placeholder="Tipo de dispositivo">
                                             @if ($errors->has('activo')) 
                                                 <div class="invalid-feedback">
                                                     {{ $errors->first('activo') }}
@@ -198,7 +198,7 @@
                                 </div>
                                 <div class="col-md-6 col-sm-12">
                                     <div class="form-group">
-                                        <label for="inputCodigo">Ingrese el código único del activo</label>
+                                        <label for="inputCodigo">Ingrese el código del dispositivo</label>
                                         <input type="text" id="inputCodigo" class="registros form-control {{ $errors->has('codigo') ? 'is-invalid' : '' }}" name="codigo"
                                             value="{{ old('codigo') }}" autocomplete="off" placeholder="Código">
                                             @if ($errors->has('codigo')) 
@@ -239,7 +239,7 @@
                                         </div><br>
                                         <div class="icheck-primary d-inline">
                                             <label for="checkActivo">
-                                                ¿El visitante ingresa computador?
+                                                ¿El visitante ingresa un dispositivo?
                                             </label>
                                             <input type="checkbox" id="checkActivo">
                                         </div>
