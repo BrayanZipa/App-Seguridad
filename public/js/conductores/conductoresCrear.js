@@ -77,6 +77,7 @@ $(function() {
             if ($('.vehiculo').hasClass('is-invalid')) {
                 $('.vehiculo').removeClass('is-invalid');
             }
+            $('#tituloPanel').text('Asignar vehículo');
             $('#botonActivar2').trigger('click');
             $('.vehiculo').val('');
             $('#selectMarcaVehiculo').val('');
@@ -89,6 +90,7 @@ $(function() {
             if ($('#selectVehiculo').hasClass('is-invalid')) {
                 $('#selectVehiculo').removeClass('is-invalid');
             }
+            $('#tituloPanel').text('Crear nuevo vehículo');
             $('#selectVehiculo').val('');
             activarSelect2Vehiculo();
             $('.vehiculo').prop('required', true);

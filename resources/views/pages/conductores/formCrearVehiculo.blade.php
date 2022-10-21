@@ -1,6 +1,6 @@
 <div class="card card-orange">
     <div class="card-header">
-        <h3 class="card-title">Crear nuevo vehículo</h3>
+        <h3 id="tituloPanel" class="card-title">Crear nuevo vehículo</h3>
         <div class="card-tools">
             <button id="botonComprimirVehiculo" type="button" class="btn btn-tool" data-card-widget="collapse"><i
                     class="fas fa-minus"></i>
@@ -17,7 +17,7 @@
                 <div class="form-group clearfix mb-1">
                     <div class="icheck-primary d-inline">
                         <label for="checkVehiculo">
-                            ¿El vehículo ya esta ingresado en el sistema?
+                            ¿El vehículo ya está ingresado en el sistema?
                         </label>
                         <input type="checkbox" id="checkVehiculo">
                     </div><br>
