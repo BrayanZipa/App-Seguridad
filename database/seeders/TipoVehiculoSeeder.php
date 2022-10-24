@@ -14,9 +14,13 @@ class TipoVehiculoSeeder extends Seeder
      */
     public function run()
     {
-        TipoVehiculo::create(['tipo' => 'Carro']);
+        TipoVehiculo::create(['tipo' => 'Automóvil']);
+        TipoVehiculo::create(['tipo' => 'Bicicleta']);
+        TipoVehiculo::create(['tipo' => 'Camión de carga']); 
+        TipoVehiculo::create(['tipo' => 'Camioneta']);
         TipoVehiculo::create(['tipo' => 'Moto']);
-        TipoVehiculo::create(['tipo' => 'Bicicleta']); 
-        TipoVehiculo::create(['tipo' => 'Camión']);
+        TipoVehiculo::create(['tipo' => 'Scooter eléctrico']);
+        TipoVehiculo::create(['tipo' => 'Volqueta']);
+        TipoVehiculo::create(['tipo' => 'Otro']);
     }
 }

@@ -15,7 +15,7 @@ class SeEps extends Migration
     {
         Schema::create('se_eps', function (Blueprint $table) {
             $table->increments('id_eps');
-            $table->string('eps', 30);
+            $table->string('eps', 70);
             $table->timestamps();
         });
     }

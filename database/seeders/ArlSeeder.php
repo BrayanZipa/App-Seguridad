@@ -14,8 +14,16 @@ class ArlSeeder extends Seeder
      */
     public function run()
     {
-        Arl::create(['arl' => 'Sura']);
+        Arl::create(['arl' => 'Aurora seguros de vida']);
+        Arl::create(['arl' => 'Axa Colpatria seguros']);
+        Arl::create(['arl' => 'Colmena seguros']);
+        Arl::create(['arl' => 'Equidad seguros']);
+        Arl::create(['arl' => 'Liberty seguros']);
+        Arl::create(['arl' => 'Mapfre seguros']);
         Arl::create(['arl' => 'Positiva']);
-        Arl::create(['arl' => 'Colmena']);
+        Arl::create(['arl' => 'Seguros Alfa']);
+        Arl::create(['arl' => 'Seguros Bolívar']);
+        Arl::create(['arl' => 'Sura']);
+        Arl::create(['arl' => 'Otra']);
     }
 }

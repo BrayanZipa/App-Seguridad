@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(EpsSeeder::class);
         $this->call(ArlSeeder::class);
         $this->call(TipoVehiculoSeeder::class);
-        $this->call(MarcaVehiculoSeeder::class);
+        // $this->call(MarcaVehiculoSeeder::class);
         $this->call(RoleSeeder::class);
     }
 }
