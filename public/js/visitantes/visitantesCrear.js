@@ -330,12 +330,11 @@ $(function () {
         document.getElementById('inputFotoVehiculo').setAttribute('value', foto);
     });
 
-    // Función que permite que al momento que el usuario seleccione Bicicleta en el formulario de ingreso de vehículo se desabilite el select de marca de vehículo
+    //Función que permite que al momento que el usuario seleccione Bicicleta o Scooter eléctrico en el formulario de ingreso de vehículo se desabilite el select de marca de vehículo
     function selectMarcaVehiculo() {
         var tipo = $('#selectTipoVehiculo option:selected').text();
         var tipoVehiculo = tipo.replace(/\s+/g, '');
-
-        if (tipoVehiculo == 'Bicicleta') {
+        if (tipoVehiculo == 'Bicicleta' || tipoVehiculo == 'Scootereléctrico') {
             $('#selectMarcaVehiculo').val('');
             $('#selectMarcaVehiculo').prop('disabled', true);
             $('#selectMarcaVehiculo').select2({

@@ -435,12 +435,12 @@ $(function() {
         document.getElementById('inputFotoVehiculo2').setAttribute('value', foto);
     });
 
-    // Función que permite que al momento que el usuario seleccione Bicicleta en el formulario de ingreso de vehículo en la vista nuevo colaborador con activo se desabilite el select de marca de vehículo
+    //Función que permite que al momento que el usuario seleccione Bicicleta o Scooter eléctrico en el formulario de ingreso de vehículo en la vista nuevo colaborador con activo se desabilite el select de marca de vehículo
     function selectMarcaVehiculo() {  
         var tipo = $('#selectTipoVehiculo option:selected').text();     
         var tipoVehiculo = tipo.replace(/\s+/g, '');
 
-        if (tipoVehiculo == 'Bicicleta') {
+        if (tipoVehiculo == 'Bicicleta' || tipoVehiculo == 'Scootereléctrico') {
             $('#selectMarcaVehiculo').val('');
             $('#selectMarcaVehiculo').prop('disabled', true);
             $('#selectMarcaVehiculo').select2({
@@ -457,12 +457,12 @@ $(function() {
         }
     }
 
-    // Función que permite que al momento que el usuario seleccione Bicicleta en el formulario de ingreso de vehículo en la vista nuevo colaborador sin activo se desabilite el select de marca de vehículo
+    //Función que permite que al momento que el usuario seleccione Bicicleta o Scooter eléctrico en el formulario de ingreso de vehículo en la vista nuevo colaborador sin activo se desabilite el select de marca de vehículo
     function selectMarcaVehiculo2() {  
         var tipo = $('#selectTipoVehiculo2 option:selected').text();     
         var tipoVehiculo = tipo.replace(/\s+/g, '');
 
-        if (tipoVehiculo == 'Bicicleta') {
+        if (tipoVehiculo == 'Bicicleta' || tipoVehiculo == 'Scootereléctrico') {
             $('#selectMarcaVehiculo2').val('');
             $('#selectMarcaVehiculo2').prop('disabled', true);
             $('#selectMarcaVehiculo2').select2({
