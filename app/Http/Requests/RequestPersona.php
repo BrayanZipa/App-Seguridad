@@ -44,8 +44,8 @@ class RequestPersona extends FormRequest
             $validacion = [
                 'id_eps' => 'nullable|integer',         
                 'id_arl' => 'nullable|integer',  
-                'activo' => 'nullable|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:20|min:3',
-                'codigo' => 'nullable|string|alpha_num|unique:se_activos,codigo,'.$this->id.',id_persona|max:5|min:4', 
+                'activo' => 'nullable|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:30|min:3',
+                'codigo' => 'nullable|string|alpha_num|unique:se_activos,codigo,'.$this->id.',id_persona|max:10|min:4', 
             ];
             return array_merge($this->validacionGeneral(), $validacion);
         }
@@ -102,13 +102,13 @@ class RequestPersona extends FormRequest
 
             'activo.string' => 'El nombre del activo debe ser de tipo texto',
             'activo.regex' => 'El nombre del activo solo debe contener valores alfabéticos',
-            'activo.max' => 'El nombre del activo no puede tener más de 20 caracteres',
+            'activo.max' => 'El nombre del activo no puede tener más de 30 caracteres',
             'activo.min' => 'El nombre del activo no puede tener menos de 3 caracteres',
 
             'codigo.string' => 'El código del activo debe ser de tipo texto',
             'codigo.alpha_num' => 'El código del activo solo debe contener valores alfanuméricos y sin espacios',
             'codigo.unique' => 'No puede haber más de un activo con el mismo código',
-            'codigo.max' => 'El código del activo no puede tener más de 5 caracteres',
+            'codigo.max' => 'El código del activo no puede tener más de 10 caracteres',
             'codigo.min' => 'El código del activo no puede tener menos de 4 caracteres',
         ];
     }
