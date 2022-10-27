@@ -319,7 +319,7 @@ class RegistroController extends Controller
             if ($consultaVehiculo->exists()) {
                 $vehiculoSinSalida = $consultaVehiculo->first();
                 $vehiculoPermutado = $this->vehiculos->obtenerVehiculo($vehiculoSinSalida->id_vehiculo)->identificador;
-                return response()->json(['vehiculo_permutado' => $vehiculoPermutado, 'registro' => $vehiculoSinSalida->id_registros]);
+                return response()->json(['vehiculo_pernoctado' => $vehiculoPermutado, 'registro' => $vehiculoSinSalida->id_registros]);
             }
             return response()->json(['message' => 'Sin registro de vehículo asociado']);
 

@@ -969,13 +969,13 @@ $(function() {
                             idPersona: response.id_persona
                         },
                         success: function(estadoVehiculo) {
-                            if('vehiculo_ingresado' in estadoVehiculo || 'vehiculo_permutado' in estadoVehiculo){
+                            if('vehiculo_ingresado' in estadoVehiculo || 'vehiculo_pernoctado' in estadoVehiculo){
                                 if('vehiculo_ingresado' in estadoVehiculo){
                                     $('#mensajeVehiculo').html(`El colaborador ingreso con el vehículo <b>${estadoVehiculo.vehiculo_ingresado}</b>`);
                                     datosRegistroActivo.identificadorVehiculo = estadoVehiculo.vehiculo_ingresado; 
                                 } else {
-                                    $('#mensajeVehiculo').html(`El colaborador tiene en las instalaciones el vehículo <b>${estadoVehiculo.vehiculo_permutado}</b>`);
-                                    datosRegistroActivo.identificadorVehiculo = estadoVehiculo.vehiculo_permutado; 
+                                    $('#mensajeVehiculo').html(`El colaborador tiene en las instalaciones el vehículo <b>${estadoVehiculo.vehiculo_pernoctado}</b>`);
+                                    datosRegistroActivo.identificadorVehiculo = estadoVehiculo.vehiculo_pernoctado; 
                                 } 
                                 datosRegistroActivo.idRegistroVehiculo = estadoVehiculo.registro; 
                                 datosRegistroActivo.nombrePersona = response.persona; 
