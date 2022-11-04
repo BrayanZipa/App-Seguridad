@@ -92,7 +92,6 @@ class VisitanteController extends Controller
         }
         $nuevoVisitante['nombre'] = ucwords(mb_strtolower($nuevoVisitante['nombre']));
         $nuevoVisitante['apellido'] = ucwords(mb_strtolower($nuevoVisitante['apellido']));
-        $nuevoVisitante['identificacion'] = (int)$nuevoVisitante['identificacion'];
         $nuevoVisitante['colaborador'] = ucwords(mb_strtolower($nuevoVisitante['colaborador']));
         $nuevoVisitante['descripcion'] = ucfirst(mb_strtolower($nuevoVisitante['descripcion']));
         $nuevoVisitante['identificador'] = strtoupper($nuevoVisitante['identificador']);

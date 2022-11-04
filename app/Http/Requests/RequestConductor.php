@@ -16,6 +16,10 @@ class RequestConductor extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation(){
+        $this->merge(['identificacion' => (int)$this->input('identificacion')]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *

@@ -52,7 +52,7 @@ class Activo extends Model
     }
 
     /**
-     * Función que permite saber si un activo existe en la base de datos por medio del id del propietario y si es el caso lo elimina de la misma.
+     * Función que permite saber si un activo existe en la base de datos por medio del id del propietario y si es el caso lo elimina.
      */
     public function existeActivoEliminar($idColaborador){
         try {

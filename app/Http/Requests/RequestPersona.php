@@ -16,6 +16,10 @@ class RequestPersona extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation(){
+        $this->merge(['identificacion' => (int)$this->input('identificacion')]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -24,7 +28,6 @@ class RequestPersona extends FormRequest
     public function rules()
     {
         $datos = $this->all();
-        
         if($this->method() == 'POST'){
             if($datos['tipoVisitante'] == 'entrevista'){
                 $validacion = [
