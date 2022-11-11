@@ -993,6 +993,8 @@ $(function() {
                         }
                     }); 
                 } else {
+                    if($('#parrafoPersona').length){ $('#parrafoPersona').remove(); }  
+                    if($('#parrafoVehiculo').length){ $('#parrafoVehiculo').remove(); } 
                     asiganarMensaje('#textoActivo');
                     $('#modal-salida-activo').modal('show');
                 }

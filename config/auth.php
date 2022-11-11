@@ -62,10 +62,10 @@ return [
     'providers' => [
         'ldap' => [
             'driver' => 'ldap',
-            'model' => LdapRecord\Models\OpenLDAP\User::class,
-            // 'model' => LdapRecord\Models\ActiveDirectory\User::class,
+            // 'model' => LdapRecord\Models\OpenLDAP\User::class,
+            'model' => LdapRecord\Models\ActiveDirectory\User::class,
             'rules' => [
-                // App\Ldap\Rules\SoloUsuariosVision::class, 
+                App\Ldap\Rules\SoloUsuariosVision::class, 
             ],
             'database' => [
                 'model' => App\Models\User::class,

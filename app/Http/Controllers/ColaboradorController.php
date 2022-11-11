@@ -600,6 +600,7 @@ class ColaboradorController extends Controller
         for ($i=0; $i < $numComputadores; $i++) { 
             if($computadores[$i]['users_id'] == $id){
                 $computador = $computadores[$i];
+                // break;
             }
         }
 

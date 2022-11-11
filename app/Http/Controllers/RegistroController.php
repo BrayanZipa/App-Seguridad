@@ -270,8 +270,9 @@ class RegistroController extends Controller
     public function registrarSalidaActivo(Request $request, $id){
         $registro = Registro::findOrFail($id);
         $persona = Persona::findOrFail($registro->id_persona);
-        $tiempoActual = date('Y-m-d H:i:s');
-        $datos = ['salida_activo' => $tiempoActual];
+        $datos = ['salida_activo' => date('Y-m-d H:i:s')];
+        // $tiempoActual = date('Y-m-d H:i:s');
+        // $datos = ['salida_activo' => $tiempoActual];
 
         if($request['codigo'] != null){
             $request['codigo'] = ucfirst($request['codigo']);
@@ -284,11 +285,11 @@ class RegistroController extends Controller
 
         $consulta = $this->consultarIngresoPersona($persona->id_personas);
         if ($consulta->exists()) {
-            $personaSinSalida = $consulta->first();
+            // $personaSinSalida = $consulta->first();
             if ($persona->id_tipo_persona == 3) {
-                $personaSinSalida->salida_persona = $tiempoActual;
-                $personaSinSalida->id_usuario = auth()->user()->id_usuarios;
-                $personaSinSalida->save();
+                // $personaSinSalida->salida_persona = $tiempoActual;
+                // $personaSinSalida->id_usuario = auth()->user()->id_usuarios;
+                // $personaSinSalida->save();
                 return response()->json(['id_persona' => $persona->id_personas, 'persona' => $persona->nombre.' '.$persona->apellido]);
             }
         } 
@@ -304,13 +305,16 @@ class RegistroController extends Controller
             $idPersona = $request->input('idPersona');
             $consulta = $this->consultarIngresoPersona($idPersona);
             if ($consulta->exists()) {
-                $personaSinSalida = $consulta->first();
-                if($personaSinSalida->ingreso_vehiculo != null){
-                    $vehiculoIngresado = $this->vehiculos->obtenerVehiculo($personaSinSalida->id_vehiculo)->identificador;
-                    return response()->json(['vehiculo_ingresado' => $vehiculoIngresado, 'registro' => $personaSinSalida->id_registros]);
+                $colaboradorSinSalida = $consulta->first();
+                if($colaboradorSinSalida->ingreso_vehiculo != null){
+                    $this->registrarSalidaColaborador($consulta);
+
+                    $vehiculoIngresado = $this->vehiculos->obtenerVehiculo($colaboradorSinSalida->id_vehiculo)->identificador;
+                    return response()->json(['vehiculo_ingresado' => $vehiculoIngresado, 'registro' => $colaboradorSinSalida->id_registros]);
                 }
             }
 
+            $this->registrarSalidaColaborador($consulta);
             try {
                 $consultaVehiculo = Registro::where('id_persona', $idPersona)->whereNotNull('ingreso_vehiculo')->whereNull('salida_vehiculo')->latest('ingreso_vehiculo');
             } catch (\Throwable $th) {
@@ -332,7 +336,7 @@ class RegistroController extends Controller
     }
 
     /**
-     * Función que permite retornar el último registro de una persona a la cual no se le ha registrado la salida
+     * Función que permite retornar el último registro de una persona a la cual no se le ha registrado la salida.
      */
     public function consultarIngresoPersona($idPersona)
     {
@@ -342,6 +346,19 @@ class RegistroController extends Controller
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
         }
         return $consulta;
+    }
+
+    /**
+     * Función que permite registrar la salida del último registro de un colaborador con activo si es que este aún no se le ha hecho este registro de salida.
+     */
+    public function registrarSalidaColaborador($consulta)
+    {
+        if ($consulta->exists()) {
+            $colaboradorSinSalida = $consulta->first();
+            $colaboradorSinSalida->salida_persona = date('Y-m-d H:i:s');
+            $colaboradorSinSalida->id_usuario = auth()->user()->id_usuarios;
+            $colaboradorSinSalida->save();
+        } 
     }
 
     /**
