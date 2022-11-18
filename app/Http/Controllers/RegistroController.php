@@ -112,7 +112,7 @@ class RegistroController extends Controller
         } else if ($persona['casoRegistro'] == 'colaboradorConActivo'){
             $persona['codigo'] = ucfirst($persona['codigo']);
             $this->updateActivo($id, $persona['codigo']);
-        }
+        } 
 
         $datos = $this->store($persona);
 
@@ -271,8 +271,6 @@ class RegistroController extends Controller
         $registro = Registro::findOrFail($id);
         $persona = Persona::findOrFail($registro->id_persona);
         $datos = ['salida_activo' => date('Y-m-d H:i:s')];
-        // $tiempoActual = date('Y-m-d H:i:s');
-        // $datos = ['salida_activo' => $tiempoActual];
 
         if($request['codigo'] != null){
             $request['codigo'] = ucfirst($request['codigo']);
@@ -285,11 +283,7 @@ class RegistroController extends Controller
 
         $consulta = $this->consultarIngresoPersona($persona->id_personas);
         if ($consulta->exists()) {
-            // $personaSinSalida = $consulta->first();
             if ($persona->id_tipo_persona == 3) {
-                // $personaSinSalida->salida_persona = $tiempoActual;
-                // $personaSinSalida->id_usuario = auth()->user()->id_usuarios;
-                // $personaSinSalida->save();
                 return response()->json(['id_persona' => $persona->id_personas, 'persona' => $persona->nombre.' '.$persona->apellido]);
             }
         } 

@@ -12,7 +12,6 @@
 @section('scripts')
     <!-- ApexCharts -->
     <script src="{{ asset('assets/plugins/apexcharts/apexcharts.min.js') }}"></script>
-    {{-- <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> --}}
     <!-- JavaScript propio -->
     <script src="{{ asset('js/home/dashboard.js') }}"></script>
 @endsection
@@ -89,10 +88,15 @@
 
         <div class="row">
             <div class="col-md-6">
-                <div id="chart1"></div>
+                <div id="grafico1"></div>
             </div> 
             <div class="col-md-6">
-                <div id="chart2"></div>
+                <div id="grafico2"></div>
+            </div> 
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="mt-2" id="grafico3"></div>
             </div> 
         </div>
     </section>
