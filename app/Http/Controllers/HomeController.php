@@ -116,69 +116,17 @@ class HomeController extends Controller
         }
     }
 
-
-    // /**
-    //  * 
-    //  */
-    // public function obtenerVisitantesDiarios($fechaActual)
-    // {
-    //     try {       
-    //         $visitantes = Registro::where('id_persona', 1)->whereDate('ingreso_persona', $fechaActual)->count();
-    //     } catch (\Throwable $e) {
-    //         return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
-    //     }
-    //     return $visitantes;
-    // }
-
-    // /**
-    //  * 
-    //  */
-    // public function obtenerColaboradoresDiarios($fechaActual)
-    // {
-    //     try {       
-    //         $colaboradores = Registro::where('id_persona', 2)->whereDate('ingreso_persona', $fechaActual)->count();
-    //     } catch (\Throwable $e) {
-    //         return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
-    //     }
-    //     return $colaboradores;
-    // }
-
-    // /**
-    //  * 
-    //  */
-    // public function obtenerColaboradoresActivoDiarios($fechaActual)
-    // {
-    //     try {       
-    //         $colaboradores = Registro::where('id_persona', 3)->whereDate('ingreso_persona', $fechaActual)->count();
-    //     } catch (\Throwable $e) {
-    //         return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
-    //     }
-    //     return $colaboradores;
-    // }
-
-    // /**
-    //  * 
-    //  */
-    // public function obtenerConductoresDiarios($fechaActual)
-    // {
-    //     try {       
-    //         $colaboradores = Registro::where('id_persona', 4)->whereDate('ingreso_persona', $fechaActual)->count();
-    //     } catch (\Throwable $e) {
-    //         return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
-    //     }
-    //     return $colaboradores;
-    // }
-
     
-
-
-
-    public function totalPersonasPorMes($tipoPersona, $anio, $mes, $ciudad)
+                                
+    /**
+     * Función que permite consultar en la base de datos el total de visitantes que registraron ingresos a la empresa en un año y mes determinados.
+     */
+    public function totalVisitantesPorMes($anio, $mes, $ciudad)
     {
         try {
             $consulta = Registro::leftjoin('se_personas AS personas', 'se_registros.id_persona', '=', 'personas.id_personas')
             ->leftjoin('se_usuarios AS usuarios', 'se_registros.id_usuario', '=', 'usuarios.id_usuarios')
-            ->where('id_tipo_persona', $tipoPersona)->whereYear('ingreso_persona', $anio)->whereMonth('ingreso_persona', $mes);
+            ->where('id_tipo_persona', '!=', 4)->where('empresa_visitada', '!=', null)->whereYear('ingreso_persona', $anio)->whereMonth('ingreso_persona', $mes);
 
             // return $consulta->get();
             // return $consulta->count();
@@ -190,7 +138,7 @@ class HomeController extends Controller
     }
 
     /**
-     * Función que permite consultar los registros de los colaboradores con activo, los cuales se hayan ingresado el día actual en la tabla se_registros.
+     * Función que permite consultar en la base de datos el total de colaboradores con activo que registraron ingresos a la empresa en un año y mes determinados.
      */
     public function totalColaboradoresActivoPorMes($anio, $mes, $ciudad)
     {
@@ -206,7 +154,44 @@ class HomeController extends Controller
         }
     }
 
+    /**
+     * Función que permite consultar en la base de datos el total de conductores que registraron ingresos a la empresa en un año y mes determinados.
+     */
+    public function totalConductoresPorMes($anio, $mes, $ciudad)
+    {
+        try {
+            $consulta = Registro::leftjoin('se_personas AS personas', 'se_registros.id_persona', '=', 'personas.id_personas')
+            ->leftjoin('se_usuarios AS usuarios', 'se_registros.id_usuario', '=', 'usuarios.id_usuarios')
+            ->where('id_tipo_persona', 4)->whereYear('ingreso_persona', $anio)->whereMonth('ingreso_persona', $mes);
 
+            // return $consulta->get();
+            // return $consulta->count();
+            return $this->definirConsulta($consulta, $ciudad);
+
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
+        }
+    }
+
+        // public function totalPersonasPorMes($tipoPersona, $anio, $mes, $ciudad)
+    // {
+    //     try {
+    //         $consulta = Registro::leftjoin('se_personas AS personas', 'se_registros.id_persona', '=', 'personas.id_personas')
+    //         ->leftjoin('se_usuarios AS usuarios', 'se_registros.id_usuario', '=', 'usuarios.id_usuarios')
+    //         ->where('id_tipo_persona', $tipoPersona)->whereYear('ingreso_persona', $anio)->whereMonth('ingreso_persona', $mes);
+
+    //         // return $consulta->get();
+    //         // return $consulta->count();
+    //         return $this->definirConsulta($consulta, $ciudad);
+
+    //     } catch (\Throwable $th) {
+    //         return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
+    //     }
+    // }
+
+    /**
+     * Función que permite consultar en la base de datos el total de vehículos que registraron ingresos a la empresa en un año y mes determinados.
+     */
     public function totalVehiculosPorMes($anio, $mes, $ciudad)
     {
         try {       
@@ -222,20 +207,13 @@ class HomeController extends Controller
         }
     }
 
-    public function totalRegistrosPorMes(Request $request)
+    /**
+     * Función que recibe una petición Ajax para consultar en la base de datos el número de registros de ingresos de visitantes, colaboradores con activo, conductores y vehículos del mes actual y los cinco meses anteriores a este.
+     */
+    public function totalIngresosPorMes(Request $request)
     {
         if($request->ajax()){
             $ciudad = $request->input('ciudad');
-
-            // if($request->input('ciudad') != null ){
-            //     return $request->input('ciudad');
-            // }
-            // return $request->input('ciudad');
-            // $date = Carbon::now()->toDateString();
-            // return Carbon::parse('10-12-2021')->subMonth();
-
-            // $fechaActual = Carbon::now();
-
             $meses = [];
             $visitantes = [];
             $colaboradoresActivo = [];
@@ -247,40 +225,103 @@ class HomeController extends Controller
                 $mesAnterior = Carbon::now()->subMonth($i);
                 array_unshift($meses, $mesAnterior->format('m-Y'));
 
-                array_unshift($visitantes, $this->totalPersonasPorMes(1, $mesAnterior->year, $mesAnterior->month, $ciudad));
+                array_unshift($visitantes, $this->totalVisitantesPorMes($mesAnterior->year, $mesAnterior->month, $ciudad));
                 array_unshift($colaboradoresActivo, $this->totalColaboradoresActivoPorMes($mesAnterior->year, $mesAnterior->month, $ciudad));
-                array_unshift($conductores, $this->totalPersonasPorMes(4, $mesAnterior->year, $mesAnterior->month, $ciudad));
+                array_unshift($conductores, $this->totalConductoresPorMes($mesAnterior->year, $mesAnterior->month, $ciudad));
                 array_unshift($vehiculos, $this->totalVehiculosPorMes($mesAnterior->year, $mesAnterior->month, $ciudad));
-
-                // $visitantes[] = $this->tipoPersonasPorMes(1, $mesAnterior->year, $mesAnterior->month); 
-                // $colaboradoresActivo[] = $this->tipoPersonasPorMes(4, $mesAnterior->year, $mesAnterior->month);
-                // $conductores[] = $this->tipoPersonasPorMes(3, $mesAnterior->year, $mesAnterior->month);
-                // $vehiculos[] = $this->vehiculosPorMes($mesAnterior->year, $mesAnterior->month);
-
-                // array_unshift($consultaIngresos, $this->tipoPersonasPorMes(1, $mesAnterior->year, $mesAnterior->month));
-                // $consultaIngresos[] = $mesAnterior->month;
-                // $meses[] = Carbon::now()->subMonth($i)->format('m-Y');
+                // array_unshift($visitantes, $this->totalPersonasPorMes(1, $mesAnterior->year, $mesAnterior->month, $ciudad));
+                // array_unshift($conductores, $this->totalPersonasPorMes(4, $mesAnterior->year, $mesAnterior->month, $ciudad));
             }
             
-            // return Carbon::now()->subMonth();
-
-            // $consulta = Registro::leftjoin('se_personas AS personas', 'se_registros.id_persona', '=', 'personas.id_personas')
-            //     ->where('id_tipo_persona', 1)->whereMonth('ingreso_persona', '11')->count();
-
-            // $consultaIngresos = [$visitantes, $colaboradoresActivo, $conductores, $vehiculos];
-            // Return $consultaIngresos;
-            // return $meses;
-            // return $date = Carbon::createFromDate(1999,03,11)->age;
-            // return Carbon::now()->format('m-Y');
-            // return $date->monthName;
-
             return response()->json([
                 'meses' => $meses,
-                'totalRegistrosPorMes' => [$visitantes, $colaboradoresActivo, $conductores, $vehiculos]
+                'totalIngresosPorMes' => [$visitantes, $colaboradoresActivo, $conductores, $vehiculos]
             ]);
         }
     }
 
+    /**
+     * Función que permite consultar en la base de datos el total de visitantes que registraron un ingreso a una determinada empresa en un año y mes específicos.
+     */
+    public function totalVisitantesPorEmpresa($empresa, $anio, $mes, $ciudad)
+    {
+        try {
+            $consulta = Registro::leftjoin('se_personas AS personas', 'se_registros.id_persona', '=', 'personas.id_personas')
+            ->leftjoin('se_usuarios AS usuarios', 'se_registros.id_usuario', '=', 'usuarios.id_usuarios')
+            ->where('id_tipo_persona', '!=', 4)->where('empresa_visitada', $empresa)->whereYear('ingreso_persona', $anio)->whereMonth('ingreso_persona', $mes);
+
+            // return $consulta->get();
+            // return $consulta->count();
+            return $this->definirConsulta($consulta, $ciudad);
+
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
+        }
+    }
+
+    /**
+     * Función que recibe una petición Ajax para consultar en la base de datos el número de registros de ingresos de visitantes del mes actual y los cinco meses anteriores a este didividos por la empresa donde se realizo el ingreso.
+     */
+    public function totalIngresosVisitantesPorMes(Request $request)
+    {
+        if($request->ajax()){
+            $ciudad = $request->input('ciudad');
+
+            for ($i = 0; $i < 6; $i++) { 
+                // $mesAnterior = Carbon::parse('03-03-2024')->subMonth($i);
+                $mesAnterior = Carbon::now()->subMonth($i);
+                $meses[] = $mesAnterior->format('m-Y');
+
+                $visitantesAviomar[] = $this->totalVisitantesPorEmpresa(1, $mesAnterior->year, $mesAnterior->month, $ciudad);
+                $visitantesSnider[] = $this->totalVisitantesPorEmpresa(2, $mesAnterior->year, $mesAnterior->month, $ciudad);
+                $visitantesColvan[] = $this->totalVisitantesPorEmpresa(3, $mesAnterior->year, $mesAnterior->month, $ciudad);
+            }
+
+            return response()->json([
+                'meses' => $meses,
+                'totalIngresosVisitantesPorMes' => [$visitantesAviomar, $visitantesSnider, $visitantesColvan]
+            ]);
+        }
+    }
+
+    /**
+     * Función que permite consultar en la base de datos el total de visitantes que registraron un ingreso a una determinada empresa en un año específico.
+     */
+    public function totalVisitantesPorAnio($empresa, $anio, $ciudad)
+    {
+        try {
+            $consulta = Registro::leftjoin('se_personas AS personas', 'se_registros.id_persona', '=', 'personas.id_personas')
+            ->leftjoin('se_usuarios AS usuarios', 'se_registros.id_usuario', '=', 'usuarios.id_usuarios')
+            ->where('id_tipo_persona', '!=', 4)->where('empresa_visitada', $empresa)->whereYear('ingreso_persona', $anio);
+
+            // return $consulta->get();
+            // return $consulta->count();
+            return $this->definirConsulta($consulta, $ciudad);
+
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
+        }
+    }
+
+    /**
+     * Función que recibe una petición Ajax para consultar en la base de datos el número de registros de ingresos de visitantes del año actual y divididos por la empresa donde se realizo el ingreso.
+     */
+    public function totalIngresosVisitantesAnio(Request $request)
+    {
+        if($request->ajax()){
+            $ciudad = $request->input('ciudad');
+            $anioActual = Carbon::now()->year;
+
+            return response()->json([
+                'anio' => $anioActual,
+                'totalIngresosVisitantesAnio' => [
+                    $this->totalVisitantesPorAnio(1, $anioActual, $ciudad),
+                    $this->totalVisitantesPorAnio(2, $anioActual, $ciudad),
+                    $this->totalVisitantesPorAnio(3, $anioActual, $ciudad)
+                ]
+            ]);
+        }
+    }
 
     /**
      * Función que permite traer el número total de registros por medio de una consulta previamente realizada y dependiendo del rol de usuario y la ciudad que este tenga asignada.

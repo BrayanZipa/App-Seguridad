@@ -61,17 +61,8 @@ $(function () {
 
   //Opciones del gráfico de ingreso de visitantes por empresa
   var options2 = {
-    series: [{
-      name: 'AVIOMAR',
-      data: [44, 55, 41, 64, 22, 43]
-    }, {
-      name: 'SNIDER',
-      data: [53, 32, 33, 52, 13, 44]
-    }, {
-      name: 'COLVAN',
-      data: [53, 32, 33, 52, 13, 44]
-    }],
-      chart: {
+    series: [],
+    chart: {
       type: 'bar',
       height: 450,
       redrawOnParentResize: true,
@@ -110,9 +101,6 @@ $(function () {
     tooltip: {
       shared: true,
       intersect: false
-    },
-    xaxis: {
-      categories: [2001, 2002, 2003, 2004, 2005, 2006],
     }
   };
   var grafico2 = new ApexCharts(document.querySelector("#grafico2"), options2);
@@ -120,7 +108,7 @@ $(function () {
 
   //Opciones del gráfico de porcentaje de ingreso de visitantes al año
   var options3 = {
-    series: [30, 45, 30],
+    series: [],
     chart: {
       height: 350,
       type: 'donut',
@@ -168,7 +156,6 @@ $(function () {
             total: {
               showAlways: true,
               show: true,
-              label: 'TOTAL 2022',
               fontSize: '15px',
               fontWeight: 'bold',
               color: '#787878',
@@ -179,7 +166,7 @@ $(function () {
     },
     dataLabels: {
       style: {
-        fontSize: '15px',
+        fontSize: '14px',
         fontWeight: 'normal',
         colors: ['#fff']
       }
@@ -202,7 +189,6 @@ $(function () {
       } else {
         cantidad += 1;
         $(elemento).text(cantidad);
-
         if (cantidad === totalRegistros) {
           clearInterval(tiempo);
         }
@@ -235,10 +221,10 @@ $(function () {
     });
   }
     
-  //Función Ajax que hace una petición al servidor para traer el número de registros de visitantes, colaboradores con activo, conductores y vehículos realizados en el mes actual y los cinco meses anteriores a este, una vez obtenidos los registros se organizan en el gráfico de ingresos individuales por mes
-  function obtenerTotalRegistrosPorMes(ciudadSeleccionada = null) {
+  //Función Ajax que hace una petición al servidor para traer el número de registros de visitantes, colaboradores con activo, conductores y vehículos realizados en el mes actual y los cinco meses anteriores a este, una vez obtenidos los valores se organizan en el gráfico de ingresos individuales por mes
+  function obtenerTotalIngresosPorMes(ciudadSeleccionada = null) {
     $.ajax({
-      url: 'home/registros_mes',
+      url: 'home/ingresos_mes',
       type: 'GET',
       data: {
         ciudad: ciudadSeleccionada,
@@ -248,16 +234,16 @@ $(function () {
         grafico1.updateOptions({
           series: [{
             name: 'VISITANTES',
-            data: response.totalRegistrosPorMes[0]
+            data: response.totalIngresosPorMes[0]
           }, {
             name: 'COLABORADORES ACTIVO',
-            data: response.totalRegistrosPorMes[1]
+            data: response.totalIngresosPorMes[1]
           }, {
             name: 'CONDUCTORES',
-            data: response.totalRegistrosPorMes[2]
+            data: response.totalIngresosPorMes[2]
           }, {
             name: 'VEHÍCULOS',
-            data: response.totalRegistrosPorMes[3]
+            data: response.totalIngresosPorMes[3]
           }],
           xaxis: {
             categories: response.meses
@@ -269,242 +255,80 @@ $(function () {
       }
     });
   }
-  obtenerTotalRegistrosPorMes();
+  obtenerTotalIngresosPorMes();
+
+  //Función Ajax que hace una petición al servidor para traer el número de registros de visitantes realizados en el mes actual y los cinco meses anteriores a este divididos por la empresa a la que ingreso, una vez obtenidos los valores se organizan en el gráfico de ingreso de visitantes por empresa
+  function obtenerTotalIngresosVisitantes(ciudadSeleccionada = null) {
+    $.ajax({
+      url: 'home/ingresos_visitantes',
+      type: 'GET',
+      data: {
+        ciudad: ciudadSeleccionada,
+      },
+      dataType: 'json',
+      success: function (response) {
+        grafico2.updateOptions({
+          series: [{
+            name: 'AVIOMAR',
+            data: response.totalIngresosVisitantesPorMes[0],
+          }, {
+            name: 'SNIDER',
+            data: response.totalIngresosVisitantesPorMes[1],
+          }, {
+            name: 'COLVAN',
+            data: response.totalIngresosVisitantesPorMes[2],
+          }],
+          xaxis: {
+            categories: response.meses,
+          }
+        }, true);
+      },
+      error: function () {
+        console.log('Error obteniendo los datos de la base de datos');
+      }
+    });
+  }
+  obtenerTotalIngresosVisitantes();
+
+  //Función Ajax que hace una petición al servidor para traer el número total de registros de visitantes realizados en lo corrido del año actual dividido por la empresa a la que se ingreso, una vez obtenidos los valores se organizan en el gráfico de porcentaje de ingreso de visitantes al año
+  function obtenerTotalIngresosVisitantesAnio(ciudadSeleccionada = null) {
+    $.ajax({
+      url: 'home/ingresos_visitantes_anio',
+      type: 'GET',
+      data: {
+        ciudad: ciudadSeleccionada,
+      },
+      dataType: 'json',
+      success: function (response) {
+        grafico3.updateOptions({
+          series: response.totalIngresosVisitantesAnio,
+          plotOptions: {
+            pie: {
+              donut: {
+                labels: {
+                  total: {
+                    label: `TOTAL ${response.anio}`,
+                  }
+                }
+              }
+            }
+          }
+        }, true);
+      },
+      error: function () {
+        console.log('Error obteniendo los datos de la base de datos');
+      }
+    });
+  }
+  obtenerTotalIngresosVisitantesAnio();
 
   //Al seleccionar alguna ciudad se toma el id del elemento seleccionado y se envia a otra función para realizar la consulta de información y poder actualizar los gráficos dependiendo de la ciudad seleccionada
   $('#bogota, #cartagena, #buenaventura').on('click', function () {
     $('#dropdownSubMenu').text($(this).text());
     obtenerNumeroRegistros($(this).attr('id'));
-    obtenerTotalRegistrosPorMes($(this).attr('id'));
+    obtenerTotalIngresosPorMes($(this).attr('id'));
+    obtenerTotalIngresosVisitantes($(this).attr('id'));
+    obtenerTotalIngresosVisitantesAnio($(this).attr('id'));
   });
-
-    
-
-    // console.log(<?php  {{$visitantes}} ?>);
-
-
-
-      
-  //   var options = {
-  //     series: [{
-  //     data: [30,40,35,50,49,60,70]
-  //   }],
-  //     chart: {
-  //     id: 'barYear',
-  //     height: 400,
-  //     width: '100%',
-  //     type: 'bar',
-  //     events: {
-  //       dataPointSelection: function (e, chart, opts) {
-  //         var quarterChartEl = document.querySelector("#chart-quarter");
-  //         var yearChartEl = document.querySelector("#chart2");
-    
-  //         if (opts.selectedDataPoints[0].length === 1) {
-  //           if (quarterChartEl.classList.contains("active")) {
-  //             updateQuarterChart(chart, 'barQuarter')
-  //           } else {
-  //             yearChartEl.classList.add("chart-quarter-activated")
-  //             quarterChartEl.classList.add("active");
-  //             updateQuarterChart(chart, 'barQuarter')
-  //           }
-  //         } else {
-  //           updateQuarterChart(chart, 'barQuarter')
-  //         }
-    
-  //         if (opts.selectedDataPoints[0].length === 0) {
-  //           yearChartEl.classList.remove("chart-quarter-activated")
-  //           quarterChartEl.classList.remove("active");
-  //         }
-    
-  //       },
-  //       updated:  function (chart) {
-  //         updateQuarterChart(chart, 'barQuarter')
-  //       }
-  //     }
-  //   },
-  //   plotOptions: {
-  //     bar: {
-  //       distributed: true,
-  //       horizontal: true,
-  //       barHeight: '75%',
-  //       dataLabels: {
-  //         position: 'bottom'
-  //       }
-  //     }
-  //   },
-  //   dataLabels: {
-  //     enabled: true,
-  //     textAnchor: 'start',
-  //     style: {
-  //       colors: ['#fff']
-  //     },
-  //     formatter: function (val, opt) {
-  //       return opt.w.globals.labels[opt.dataPointIndex]
-  //     },
-  //     offsetX: 0,
-  //     dropShadow: {
-  //       enabled: true
-  //     }
-  //   },
-    
-  //   // colors: colors,
-    
-  //   states: {
-  //     normal: {
-  //       filter: {
-  //         type: 'desaturate'
-  //       }
-  //     },
-  //     active: {
-  //       allowMultipleDataPointsSelection: true,
-  //       filter: {
-  //         type: 'darken',
-  //         value: 1
-  //       }
-  //     }
-  //   },
-  //   tooltip: {
-  //     x: {
-  //       show: false
-  //     },
-  //     y: {
-  //       title: {
-  //         formatter: function (val, opts) {
-  //           return opts.w.globals.labels[opts.dataPointIndex]
-  //         }
-  //       }
-  //     }
-  //   },
-  //   title: {
-  //     text: 'Yearly Results',
-  //     offsetX: 15
-  //   },
-  //   subtitle: {
-  //     text: '(Click on bar to see details)',
-  //     offsetX: 15
-  //   },
-  //   yaxis: {
-  //     labels: {
-  //       show: false
-  //     }
-  //   }
-  //   };
-
-  //   var chart = new ApexCharts(document.querySelector("#chart2"), options);
-  //   chart.render();
-  
-  //   var optionsQuarter = {
-  //     series: [{
-  //     data: []
-  //   }],
-  //     chart: {
-  //     id: 'barQuarter',
-  //     height: 400,
-  //     width: '100%',
-  //     type: 'bar',
-  //     stacked: true
-  //   },
-  //   plotOptions: {
-  //     bar: {
-  //       columnWidth: '50%',
-  //       horizontal: false
-  //     }
-  //   },
-  //   legend: {
-  //     show: false
-  //   },
-  //   grid: {
-  //     yaxis: {
-  //       lines: {
-  //         show: false,
-  //       }
-  //     },
-  //     xaxis: {
-  //       lines: {
-  //         show: true,
-  //       }
-  //     }
-  //   },
-  //   yaxis: {
-  //     labels: {
-  //       show: false
-  //     }
-  //   },
-  //   title: {
-  //     text: 'Quarterly Results',
-  //     offsetX: 10
-  //   },
-  //   tooltip: {
-  //     x: {
-  //       formatter: function (val, opts) {
-  //         return opts.w.globals.seriesNames[opts.seriesIndex]
-  //       }
-  //     },
-  //     y: {
-  //       title: {
-  //         formatter: function (val, opts) {
-  //           return opts.w.globals.labels[opts.dataPointIndex]
-  //         }
-  //       }
-  //     }
-  //   }
-  //   };
-
-  //   var chartQuarter = new ApexCharts(document.querySelector("#chart-quarter"), optionsQuarter);
-  //   chartQuarter.render();
-  
-  
-  //   chart.addEventListener('dataPointSelection', function (e, chart, opts) {
-  //   var quarterChartEl = document.querySelector("#chart-quarter");
-  //   var yearChartEl = document.querySelector("#chart2");
-  
-  //   if (opts.selectedDataPoints[0].length === 1) {
-  //     if(quarterChartEl.classList.contains("active")) {
-  //       updateQuarterChart(chart, 'barQuarter')
-  //     }
-  //     else {
-  //       yearChartEl.classList.add("chart-quarter-activated")
-  //       quarterChartEl.classList.add("active");
-  //       updateQuarterChart(chart, 'barQuarter')
-  //     }
-  //   } else {
-  //       updateQuarterChart(chart, 'barQuarter')
-  //   }
-  
-  //   if (opts.selectedDataPoints[0].length === 0) {
-  //     yearChartEl.classList.remove("chart-quarter-activated")
-  //     quarterChartEl.classList.remove("active");
-  //   }
-  
-  // })
-  
-  // chart.addEventListener('updated', function (chart) {
-  //   updateQuarterChart(chart, 'barQuarter')
-  // })
-  
-  // document.querySelector("#model").addEventListener("change", function (e) {
-  //   chart.updateSeries([{
-  //     data: [30,40,35,50,49,60,70]
-  //   }])
-  // })
-
-
-
-    // var options = {
-    //     chart: {
-    //       type: 'line',
-    //       height: 450,
-    //     },
-    //     series: [{
-    //       name: 'sales',
-    //       data: [30,40,35,50,49,60,70,91,125]
-    //     }],
-    //     xaxis: {
-    //       categories: [1991,1992,1993,1994,1995,1996,1997, 1998,1999]
-    //     }
-    //   }
-      
-    //   var chart = new ApexCharts(document.querySelector("#chart2"), options);
-    //   chart.render();
 
 });

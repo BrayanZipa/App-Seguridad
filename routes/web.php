@@ -32,7 +32,9 @@ Auth::routes();
  */
 Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware('auth'); 
 Route::get('/home/total_registros', [HomeController::class, 'totalRegistrosDiarios'])->name('registrosDiarios')->middleware('auth');
-Route::get('/home/registros_mes', [HomeController::class, 'totalRegistrosPorMes'])->name('registrosMes')->middleware('auth');  
+Route::get('/home/ingresos_mes', [HomeController::class, 'totalIngresosPorMes'])->name('ingresosMes')->middleware('auth');  
+Route::get('/home/ingresos_visitantes', [HomeController::class, 'totalIngresosVisitantesPorMes'])->name('ingresosVisitantes')->middleware('auth');
+Route::get('/home/ingresos_visitantes_anio', [HomeController::class, 'totalIngresosVisitantesAnio'])->name('ingresosVisitantesAnio')->middleware('auth');
 
 /**
  * Rutas del sistema de roles
@@ -107,6 +109,3 @@ Route::put('/registros/editar_persona/{id}', [RegistroController::class, 'update
 Route::put('/registros/salida_persona/{id}', [RegistroController::class, 'registrarSalida'])->name('salidaPersona')->middleware(['auth', 'can:registrarSalida']);   
 Route::put('/registros/salida_activo/{id}', [RegistroController::class, 'registrarSalidaActivo'])->name('salidaActivo')->middleware(['auth', 'can:registrarSalida']);  
 Route::match(['get', 'put'], '/registros/estado_vehiculo', [RegistroController::class, 'verificarEstadoVehiculo'])->name('estadoVehiculo')->middleware(['auth', 'can:registrarSalida']);
-
-
-// Route::get('/prueba', [HomeController::class, 'prueba'])->name('prueba');  
