@@ -99,10 +99,20 @@
                         </p>
                     </a>
                 </li>
+                @can('mostrarReportes')
+                    <li class="nav-item">
+                        <a href="{{ route('mostrarReportes') }}" class="nav-link {{ Request::is('reportes*') ? 'active' : '' }}">
+                            <i class="nav-icon fa-solid fa-file-export"></i>
+                            <p>
+                                Reportes
+                            </p>
+                        </a>
+                    </li> 
+                @endcan
                 @can('mostrarUsuarios')
                     <li class="nav-item">
                         <a href="{{ route('mostrarUsuarios') }}" class="nav-link {{ Request::is('users*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-user-check"></i>
+                            <i class="nav-icon fas fa-user-check"></i> 
                             <p>
                                 Usuarios
                             </p>

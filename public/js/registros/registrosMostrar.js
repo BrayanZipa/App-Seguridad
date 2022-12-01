@@ -3,6 +3,10 @@ $(function() {
     const fecha = new Date();
     var idPersona = '';
 
+    for (let i= 2022; i <= fecha.getFullYear(); i++) {
+        $('#selectAnio').append(`<option value="${i}">${i}</option>`);
+    }
+
     //Uso de DataTables para mostrar los registros realizados en donde se completo tanto las entradas como salidas de todos los tipos de persona (visitantes, conductores, colaboradores con y sin activo)
     var estado = false;
     if($('#thCiudad').length){ 

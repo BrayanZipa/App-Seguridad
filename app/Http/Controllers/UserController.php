@@ -13,7 +13,7 @@ class UserController extends Controller
     protected $usuarios;
 
     /**
-     * Contructor que inicializa todos los modelos
+     * Constructor que inicializa todos los modelos
      */
     public function __construct(User $usuarios)
     {

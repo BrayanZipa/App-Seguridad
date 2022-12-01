@@ -14,4 +14,5 @@
                 </ul>
             </li>
         @endhasanyrole
+    </ul>
 </nav>

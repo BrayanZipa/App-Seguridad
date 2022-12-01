@@ -30,6 +30,9 @@ class ConductorController extends Controller
     protected $marcaVehiculos;
     protected $empresas;
 
+    /**
+     * Constructor que inicializa todos los modelos
+     */
     public function __construct(User $usuarios, Persona $conductores, Eps $eps, Arl $arl, Vehiculo $vehiculos, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, Empresa $empresas){
         $this->usuarios = $usuarios;
         $this->conductores = $conductores;

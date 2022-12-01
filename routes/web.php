@@ -4,6 +4,7 @@ use App\Http\Controllers\ColaboradorController;
 use App\Http\Controllers\ConductorController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RegistroController;
+use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehiculoController;
 use App\Http\Controllers\VisitanteController;
@@ -109,3 +110,11 @@ Route::put('/registros/editar_persona/{id}', [RegistroController::class, 'update
 Route::put('/registros/salida_persona/{id}', [RegistroController::class, 'registrarSalida'])->name('salidaPersona')->middleware(['auth', 'can:registrarSalida']);   
 Route::put('/registros/salida_activo/{id}', [RegistroController::class, 'registrarSalidaActivo'])->name('salidaActivo')->middleware(['auth', 'can:registrarSalida']);  
 Route::match(['get', 'put'], '/registros/estado_vehiculo', [RegistroController::class, 'verificarEstadoVehiculo'])->name('estadoVehiculo')->middleware(['auth', 'can:registrarSalida']);
+
+/**
+ * Rutas del módulo de reportes
+ */
+Route::get('/reportes', [ReporteController::class, 'index'])->name('mostrarReportes')->middleware(['auth', 'can:mostrarReportes']);
+// Route::get('/reportes/informacion', [ReporteController::class, 'index'])->name('informacionReportes')->middleware('auth');
+Route::get('/reportes/exportar', [ReporteController::class, 'exportarReportes'])->name('exportarReportes')->middleware('auth');
+// Route::get('/prueba', [ReporteController::class, 'prueba'])->name('prueba');

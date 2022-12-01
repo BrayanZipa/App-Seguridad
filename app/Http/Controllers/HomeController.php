@@ -13,9 +13,7 @@ class HomeController extends Controller
     protected $usuarios;
 
     /**
-     * Create a new controller instance.
-     *
-     * @return void
+     * Constructor que inicializa todos los modelos
      */
     public function __construct(User $usuarios)
     {
@@ -115,8 +113,6 @@ class HomeController extends Controller
             // ]);
         }
     }
-
-    
                                 
     /**
      * Función que permite consultar en la base de datos el total de visitantes que registraron ingresos a la empresa en un año y mes determinados.
@@ -126,7 +122,7 @@ class HomeController extends Controller
         try {
             $consulta = Registro::leftjoin('se_personas AS personas', 'se_registros.id_persona', '=', 'personas.id_personas')
             ->leftjoin('se_usuarios AS usuarios', 'se_registros.id_usuario', '=', 'usuarios.id_usuarios')
-            ->where('id_tipo_persona', '!=', 4)->where('empresa_visitada', '!=', null)->whereYear('ingreso_persona', $anio)->whereMonth('ingreso_persona', $mes);
+            ->where('id_tipo_persona', '!=', 4)->whereNotNull('empresa_visitada')->whereYear('ingreso_persona', $anio)->whereMonth('ingreso_persona', $mes);
 
             // return $consulta->get();
             // return $consulta->count();
@@ -145,7 +141,7 @@ class HomeController extends Controller
         try { 
             $consulta = Registro::leftjoin('se_personas AS personas', 'se_registros.id_persona', '=', 'personas.id_personas')
             ->leftjoin('se_usuarios AS usuarios', 'se_registros.id_usuario', '=', 'usuarios.id_usuarios')
-            ->where('id_tipo_persona', 3)->whereNotNull('ingreso_activo')->whereYear('ingreso_persona', $anio)->whereMonth('ingreso_persona', $mes);
+            ->where('id_tipo_persona', 3)->whereNull('empresa_visitada')->whereNotNull('ingreso_activo')->whereYear('ingreso_persona', $anio)->whereMonth('ingreso_persona', $mes);
 
             // return $consulta->count();
             return $this->definirConsulta($consulta, $ciudad);
@@ -172,22 +168,6 @@ class HomeController extends Controller
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
         }
     }
-
-        // public function totalPersonasPorMes($tipoPersona, $anio, $mes, $ciudad)
-    // {
-    //     try {
-    //         $consulta = Registro::leftjoin('se_personas AS personas', 'se_registros.id_persona', '=', 'personas.id_personas')
-    //         ->leftjoin('se_usuarios AS usuarios', 'se_registros.id_usuario', '=', 'usuarios.id_usuarios')
-    //         ->where('id_tipo_persona', $tipoPersona)->whereYear('ingreso_persona', $anio)->whereMonth('ingreso_persona', $mes);
-
-    //         // return $consulta->get();
-    //         // return $consulta->count();
-    //         return $this->definirConsulta($consulta, $ciudad);
-
-    //     } catch (\Throwable $th) {
-    //         return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
-    //     }
-    // }
 
     /**
      * Función que permite consultar en la base de datos el total de vehículos que registraron ingresos a la empresa en un año y mes determinados.
@@ -229,8 +209,6 @@ class HomeController extends Controller
                 array_unshift($colaboradoresActivo, $this->totalColaboradoresActivoPorMes($mesAnterior->year, $mesAnterior->month, $ciudad));
                 array_unshift($conductores, $this->totalConductoresPorMes($mesAnterior->year, $mesAnterior->month, $ciudad));
                 array_unshift($vehiculos, $this->totalVehiculosPorMes($mesAnterior->year, $mesAnterior->month, $ciudad));
-                // array_unshift($visitantes, $this->totalPersonasPorMes(1, $mesAnterior->year, $mesAnterior->month, $ciudad));
-                // array_unshift($conductores, $this->totalPersonasPorMes(4, $mesAnterior->year, $mesAnterior->month, $ciudad));
             }
             
             return response()->json([

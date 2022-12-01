@@ -22,6 +22,8 @@ class RoleSeeder extends Seeder
 
         Permission::create(['name' => 'mostrarUsuarios'])->syncRoles([$role1]);
         Permission::create(['name' => 'editarUsuario'])->syncRoles([$role1]);
+
+        Permission::create(['name' => 'mostrarReportes'])->syncRoles([$role1, $role2]);
         
         Permission::create(['name' => 'formCrearVisitante'])->syncRoles([$role1, $role2, $role3]);
         Permission::create(['name' => 'crearVisitante'])->syncRoles([$role1, $role2, $role3]);

@@ -32,7 +32,7 @@ class VisitanteController extends Controller
     protected $activos;
 
     /**
-     * Contructor que inicializa todos los modelos
+     * Constructor que inicializa todos los modelos
      */
     public function __construct(User $usuarios, Persona $visitantes, Eps $eps, Arl $arl, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, Empresa $empresas, Activo $activos)
     {

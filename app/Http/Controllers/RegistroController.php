@@ -30,6 +30,9 @@ class RegistroController extends Controller
     protected $vehiculos;
     protected $personasVehiculos;
     
+    /**
+     * Constructor que inicializa todos los modelos
+     */
     public function __construct(User $usuarios, Registro $registros, TipoPersona $tipoPersonas, Persona $personas, Eps $eps, Arl $arl, Empresa $empresas, Activo $activos, Vehiculo $vehiculos, PersonaVehiculo $personasVehiculos){
         $this->usuarios = $usuarios;
         $this->registros = $registros;

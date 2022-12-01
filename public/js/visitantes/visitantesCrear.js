@@ -385,7 +385,7 @@ $(function () {
     $('select.visitante, select.vehiculo').change(function () {
         if ($(this).hasClass('is-invalid')) {
             $(this).removeClass('is-invalid');
-        };
+        }
     });
 
     // Función que permite mantener la fotografía tomada previamente al visitante en caso de que haya errores al enviar el formulario crear visitante
@@ -416,8 +416,6 @@ $(function () {
         document.getElementById('botonActivar').style.display = '';
         document.getElementById('botonCapturar').style.display = '';
     }
-
-
 
     //Función que permite mantener la fotografía tomada previamente al vehículo en caso de que haya errores al enviar el formulario crear vehículo
     function retornarFotoVehiculo() {

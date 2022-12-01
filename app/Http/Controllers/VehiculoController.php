@@ -25,7 +25,7 @@ class VehiculoController extends Controller
     protected $tipoPersonas;
 
     /**
-     * Contructor que inicializa todos los modelos
+     * Constructor que inicializa todos los modelos
      */
     public function __construct(User $usuarios, Persona $personas, Vehiculo $vehiculos, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, TipoPersona $tipoPersonas)
     {

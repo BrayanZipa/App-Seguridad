@@ -35,6 +35,9 @@ class ColaboradorController extends Controller
     protected $activos;
     protected $registros;
 
+    /**
+     * Constructor que inicializa todos los modelos
+     */
     public function __construct(User $usuarios, Persona $colaboradores, Eps $eps, Arl $arl, Vehiculo $vehiculos, TipoVehiculo $tipoVehiculos, MarcaVehiculo $marcaVehiculos, Empresa $empresas, Activo $activos, Registro $registros){
         $this->usuarios = $usuarios;
         $this->colaboradores = $colaboradores;
