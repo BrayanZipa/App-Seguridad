@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 // use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Excel;
+use Yajra\DataTables\DataTables;
 use App\Exports\ReportesExport;
+use App\Models\Empresa;
 use App\Models\Persona;
 use App\Models\Registro;
 use Carbon\Carbon;
@@ -44,41 +46,13 @@ class ReporteController extends Controller
         // return (new ReportesExport)->download('Visitantes_Noviembre_Colvan.xlsx'); 
     }
 
-
-    public function determinarTipoPersona($tipoPersona) 
-    {
-        if($tipoPersona == 1 || $tipoPersona == 4){
-            $esColaborador = false;
-            $esColOrVisi= false;
-            if($tipoPersona == 1){
-                $esColOrVisi = true;
-            }
-        } else if($tipoPersona == 2 || $tipoPersona == 3){
-            $esColaborador = true;
-            $esColOrVisi = false;
-            if($tipoPersona == 3){
-                $esColOrVisi = true;
-            }
-        }  
-
-        return [$esColaborador, $esColOrVisi];
-    }
-
     /**
      * 
      */
     public function exportarReportes(Request $request) 
     {
-        $datos = $request->all();
-
         $this->validarFiltros($request);
-
-        // $request->validate([
-        //     'fecha' => 'required|date_format:d/m/Y'
-        // ], [
-        //     'fecha.required' => 'Se requiere que ingrese la fecha',
-        //     'fecha.date_format' => 'La fecha debe tener un formato valido'
-        // ]);
+        $datos = $request->all();
 
         // return 'paso';
         // return $datos;
@@ -102,76 +76,72 @@ class ReporteController extends Controller
         if($datos['formato'] == 'excel'){
             if($datos['tipoReporte'] == 1 || $datos['tipoReporte'] == 2){
                 if(isset($datos['tipoPersona']) && $datos['tipoPersona'] != 5) {
-                    [$esColaborador, $esColOrVisi] = $this->determinarTipoPersona($datos['tipoPersona']);
+                    [$esColaborador, $esColOrVisi, $tipoPersona] = $this->determinarTipoPersona($datos['tipoPersona']);
                 }
 
                 if(isset($datos['fecha'])){
-                    $datos['fecha'] = Carbon::createFromFormat('d/m/Y', $datos['fecha'])->toDateString();
+                    $fecha = Carbon::createFromFormat('d/m/Y', $datos['fecha']);
+                    $datos['fecha'] = $fecha->toDateString();
                 }
 
                 if((!isset($datos['tipoPersona']) || $datos['tipoPersona'] == 5) && (!isset($datos['ciudad']) || $datos['ciudad'] == 'Todas')){
                     if($datos['tipoReporte'] == 1){
-                        return (new ReportesExport($this->reporteAgrupadoAnioMes($datos['anio'], $datos['mes'])->get(), true, false))->download('reportes1.xlsx');
+                        $titulo = 'Registros '.$datos['mes'].'-'.$datos['anio'].'.xlsx';
+                        return (new ReportesExport($this->reporteAgrupadoAnioMes($datos['anio'], $datos['mes'])->get(), true, false, false, $titulo))->download($titulo);
                     } else {
-                        return (new ReportesExport($this->reporteFechaEspecifica($datos['fecha'])->get(), true, false))->download('report1.xlsx');
+                        $titulo = 'Registros '.$fecha->format('d-m-Y').'.xlsx';
+                        return (new ReportesExport($this->reporteFechaEspecifica($datos['fecha'])->get(), true, false, false, $titulo))->download($titulo);
                     }
                     
                 } else if(isset($datos['tipoPersona']) && (!isset($datos['ciudad']) || $datos['ciudad'] == 'Todas') && (!isset($datos['empresa']) || $datos['empresa'] == 4)){
                     if($datos['tipoReporte'] == 1){
-                        return (new ReportesExport($this->reporteAgrupadoTipoPersona($datos['anio'], $datos['mes'], $datos['tipoPersona'])->get(), false, $esColaborador, $esColOrVisi))->download('reportes2.xlsx');
+                        $titulo = $tipoPersona.' '.$datos['mes'].'-'.$datos['anio'].'.xlsx';
+                        return (new ReportesExport($this->reporteAgrupadoTipoPersona($datos['anio'], $datos['mes'], $datos['tipoPersona'])->get(), false, $esColaborador, $esColOrVisi, $titulo))->download($titulo);
                     } else {
-                        return (new ReportesExport($this->reporteFechaEspecificaTipoPersona($datos['fecha'], $datos['tipoPersona'])->get(), false, $esColaborador, $esColOrVisi))->download('report2.xlsx');
+                        $titulo = $tipoPersona.' '.$fecha->format('d-m-Y').'.xlsx';
+                        return (new ReportesExport($this->reporteFechaEspecificaTipoPersona($datos['fecha'], $datos['tipoPersona'])->get(), false, $esColaborador, $esColOrVisi, $titulo))->download($titulo);
                     }  
                         
                 } else if((!isset($datos['tipoPersona']) || $datos['tipoPersona'] == 5) && isset($datos['ciudad'])){
                     if($datos['tipoReporte'] == 1){
-                        return (new ReportesExport($this->reporteAgrupadoCiudad($datos['anio'], $datos['mes'], $datos['ciudad'])->get(), true, false))->download('reportes3.xlsx');
+                        $titulo = 'Registros '.$datos['ciudad'].' '.$datos['mes'].'-'.$datos['anio'].'.xlsx';
+                        return (new ReportesExport($this->reporteAgrupadoCiudad($datos['anio'], $datos['mes'], $datos['ciudad'])->get(), true, false, false, $titulo))->download($titulo);
                     } else {
-                        return (new ReportesExport($this->reporteFechaEspecificaCiudad($datos['fecha'], $datos['ciudad'])->get(), true, false))->download('report3.xlsx');
+                        $titulo = 'Registros '.$datos['ciudad'].' '.$fecha->format('d-m-Y').'.xlsx';
+                        return (new ReportesExport($this->reporteFechaEspecificaCiudad($datos['fecha'], $datos['ciudad'])->get(), true, false, false, $titulo))->download($titulo);
                     } 
                 
                 } else if((isset($datos['tipoPersona'])) && isset($datos['ciudad']) && (!isset($datos['empresa']) || $datos['empresa'] == 4)){
                     if($datos['tipoReporte'] == 1){
-                        return (new ReportesExport($this->reporteAgrupado_tipoPersona_ciudad($datos['anio'], $datos['mes'], $datos['tipoPersona'], $datos['ciudad'])->get(), false, $esColaborador, $esColOrVisi))->download('reportes4.xlsx');
+                        $titulo = $tipoPersona.' '.$datos['ciudad'].' '.$datos['mes'].'-'.$datos['anio'].'.xlsx';
+                        return (new ReportesExport($this->reporteAgrupado_tipoPersona_ciudad($datos['anio'], $datos['mes'], $datos['tipoPersona'], $datos['ciudad'])->get(), false, $esColaborador, $esColOrVisi, $titulo))->download($titulo);
                     } else {
-                        return (new ReportesExport($this->reporteFechaEspecifica_tipoPersona_ciudad($datos['fecha'], $datos['tipoPersona'], $datos['ciudad'])->get(), false, $esColaborador, $esColOrVisi))->download('report4.xlsx');
+                        $titulo = $tipoPersona.' '.$datos['ciudad'].' '.$fecha->format('d-m-Y').'.xlsx';
+                        return (new ReportesExport($this->reporteFechaEspecifica_tipoPersona_ciudad($datos['fecha'], $datos['tipoPersona'], $datos['ciudad'])->get(), false, $esColaborador, $esColOrVisi, $titulo))->download($titulo);
                     } 
 
                 } else if($datos['tipoPersona'] == 1 && isset($datos['empresa']) && (!isset($datos['ciudad']) || $datos['ciudad'] == 'Todas')){
                     if($datos['tipoReporte'] == 1){
-                        return (new ReportesExport($this->reporteAgrupado_visitantes_empresa($datos['anio'], $datos['mes'], $datos['tipoPersona'], $datos['empresa'])->get(), false, $esColaborador, $esColOrVisi))->download('reportes5.xlsx');
+                        $titulo = $tipoPersona.' '.Empresa::find($datos['empresa'])->nombre.' '.$datos['mes'].'-'.$datos['anio'].'.xlsx';
+                        return (new ReportesExport($this->reporteAgrupado_visitantes_empresa($datos['anio'], $datos['mes'], $datos['tipoPersona'], $datos['empresa'])->get(), false, $esColaborador, $esColOrVisi, $titulo))->download($titulo);
                     } else {
-                        return (new ReportesExport($this->reporteFechaEspecifica_visitantes_empresa($datos['fecha'], $datos['tipoPersona'], $datos['empresa'])->get(), false, $esColaborador, $esColOrVisi))->download('report5.xlsx');
+                        $titulo = $tipoPersona.' '.Empresa::find($datos['empresa'])->nombre.' '.$fecha->format('d-m-Y').'.xlsx';
+                        return (new ReportesExport($this->reporteFechaEspecifica_visitantes_empresa($datos['fecha'], $datos['tipoPersona'], $datos['empresa'])->get(), false, $esColaborador, $esColOrVisi, $titulo))->download($titulo);
                     } 
                     
                 } else if($datos['tipoPersona'] == 1 && isset($datos['empresa']) && isset($datos['ciudad'])){
                     if($datos['tipoReporte'] == 1){
-                        return (new ReportesExport($this->reporteAgrupado_visitantes_empresa_ciudad($datos['anio'], $datos['mes'], $datos['tipoPersona'], $datos['empresa'], $datos['ciudad'])->get(), false, $esColaborador, $esColOrVisi))->download('reportes6.xlsx');
+                        $titulo = $tipoPersona.' '.Empresa::find($datos['empresa'])->nombre.' '.$datos['ciudad'].' '.$datos['mes'].'-'.$datos['anio'].'.xlsx';
+                        return (new ReportesExport($this->reporteAgrupado_visitantes_empresa_ciudad($datos['anio'], $datos['mes'], $datos['tipoPersona'], $datos['empresa'], $datos['ciudad'])->get(), false, $esColaborador, $esColOrVisi, $titulo))->download($titulo);
                     } else {
-                        return (new ReportesExport($this->reporteFechaEspecifica_visitantes_empresa_ciudad($datos['fecha'], $datos['tipoPersona'], $datos['empresa'], $datos['ciudad'])->get(), false, $esColaborador, $esColOrVisi))->download('report6.xlsx');
+                        $titulo = $tipoPersona.' '.Empresa::find($datos['empresa'])->nombre.' '.$datos['ciudad'].' '.$fecha->format('d-m-Y').'.xlsx';
+                        return (new ReportesExport($this->reporteFechaEspecifica_visitantes_empresa_ciudad($datos['fecha'], $datos['tipoPersona'], $datos['empresa'], $datos['ciudad'])->get(), false, $esColaborador, $esColOrVisi, $titulo))->download($titulo);
                     }  
                 }
             } else {
-
-                // $request->validate([
-                //     'anio' => 'required|integer', 
-                //     'mes' => 'required|integer', 
-                //     'identificacion' => 'required|exists:se_personas,identificacion',
-                // ], [
-                //     'anio.required' => 'Se requiere que elija un año',
-                //     'anio.integer' => 'El año debe ser de tipo entero',
-
-                //     'mes.required' => 'Se requiere que eilija un mes',
-                //     'mes.integer' => 'El mes debe ser de tipo entero',
-
-                //     'identificacion.required' => 'Se requiere que ingrese el número de indentificación de la persona',
-                //     'identificacion.exists' => 'La identificación ingresada no existe en el sistema',
-                // ]);
-
-                [$esColaborador, $esColOrVisi] = $this->determinarTipoPersona(Persona::where('identificacion', $datos['identificacion'])->first()->id_tipo_persona);
-
-                return (new ReportesExport($this->reporteIndividualMes($datos['anio'], $datos['mes'], $datos['identificacion'])->get(), false, $esColaborador, $esColOrVisi))->download('reportIndividual.xlsx');
-
+                [$esColaborador, $esColOrVisi, $tipoPersona] = $this->determinarTipoPersona(Persona::where('identificacion', $datos['identificacion'])->first()->id_tipo_persona);
+                $titulo = $datos['identificacion'].' '.$datos['mes'].'-'.$datos['anio'].'.xlsx';;
+                return (new ReportesExport($this->reporteIndividualMes($datos['anio'], $datos['mes'], $datos['identificacion'])->get(), false, $esColaborador, $esColOrVisi, $titulo))->download($titulo);
             }
         } 
 
@@ -232,25 +202,23 @@ class ReporteController extends Controller
      */
     public function validarFiltros(Request $request){
         $tipoReporte = $request->input('tipoReporte');
-
         $reglas = [
-            'anio' => 'required|integer', 
-            'mes' => 'required|integer'
+            'anio' => 'required|numeric', 
+            'mes' => 'required|numeric'
         ];
 
         if($tipoReporte == 2){
             $reglas['fecha'] = 'required|date_format:d/m/Y';
-
         } else if($tipoReporte == 3){
             $reglas['identificacion'] = 'required|exists:se_personas,identificacion';
         }
 
         $request->validate( $reglas, [
             'anio.required' => 'Se requiere que elija un año',
-            'anio.integer' => 'El año debe ser de tipo entero',
+            'anio.numeric' => 'El año debe ser un número',
 
             'mes.required' => 'Se requiere que eilija un mes',
-            'mes.integer' => 'El mes debe ser de tipo entero',
+            'mes.numeric' => 'El mes debe ser un número',
 
             'fecha.required' => 'Se requiere que ingrese la fecha',
             'fecha.date_format' => 'La fecha debe tener un formato valido',
@@ -258,6 +226,33 @@ class ReporteController extends Controller
             'identificacion.required' => 'Se requiere que ingrese el número de indentificación de la persona',
             'identificacion.exists' => 'La identificación ingresada no existe en el sistema'
         ]);
+    }
+
+    /**
+     * Función que permite verificar el tipo de persona que se haya elejido en los filtros de información y de esta manera establecer varibles que permitiran mostrar información dependiendo del tipo de persona.
+     */
+    public function determinarTipoPersona($tipoPersona) 
+    {
+        if($tipoPersona == 1 || $tipoPersona == 4){
+            $esColaborador = false;
+            $esColOrVisi= false;
+            if($tipoPersona == 1){
+                $esColOrVisi = true;
+                $tipoPersona = 'Visitantes';
+            } else {
+                $tipoPersona = 'Conductores';
+            }
+        } else if($tipoPersona == 2 || $tipoPersona == 3){
+            $esColaborador = true;
+            $esColOrVisi = false;
+            if($tipoPersona == 3){
+                $esColOrVisi = true;
+                $tipoPersona = 'Colaboradores con activo';
+            } else {
+                $tipoPersona = 'Colaboradores';
+            }
+        }  
+        return [$esColaborador, $esColOrVisi, $tipoPersona];
     }
 
     /**
@@ -452,38 +447,64 @@ class ReporteController extends Controller
     }
 
 
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function informacionReportes(Request $request)
     {
-        //
-    }
+        $datos = $request->all();
+        if($request->ajax()){
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+            if(isset($datos['fecha'])){
+                $datos['fecha'] = Carbon::createFromFormat('d/m/Y', $datos['fecha'])->toDateString();
+            }
+            if($datos['tipoReporte'] == 1 || $datos['tipoReporte'] == 2){
+                if((!isset($datos['tipoPersona']) || $datos['tipoPersona'] == 5) && (!isset($datos['ciudad']) || $datos['ciudad'] == 'Todas')){
+                    if($datos['tipoReporte'] == 1){
+                        $registros = $this->reporteAgrupadoAnioMes($datos['anio'], $datos['mes'])->get();
+                    } else {
+                        $registros = $this->reporteFechaEspecifica($datos['fecha'])->get();
+                    }
+                    
+                } else if(isset($datos['tipoPersona']) && (!isset($datos['ciudad']) || $datos['ciudad'] == 'Todas') && (!isset($datos['empresa']) || $datos['empresa'] == 4)){
+                    if($datos['tipoReporte'] == 1){
+                        $registros = $this->reporteAgrupadoTipoPersona($datos['anio'], $datos['mes'], $datos['tipoPersona'])->get();
+                    } else {
+                        $registros = $this->reporteFechaEspecificaTipoPersona($datos['fecha'], $datos['tipoPersona'])->get();
+                    }  
+                        
+                } else if((!isset($datos['tipoPersona']) || $datos['tipoPersona'] == 5) && isset($datos['ciudad'])){
+                    if($datos['tipoReporte'] == 1){
+                        $registros = $this->reporteAgrupadoCiudad($datos['anio'], $datos['mes'], $datos['ciudad'])->get();
+                    } else {
+                        $registros = $this->reporteFechaEspecificaCiudad($datos['fecha'], $datos['ciudad'])->get();
+                    } 
+                
+                } else if((isset($datos['tipoPersona'])) && isset($datos['ciudad']) && (!isset($datos['empresa']) || $datos['empresa'] == 4)){
+                    if($datos['tipoReporte'] == 1){
+                        $registros = $this->reporteAgrupado_tipoPersona_ciudad($datos['anio'], $datos['mes'], $datos['tipoPersona'], $datos['ciudad'])->get();
+                    } else {
+                        $registros = $this->reporteFechaEspecifica_tipoPersona_ciudad($datos['fecha'], $datos['tipoPersona'], $datos['ciudad'])->get();
+                    } 
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+                } else if($datos['tipoPersona'] == 1 && isset($datos['empresa']) && (!isset($datos['ciudad']) || $datos['ciudad'] == 'Todas')){
+                    if($datos['tipoReporte'] == 1){
+                        $registros = $this->reporteAgrupado_visitantes_empresa($datos['anio'], $datos['mes'], $datos['tipoPersona'], $datos['empresa'])->get();
+                    } else {
+                        $registros = $this->reporteFechaEspecifica_visitantes_empresa($datos['fecha'], $datos['tipoPersona'], $datos['empresa'])->get();
+                    } 
+                    
+                } else if($datos['tipoPersona'] == 1 && isset($datos['empresa']) && isset($datos['ciudad'])){
+                    if($datos['tipoReporte'] == 1){
+                        $registros = $this->reporteAgrupado_visitantes_empresa_ciudad($datos['anio'], $datos['mes'], $datos['tipoPersona'], $datos['empresa'], $datos['ciudad'])->get();
+                    } else {
+                        $registros = $this->reporteFechaEspecifica_visitantes_empresa_ciudad($datos['fecha'], $datos['tipoPersona'], $datos['empresa'], $datos['ciudad'])->get();
+                    }  
+                }
+            } else if($datos['tipoReporte'] == 3) {
+                $registros = $this->reporteIndividualMes($datos['anio'], $datos['mes'], $datos['identificacion'])->get();
+            } else {
+                $registros = $this->reporteAgrupadoAnioMes($datos['anio'], $datos['mes'])->get();
+            }
+
+            return DataTables::of($registros)->make(true);
+        }
     }
 }

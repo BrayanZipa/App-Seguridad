@@ -6,6 +6,13 @@ $(function () {
     for (let i= 2022; i <= fecha.getFullYear(); i++) {
         $('#selectAnio').append(`<option value="${i}">${i}</option>`);
     }
+    
+    //Función que permite esrablecer el año y el mes actual en el input de filtrar por año y en el input de filtrar por mes respectivamente
+    function establecerAnioMes() {
+        $('#selectAnio').val(fecha.getFullYear());
+        $('#selectMes').val(fecha.getMonth() + 1);
+    }
+    establecerAnioMes();   
 
     //Función propia del plugin de DateRangePicker con el cual se da formato y funcionamiento al input de fecha específica
     $('#inputFecha').daterangepicker({
@@ -23,6 +30,7 @@ $(function () {
     //Botón que se forma mediante los estilos del plugin de DateRangePicker y que al oprimirse permite guardar la fecha seleccionada en una cadena de string como value del input de fecha específica
     $('#inputFecha').on('apply.daterangepicker', function(ev, picker) {
         $(this).val(picker.startDate.format('DD/MM/YYYY'));
+        tablaReportes.ajax.reload();
     });
 
     // $.ajax({
@@ -35,175 +43,11 @@ $(function () {
     //     },
     //     dataType: 'json',
     //     success: function(response) {   
-    //         if('registros' in response){
-    //             $('#totalRegistros').val(response.totalRegistros);
-    //             if(response.totalRegistros != 0){ 
-    //                 $('#tablaRegistros').css('display', '');     
-    //                 $.each(response.registros, function(key, value){   
-    //                     if(value.identificador == null){
-    //                         value.identificador = 'No';
-    //                     }
-    //                     if(value.codigo_activo == null){
-    //                         value.codigo_activo = 'No';
-    //                     }
-
-    //                     $('#tablaRegistrosFilas').append(
-    //                         `<tr>
-    //                         <td>${moment(value.ingreso_persona).format('DD-MM-YYYY')}</td>
-    //                         <td>${moment(value.ingreso_persona).format('h:mm:ss a')}</td>
-    //                         <td>${moment(value.salida_persona).format('DD-MM-YYYY')}</td>
-    //                         <td>${moment(value.salida_persona).format('h:mm:ss a')}</td>
-    //                         <td>${value.identificador}</td>
-    //                         <td>${value.codigo_activo}</td>
-    //                         </tr>`
-    //                     );
-    //                 }); 
-
-    //                 if($('#tablaRegistros')[0].clientHeight > 300){
-    //                     $('thead > tr > th').css({ 
-    //                         'position': 'sticky',
-    //                         'top': '0',
-    //                         'z-index': '10',
-    //                         'background-color': '#fff'   
-    //                     });
-
-    //                     $('#tablaRegistros').css('height', '300px');
-    //                     $('#tablaRegistrosFilas').css('overflow-y', 'scroll');
-    //                 } else {
-    //                     $('#tablaRegistros').css('height', 'auto');
-    //                 }                     
-    //             } 
-    //         }
     //     },
     //     error: function() {
     //         console.log('Error obteniendo los datos de la base de datos');
     //     }
     // });
-
-    //Uso de DataTables para mostrar los registros realizados en donde se completo tanto las entradas como salidas de todos los tipos de persona (visitantes, conductores, colaboradores con y sin activo)
-    // var estado = false;
-    // if($('#thCiudad').length){ 
-    //     estado = true;
-    // } 
-
-    // var tablaRegistros = $('#tablaReportes').DataTable({
-    //     'dom': "<'row'<'col-sm-12 col-md-6'l>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-    //     'destroy': true,
-    //     'processing': true,
-    //     'responsive': true,
-    //     'autoWidth': false,
-    //     // 'serverSide': true,
-    //     // 'scrollY': '300px',
-    //     'ajax': 'informacion',
-    //     'dataType': 'json',
-    //     'type': 'GET',
-    //     'columns': [
-    //         {
-    //             'data': 'id_registros',
-    //             'name': 'id_registros'
-    //         },
-    //         {
-    //             'data': 'tipopersona',
-    //             'name': 'tipopersona'
-    //         },
-    //         {  
-    //             'data': null, 
-    //             'name': 'nombre',
-    //             render: function ( data, type, row ) {
-    //                 return data.nombre+' '+data.apellido;
-    //             }
-    //         },
-    //         {
-    //             'data': 'identificacion',
-    //             'name': 'identificacion',
-    //         },
-    //         {
-    //             'data': 'ingreso_persona',
-    //             render: function (data) {
-    //                 return moment(data).format('DD-MM-YYYY');
-    //             } 
-    //         },
-    //         {
-    //             'data': 'ingreso_persona',
-    //             render: function (data) {
-    //                 return moment(data).format('h:mm:ss a');
-    //             } 
-    //         },
-    //         {
-    //             'data': 'salida_persona',
-    //             render: function (data) {
-    //                 return moment(data).format('DD-MM-YYYY');
-    //             } 
-    //         },
-    //         {
-    //             'data': 'salida_persona',
-    //             render: function (data) {
-    //                 return moment(data).format('h:mm:ss a');
-    //             } 
-    //         }, 
-    //         {
-    //             'data': 'ingreso_activo',
-    //             render: function (data, type, row) {
-    //                 if(data != null){ return row.codigo_activo; }
-    //                 return 'No';
-    //             } 
-    //         },
-    //         {
-    //             'data': 'ingreso_vehiculo',
-    //             render: function (data, type, row ) {
-    //                 if(data != null){ return row.identificador; }
-    //                 return 'No';
-    //             }
-    //         },   
-    //         {
-    //             'data': 'city',
-    //             'name': 'city',
-    //             'visible': estado
-    //         },   
-    //         {
-    //             'data': 'name',
-    //             'name': 'name',
-    //             // 'searchable': false,
-    //             // 'orderable': false
-    //         },
-    //         {
-    //             'class': 'consultar_registro',
-    //             'orderable': false,
-    //             'data': null,
-    //             'defaultContent': '<td>' +
-    //                 '<div class="action-buttons text-center">' +
-    //                 '<a href="#" class="btn btn-primary btn-icon btn-sm">' +
-    //                 '<i class="fa-solid fa-eye"></i>' +
-    //                 '</a>' +
-    //                 '</div>' +
-    //                 '</td>',
-    //         }],
-    //     'order': [[0, 'desc']],  
-    //     'lengthChange': true,
-    //     'lengthMenu': [
-    //         [6, 10, 25, 50, 75, 100, -1],
-    //         [6, 10, 25, 50, 75, 100, 'ALL']
-    //     ],
-    //     'language': {
-    //         'lengthMenu': 'Mostrar _MENU_ registros por página',
-    //         'zeroRecords': 'No hay registros',
-    //         'info': 'Mostrando página _PAGE_ de _PAGES_',
-    //         'infoEmpty': 'No hay registros disponibles',
-    //         'infoFiltered': '(filtrado de _MAX_ registros totales)',
-    //         'search': 'Buscar:',
-    //         'paginate': {
-    //             'next': 'Siguiente',
-    //             'previous': 'Anterior'
-    //         }
-    //     },
-    // });
-    // $('#inputBuscar').focus();
-
-    //Función que permite esrablecer el año y el mes actual en el input de filtrar por año y en el input de filtrar por mes respectivamente
-    function establecerAnioMes() {
-        $('#selectAnio').val(fecha.getFullYear());
-        $('#selectMes').val(fecha.getMonth() + 1);
-    }
 
     //Al seleccionar un tipo de reporte se muestran los diferentes inputs para realizar filtros de información, esto dependiendo del tipo de reporte que el usuario seleccione
     $('#selectTipoReporte').on('change', function () { 
@@ -282,14 +126,187 @@ $(function () {
         }
     });
 
+    // function mostrarRegistros() {
+    var tablaReportes = $('#tablaReportes').DataTable({
+        // 'dom': "<'row'<'col-sm-12 col-md-6'l>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        'destroy': true,
+        'processing': true,
+        'responsive': true,
+        'autoWidth': false,
+        'ajax': {
+            'url': 'reportes/informacion',
+            'data': function ( d ) {
+                d.tipoReporte = $('#selectTipoReporte').val();
+                d.anio = $('#selectAnio').val();
+                d.mes = $('#selectMes').val();
+                d.tipoPersona = $('#selectTipoPersona').val();
+                d.empresa = $('#selectEmpresa').val();
+                d.ciudad = $('#selectCiudad').val();
+                d.fecha = $('#inputFecha').val();
+                d.identificacion = $('#inputIdentificacion').val();
+            }
+            // {
+            //     'anio': $('#selectAnio').val(),
+            //     'mes': $('#selectMes').val(),
+            //     'tipoPersona': $('#selectTipoPersona').val(),
+            //     'empresa': $('#selectEmpresa').val(),
+            //     'ciudad': $('#selectCiudad').val(),
+            //     'fecha': $('#inputFecha').val(),
+            //     'identificacion': $('#inputIdentificacion').val(),
+            // }
+        },
+        'dataType': 'json',
+        'type': 'GET',
+        'columns': [
+            {
+                'data': 'id_registros',
+                'name': 'id_registros'
+            },
+            {
+                'data': 'tipopersona',
+                'name': 'tipopersona'
+            },
+            {  
+                'data': null, 
+                'name': 'nombre',
+                render: function (data) {
+                    return data.nombre+' '+data.apellido;
+                }
+            },
+            {
+                'data': 'identificacion',
+                'name': 'identificacion',
+            },
+            {
+                'data': null, 
+                'name': 'empresa',
+                render: function (data) {
+                    if(data.id_tipo_persona == 1 || data.id_tipo_persona == 4){ return data.empresavisitada; }
+                    return data.empresa;
+                }
+            },
+            {
+                'data': null, 
+                'name': 'colaborador',
+                render: function (data) {
+                    if(data.id_tipo_persona == 1 || data.id_tipo_persona == 4){ return data.colaborador; }
+                    return '';
+                }
+            },
+            {
+                'data': 'ingreso_persona',
+                render: function (data) {
+                    return moment(data).format('DD-MM-YYYY');
+                } 
+            },
+            {
+                'data': 'ingreso_persona',
+                render: function (data) {
+                    return moment(data).format('h:mm:ss a');
+                } 
+            },
+            {
+                'data': 'salida_persona',
+                render: function (data) {
+                    if(data != null){ return moment(data).format('DD-MM-YYYY'); }
+                    return 'Sin salida';
+                } 
+            },
+            {
+                'data': 'salida_persona',
+                render: function (data) {
+                    if(data != null){ return moment(data).format('h:mm:ss a'); }
+                    return 'Sin salida';
+                } 
+            }, 
+            {
+                'data': 'ingreso_activo',
+                render: function (data, type, row) {
+                    if(data != null){ return row.codigo_activo; }
+                    return 'No';
+                } 
+            },
+            {
+                'data': 'ingreso_vehiculo',
+                render: function (data, type, row ) {
+                    if(data != null){ return row.identificador; }
+                    return 'No';
+                }
+            },   
+            {
+                'data': 'city',
+                'name': 'city',
+                // 'visible': estado
+            },   
+            {
+                'data': 'name',
+                'name': 'name',
+                // 'searchable': false,
+                // 'orderable': false
+            },
+            // {
+            //     'class': 'consultar_registro',
+            //     'orderable': false,
+            //     'data': null,
+            //     'defaultContent': '<td>' +
+            //         '<div class="action-buttons text-center">' +
+            //         '<a href="#" class="btn btn-primary btn-icon btn-sm">' +
+            //         '<i class="fa-solid fa-eye"></i>' +
+            //         '</a>' +
+            //         '</div>' +
+            //         '</td>',
+            // }
+        ],
+        'order': [[0, 'desc']],  
+        'lengthChange': true,
+        'lengthMenu': [
+            [6, 10, 25, 50, 75, 100, -1],
+            [6, 10, 25, 50, 75, 100, 'ALL']
+        ],
+        'language': {
+            'lengthMenu': 'Mostrar _MENU_ registros por página',
+            'zeroRecords': 'No hay registros',
+            'info': 'Mostrando página _PAGE_ de _PAGES_',
+            'infoEmpty': 'No hay registros disponibles',
+            'infoFiltered': '(filtrado de _MAX_ registros totales)',
+            'search': 'Buscar:',
+            'paginate': {
+                'next': 'Siguiente',
+                'previous': 'Anterior'
+            }
+        },
+    });
+    // $('#inputBuscar').focus(); 
+// }
+
+    //Al selecionar un tipo de persona, si este es un visitante se muestra en pantalla el input de filtar por empresa, de lo contrario se oculta
+    $('#selectAnio, #selectMes, #selectEmpresa, #selectCiudad').on('change', function () { 
+        // mostrarRegistros();
+        // tablaReportes.draw();
+        tablaReportes.ajax.reload();
+    });
+
     //Al selecionar un tipo de persona, si este es un visitante se muestra en pantalla el input de filtar por empresa, de lo contrario se oculta
     $('#selectTipoPersona').on('change', function () { 
+        tablaReportes.ajax.reload();
         if(this.value == 1){
             $('#columnaEmpresa').css('display', '');
         } else {
             $('#selectEmpresa').val('');
             $('#columnaEmpresa').css('display', 'none');
         }
+    });
+
+    //
+    $('#inputIdentificacion').on('keyup', function () { 
+        var controladorTiempo = '';
+        clearTimeout(controladorTiempo);
+        // controladorTiempo = setTimeout( function(){
+        //     tablaReportes.ajax.reload();
+        // }, 1000);
+        // mostrarRegistros();
+        // tablaReportes.draw();
+        tablaReportes.ajax.reload();
     });
 
     //Función que permite validar los filtros para verificar que se este poniendo la información necesaria antes de que esta se envie al servidor
@@ -353,29 +370,40 @@ $(function () {
     //
     $('#btnPdf').click(function() {
         if(validarInputs()){
-            $('#inputFormato').val('pdf');
-            document.getElementById('formulario').submit();
+            // descargarReporte();
+            // $('#inputFormato').val('pdf');
+            // document.getElementById('formulario').submit();
             // console.log($('#formulario').serializeArray());
             // descargarReporte('&formato=pdf');
         }
     });
 
-    function descargarReporte(formato) {
+    function descargarReporte() {
         $.ajax({
-            xhrFields:{
-                responseType: 'blob'
-            },
-            url: 'reportes/exportar',
+            // xhrFields:{
+            //     responseType: 'blob'
+            // },
+            url: 'reportes/informacion',
             type: 'GET',
-            data: $('#formulario').serialize() + formato,
+            data: {
+                'anio': $('#selectAnio').val(),
+                'mes': $('#selectMes').val(),
+                'tipoPersona': $('#selectTipoPersona').val(),
+                'empresa': $('#selectEmpresa').val(),
+                'ciudad': $('#selectCiudad').val(),
+                'fecha': $('#inputFecha').val(),
+                'identificacion': $('#inputIdentificacion').val(),
+            },
             // dataType: 'json',
             success: function(data) {
-                var url = window.URL || window.webkitURL;
-                var link = document.createElement('a');
-                link.href = url.createObjectURL(data);
-                link.download = 'reporte.xlsx';
-                link.click();
-                a.remove();
+
+                console.log(data);
+                // var url = window.URL || window.webkitURL;
+                // var link = document.createElement('a');
+                // link.href = url.createObjectURL(data);
+                // link.download = 'reporte.xlsx';
+                // link.click();
+                // a.remove();
 
                 // window.open(objectUrl);
 
