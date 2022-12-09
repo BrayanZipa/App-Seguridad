@@ -34,11 +34,6 @@ class HomeController extends Controller
         $colaboradoresActivo = $this->totalColaboradoresActivoDiarios();
         $vehiculos = $this->totalVehiculosDiarios();
 
-        // $visitantes = 15;
-        // $conductores = 8;
-        // $colaboradoresActivo = 4;
-        // $vehiculos = 11;
-        
         return view('pages.home.dashboard',  compact('visitantes', 'conductores', 'colaboradoresActivo', 'vehiculos'));
     }
 
@@ -104,13 +99,6 @@ class HomeController extends Controller
                 'colaboradoresActivo' => $colaboradoresActivo,
                 'vehiculos' => $vehiculos
             ]);
-
-            // return response()->json([
-            //     'visitantes' => 5,
-            //     'conductores' => 10,
-            //     'colaboradoresActivo' => 12,
-            //     'vehiculos' => 8
-            // ]);
         }
     }
                                 
@@ -124,10 +112,7 @@ class HomeController extends Controller
             ->leftjoin('se_usuarios AS usuarios', 'se_registros.id_usuario', '=', 'usuarios.id_usuarios')
             ->where('id_tipo_persona', '!=', 4)->whereNotNull('empresa_visitada')->whereYear('ingreso_persona', $anio)->whereMonth('ingreso_persona', $mes);
 
-            // return $consulta->get();
-            // return $consulta->count();
             return $this->definirConsulta($consulta, $ciudad);
-
         } catch (\Throwable $th) {
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
         }
@@ -143,7 +128,6 @@ class HomeController extends Controller
             ->leftjoin('se_usuarios AS usuarios', 'se_registros.id_usuario', '=', 'usuarios.id_usuarios')
             ->where('id_tipo_persona', 3)->whereNull('empresa_visitada')->whereNotNull('ingreso_activo')->whereYear('ingreso_persona', $anio)->whereMonth('ingreso_persona', $mes);
 
-            // return $consulta->count();
             return $this->definirConsulta($consulta, $ciudad);
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
@@ -160,10 +144,7 @@ class HomeController extends Controller
             ->leftjoin('se_usuarios AS usuarios', 'se_registros.id_usuario', '=', 'usuarios.id_usuarios')
             ->where('id_tipo_persona', 4)->whereYear('ingreso_persona', $anio)->whereMonth('ingreso_persona', $mes);
 
-            // return $consulta->get();
-            // return $consulta->count();
             return $this->definirConsulta($consulta, $ciudad);
-
         } catch (\Throwable $th) {
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
         }
@@ -178,10 +159,7 @@ class HomeController extends Controller
             $consulta = Registro::leftjoin('se_usuarios AS usuarios', 'se_registros.id_usuario', '=', 'usuarios.id_usuarios')
             ->whereYear('ingreso_vehiculo', $anio)->whereMonth('ingreso_vehiculo', $mes);
 
-            // return $consulta->get();
-            // return $consulta->count();
             return $this->definirConsulta($consulta, $ciudad);
-
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
         }
@@ -228,10 +206,7 @@ class HomeController extends Controller
             ->leftjoin('se_usuarios AS usuarios', 'se_registros.id_usuario', '=', 'usuarios.id_usuarios')
             ->where('id_tipo_persona', '!=', 4)->where('empresa_visitada', $empresa)->whereYear('ingreso_persona', $anio)->whereMonth('ingreso_persona', $mes);
 
-            // return $consulta->get();
-            // return $consulta->count();
             return $this->definirConsulta($consulta, $ciudad);
-
         } catch (\Throwable $th) {
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
         }
@@ -272,10 +247,7 @@ class HomeController extends Controller
             ->leftjoin('se_usuarios AS usuarios', 'se_registros.id_usuario', '=', 'usuarios.id_usuarios')
             ->where('id_tipo_persona', '!=', 4)->where('empresa_visitada', $empresa)->whereYear('ingreso_persona', $anio);
 
-            // return $consulta->get();
-            // return $consulta->count();
             return $this->definirConsulta($consulta, $ciudad);
-
         } catch (\Throwable $th) {
             return response()->json(['message' => 'Error al traer la información de la base de datos'], 500);
         }

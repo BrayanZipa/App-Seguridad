@@ -117,4 +117,3 @@ Route::match(['get', 'put'], '/registros/estado_vehiculo', [RegistroController::
 Route::get('/reportes', [ReporteController::class, 'index'])->name('mostrarReportes')->middleware(['auth', 'can:mostrarReportes']);
 Route::get('/reportes/informacion', [ReporteController::class, 'informacionReportes'])->name('mostrarInfoReportes')->middleware('auth');
 Route::get('/reportes/exportar', [ReporteController::class, 'exportarReportes'])->name('exportarReportes')->middleware('auth');
-// Route::get('/prueba', [ReporteController::class, 'prueba'])->name('prueba');

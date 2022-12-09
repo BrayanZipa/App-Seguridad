@@ -166,7 +166,8 @@ class RequestRegistros extends FormRequest
     {
         return[
             'id_empresa' => 'required|integer',
-            'email' => 'nullable|email:rfc,dns|max:50',
+            // 'email' => 'nullable|email:rfc,dns|max:50',
+            'email' => 'nullable|max:50',
         ];
     } 
 

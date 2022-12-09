@@ -279,7 +279,10 @@ $(function() {
             formatoFechaHora('#spanFechaVehiculo', '#spanHoraVehiculo', data.ingreso_vehiculo);
             if(data.salida_vehiculo != null){
                 formatoFechaHora('#spanFechaSalidaVehiculo', '#spanHoraSalidaVehiculo', data.salida_vehiculo);
-            }     
+            } else {
+                $('#spanFechaSalidaVehiculo').empty();
+                $('#spanHoraSalidaVehiculo').empty();
+            }   
             $('#spanIdentificador').text(data.identificador);
             $('#spanTipo').text(data.tipo);  
             $('#spanMarca').text(data.marca);   
@@ -297,7 +300,10 @@ $(function() {
             }
             if(data.salida_activo != null){
                 formatoFechaHora('#spanFechaSalidaActivo', '#spanHoraSalidaActivo', data.salida_activo);
-            }  
+            } else {
+                $('#spanFechaSalidaActivo').empty();
+                $('#spanHoraSalidaActivo').empty();
+            } 
             if(data.codigo_activo_salida != null){
                 if(data.ingreso_activo  == null){
                     $('#tituloActivo').text('Asignación de activo');

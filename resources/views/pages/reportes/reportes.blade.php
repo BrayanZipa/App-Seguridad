@@ -5,17 +5,12 @@
 @endsection
 
 @section('css')
-    {{-- <!-- Token de Laravel -->
-    <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
     <!-- DataTables -->
     <link rel="stylesheet" href="{{ asset('assets/lte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/lte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/lte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
     <!-- DateRangePicker.js -->
     <link rel="stylesheet" href="{{ asset('assets/lte/plugins/daterangepicker/daterangepicker.css') }}">
-    {{-- <!-- Select2 -->
-    <link rel="stylesheet" href="{{ asset('assets/lte/plugins/select2/css/select2.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/lte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}"> --}}
 @endsection
 
 @section('scripts')
@@ -76,6 +71,7 @@
                                 <div id="columnaAnio" class="col-md-3 col-sm-12" style="display: none">
                                     <div class="form-group">
                                     <label for="selectAnio">Filtrar por año</label>
+                                    <input type="hidden" id="retornoAnio" name="retornoAnio" value="{{ old('anio') }}">
                                         <select id="selectAnio" name="anio" class="filtros requerido form-control {{ $errors->has('anio') ? 'is-invalid' : '' }}" style="width: 100%;">
                                             <option selected="selected" value="" disabled>Año</option>
                                         </select>
@@ -161,7 +157,7 @@
                                             <option {{ old('empresa') == '1' ? 'selected' : '' }} value="1">Aviomar</option>
                                             <option {{ old('empresa') == '2' ? 'selected' : '' }} value="2">Snider</option>
                                             <option {{ old('empresa') == '3' ? 'selected' : '' }} value="3">Colvan</option>
-                                            <option {{ old('empresa') == '4' ? 'selected' : '' }} value="4">Todas</option>
+                                            <option {{ old('empresa') == '4' ? 'selected' : '' }} value="4">Organización</option>
                                         </select>
                                     </div>
                                 </div>
@@ -184,15 +180,15 @@
                                 </div>
                             </div>
                         </form>
-                        <div class="row justify-content-end">
+                        <div id="botones" class="row justify-content-end" style="display: none">
                             <div class="col-md-3 col-sm-12">
                                 <div class="input-group mb-3 d-flex justify-content-end">
                                     <button id="btnExcel" type="button" class="btn btn-success mr-1"><i class="fas fa-file-excel"></i> Descargar EXCEL</button>
-                                    <button id="btnPdf" type="button" class="btn btn-danger mr-1"><i class="fas fa-file-pdf"></i> Descargar PDF</button>
+                                    <button id="btnPdf" type="button" class="btn btn-danger mr-1"><i class="fas fa-file-pdf" target="_blank"></i> Descargar PDF</button>
                                 </div>
                             </div>
                         </div>
-
+                        
                         <table id="tablaReportes" class="table table-bordered table-striped table-hover">
                             <thead>
                                 <tr>

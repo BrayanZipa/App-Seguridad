@@ -12,7 +12,6 @@ $(function () {
         $('#selectAnio').val(fecha.getFullYear());
         $('#selectMes').val(fecha.getMonth() + 1);
     }
-    establecerAnioMes();   
 
     //Función propia del plugin de DateRangePicker con el cual se da formato y funcionamiento al input de fecha específica
     $('#inputFecha').daterangepicker({
@@ -33,31 +32,9 @@ $(function () {
         tablaReportes.ajax.reload();
     });
 
-    // $.ajax({
-    //     url: 'listado_por_persona',
-    //     type: 'GET',
-    //     data: {
-    //         persona: idPersona,
-    //         anio: $('#selectAnio option:selected').val(),
-    //         mes: $('#selectMes option:selected').val(),
-    //     },
-    //     dataType: 'json',
-    //     success: function(response) {   
-    //     },
-    //     error: function() {
-    //         console.log('Error obteniendo los datos de la base de datos');
-    //     }
-    // });
-
-    //Al seleccionar un tipo de reporte se muestran los diferentes inputs para realizar filtros de información, esto dependiendo del tipo de reporte que el usuario seleccione
-    $('#selectTipoReporte').on('change', function () { 
-        if ($('#columnaBoton').is(':hidden')) {
-            $('#columnaBoton').css('display', '');
-        }
-        $('.requerido').prop('required', false);
-        $('#btnLimpiar').trigger('click');
-        
-        if(this.value == 1){
+    //Función que permite establecer que elementos se van a mostrar en la vista dependiendo del tipo de reporte que el usuario haya elegido para visualizar
+    function parametrosReporteElegido(tipoReporte) {
+        if(tipoReporte == 1){
             $('#selectAnio').prop('required', true);
             $('#selectMes').prop('required', true);
 
@@ -79,7 +56,7 @@ $(function () {
             if ($('#columnaCiudad').is(':hidden')) {
                 $('#columnaCiudad').css('display', '');
             }
-        } else if(this.value == 2) {
+        } else if(tipoReporte == 2) {
             $('#inputFecha').prop('required', true);
 
             if ($('#columnaAnio').is(':visible')) {
@@ -100,7 +77,7 @@ $(function () {
             if ($('#columnaCiudad').is(':hidden')) {
                 $('#columnaCiudad').css('display', '');
             }
-        } else {
+        } else if(tipoReporte == 3) {
             $('#selectAnio').prop('required', true);
             $('#selectMes').prop('required', true);
             $('#inputIdentificacion').prop('required', true);
@@ -124,11 +101,39 @@ $(function () {
                 $('#columnaIdentificacion').css('display', '');
             }
         }
+    }
+
+    //Al seleccionar un tipo de reporte se muestran los diferentes inputs para realizar filtros de información, esto dependiendo del tipo de reporte que el usuario seleccione
+    $('#selectTipoReporte').on('change', function () { 
+        if ($('#botones').is(':hidden')) {
+            $('#botones').css('display', '');
+        }
+        if ($('#columnaBoton').is(':hidden')) {
+            $('#columnaBoton').css('display', '');
+        }
+        $('.requerido').prop('required', false);
+        $('#btnLimpiar').trigger('click');
+        parametrosReporteElegido(this.value);
     });
 
-    // function mostrarRegistros() {
+    //Función anónima que se ejecuta al cargar inicialmente la página y permite detectar si hay datos mal ingresados en los filtros devolviendo la información previamente ingresada, de lo contrario se caragan automáticamente el año y mes actual en su correpondientes inputs
+    (function () {
+        console.log($('#retornoAnio').val());
+        if($('#selectTipoReporte').val() != null){
+            if ($('#selectTipoPersona').val() != null) {
+                $('#columnaEmpresa').css('display', '');
+            }
+            $('#selectAnio').val($('#retornoAnio').val());
+            $('#botones').css('display', '');
+            $('#columnaBoton').css('display', '');
+            parametrosReporteElegido($('#selectTipoReporte').val());
+        }  else {
+            establecerAnioMes();   
+        }      
+    })();
+
+    //Uso de DataTables para mostrar la información de los registros realizados dependiendo de la información que este seleccionada en los filtros de generación de reportes
     var tablaReportes = $('#tablaReportes').DataTable({
-        // 'dom': "<'row'<'col-sm-12 col-md-6'l>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
         'destroy': true,
         'processing': true,
         'responsive': true,
@@ -145,15 +150,6 @@ $(function () {
                 d.fecha = $('#inputFecha').val();
                 d.identificacion = $('#inputIdentificacion').val();
             }
-            // {
-            //     'anio': $('#selectAnio').val(),
-            //     'mes': $('#selectMes').val(),
-            //     'tipoPersona': $('#selectTipoPersona').val(),
-            //     'empresa': $('#selectEmpresa').val(),
-            //     'ciudad': $('#selectCiudad').val(),
-            //     'fecha': $('#inputFecha').val(),
-            //     'identificacion': $('#inputIdentificacion').val(),
-            // }
         },
         'dataType': 'json',
         'type': 'GET',
@@ -236,26 +232,11 @@ $(function () {
             {
                 'data': 'city',
                 'name': 'city',
-                // 'visible': estado
             },   
             {
                 'data': 'name',
                 'name': 'name',
-                // 'searchable': false,
-                // 'orderable': false
             },
-            // {
-            //     'class': 'consultar_registro',
-            //     'orderable': false,
-            //     'data': null,
-            //     'defaultContent': '<td>' +
-            //         '<div class="action-buttons text-center">' +
-            //         '<a href="#" class="btn btn-primary btn-icon btn-sm">' +
-            //         '<i class="fa-solid fa-eye"></i>' +
-            //         '</a>' +
-            //         '</div>' +
-            //         '</td>',
-            // }
         ],
         'order': [[0, 'desc']],  
         'lengthChange': true,
@@ -276,17 +257,13 @@ $(function () {
             }
         },
     });
-    // $('#inputBuscar').focus(); 
-// }
 
-    //Al selecionar un tipo de persona, si este es un visitante se muestra en pantalla el input de filtar por empresa, de lo contrario se oculta
+    //Al selecionar alguno de los filtros de año, mes, empresa o ciudad se actualiza la tabla donde se muestra la información de los registros con la nueva información solicitada
     $('#selectAnio, #selectMes, #selectEmpresa, #selectCiudad').on('change', function () { 
-        // mostrarRegistros();
-        // tablaReportes.draw();
         tablaReportes.ajax.reload();
     });
 
-    //Al selecionar un tipo de persona, si este es un visitante se muestra en pantalla el input de filtar por empresa, de lo contrario se oculta
+    //Al selecionar un tipo de persona, si este es un visitante se muestra en pantalla el input de filtar por empresa, de lo contrario se oculta, también se actualiza la tabla donde se muestra la información de los registros con la nueva información solicitada
     $('#selectTipoPersona').on('change', function () { 
         tablaReportes.ajax.reload();
         if(this.value == 1){
@@ -297,15 +274,8 @@ $(function () {
         }
     });
 
-    //
+    //Al escribir un número en el filtro de indentificación se actualiza la tabla donde se muestra la información de los registros con la nueva información solicitada
     $('#inputIdentificacion').on('keyup', function () { 
-        var controladorTiempo = '';
-        clearTimeout(controladorTiempo);
-        // controladorTiempo = setTimeout( function(){
-        //     tablaReportes.ajax.reload();
-        // }, 1000);
-        // mostrarRegistros();
-        // tablaReportes.draw();
         tablaReportes.ajax.reload();
     });
 
@@ -357,99 +327,19 @@ $(function () {
         establecerAnioMes();
     });
 
-    //
+    //Botón que al ser seleccionado permite validar la información seleccionada en los filtros, si esta validación es correcta se envían los datos al servidor para solicitar el reporte seleccionado en formato Excel
     $('#btnExcel').click(function() {
         if(validarInputs()){
             $('#inputFormato').val('excel');
             document.getElementById('formulario').submit();
-            // console.log($('#formulario').serialize() + '&formato=excel');
-            // descargarReporte('&formato=excel');
         }
     });
 
-    //
+    //Botón que al ser seleccionado permite validar la información seleccionada en los filtros, si esta validación es correcta se envían los datos al servidor para solicitar el reporte seleccionado en formato PDF
     $('#btnPdf').click(function() {
         if(validarInputs()){
-            // descargarReporte();
-            // $('#inputFormato').val('pdf');
-            // document.getElementById('formulario').submit();
-            // console.log($('#formulario').serializeArray());
-            // descargarReporte('&formato=pdf');
+            $('#inputFormato').val('pdf');
+            document.getElementById('formulario').submit();
         }
     });
-
-    function descargarReporte() {
-        $.ajax({
-            // xhrFields:{
-            //     responseType: 'blob'
-            // },
-            url: 'reportes/informacion',
-            type: 'GET',
-            data: {
-                'anio': $('#selectAnio').val(),
-                'mes': $('#selectMes').val(),
-                'tipoPersona': $('#selectTipoPersona').val(),
-                'empresa': $('#selectEmpresa').val(),
-                'ciudad': $('#selectCiudad').val(),
-                'fecha': $('#inputFecha').val(),
-                'identificacion': $('#inputIdentificacion').val(),
-            },
-            // dataType: 'json',
-            success: function(data) {
-
-                console.log(data);
-                // var url = window.URL || window.webkitURL;
-                // var link = document.createElement('a');
-                // link.href = url.createObjectURL(data);
-                // link.download = 'reporte.xlsx';
-                // link.click();
-                // a.remove();
-
-                // window.open(objectUrl);
-
-            },
-            error: function() {
-                console.log('Error obteniendo los datos de la base de datos');
-            }
-        });
-    }
-
-
-    //Función anónima que se ejecuta si el botón mencionado se crea en la interfaz debido a errores cometidos en el ingreso del formulario crear vehículo
-    (function () {
-        if($('#selectTipoReporte').val() != ''){
-
-        }        
-    })();
-
-
-    // function cargar_años() {
-    //     // $('#anio1').empty();
-    //     // $('#anio1').append('<option value="">---</option>');
-    //     for (let i= 2021; i <= fecha.getFullYear(); i++) {
-    //         $('#selectAnio').append(`<option value="${i}">${i}</option>`);
-    //     }
-    //     // $('#anio1').val(dt.getFullYear()).trigger('change')
-    //     $('#selectAnio').val(fecha.getFullYear());
-    // }
-    
-    // cargar_años()
-
-        // (function () {
-    //     'use strict'
-    //     var form = document.getElementById('formulario');
-    //     form.addEventListener('submit', function (event) {
-    //         if (!form.checkValidity()) {
-    //             event.preventDefault();
-    //             event.stopPropagation();
-
-    //             $('.filtros').each(function (index) {
-    //                 if (!this.checkValidity()) {
-    //                     $(this).addClass('is-invalid');
-    //                 }
-    //             });
-    //         }
-    //     }, false);
-    // })();
-
 });
