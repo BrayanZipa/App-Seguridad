@@ -25,31 +25,29 @@ class RequestColaborador extends FormRequest
     {
         $datos = $this->all();
 
-        if($this->method() == 'POST'){
-            if(array_key_exists('casoIngreso', $datos)){
-                if($datos['casoIngreso'] == 'conActivoVehiculo'){
-                    return array_merge($this->validacionGeneral(), $this->validacionFaltante(), $this->validacionVehiculo()); 
-    
-                } else {  
+        if ($this->method() == 'POST') {
+            if (array_key_exists('casoIngreso', $datos)) {
+                if ($datos['casoIngreso'] == 'conActivoVehiculo') {
+                    return array_merge($this->validacionGeneral(), $this->validacionFaltante(), $this->validacionVehiculo());
+                } else {
                     return array_merge($this->validacionGeneral(), $this->validacionFaltante());
-                }   
-            } else if(array_key_exists('casoIngreso2', $datos)){
-                if($datos['casoIngreso2'] == 'colaboradorSinActivo'){
+                }
+            } else if (array_key_exists('casoIngreso2', $datos)) {
+                if ($datos['casoIngreso2'] == 'colaboradorSinActivo') {
                     return array_merge($this->validacionGeneral(), ['descripcion' => 'nullable|max:255']);
-    
-                } else if($datos['casoIngreso2'] == 'sinActivoVehiculo') {  
+                } else if ($datos['casoIngreso2'] == 'sinActivoVehiculo') {
                     return array_merge($this->validacionGeneral(), $this->validacionVehiculo(), ['descripcion' => 'nullable|max:255']);
-                } 
+                }
             }
-        } else if($this->method() == 'PUT'){
+        } else if ($this->method() == 'PUT') {
             $validacion =  $this->validacionGeneral();
-            $validacion['identificacion'] = $validacion['identificacion'].'|unique:se_personas,identificacion,'.$this->id.',id_personas';
-            if(isset($datos['codigo'])){
-                $validacion['codigo'] = 'required|string|alpha_num|max:5|min:4';
+            $validacion['identificacion'] = $validacion['identificacion'] . '|unique:se_personas,identificacion,' . $this->id . ',id_personas';
+            if (isset($datos['codigo'])) {
+                $validacion['codigo'] = 'required|string|alpha_num|max:10|min:4';
                 return $validacion;
             } else {
                 return $validacion;
-            }  
+            }
         }
     }
 
@@ -98,9 +96,9 @@ class RequestColaborador extends FormRequest
             'id_empresa.required' => 'Se requiere que elija una opción en la empresa',
             'id_empresa.integer' => 'La Empresa debe ser de tipo entero',
 
-            'descripcion.max' => 'La descripción solo puede tener un máximo de 255 caracteres',  
+            'descripcion.max' => 'La descripción solo puede tener un máximo de 255 caracteres',
 
-            
+
             'identificador.required' => 'Se requiere que ingrese el número identificador del vehículo',
             'identificador.string' => 'El número identificador debe ser de tipo texto',
             'identificador.unique' => 'No puede haber dos vehículos con el mismo número identificador',
@@ -123,14 +121,14 @@ class RequestColaborador extends FormRequest
      */
     public function validacionGeneral()
     {
-        return[
+        return [
             'nombre' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:25|min:3',
-            'apellido' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:25|min:3',   
+            'apellido' => 'required|string|regex:/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/u|max:25|min:3',
             'identificacion' => 'required|numeric|digits_between:4,15',
             // 'email' => 'nullable|email:rfc,dns|max:50',
             'email' => 'nullable|max:50',
             'tel_contacto' => 'required|numeric|digits_between:7,10',
-            'id_eps' => 'required|integer',         
+            'id_eps' => 'required|integer',
             'id_arl' => 'required|integer',
             'id_empresa' => 'required|integer',
         ];
@@ -138,31 +136,31 @@ class RequestColaborador extends FormRequest
         // |unique:se_personas,identificacion,'.$this->id.',id_personas
         // |unique:se_personas,email,'.$this->id.',id_personas
         // |unique:se_personas,tel_contacto,'.$this->id.',id_personas
-    } 
+    }
 
     /**
      * Función que retorna las validaciones faltantes del ingreso de datos de los colaboradores
      */
     public function validacionFaltante()
     {
-        return[
-            'codigo' => 'required|string|alpha_num|max:10|min:4', 
+        return [
+            'codigo' => 'required|string|alpha_num|max:10|min:4',
             'descripcion' => 'nullable|max:255'
         ];
 
         // |unique:se_activos,codigo
-    } 
+    }
 
     /**
      * Función que retorna las validaciones para el ingreso de vehículos pertenecientes a los colaboradores
      */
     public function validacionVehiculo()
     {
-        return[
+        return [
             'identificador' => 'required|string|unique:se_vehiculos,identificador|alpha_num|max:15|min:6',
-            'id_tipo_vehiculo' => 'required|integer',   
+            'id_tipo_vehiculo' => 'required|integer',
             'id_marca_vehiculo' => 'integer|nullable',
             'foto_vehiculo'  => 'required|string',
         ];
-    } 
+    }
 }
