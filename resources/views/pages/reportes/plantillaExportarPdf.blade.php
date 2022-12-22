@@ -12,7 +12,7 @@
         }
 
         body {
-            margin: 2cm 0cm 0.1cm;
+            margin: 2.1cm 0cm 0.1cm;
         }
 
         header {
@@ -36,20 +36,39 @@
             width: 100%
         }
 
-        td,
-        th {
+        td, th {
             border: black 1px solid;
         }
 
-        div.imagenes,
-        h2 {
+        div.imagenes, h2 {
             margin-top: 10px;
         }
 
-        img {
+        img.empresa {
             height: 40px;
             margin-top: 10px;
             margin-right: 10px;
+        }
+
+        div.info-app {
+            display: inline-block;
+        }
+
+        div.contenedor-logo {
+            width: 45%;
+        }
+
+        img.logo-app {
+            height: 45px;
+            margin-top: 25px;
+        }
+
+        div.contenedor-fecha {
+            width: 50%;
+        }
+
+        p {
+            margin: 0px 0px -4px;
         }
     </style>
 </head>
@@ -63,17 +82,25 @@
                 <tr>
                     <th class="titulos-encabezado">
                         <div class="imagenes">
-                            <img src="{{ public_path('assets/imagenes/aviomar.png') }}" alt="Logo Aviomar">
-                            <img src="{{ public_path('assets/imagenes/colvan.png') }}" alt="Logo Colvan">
-                            <img src="{{ public_path('assets/imagenes/snider.png') }}" alt="Logo Snider">
+                            <img class="empresa" src="{{ public_path('assets/imagenes/aviomar.png') }}"
+                                alt="Logo Aviomar">
+                            <img class="empresa" src="{{ public_path('assets/imagenes/colvan.png') }}"
+                                alt="Logo Colvan">
+                            <img class="empresa" src="{{ public_path('assets/imagenes/snider.png') }}"
+                                alt="Logo Snider">
                         </div>
                     </th>
                     <th>
                         <h2>{{ $titulo }}</h2>
                     </th>
                     <th class="titulos-encabezado">
-                        <span>{{ $carbon::now()->format('d-m-Y') }}</span><br>
-                        <span>{{ $carbon::now()->format('h:i:s A') }}</span>
+                        <div class="info-app contenedor-logo">
+                            <img class="logo-app" src="{{ public_path('assets/imagenes/prueba.png') }}" alt="Logo Visión">
+                        </div>
+                        <div class="info-app contenedor-fecha">
+                            <p>{{ $carbon::now()->format('d-m-Y') }}</p>
+                            <p>{{ $carbon::now()->format('h:i:s A') }}</p>
+                        </div>
                     </th>
                 </tr>
             </thead>
