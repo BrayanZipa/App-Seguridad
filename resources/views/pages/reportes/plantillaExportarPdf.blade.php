@@ -95,7 +95,7 @@
                     </th>
                     <th class="titulos-encabezado">
                         <div class="info-app contenedor-logo">
-                            <img class="logo-app" src="{{ public_path('assets/imagenes/prueba.png') }}" alt="Logo Visión">
+                            <img class="logo-app" src="{{ public_path('assets/imagenes/logo_reportes.png') }}" alt="Logo Visión">
                         </div>
                         <div class="info-app contenedor-fecha">
                             <p>{{ $carbon::now()->format('d-m-Y') }}</p>
