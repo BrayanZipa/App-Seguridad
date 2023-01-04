@@ -87,15 +87,15 @@
                                     <label for="selectMes">Filtrar por mes</label>
                                         <select id="selectMes" name="mes" class="filtros requerido form-control {{ $errors->has('mes') ? 'is-invalid' : '' }}" style="width: 100%;">
                                             <option selected="selected" value="" disabled>Mes</option>
-                                            <option {{ old('mes') == '01' ? 'selected' : '' }} value="01">Enero</option>
-                                            <option {{ old('mes') == '02' ? 'selected' : '' }} value="02">Febrero</option>
-                                            <option {{ old('mes') == '03' ? 'selected' : '' }} value="03">Marzo</option>
-                                            <option {{ old('mes') == '04' ? 'selected' : '' }} value="04">Abril</option>
-                                            <option {{ old('mes') == '05' ? 'selected' : '' }} value="05">Mayo</option>
-                                            <option {{ old('mes') == '06' ? 'selected' : '' }} value="06">Junio</option>
-                                            <option {{ old('mes') == '07' ? 'selected' : '' }} value="07">Julio</option>
-                                            <option {{ old('mes') == '08' ? 'selected' : '' }} value="08">Agosto</option>
-                                            <option {{ old('mes') == '09' ? 'selected' : '' }} value="09">Septiembre</option>
+                                            <option {{ old('mes') == '1' ? 'selected' : '' }} value="1">Enero</option>
+                                            <option {{ old('mes') == '2' ? 'selected' : '' }} value="2">Febrero</option>
+                                            <option {{ old('mes') == '3' ? 'selected' : '' }} value="3">Marzo</option>
+                                            <option {{ old('mes') == '4' ? 'selected' : '' }} value="4">Abril</option>
+                                            <option {{ old('mes') == '5' ? 'selected' : '' }} value="5">Mayo</option>
+                                            <option {{ old('mes') == '6' ? 'selected' : '' }} value="6">Junio</option>
+                                            <option {{ old('mes') == '7' ? 'selected' : '' }} value="7">Julio</option>
+                                            <option {{ old('mes') == '8' ? 'selected' : '' }} value="8">Agosto</option>
+                                            <option {{ old('mes') == '9' ? 'selected' : '' }} value="9">Septiembre</option>
                                             <option {{ old('mes') == '10' ? 'selected' : '' }} value="10">Octubre</option>
                                             <option {{ old('mes') == '11' ? 'selected' : '' }} value="11">Noviembre</option>
                                             <option {{ old('mes') == '12' ? 'selected' : '' }} value="12">Diciembre</option>

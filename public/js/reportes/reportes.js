@@ -118,7 +118,6 @@ $(function () {
 
     //Función anónima que se ejecuta al cargar inicialmente la página y permite detectar si hay datos mal ingresados en los filtros devolviendo la información previamente ingresada, de lo contrario se caragan automáticamente el año y mes actual en su correpondientes inputs
     (function () {
-        console.log($('#retornoAnio').val());
         if($('#selectTipoReporte').val() != null){
             if ($('#selectTipoPersona').val() != null) {
                 $('#columnaEmpresa').css('display', '');
