@@ -131,16 +131,22 @@ $(function () {
                         $('#selectArl').prop('required', false);
                         $('#titulo').text('Información visitante');
                         $('#checkBox').css('display', ''); 
+                        $('#checkBoxConductor').css('display', 'none');
                         $('#formVisitanteConductor').css('display', 'block'); 
                     } else {
+                        if($('#checkVehiConductor').prop('checked')){ 
+                            $('#checkVehiConductor').trigger('click');
+                        } else {
+                            $('#selectVehiculo').prop('required', true);
+                            $('#divVehiculo').css('display', '');
+                        }
                         $('#registro').val('conductor');
                         obtenerVehiculos('#selectVehiculo');
-                        $('#selectVehiculo').prop('required', true);
-                        $('#divVehiculo').css('display', '');
                         $('#selectEps').prop('required', true);
                         $('#selectArl').prop('required', true);
                         $('#titulo').text('Información conductor');
                         $('.visitante').css('display', 'none');   
+                        $('#checkBoxConductor').css('display', '');
                         $('#formVisitanteConductor').css('display', 'block'); 
                     }
 
@@ -462,6 +468,21 @@ $(function () {
         }
     });
 
+    //Función que se activa cuando el usuario le la click al checkbox de ingreso sin vehículo en el formulario de visitanteConductor, permitiendo ocultar o mostrar la información, así como hacerla requerida o no
+    $('#checkVehiConductor').on('change', function () {
+        if ($('#checkVehiConductor').is(':checked')) {
+            $('#selectVehiculo').val('');
+            $('#selectVehiculo').prop('required', false);
+            $('#divVehiculo').css('display', 'none');
+        } else {
+            if($('#selectVehiculo').hasClass('is-invalid')){
+                $('#selectVehiculo').removeClass('is-invalid');
+            } 
+            $('#selectVehiculo').prop('required', true);   
+            $('#divVehiculo').css('display', ''); 
+        }
+    });
+
     //Función que permite que al seleccionar la opción de ingreso de vehículo en cualquiera de los formularios se haga una petención Ajax para consultar la información de los vehículos que esten asociados a la persona que se haya seleccionado previamente y estos se listen en un select
     function obtenerVehiculos(select) {
         $(select).empty();   
@@ -599,16 +620,22 @@ $(function () {
 
             } else if($('#registro').val() == 'conductor'){
                 retornoInformacion(4, '#formRegistros1', '#inputId');
+                obtenerVehiculos('#selectVehiculo');
                 $('#titulo').text('Información conductor');
                 $('#fotografia').attr('src', servidor + $('#inputFoto').val());  
-                $('#divVehiculo').css('display', '');
                 $('.visitante').css('display', 'none'); 
-                obtenerVehiculos('#selectVehiculo');
-                $('#selectVehiculo').prop('required', true);
 
-                setTimeout(function(){
-                    $('#selectVehiculo').val($('#vehiculo').val());
-                }, 1500);
+                if($('#vehiculo').val().length > 0){ 
+                    console.log('entra por aqui');
+                    setTimeout(function(){
+                        $('#selectVehiculo').val($('#vehiculo').val());
+                    }, 1500);
+                    $('#selectVehiculo').prop('required', true);
+                    $('#divVehiculo').css('display', '');
+                } else{
+                    $('#checkVehiConductor').trigger('click');
+                }        
+                $('#checkBoxConductor').css('display', '');
                 $('#formVisitanteConductor').css('display', 'block');
 
             } else if($('#registro2').val() == 'colaboradorSinActivo'){
@@ -637,4 +664,4 @@ $(function () {
         $(location).attr('href', URLactual + 'sin_salida');
     });
 
-});  
+});

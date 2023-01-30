@@ -246,6 +246,19 @@
                                     </div>
                                 </div>
                             </div>
+                            <div id="checkBoxConductor" class="row mt-2" style="display: none">
+                                <div class="col-12">
+                                    <!-- checkbox -->
+                                    <div class="form-group clearfix mb-1">
+                                        <div class="icheck-primary d-inline">
+                                            <label for="checkVehiConductor">
+                                                ¿El conductor ingresa sin vehículo?
+                                            </label>
+                                            <input type="checkbox" id="checkVehiConductor">
+                                        </div><br>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
